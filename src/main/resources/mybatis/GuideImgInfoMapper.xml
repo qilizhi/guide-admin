@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideImgInfoMapper">
+    <resultMap type="com.mlx.guide.entity.GuideImgInfo" id="guideImgInfoMap">
+		<result property="id" column="id"/>
+		<result property="userNo" column="user_no"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="createTime" column="create_time"/>
+		<result property="groupNo" column="group_no"/>
+		<result property="sort" column="sort"/>
+		<result property="description" column="description"/>
+		<result property="flag" column="flag"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="userNo != null and userNo != ''" >
+			and user_no = #{userNo}
+			</if>
+			<if test="imgUrl != null and imgUrl != ''" >
+			and img_url = #{imgUrl}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="groupNo != null and groupNo != ''" >
+			and group_no = #{groupNo}
+			</if>
+			<if test="sort != null and sort != ''" >
+			and sort = #{sort}
+			</if>
+			<if test="description != null and description != ''" >
+			and description = #{description}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,user_no,img_url,create_time,group_no,sort,description,flag
+  </sql>
+    
+    
+    
+    <select id="getGuideImgInfoList" resultMap="guideImgInfoMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_info
+    </select>
+    
+    <select id="getGuideImgInfoPageList" resultMap="guideImgInfoMap" parameterType="com.mlx.guide.entity.GuideImgInfo">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_info
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideImgInfoPageListByMap" resultMap="guideImgInfoMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_info
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getGuideImgInfoByPrimaryKey" parameterType="Integer" resultMap="guideImgInfoMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_info WHERE id =#{id}
+    </select>
+    
+    <insert id="createGuideImgInfo" parameterType="com.mlx.guide.entity.GuideImgInfo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_img_info(
+			id,
+			user_no,
+			img_url,
+			create_time,
+			group_no,
+			sort,
+			description,
+			flag
+		)VALUES(
+			#{id},
+			#{userNo},
+			#{imgUrl},
+			now(),
+			#{groupNo},
+			#{sort},
+			#{description},
+			#{flag}
+		)
+    </insert>
+    <insert id="createGuideImgInfoSelective" parameterType="com.mlx.guide.entity.GuideImgInfo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_img_info
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="userNo != null" >
+			user_no,
+			</if>
+			<if test="imgUrl != null" >
+			img_url,
+			</if>
+			<if test="createTime != null" >
+			create_time,
+			</if>
+			<if test="groupNo != null" >
+			group_no,
+			</if>
+			<if test="sort != null" >
+			sort,
+			</if>
+			<if test="description != null" >
+			description,
+			</if>
+			<if test="flag != null" >
+			flag
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="userNo != null" >
+			#{userNo},
+			</if>
+			<if test="imgUrl != null" >
+			#{imgUrl},
+			</if>
+			<if test="createTime != null" >
+			now(),
+			</if>
+			<if test="groupNo != null" >
+			#{groupNo},
+			</if>
+			<if test="sort != null" >
+			#{sort},
+			</if>
+			<if test="description != null" >
+			#{description},
+			</if>
+			<if test="flag != null" >
+			#{flag}
+			</if>
+			</trim>
+    </insert>
+    <update id="updateGuideImgInfo" parameterType="com.mlx.guide.entity.GuideImgInfo">
+		UPDATE guide_img_info SET
+			user_no = #{userNo},
+			img_url = #{imgUrl},
+			group_no = #{groupNo},
+			sort = #{sort},
+			description = #{description},
+			flag = #{flag}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideImgInfoSelective" parameterType="com.mlx.guide.entity.GuideImgInfo">
+		UPDATE guide_img_info
+		<set>
+			<if test="userNo != null" >
+			user_no = #{userNo},
+			</if>
+			<if test="imgUrl != null" >
+			img_url = #{imgUrl},
+			</if>
+			<if test="groupNo != null" >
+			group_no = #{groupNo},
+			</if>
+			<if test="sort != null" >
+			sort = #{sort},
+			</if>
+			<if test="description != null" >
+			description = #{description},
+			</if>
+			<if test="flag != null" >
+			flag = #{flag}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideImgInfo" parameterType="Integer">
+    	DELETE FROM  guide_img_info WHERE id =#{id}
+    </delete>
+</mapper>

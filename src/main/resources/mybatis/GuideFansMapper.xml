@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideFansMapper">
+    <resultMap type="com.mlx.guide.entity.GuideFans" id="guideFansMap">
+		<result property="id" column="id"/>
+		<result property="parentUserNo" column="parent_user_no"/>
+		<result property="subUserNo" column="sub_user_no"/>
+		<result property="createTime" column="create_time"/>
+
+    </resultMap>
+    
+    <resultMap type="com.mlx.guide.model.MyFans" id="myFansMap" extends="guideFansMap">
+		<result property="nickName" column="nick_name" />
+		<result property="headImgUrl" column="head_img_url" />
+	</resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="parentUserNo != null and parentUserNo != ''" >
+			and parent_user_no = #{parentUserNo}
+			</if>
+			<if test="subUserNo != null and subUserNo != ''" >
+			and sub_user_no = #{subUserNo}
+			</if>
+			<if test="beginCreateTime != null and endCreateTime != ''" >
+			and create_time between #{beginCreateTime} and #{endCreateTime}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,parent_user_no,sub_user_no,create_time
+  </sql>
+    
+    
+    <select id="checkFanIsExist" parameterType="map" resultType="Integer"> 
+	    <![CDATA[ SELECT count(*) FROM guide_fans WHERE parent_user_no = #{parentUserNo} and sub_user_no = #{subUserNo} ]]> 
+	</select> 
+    
+    <select id="cancelFollowFans" parameterType="map"> 
+	    <![CDATA[ DELETE FROM guide_fans WHERE parent_user_no = #{parentUserNo} and sub_user_no = #{subUserNo} ]]> 
+	</select>
+	
+    <select id="getTotalFansNum" parameterType="string" resultType="Integer"> 
+	    <![CDATA[ SELECT count(*) FROM guide_fans WHERE parent_user_no = #{parentUserNo}]]> 
+	</select>
+	
+	  <select id="getGuideRankingList"  resultMap="guideFansMap"> 
+	    <![CDATA[ select id,parent_user_no,sub_user_no,create_time, count(*) FROM guide_fans GROUP BY parent_user_no ORDER BY count(*) DESC]]> 
+	</select>
+	
+    <select id="findFollowByUserNo" parameterType="string" resultMap="guideFansMap">
+    	SELECT
+    	<include refid="Base_Column_List" />
+    	FROM guide_fans WHERE parent_user_no = #{parentUserNo}
+    </select>
+    
+    <select id="getGuideFansList" resultMap="guideFansMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_fans
+    </select>
+    
+    <select id="getGuideFansPageList" resultMap="guideFansMap" parameterType="com.mlx.guide.entity.GuideFans">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_fans
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideFansPageListByMap" resultMap="guideFansMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_fans
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+   <select id="getMyFansPageListByMap" resultMap="myFansMap" parameterType="map">
+   SELECT f.*,u.head_img_url,u.nick_name 
+   FROM guide_fans f LEFT JOIN user_info u ON f.sub_user_no=u.user_no 
+   <where>
+   			<if test="parentUserNo != null" >
+			and f.parent_user_no = #{parentUserNo} 
+			</if>
+			<if test="beginCreateTime != null and endCreateTime != null and beginCreateTime != '' and endCreateTime != ''" >
+			and create_time between #{beginCreateTime} and #{endCreateTime}
+			</if>
+   </where>
+   
+				 
+				 
+    </select> 
+    
+    <select id="getGuideFansByPrimaryKey" parameterType="Integer" resultMap="guideFansMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_fans WHERE id =#{id}
+    </select>
+    
+    <insert id="createGuideFans" parameterType="com.mlx.guide.entity.GuideFans" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_fans(
+			id,
+			parent_user_no,
+			sub_user_no,
+			create_time
+		)VALUES(
+			#{id},
+			#{parentUserNo},
+			#{subUserNo},
+			#{createTime}
+		)
+    </insert>
+    <insert id="createGuideFansSelective" parameterType="com.mlx.guide.entity.GuideFans" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_fans
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="parentUserNo != null" >
+			parent_user_no,
+			</if>
+			<if test="subUserNo != null" >
+			sub_user_no,
+			</if>
+			<if test="createTime != null" >
+			create_time
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="parentUserNo != null" >
+			#{parentUserNo},
+			</if>
+			<if test="subUserNo != null" >
+			#{subUserNo},
+			</if>
+			<if test="createTime != null" >
+			#{createTime}
+			</if>
+			</trim>
+    </insert>
+    <update id="updateGuideFans" parameterType="com.mlx.guide.entity.GuideFans">
+		UPDATE guide_fans SET
+			parent_user_no = #{parentUserNo},
+			sub_user_no = #{subUserNo},
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideFansSelective" parameterType="com.mlx.guide.entity.GuideFans">
+		UPDATE guide_fans
+		<set>
+			<if test="parentUserNo != null" >
+			parent_user_no = #{parentUserNo},
+			</if>
+			<if test="subUserNo != null" >
+			sub_user_no = #{subUserNo},
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideFans" parameterType="Integer">
+    	DELETE FROM  guide_fans WHERE id =#{id}
+    </delete>
+</mapper>

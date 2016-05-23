@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.GuideTuanMapper" >
+  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.GuideTuan" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tuan_no" property="tuanNo" jdbcType="VARCHAR" />
+    <result column="tuan_date" property="tuanDate" jdbcType="DATE" />
+    <result column="line_type" property="lineType" jdbcType="TINYINT" />
+    <result column="line_no" property="lineNo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="full_num" property="fullNum" jdbcType="INTEGER" />
+    <result column="person_num" property="personNum" jdbcType="INTEGER" />
+    <result column="order_num" property="orderNum" jdbcType="INTEGER" />
+    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="tuan_status" property="tuanStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, tuan_no, tuan_date, line_type, line_no, create_time, full_num, person_num, 
+    order_num, user_no, user_name, tuan_status
+  </sql>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="name != null and name != ''" >
+			and name like concat('%',#{name},'%')
+			</if>
+			<if test="tuanNo != null and tuanNo != ''" >
+			and tuan_no = #{tuanNo}
+			</if>
+			<if test="tuanDate != null and tuanDate != ''" >
+			and tuan_date = #{tuanDate}
+			</if>
+			<if test="lineType != null and lineType != ''" >
+			and line_type = #{lineType}
+			</if>
+			<if test="lineNo != null and lineNo != ''" >
+			and line_no = #{lineNo}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="fullNum != null and fullNum != ''" >
+			and full_num = #{fullNum}
+			</if>
+			<if test="personNum != null and personNum != ''" >
+			and person_num = #{personNum}
+			</if>
+			<if test="orderNum != null and orderNum != ''" >
+			and order_num = #{orderNum}
+			</if>
+			<if test="userNo != null and userNo != ''" >
+			and user_no = #{userNo}
+			</if>
+			<if test="userName != null and userName != ''" >
+			and user_name = #{userName}
+			</if>
+			<if test="tuanStatus != null and tuanStatus != ''" >
+			and tuan_status = #{tuanStatus}
+			</if>
+			
+
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from guide_tuan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getGuideTuanPageListByMap" resultMap="BaseResultMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_tuan
+			<include refid="Example_Where_Clause" />
+   </select> 
+  <select id="getGuideTuanPageList" resultMap="BaseResultMap" parameterType="com.mlx.guide.entity.GuideTuan">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_tuan
+			<include refid="Example_Where_Clause" />
+  </select>
+<select id="countByDate"  resultType="java.lang.Long" parameterType="Integer">
+select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
+</select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="Long" >
+    delete from guide_tuan
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mlx.guide.entity.GuideTuan" >
+    insert into guide_tuan (id, name, tuan_no, 
+      tuan_date, line_type, line_no, 
+      create_time, full_num, person_num, 
+      order_num, user_no, user_name, 
+      tuan_status)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tuanNo,jdbcType=VARCHAR}, 
+      #{tuanDate,jdbcType=DATE}, #{lineType,jdbcType=TINYINT}, #{lineNo,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{fullNum,jdbcType=INTEGER}, #{personNum,jdbcType=INTEGER}, 
+      #{orderNum,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{tuanStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideTuan" >
+    insert into guide_tuan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="tuanNo != null" >
+        tuan_no,
+      </if>
+      <if test="tuanDate != null" >
+        tuan_date,
+      </if>
+      <if test="lineType != null" >
+        line_type,
+      </if>
+      <if test="lineNo != null" >
+        line_no,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="fullNum != null" >
+        full_num,
+      </if>
+      <if test="personNum != null" >
+        person_num,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="tuanStatus != null" >
+        tuan_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tuanNo != null" >
+        #{tuanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tuanDate != null" >
+        #{tuanDate,jdbcType=DATE},
+      </if>
+      <if test="lineType != null" >
+        #{lineType,jdbcType=TINYINT},
+      </if>
+      <if test="lineNo != null" >
+        #{lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullNum != null" >
+        #{fullNum,jdbcType=INTEGER},
+      </if>
+      <if test="personNum != null" >
+        #{personNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="tuanStatus != null" >
+        #{tuanStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideTuan" >
+    update guide_tuan
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tuanNo != null" >
+        tuan_no = #{tuanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tuanDate != null" >
+        tuan_date = #{tuanDate,jdbcType=DATE},
+      </if>
+      <if test="lineType != null" >
+        line_type = #{lineType,jdbcType=TINYINT},
+      </if>
+      <if test="lineNo != null" >
+        line_no = #{lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fullNum != null" >
+        full_num = #{fullNum,jdbcType=INTEGER},
+      </if>
+      <if test="personNum != null" >
+        person_num = #{personNum,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="userNo != null" >
+        user_no = #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="tuanStatus != null" >
+        tuan_status = #{tuanStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.GuideTuan" >
+    update guide_tuan
+    set name = #{name,jdbcType=VARCHAR},
+      tuan_no = #{tuanNo,jdbcType=VARCHAR},
+      tuan_date = #{tuanDate,jdbcType=DATE},
+      line_type = #{lineType,jdbcType=TINYINT},
+      line_no = #{lineNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      full_num = #{fullNum,jdbcType=INTEGER},
+      person_num = #{personNum,jdbcType=INTEGER},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      user_no = #{userNo,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      tuan_status = #{tuanStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

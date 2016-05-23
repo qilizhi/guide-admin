@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.PlatformMsgMapper" >
+  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.PlatformMsg" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, title, content, url, create_time, flag
+  </sql>
+  
+  <sql id="base_where_clause">
+  <trim prefix="where" prefixOverrides="and|or">
+   <if test="id != null and id != ''"> 
+    and id=#{id}
+   </if>
+   <if test="title != null and title !=''">
+   and title like concat('%',#{title},'%')
+   </if>
+   <if test="content !=null and content !=''">
+      and content like concat('%',#{content},'%')
+   </if>
+   <if test="url!=null and url!=''">
+      and url like concat ('%',#{url},'%')
+   </if>
+   <if test="flag!=null and flag!=''">
+       and flag =#{flag}
+   </if>
+  </trim>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from platform_msg
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getPlatformMsgList" resultMap="BaseResultMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM platform_msg
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="Long" >
+    delete from platform_msg
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mlx.guide.entity.PlatformMsg" >
+    insert into platform_msg (id, title, content, 
+      url, create_time, flag
+      )
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{flag,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.PlatformMsg" >
+    insert into platform_msg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.PlatformMsg" >
+    update platform_msg
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.PlatformMsg" >
+    update platform_msg
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      flag = #{flag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="getPageList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>    
+     from platform_msg
+  <include refid="base_where_clause"/>
+  </select>
+  
+  <select id="getPlatformMsgById" resultMap="BaseResultMap">
+   select 
+    <include refid="Base_Column_List"/>    
+     from platform_msg
+    where id=#{id}
+  </select>
+</mapper>

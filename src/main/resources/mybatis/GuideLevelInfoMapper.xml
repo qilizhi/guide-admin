@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideLevelInfoMapper">
+    <resultMap type="com.mlx.guide.entity.GuideLevelInfo" id="guideLevelInfoMap">
+		<result property="id" column="id"/>
+		<result property="levelName" column="level_name"/>
+		<result property="levelValue" column="level_value"/>
+		<result property="startPoint" column="start_point"/>
+		<result property="endPoint" column="end_point"/>
+		<result property="remark" column="remark"/>
+		<result property="flag" column="flag"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="levelName != null and levelName != ''" >
+			and level_name = #{levelName}
+			</if>
+			<if test="levelValue != null and levelValue != ''" >
+			and level_value = #{levelValue}
+			</if>
+			<if test="startPoint != null and startPoint != ''" >
+			and start_point = #{startPoint}
+			</if>
+			<if test="endPoint != null and endPoint != ''" >
+			and end_point = #{endPoint}
+			</if>
+			<if test="remark != null and remark != ''" >
+			and remark = #{remark}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,level_name,level_value,start_point,end_point,remark,flag
+  </sql>
+    
+    
+    
+    <select id="getGuideLevelInfoList" resultMap="guideLevelInfoMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_level_info
+    </select>
+    
+    <select id="getGuideLevelInfoPageList" resultMap="guideLevelInfoMap" parameterType="com.mlx.guide.entity.GuideLevelInfo">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_level_info
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideLevelInfoPageListByMap" resultMap="guideLevelInfoMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_level_info
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getGuideLevelInfoByPrimaryKey" parameterType="Integer" resultMap="guideLevelInfoMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_level_info WHERE id =#{id}
+    </select>
+    
+    <insert id="createGuideLevelInfo" parameterType="com.mlx.guide.entity.GuideLevelInfo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_level_info(
+			id,
+			level_name,
+			level_value,
+			start_point,
+			end_point,
+			remark,
+			flag
+		)VALUES(
+			#{id},
+			#{levelName},
+			#{levelValue},
+			#{startPoint},
+			#{endPoint},
+			#{remark},
+			#{flag}
+		)
+    </insert>
+    <insert id="createGuideLevelInfoSelective" parameterType="com.mlx.guide.entity.GuideLevelInfo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_level_info
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="levelName != null" >
+			level_name,
+			</if>
+			<if test="levelValue != null" >
+			level_value,
+			</if>
+			<if test="startPoint != null" >
+			start_point,
+			</if>
+			<if test="endPoint != null" >
+			end_point,
+			</if>
+			<if test="remark != null" >
+			remark,
+			</if>
+			<if test="flag != null" >
+			flag
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="levelName != null" >
+			#{levelName},
+			</if>
+			<if test="levelValue != null" >
+			#{levelValue},
+			</if>
+			<if test="startPoint != null" >
+			#{startPoint},
+			</if>
+			<if test="endPoint != null" >
+			#{endPoint},
+			</if>
+			<if test="remark != null" >
+			#{remark},
+			</if>
+			<if test="flag != null" >
+			#{flag}
+			</if>
+			</trim>
+    </insert> 
+    <update id="updateGuideLevelInfo" parameterType="com.mlx.guide.entity.GuideLevelInfo">
+		UPDATE guide_level_info SET
+			level_name = #{levelName},
+			level_value = #{levelValue},
+			start_point = #{startPoint},
+			end_point = #{endPoint},
+			remark = #{remark},
+			flag = #{flag}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideLevelInfoSelective" parameterType="com.mlx.guide.entity.GuideLevelInfo">
+		UPDATE guide_level_info
+		<set>
+			<if test="levelName != null" >
+			level_name = #{levelName},
+			</if>
+			<if test="levelValue != null" >
+			level_value = #{levelValue},
+			</if>
+			<if test="startPoint != null" >
+			start_point = #{startPoint},
+			</if>
+			<if test="endPoint != null" >
+			end_point = #{endPoint},
+			</if>
+			<if test="remark != null" >
+			remark = #{remark},
+			</if>
+			<if test="flag != null" >
+			flag = #{flag}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideLevelInfo" parameterType="Integer">
+    	DELETE FROM  guide_level_info WHERE id =#{id}
+    </delete>
+</mapper>

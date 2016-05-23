@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.WxAccessTokenMapper">
+    <resultMap type="com.mlx.guide.entity.WxAccessToken" id="wxAccessTokenMap">
+		<result property="id" column="id"/>
+		<result property="accessToken" column="access_token"/>
+		<result property="expiresIn" column="expires_in"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="weixinPublicId" column="weixin_public_id"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="accessToken != null and accessToken != ''" >
+			and access_token = #{accessToken}
+			</if>
+			<if test="expiresIn != null and expiresIn != ''" >
+			and expires_in = #{expiresIn}
+			</if>
+			<if test="createDate != null and createDate != ''" >
+			and create_date = #{createDate}
+			</if>
+			<if test="updateDate != null and updateDate != ''" >
+			and update_date = #{updateDate}
+			</if>
+			<if test="weixinPublicId != null and weixinPublicId != ''" >
+			and weixin_public_id = #{weixinPublicId}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,access_token,expires_in,create_date,update_date,weixin_public_id
+  </sql>
+    
+    
+    
+    <select id="getWxAccessTokenList" resultMap="wxAccessTokenMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_access_token
+    </select>
+    
+    <select id="getWxAccessTokenPageList" resultMap="wxAccessTokenMap" parameterType="com.mlx.guide.entity.WxAccessToken">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_access_token
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getWxAccessTokenPageListByMap" resultMap="wxAccessTokenMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_access_token
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getWxAccessTokenByPrimaryKey" parameterType="Long" resultMap="wxAccessTokenMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_access_token WHERE id =#{id}
+    </select>
+    
+    <insert id="createWxAccessToken" parameterType="com.mlx.guide.entity.WxAccessToken" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_access_token(
+			id,
+			access_token,
+			expires_in,
+			create_date,
+			update_date,
+			weixin_public_id
+		)VALUES(
+			#{id},
+			#{accessToken},
+			#{expiresIn},
+			#{createDate},
+			#{updateDate},
+			#{weixinPublicId}
+		)
+    </insert>
+    <insert id="createWxAccessTokenSelective" parameterType="com.mlx.guide.entity.WxAccessToken" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_access_token
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="accessToken != null" >
+			access_token,
+			</if>
+			<if test="expiresIn != null" >
+			expires_in,
+			</if>
+			<if test="createDate != null" >
+			create_date,
+			</if>
+			<if test="updateDate != null" >
+			update_date,
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="accessToken != null" >
+			#{accessToken},
+			</if>
+			<if test="expiresIn != null" >
+			#{expiresIn},
+			</if>
+			<if test="createDate != null" >
+			#{createDate},
+			</if>
+			<if test="updateDate != null" >
+			#{updateDate},
+			</if>
+			<if test="weixinPublicId != null" >
+			#{weixinPublicId}
+			</if>
+			</trim>
+    </insert> 
+    <update id="updateWxAccessToken" parameterType="com.mlx.guide.entity.WxAccessToken">
+		UPDATE wx_access_token SET
+			access_token = #{accessToken},
+			expires_in = #{expiresIn},
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			weixin_public_id = #{weixinPublicId}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateWxAccessTokenSelective" parameterType="com.mlx.guide.entity.WxAccessToken">
+		UPDATE wx_access_token
+		<set>
+			<if test="accessToken != null" >
+			access_token = #{accessToken},
+			</if>
+			<if test="expiresIn != null" >
+			expires_in = #{expiresIn},
+			</if>
+			<if test="createDate != null" >
+			create_date = #{createDate},
+			</if>
+			<if test="updateDate != null" >
+			update_date = #{updateDate},
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id = #{weixinPublicId}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteWxAccessToken" parameterType="Long">
+    	DELETE FROM  wx_access_token WHERE id =#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.GuideServiceMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.GuideService">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_no" property="userNo" jdbcType="VARCHAR" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="service_no" property="serviceNo" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="num" property="num" jdbcType="INTEGER" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="flag" property="flag" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="audit_remark" property="auditRemark" jdbcType="VARCHAR" />
+		<result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+		<result column="audit_status" property="auditStatus" jdbcType="INTEGER" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.mlx.guide.entity.GuideService"
+		extends="BaseResultMap">
+		<result column="content" property="content" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_no, user_name, service_no, title, img_url,
+		description,
+		update_time, create_time,
+		price, num, remark, flag, status,
+		audit_remark, audit_time, audit_status,
+		sort
+	</sql>
+	<sql id="Blob_Column_List">
+		content
+	</sql>
+
+	<sql id="baseWhere">
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="id != null and id!=''">
+				and id=#{id}
+			</if>
+			<if test="userNo != null and userNo !=''">
+				and user_no=#{userNo}
+			</if>
+			<if test="userName != null and userName !=''">
+				and user_name=#{userName}
+			</if>
+			<if test="serviceNo != null and serviceNo!=''">
+				and service_no=#{serviceNo}
+			</if>
+			<if test="title != null and title!=''">
+				and title=#{title}
+			</if>
+			<if test="imgUrl != null and imgUrl!=''">
+				and img_url=#{imgUrl}
+			</if>
+			<if test="description != null and description != ''">
+				and description=#{description}
+			</if>
+			<if test="updateTime != null and updateTime !=''">
+				and update_time=#{updateTime}
+			</if>
+			<if test="createTime != null and createTime !=''">
+				and create_time=#{createTime}
+			</if>
+			<if test="price != null and price !=''">
+				and price=#{price}
+			</if>
+			<if test="num != null and num!=''">
+				and num=#{num}
+			</if>
+			<if test="remark != null and remark!=''">
+				and remark =#{remark}
+			</if>
+			<if test="flag != null and flag !=''">
+				and flag=#{flag}
+			</if>
+			<if test="status != null and status!=''">
+				and status =#{status}
+			</if>
+			<if test="auditRemark != null and auditRemark !=''">
+				and audit_remark= #{auditRemark}
+			</if>
+			<if test="auditTime != null and auditTime !=''">
+				and audit_time=#{auditTime}
+			</if>
+			<if test="auditStatus != null and auditStatus !=''">
+				and audit_status=#{auditStatus}
+			</if>
+			<if test="content != null and content!=''">
+				and content=#{content}
+			</if>
+		</trim>
+
+
+	</sql>
+	<select id="listByExample" resultMap="ResultMapWithBLOBs"
+		parameterType="com.mlx.guide.entity.GuideService">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from guide_service
+		<include refid="baseWhere"></include>
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="Long">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from guide_service
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="countByDate" resultType="java.lang.Long"
+		parameterType="Integer">
+		select count(g.id) from guide_service g where MONTH(g.create_time)=#{month}
+	</select>
+
+	<select id="getGuideServicePageList" resultMap="BaseResultMap"
+		parameterType="com.mlx.guide.entity.GuideService">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM guide_service
+		<include refid="baseWhere" />
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from
+		guide_service
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="batDeleteByPrimaryKeys">
+		delete from guide_service
+		where id in
+		<foreach collection="array" item="id" separator="," open="("
+			close=")">#{id,jdbcType=VARCHAR}</foreach>
+	</delete>
+	<update id="batDelByflag">
+		update guide_service set flag=0
+		where id in
+		<foreach collection="array" item="id" separator="," open="("
+			close=")">#{id,jdbcType=VARCHAR}</foreach>
+	</update>
+	<insert id="insert" parameterType="com.mlx.guide.entity.GuideService">
+		insert into guide_service (id,
+		user_no, user_name,
+		service_no, title, img_url,
+		description,
+		update_time, create_time,
+		price, num, remark,
+		flag, status,
+		audit_remark,
+		audit_time, audit_status, sort,
+		content)
+		values
+		(#{id,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{serviceNo,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{price,jdbcType=DECIMAL},
+		#{num,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+		#{flag,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{auditRemark,jdbcType=VARCHAR},
+		#{auditTime,jdbcType=TIMESTAMP},
+		#{auditStatus,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
+		#{content,jdbcType=LONGVARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideService">
+		insert into guide_service
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userNo != null">
+				user_no,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="serviceNo != null">
+				service_no,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="imgUrl != null">
+				img_url,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="remark != null">
+				remark,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="auditRemark != null">
+				audit_remark,
+			</if>
+			<if test="auditTime != null">
+				audit_time,
+			</if>
+			<if test="auditStatus != null">
+				audit_status,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userNo != null">
+				#{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceNo != null">
+				#{serviceNo,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="imgUrl != null">
+				#{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="auditRemark != null">
+				#{auditRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="auditTime != null">
+				#{auditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditStatus != null">
+				#{auditStatus,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideService">
+		update guide_service
+		<set>
+			<if test="userNo != null">
+				user_no = #{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceNo != null">
+				service_no = #{serviceNo,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="imgUrl != null">
+				img_url = #{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				flag = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="auditRemark != null">
+				audit_remark = #{auditRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="auditTime != null">
+				audit_time = #{auditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditStatus != null">
+				audit_status = #{auditStatus,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mlx.guide.entity.GuideService">
+		update
+		guide_service
+		set user_no = #{userNo,jdbcType=VARCHAR},
+		user_name =
+		#{userName,jdbcType=VARCHAR},
+		service_no =
+		#{serviceNo,jdbcType=VARCHAR},
+		title = #{title,jdbcType=VARCHAR},
+		img_url = #{imgUrl,jdbcType=VARCHAR},
+		description =
+		#{description,jdbcType=VARCHAR},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		price = #{price,jdbcType=DECIMAL},
+		num = #{num,jdbcType=INTEGER},
+		remark = #{remark,jdbcType=VARCHAR},
+		flag = #{flag,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		audit_remark = #{auditRemark,jdbcType=VARCHAR},
+		audit_time =
+		#{auditTime,jdbcType=TIMESTAMP},
+		audit_status =
+		#{auditStatus,jdbcType=INTEGER},
+		sort = #{sort,jdbcType=INTEGER},
+		content = #{content,jdbcType=LONGVARCHAR}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.GuideService">
+		update
+		guide_service
+		set user_no = #{userNo,jdbcType=VARCHAR},
+		user_name =
+		#{userName,jdbcType=VARCHAR},
+		service_no =
+		#{serviceNo,jdbcType=VARCHAR},
+		title = #{title,jdbcType=VARCHAR},
+		img_url = #{imgUrl,jdbcType=VARCHAR},
+		description =
+		#{description,jdbcType=VARCHAR},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		price = #{price,jdbcType=DECIMAL},
+		num = #{num,jdbcType=INTEGER},
+		remark = #{remark,jdbcType=VARCHAR},
+		flag = #{flag,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		audit_remark = #{auditRemark,jdbcType=VARCHAR},
+		audit_time =
+		#{auditTime,jdbcType=TIMESTAMP},
+		audit_status =
+		#{auditStatus,jdbcType=INTEGER},
+		sort = #{sort,jdbcType=INTEGER}
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

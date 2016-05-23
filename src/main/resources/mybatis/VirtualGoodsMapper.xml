@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.VirtualGoodsMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.VirtualGoods">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="price" property="price" jdbcType="DECIMAL" />
+		<result column="pub_time" property="pubTime" jdbcType="TIMESTAMP" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="num" property="num" jdbcType="INTEGER" />
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="audit_remark" property="auditRemark" jdbcType="VARCHAR" />
+		<result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+		<result column="audit_status" property="auditStatus" jdbcType="TINYINT" />
+		<result column="flag" property="flag" jdbcType="TINYINT" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, img_url, description, create_time, price, pub_time, status,
+		num, sort,
+		audit_remark, audit_time, audit_status,flag
+	</sql>
+
+	<sql id="Base_Where_List">
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="id !=null and id !=''">
+				and id=#{id} 
+			</if>
+			<if test="name !=null and name !=''">
+				and name=#{name}
+			</if>
+			<if test="imgUrl !=null and imgUrl !=''">
+				and img_url=#{imgUrl}
+			</if>
+			<if test="description !=null and description !=''">
+				and description=#{description}
+			</if>
+			<if test="createTime !=null and createTime !=''">
+				and create_time=#{createTime}
+			</if>
+			<if test="price !=null and price !=''">
+				and price=#{price}
+			</if>
+			<if test="pubTime !=null and pubTime !=''">
+				and pub_time=#{pubTime}
+			</if>
+			<if test="status !=null and status !=''">
+				and status=#{status}
+			</if>
+			<if test="num !=null and num !=''">
+				and num=#{num}
+			</if>
+			<if test="sort !=null and sort !=''">
+				and sort=#{sort}
+			</if>
+			<if test="auditRemark !=null and auditRemark !=''">
+				and audit_remark=#{auditRemark}
+			</if>
+			<if test="auditTime !=null and auditTime !=''">
+				and audit_time=#{audit_time}
+			</if>
+			<if test="auditStatus !=null and auditStatus !=''">
+				and audit_status=#{auditStatus}
+			</if>
+			<if test="flag !=null and flag !=''">
+				and flag=#{flag}
+			</if>
+
+		</trim>
+
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="Long">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		from virtual_goods
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="listByExample" resultMap="BaseResultMap"
+		parameterType="com.mlx.guide.entity.VirtualGoods">
+		select
+		<include refid="Base_Column_List" />
+		from virtual_goods
+		<include refid="Base_Where_List" />
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from virtual_goods
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+		<update id="batDelByflag" >
+		update virtual_goods set flag=0
+		where id in
+		<foreach collection="array" item="id" separator="," open="("
+			close=")">#{id,jdbcType=VARCHAR}</foreach>
+	</update>
+	<insert id="insert" parameterType="com.mlx.guide.entity.VirtualGoods">
+		insert into virtual_goods (id, name, img_url,
+		description, create_time, price,
+		pub_time, status, num,
+		sort, audit_remark, audit_time,
+		audit_status,flag)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{imgUrl,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{price,jdbcType=DECIMAL},
+		#{pubTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+		#{num,jdbcType=INTEGER},
+		#{sort,jdbcType=INTEGER}, #{auditRemark,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP},
+		#{auditStatus,jdbcType=TINYINT},
+		#{flag,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.VirtualGoods">
+		insert into virtual_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="imgUrl != null">
+				img_url,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="pubTime != null">
+				pub_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="sort != null">
+				sort,
+			</if>
+			<if test="auditRemark != null">
+				audit_remark,
+			</if>
+			<if test="auditTime != null">
+				audit_time,
+			</if>
+			<if test="auditStatus != null">
+				audit_status,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="imgUrl != null">
+				#{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=DECIMAL},
+			</if>
+			<if test="pubTime != null">
+				#{pubTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+			<if test="auditRemark != null">
+				#{auditRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="auditTime != null">
+				#{auditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditStatus != null">
+				#{auditStatus,jdbcType=TINYINT},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.VirtualGoods">
+		update virtual_goods
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="imgUrl != null">
+				img_url = #{imgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=DECIMAL},
+			</if>
+			<if test="pubTime != null">
+				pub_time = #{pubTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="auditRemark != null">
+				audit_remark = #{auditRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="auditTime != null">
+				audit_time = #{auditTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="auditStatus != null">
+				audit_status = #{auditStatus,jdbcType=TINYINT},
+			</if>
+			<if test="flag != null">
+				flag = #{flag,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.VirtualGoods">
+		update virtual_goods
+		set name = #{name,jdbcType=VARCHAR},
+		img_url = #{imgUrl,jdbcType=VARCHAR},
+		description = #{description,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		price = #{price,jdbcType=DECIMAL},
+		pub_time = #{pubTime,jdbcType=TIMESTAMP},
+		status = #{status,jdbcType=INTEGER},
+		num = #{num,jdbcType=INTEGER},
+		sort = #{sort,jdbcType=INTEGER},
+		audit_remark = #{auditRemark,jdbcType=VARCHAR},
+		audit_time = #{auditTime,jdbcType=TIMESTAMP},
+		audit_status = #{auditStatus,jdbcType=TINYINT},
+		flag = #{flag,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

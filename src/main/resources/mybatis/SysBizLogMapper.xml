@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.SysBizLogMapper">
+    <resultMap type="com.mlx.guide.entity.SysBizLog" id="sysBizLogMap">
+		<result property="id" column="id"/>
+		<result property="bizType" column="biz_type"/>
+		<result property="operatUserNo" column="operat_user_no"/>
+		<result property="operatPerson" column="operat_person"/>
+		<result property="content" column="content"/>
+		<result property="createTime" column="create_time"/>
+		<result property="flag" column="flag"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="bizType != null and bizType != ''" >
+			and biz_type = #{bizType}
+			</if>
+			<if test="operatUserNo != null and operatUserNo != ''" >
+			and operat_user_no = #{operatUserNo}
+			</if>
+			<if test="operatPerson != null and operatPerson != ''" >
+			and operat_person like concat('%',#{operatPerson},'%') 
+			</if>
+			<if test="content != null and content != ''" >
+			and content = #{content}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,biz_type,operat_user_no,operat_person,content,create_time,flag
+  </sql>
+    
+    
+    
+    <select id="getSysBizLogList" resultMap="sysBizLogMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM sys_biz_log
+    </select>
+    
+    <select id="getSysBizLogPageList" resultMap="sysBizLogMap" parameterType="com.mlx.guide.entity.SysBizLog">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM sys_biz_log
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getSysBizLogPageListByMap" resultMap="sysBizLogMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM sys_biz_log
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getSysBizLogByPrimaryKey" parameterType="Integer" resultMap="sysBizLogMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM sys_biz_log WHERE id =#{id}
+    </select>
+    
+    <insert id="createSysBizLog" parameterType="com.mlx.guide.entity.SysBizLog" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO sys_biz_log(
+			id,
+			biz_type,
+			operat_user_no,
+			operat_person,
+			content,
+			create_time,
+			flag
+		)VALUES(
+			#{id},
+			#{bizType},
+			#{operatUserNo},
+			#{operatPerson},
+			#{content},
+			now(),
+			#{flag}
+		)
+    </insert>
+    <insert id="createSysBizLogSelective" parameterType="com.mlx.guide.entity.SysBizLog" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO sys_biz_log
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="bizType != null" >
+			biz_type,
+			</if>
+			<if test="operatUserNo != null" >
+			operat_user_no,
+			</if>
+			<if test="operatPerson != null" >
+			operat_person,
+			</if>
+			<if test="content != null" >
+			content,
+			</if>
+			<if test="createTime != null" >
+			create_time,
+			</if>
+			<if test="flag != null" >
+			flag
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="bizType != null" >
+			#{bizType},
+			</if>
+			<if test="operatUserNo != null" >
+			#{operatUserNo},
+			</if>
+			<if test="operatPerson != null" >
+			#{operatPerson},
+			</if>
+			<if test="content != null" >
+			#{content},
+			</if>
+			<if test="createTime != null" >
+			now(),
+			</if>
+			<if test="flag != null" >
+			#{flag}
+			</if>
+			</trim>
+    </insert>  
+    <update id="updateSysBizLog" parameterType="com.mlx.guide.entity.SysBizLog">
+		UPDATE sys_biz_log SET
+			biz_type = #{bizType},
+			operat_user_no = #{operatUserNo},
+			operat_person = #{operatPerson},
+			content = #{content},
+			flag = #{flag}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateSysBizLogSelective" parameterType="com.mlx.guide.entity.SysBizLog">
+		UPDATE sys_biz_log
+		<set>
+			<if test="bizType != null" >
+			biz_type = #{bizType},
+			</if>
+			<if test="operatUserNo != null" >
+			operat_user_no = #{operatUserNo},
+			</if>
+			<if test="operatPerson != null" >
+			operat_person = #{operatPerson},
+			</if>
+			<if test="content != null" >
+			content = #{content},
+			</if>
+			<if test="flag != null" >
+			flag = #{flag}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteSysBizLog" parameterType="Integer">
+    	DELETE FROM  sys_biz_log WHERE id =#{id}
+    </delete>
+</mapper>

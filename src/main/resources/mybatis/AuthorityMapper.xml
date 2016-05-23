@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.AuthorityMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.Authority">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="uri" property="uri" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, description, parent_id, uri
+	</sql>
+
+	<select id="list" resultMap="BaseResultMap" parameterType="com.mlx.guide.entity.Authority">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM sys_authority
+		<if test="name != null">
+			where name like CONCAT(CONCAT('%',
+			#{name,jdbcType=VARCHAR}), '%')
+		</if>
+
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_authority
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="getAuhtoritysByUserNo" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+
+		SELECT DISTINCT
+		(a.id),
+		a.`name`,
+		a.parent_id,
+		a.description
+		FROM
+		sys_authority a,
+		sys_role_id_authority_id ra,
+		sys_user_id_role_id ur
+		WHERE
+		a.id = ra.authority_ID
+		AND ra.role_ID = ur.role_ID
+		AND ur.user_no = #{userNo}
+	</select>
+	<!-- 根据父ID查子 -->
+	<select id="selectByParentId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from sys_authority
+		where parent_id = #{parentId,jdbcType=INTEGER}
+	</select>
+	<!-- 查询一级ID -->
+	<select id="selectFirstParentId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_authority
+		where parent_id is null;
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		sys_authority
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.mlx.guide.entity.Authority"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into sys_authority (name,
+		description,
+		parent_id, uri)
+		values (#{name,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR},
+		#{parentId,jdbcType=INTEGER},
+		#{uri,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.Authority"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into sys_authority
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null">
+				name,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="uri != null">
+				uri,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="uri != null">
+				#{uri,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.Authority">
+		update sys_authority
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="uri != null">
+				uri = #{uri,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.Authority">
+		update sys_authority
+		set name = #{name,jdbcType=VARCHAR},
+		description =
+		#{description,jdbcType=VARCHAR},
+		parent_id =
+		#{parentId,jdbcType=INTEGER},
+		uri = #{uri,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+</mapper>

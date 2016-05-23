@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+      http://www.springframework.org/schema/context   
+      http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/mvc  
+      http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+      http://www.springframework.org/schema/tx 
+      http://www.springframework.org/schema/tx/spring-tx.xsd 
+      http://www.springframework.org/schema/util 
+      http://www.springframework.org/schema/util/spring-util-3.1.xsd
+      "
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc">
+
+	<!-- 自动读取。适配文件 start -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<!-- <value>classpath:log4j.properties</value> -->
+				 <value>classpath:conf.properties</value> 
+				<value>classpath:redis.properties</value>
+				<!-- 可以适当增加个数据库 -->
+			</list>
+		</property>
+	</bean>
+	<!-- 扫描文件（自动将shiro部分） -->
+	<context:component-scan base-package="com.mlx.guide.shiro" />
+	<!-- 因为shiro 里用到userService等服务层故（自动将servicec层注入） -->
+	<context:component-scan base-package="com.mlx.guide.service" />
+	<import resource="classpath*:/spring-mybatis.xml" />
+	<import resource="classpath*:/spring-redis.xml" />
+
+	<import resource="classpath*:/spring-shiro.xml" />
+</beans>

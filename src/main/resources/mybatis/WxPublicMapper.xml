@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mlx.guide.dao.WxPublicMapper">
+  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.WxPublic">
+    <id column="id" jdbcType="BIGINT" property="id" /> <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="app_secret" jdbcType="VARCHAR" property="appSecret" />
+    <result column="server_url" jdbcType="VARCHAR" property="serverUrl" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="encodingAESKey" jdbcType="VARCHAR" property="encodingaeskey" />
+    <result column="redirect_url" jdbcType="VARCHAR" property="redirectUrl" />
+    <result column="partner_id" jdbcType="VARCHAR" property="partnerId" />
+    <result column="partner_key" jdbcType="VARCHAR" property="partnerKey" />
+    <result column="pay_callback_url" jdbcType="VARCHAR" property="payCallbackUrl" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, update_time, create_time, flag, app_id, app_secret, server_url, token, encodingAESKey, 
+    redirect_url, partner_id, partner_key, pay_callback_url, icon_url,name
+  </sql>
+  
+  <sql id="base_where_clause">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="flag != null and flag!=''">
+         and flag=#{flag}
+      </if>
+      <if test="appId != null and appId!=''">
+        and app_id  like concat('%',#{appId},'%')
+      </if>
+      <if test="appSecret != null and appSecret!=''">
+        and app_secret like concat('%',#{appSecret},'%')
+      </if>
+      <if test="name != null and name!=''">
+        and name like concat('%',#{name},'%')
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from wx_public
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wx_public
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mlx.guide.entity.WxPublic">
+    insert into wx_public (id, update_time, create_time, 
+      flag, app_id, app_secret, 
+      server_url, token, encodingAESKey, 
+      redirect_url, partner_id, partner_key, 
+      pay_callback_url, icon_url,name)
+    values (#{id,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{flag,jdbcType=INTEGER}, #{appId,jdbcType=VARCHAR}, #{appSecret,jdbcType=VARCHAR}, 
+      #{serverUrl,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{encodingaeskey,jdbcType=VARCHAR}, 
+      #{redirectUrl,jdbcType=VARCHAR}, #{partnerId,jdbcType=VARCHAR}, #{partnerKey,jdbcType=VARCHAR}, 
+      #{payCallbackUrl,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR},#{name})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.WxPublic">
+    insert into wx_public
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="appSecret != null">
+        app_secret,
+      </if>
+      <if test="serverUrl != null">
+        server_url,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="encodingaeskey != null">
+        encodingAESKey,
+      </if>
+      <if test="redirectUrl != null">
+        redirect_url,
+      </if>
+      <if test="partnerId != null">
+        partner_id,
+      </if>
+      <if test="partnerKey != null">
+        partner_key,
+      </if>
+      <if test="payCallbackUrl != null">
+        pay_callback_url,
+      </if>
+      <if test="iconUrl != null">
+        icon_url,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        #{appSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="serverUrl != null">
+        #{serverUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="encodingaeskey != null">
+        #{encodingaeskey,jdbcType=VARCHAR},
+      </if>
+      <if test="redirectUrl != null">
+        #{redirectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerId != null">
+        #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerKey != null">
+        #{partnerKey,jdbcType=VARCHAR},
+      </if>
+      <if test="payCallbackUrl != null">
+        #{payCallbackUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.WxPublic">
+    update wx_public
+    <set>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        app_secret = #{appSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="serverUrl != null">
+        server_url = #{serverUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="encodingaeskey != null">
+        encodingAESKey = #{encodingaeskey,jdbcType=VARCHAR},
+      </if>
+      <if test="redirectUrl != null">
+        redirect_url = #{redirectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerId != null">
+        partner_id = #{partnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="partnerKey != null">
+        partner_key = #{partnerKey,jdbcType=VARCHAR},
+      </if>
+      <if test="payCallbackUrl != null">
+        pay_callback_url = #{payCallbackUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null">
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+       <if test="name != null">
+        icon_url = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.WxPublic">
+    update wx_public
+    set update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      flag = #{flag,jdbcType=INTEGER},
+      app_id = #{appId,jdbcType=VARCHAR},
+      app_secret = #{appSecret,jdbcType=VARCHAR},
+      server_url = #{serverUrl,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR},
+      encodingAESKey = #{encodingaeskey,jdbcType=VARCHAR},
+      redirect_url = #{redirectUrl,jdbcType=VARCHAR},
+      partner_id = #{partnerId,jdbcType=VARCHAR},
+      partner_key = #{partnerKey,jdbcType=VARCHAR},
+      pay_callback_url = #{payCallbackUrl,jdbcType=VARCHAR},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      name=#{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+ 
+  
+  <select id="getWxPublicPageList" resultMap="BaseResultMap">
+   select 
+   <include refid="Base_Column_List"/>
+    from wx_public
+    <include refid="base_where_clause"/>
+  </select>
+  
+  <select id="getAllwxPublic" resultMap="BaseResultMap">
+    select 
+   <include refid="Base_Column_List"/>
+    from wx_public
+  </select>
+</mapper>

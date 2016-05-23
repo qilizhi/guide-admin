@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.GuideServicePriceMapper" >
+  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.GuideServicePrice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="service_no" property="serviceNo" jdbcType="VARCHAR" />
+    <result column="mlx_price" property="mlxPrice" jdbcType="DECIMAL" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="line_date" property="lineDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, service_no, mlx_price, num, line_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from guide_service_price
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="Long" >
+    delete from guide_service_price
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mlx.guide.entity.GuideServicePrice" >
+    insert into guide_service_price (id, service_no, mlx_price, 
+      num, line_date)
+    values (#{id,jdbcType=INTEGER}, #{serviceNo,jdbcType=VARCHAR}, #{mlxPrice,jdbcType=DECIMAL}, 
+      #{num,jdbcType=INTEGER}, #{lineDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideServicePrice" >
+    insert into guide_service_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serviceNo != null" >
+        service_no,
+      </if>
+      <if test="mlxPrice != null" >
+        mlx_price,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="lineDate != null" >
+        line_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serviceNo != null" >
+        #{serviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mlxPrice != null" >
+        #{mlxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="lineDate != null" >
+        #{lineDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideServicePrice" >
+    update guide_service_price
+    <set >
+      <if test="serviceNo != null" >
+        service_no = #{serviceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mlxPrice != null" >
+        mlx_price = #{mlxPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="lineDate != null" >
+        line_date = #{lineDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.GuideServicePrice" >
+    update guide_service_price
+    set service_no = #{serviceNo,jdbcType=VARCHAR},
+      mlx_price = #{mlxPrice,jdbcType=DECIMAL},
+      num = #{num,jdbcType=INTEGER},
+      line_date = #{lineDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.GuideLineTripMapper" >
+  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.GuideLineTrip" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="line_no" property="lineNo" jdbcType="VARCHAR" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="traffic" property="traffic" jdbcType="VARCHAR" />
+    <result column="hotel" property="hotel" jdbcType="VARCHAR" />
+    <result column="trip_detail" property="tripDetail" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="flag" property="flag" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, line_no, day, address, traffic, hotel, trip_detail, create_time, update_time, 
+    flag
+  </sql>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="lineNo != null and lineNo != ''" >
+			and line_no = #{lineNo}
+			</if>
+			<if test="day != null and day != ''" >
+			and day = #{day}
+			</if>
+			<if test="address != null and address != ''" >
+			and address = #{address}
+			</if>
+			<if test="traffic != null and traffic != ''" >
+			and traffic = #{traffic}
+			</if>
+			<if test="hotel != null and hotel != ''" >
+			and hotel = #{hotel}
+			</if>
+			<if test="tripDetail != null and tripDetail != ''" >
+			and trip_detail = #{tripDetail}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="updateTime != null and updateTime != ''" >
+			and update_time = #{updateTime}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+    </trim>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from guide_line_trip
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getGuideLineTripPageList" resultMap="BaseResultMap" parameterType="com.mlx.guide.entity.GuideLineTrip">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line_trip
+			<include refid="Example_Where_Clause" />
+   </select>
+
+  
+  <delete id="deleteByPrimaryKey" parameterType="Long" >
+    delete from guide_line_trip
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mlx.guide.entity.GuideLineTrip" >
+    insert into guide_line_trip (id, line_no, day, 
+      address, traffic, hotel, 
+      trip_detail, create_time, update_time, 
+      flag)
+    values (#{id,jdbcType=INTEGER}, #{lineNo,jdbcType=VARCHAR}, #{day,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{traffic,jdbcType=VARCHAR}, #{hotel,jdbcType=VARCHAR}, 
+      #{tripDetail,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{flag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideLineTrip" >
+    insert into guide_line_trip
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="lineNo != null" >
+        line_no,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="traffic != null" >
+        traffic,
+      </if>
+      <if test="hotel != null" >
+        hotel,
+      </if>
+      <if test="tripDetail != null" >
+        trip_detail,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="lineNo != null" >
+        #{lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="traffic != null" >
+        #{traffic,jdbcType=VARCHAR},
+      </if>
+      <if test="hotel != null" >
+        #{hotel,jdbcType=VARCHAR},
+      </if>
+      <if test="tripDetail != null" >
+        #{tripDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideLineTrip" >
+    update guide_line_trip
+    <set >
+      <if test="lineNo != null" >
+        line_no = #{lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="day != null" >
+        day = #{day,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="traffic != null" >
+        traffic = #{traffic,jdbcType=VARCHAR},
+      </if>
+      <if test="hotel != null" >
+        hotel = #{hotel,jdbcType=VARCHAR},
+      </if>
+      <if test="tripDetail != null" >
+        trip_detail = #{tripDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.GuideLineTrip" >
+    update guide_line_trip
+    set line_no = #{lineNo,jdbcType=VARCHAR},
+      day = #{day,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      traffic = #{traffic,jdbcType=VARCHAR},
+      hotel = #{hotel,jdbcType=VARCHAR},
+      trip_detail = #{tripDetail,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      flag = #{flag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

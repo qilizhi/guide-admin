@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.WxJsapiTicketMapper">
+    <resultMap type="com.mlx.guide.entity.WxJsapiTicket" id="wxJsapiTicketMap">
+		<result property="id" column="id"/>
+		<result property="jsapiTicket" column="jsapi_ticket"/>
+		<result property="expiresIn" column="expires_in"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="weixinPublicId" column="weixin_public_id"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="jsapiTicket != null and jsapiTicket != ''" >
+			and jsapi_ticket = #{jsapiTicket}
+			</if>
+			<if test="expiresIn != null and expiresIn != ''" >
+			and expires_in = #{expiresIn}
+			</if>
+			<if test="createDate != null and createDate != ''" >
+			and create_date = #{createDate}
+			</if>
+			<if test="updateDate != null and updateDate != ''" >
+			and update_date = #{updateDate}
+			</if>
+			<if test="weixinPublicId != null and weixinPublicId != ''" >
+			and weixin_public_id = #{weixinPublicId}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,jsapi_ticket,expires_in,create_date,update_date,weixin_public_id
+  </sql>
+    
+    
+    
+    <select id="getWxJsapiTicketList" resultMap="wxJsapiTicketMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_jsapi_ticket
+    </select>
+    
+    <select id="getWxJsapiTicketPageList" resultMap="wxJsapiTicketMap" parameterType="com.mlx.guide.entity.WxJsapiTicket">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_jsapi_ticket
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getWxJsapiTicketPageListByMap" resultMap="wxJsapiTicketMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_jsapi_ticket
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getWxJsapiTicketByPrimaryKey" parameterType="Long" resultMap="wxJsapiTicketMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_jsapi_ticket WHERE id =#{id}
+    </select>
+    
+    <insert id="createWxJsapiTicket" parameterType="com.mlx.guide.entity.WxJsapiTicket" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_jsapi_ticket(
+			id,
+			jsapi_ticket,
+			expires_in,
+			create_date,
+			update_date,
+			weixin_public_id
+		)VALUES(
+			#{id},
+			#{jsapiTicket},
+			#{expiresIn},
+			#{createDate},
+			#{updateDate},
+			#{weixinPublicId}
+		)
+    </insert>
+    <insert id="createWxJsapiTicketSelective" parameterType="com.mlx.guide.entity.WxJsapiTicket" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_jsapi_ticket
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="jsapiTicket != null" >
+			jsapi_ticket,
+			</if>
+			<if test="expiresIn != null" >
+			expires_in,
+			</if>
+			<if test="createDate != null" >
+			create_date,
+			</if>
+			<if test="updateDate != null" >
+			update_date,
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="jsapiTicket != null" >
+			#{jsapiTicket},
+			</if>
+			<if test="expiresIn != null" >
+			#{expiresIn},
+			</if>
+			<if test="createDate != null" >
+			#{createDate},
+			</if>
+			<if test="updateDate != null" >
+			#{updateDate},
+			</if>
+			<if test="weixinPublicId != null" >
+			#{weixinPublicId}
+			</if>
+			</trim>
+    </insert> 
+    <update id="updateWxJsapiTicket" parameterType="com.mlx.guide.entity.WxJsapiTicket">
+		UPDATE wx_jsapi_ticket SET
+			jsapi_ticket = #{jsapiTicket},
+			expires_in = #{expiresIn},
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			weixin_public_id = #{weixinPublicId}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateWxJsapiTicketSelective" parameterType="com.mlx.guide.entity.WxJsapiTicket">
+		UPDATE wx_jsapi_ticket
+		<set>
+			<if test="jsapiTicket != null" >
+			jsapi_ticket = #{jsapiTicket},
+			</if>
+			<if test="expiresIn != null" >
+			expires_in = #{expiresIn},
+			</if>
+			<if test="createDate != null" >
+			create_date = #{createDate},
+			</if>
+			<if test="updateDate != null" >
+			update_date = #{updateDate},
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id = #{weixinPublicId}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteWxJsapiTicket" parameterType="Long">
+    	DELETE FROM  wx_jsapi_ticket WHERE id =#{id}
+    </delete>
+</mapper>

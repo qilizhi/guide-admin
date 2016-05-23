@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideStrategyMapper">
+    <resultMap type="com.mlx.guide.entity.GuideStrategy" id="guideStrategyMap">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="description" column="description"/>
+		<result property="content" column="content"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="recommendInfo" column="recommend_info"/>
+		<result property="relatLineNo" column="relat_line_no"/>
+		<result property="userNo" column="user_no"/>
+		<result property="userName" column="user_name"/>
+		<result property="flag" column="flag"/>
+		<result property="auditRemark" column="audit_remark"/>
+		<result property="auditTime" column="audit_time"/>
+		<result property="auditStatus" column="audit_status"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="status" column="status"/>
+		<result property="sort" column="sort"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="title != null and title != ''" >
+			and title like concat('%',#{title},'%')
+			</if>
+			<if test="description != null and description != ''" >
+			and description = #{description}
+			</if>
+			<if test="content != null and content != ''" >
+			and content = #{content}
+			</if>
+			<if test="imgUrl != null and imgUrl != ''" >
+			and img_url = #{imgUrl}
+			</if>
+			<if test="recommendInfo != null and recommendInfo != ''" >
+			and recommend_info = #{recommendInfo}
+			</if>
+			<if test="relatLineNo != null and relatLineNo != ''" >
+			and relat_line_no = #{relatLineNo}
+			</if>
+			<if test="userNo != null and userNo != ''" >
+			and user_no = #{userNo}
+			</if>
+			<if test="userName != null and userName != ''" >
+			and user_name = #{userName}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+			<if test="auditRemark != null and auditRemark != ''" >
+			and audit_remark = #{auditRemark}
+			</if>
+			<if test="auditTime != null and auditTime != ''" >
+			and audit_time = #{auditTime}
+			</if>
+			<if test="auditStatus != null and auditStatus != ''" >
+			and audit_status = #{auditStatus}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="updateTime != null and updateTime != ''" >
+			and update_time = #{updateTime}
+			</if>
+			<if test="status != null and status != ''" >
+			and status = #{status}
+			</if>
+			<if test="sort != null and sort != ''" >
+			and sort = #{sort}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,title,description,content,img_url,recommend_info,relat_line_no,user_no,user_name,flag,audit_remark,audit_time,audit_status,create_time,update_time,status,sort
+  </sql>
+    
+    <select id="getGuideStrategyRankingList"  resultMap="guideStrategyMap"> 
+	    SELECT count(user_no),
+	    <include refid="Base_Column_List" /> 
+		FROM guide_strategy
+		GROUP BY user_no 
+		ORDER BY count(*) DESC 
+	</select>
+    
+    <select id="getGuideStrategyList" resultMap="guideStrategyMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_strategy
+    </select>
+    
+    <select id="getGuideStrategyPageList" resultMap="guideStrategyMap" parameterType="com.mlx.guide.entity.GuideStrategy">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_strategy
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideStrategyPageListByMap" resultMap="guideStrategyMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_strategy
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getGuideStrategyByPrimaryKey" parameterType="Integer" resultMap="guideStrategyMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_strategy WHERE id =#{id}
+    </select>
+    
+    <insert id="createGuideStrategy" parameterType="com.mlx.guide.entity.GuideStrategy" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_strategy(
+			id,
+			title,
+			description,
+			content,
+			img_url,
+			recommend_info,
+			relat_line_no,
+			user_no,
+			user_name,
+			flag,
+			audit_remark,
+			audit_time,
+			audit_status,
+			create_time,
+			update_time,
+			status,
+			sort
+		)VALUES(
+			#{id},
+			#{title},
+			#{description},
+			#{content},
+			#{imgUrl},
+			#{recommendInfo},
+			#{relatLineNo},
+			#{userNo},
+			#{userName},
+			#{flag},
+			#{auditRemark},
+			#{auditTime},
+			#{auditStatus},
+			now(),
+			now(),
+			#{status},
+			#{sort}
+		)
+    </insert>
+     <insert id="createGuideStrategySelective" parameterType="com.mlx.guide.entity.GuideStrategy" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_strategy
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="title != null" >
+			title,
+			</if>
+			<if test="description != null" >
+			description,
+			</if>
+			<if test="content != null" >
+			content,
+			</if>
+			<if test="imgUrl != null" >
+			img_url,
+			</if>
+			<if test="recommendInfo != null" >
+			recommend_info,
+			</if>
+			<if test="relatLineNo != null" >
+			relat_line_no,
+			</if>
+			<if test="userNo != null" >
+			user_no,
+			</if>
+			<if test="userName != null" >
+			user_name,
+			</if>
+			<if test="flag != null" >
+			flag,
+			</if>
+			<if test="auditRemark != null" >
+			audit_remark,
+			</if>
+			<if test="auditTime != null" >
+			audit_time,
+			</if>
+			<if test="auditStatus != null" >
+			audit_status,
+			</if>
+			<if test="createTime != null" >
+			create_time,
+			</if>
+			<if test="updateTime != null" >
+			update_time,
+			</if>
+			<if test="status != null" >
+			status,
+			</if>
+			<if test="sort != null" >
+			sort
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="title != null" >
+			#{title},
+			</if>
+			<if test="description != null" >
+			#{description},
+			</if>
+			<if test="content != null" >
+			#{content},
+			</if>
+			<if test="imgUrl != null" >
+			#{imgUrl},
+			</if>
+			<if test="recommendInfo != null" >
+			#{recommendInfo},
+			</if>
+			<if test="relatLineNo != null" >
+			#{relatLineNo},
+			</if>
+			<if test="userNo != null" >
+			#{userNo},
+			</if>
+			<if test="userName != null" >
+			#{userName},
+			</if>
+			<if test="flag != null" >
+			#{flag},
+			</if>
+			<if test="auditRemark != null" >
+			#{auditRemark},
+			</if>
+			<if test="auditTime != null" >
+			#{auditTime},
+			</if>
+			<if test="auditStatus != null" >
+			#{auditStatus},
+			</if>
+			<if test="createTime != null" >
+			now(),
+			</if>
+			<if test="updateTime != null" >
+			now(),
+			</if>
+			<if test="status != null" >
+			#{status},
+			</if>
+			<if test="sort != null" >
+			#{sort}
+			</if>
+			</trim>
+    </insert>  
+    <update id="updateGuideStrategy" parameterType="com.mlx.guide.entity.GuideStrategy">
+		UPDATE guide_strategy SET
+			title = #{title},
+			description = #{description},
+			content = #{content},
+			img_url = #{imgUrl},
+			recommend_info = #{recommendInfo},
+			relat_line_no = #{relatLineNo},
+			user_no = #{userNo},
+			user_name = #{userName},
+			flag = #{flag},
+			audit_remark = #{auditRemark},
+			audit_time = #{auditTime},
+			audit_status = #{auditStatus},
+			update_time = now(),
+			status = #{status},
+			sort = #{sort}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideStrategySelective" parameterType="com.mlx.guide.entity.GuideStrategy">
+		UPDATE guide_strategy
+		<set>
+			<if test="title != null" >
+			title = #{title},
+			</if>
+			<if test="description != null" >
+			description = #{description},
+			</if>
+			<if test="content != null" >
+			content = #{content},
+			</if>
+			<if test="imgUrl != null" >
+			img_url = #{imgUrl},
+			</if>
+			<if test="recommendInfo != null" >
+			recommend_info = #{recommendInfo},
+			</if>
+			<if test="relatLineNo != null" >
+			relat_line_no = #{relatLineNo},
+			</if>
+			<if test="userNo != null" >
+			user_no = #{userNo},
+			</if>
+			<if test="userName != null" >
+			user_name = #{userName},
+			</if>
+			<if test="flag != null" >
+			flag = #{flag},
+			</if>
+			<if test="auditRemark != null" >
+			audit_remark = #{auditRemark},
+			</if>
+			<if test="auditTime != null" >
+			audit_time = #{auditTime},
+			</if>
+			<if test="auditStatus != null" >
+			audit_status = #{auditStatus},
+			</if>
+			<if test="updateTime != null" >
+			update_time = now(),
+			</if>
+			<if test="status != null" >
+			status = #{status},
+			</if>
+			<if test="sort != null" >
+			sort = #{sort}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideStrategy" parameterType="Integer">
+    	DELETE FROM  guide_strategy WHERE id =#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideImgGroupMapper">
+    <resultMap type="com.mlx.guide.entity.GuideImgGroup" id="guideImgGroupMap">
+		<result property="id" column="id"/>
+		<result property="userNo" column="user_no"/>
+		<result property="name" column="name"/>
+		<result property="createTime" column="create_time"/>
+		<result property="flag" column="flag"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="userNo != null and userNo != ''" >
+			and user_no = #{userNo}
+			</if>
+			<if test="name != null and name != ''" >
+			and name = #{name}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,user_no,name,create_time,flag
+  </sql>
+    
+    
+    
+    <select id="getGuideImgGroupList" resultMap="guideImgGroupMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_group
+    </select>
+    
+    <select id="getGuideImgGroupPageList" resultMap="guideImgGroupMap" parameterType="com.mlx.guide.entity.GuideImgGroup">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_group
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideImgGroupPageListByMap" resultMap="guideImgGroupMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_group
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getGuideImgGroupByPrimaryKey" parameterType="Integer" resultMap="guideImgGroupMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_img_group WHERE id =#{id}
+    </select>
+    
+    <insert id="createGuideImgGroup" parameterType="com.mlx.guide.entity.GuideImgGroup" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_img_group(
+			id,
+			user_no,
+			name,
+			create_time,
+			flag
+		)VALUES(
+			#{id},
+			#{userNo},
+			#{name},
+			now(),
+			#{flag}
+		)
+    </insert>
+     <insert id="createGuideImgGroupSelective" parameterType="com.mlx.guide.entity.GuideImgGroup" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_img_group
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="userNo != null" >
+			user_no,
+			</if>
+			<if test="name != null" >
+			name,
+			</if>
+			<if test="createTime != null" >
+			create_time,
+			</if>
+			<if test="flag != null" >
+			flag
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="userNo != null" >
+			#{userNo},
+			</if>
+			<if test="name != null" >
+			#{name},
+			</if>
+			<if test="createTime != null" >
+			now(),
+			</if>
+			<if test="flag != null" >
+			#{flag}
+			</if>
+			</trim>
+    </insert> 
+    <update id="updateGuideImgGroup" parameterType="com.mlx.guide.entity.GuideImgGroup">
+		UPDATE guide_img_group SET
+			user_no = #{userNo},
+			name = #{name},
+			flag = #{flag}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideImgGroupSelective" parameterType="com.mlx.guide.entity.GuideImgGroup">
+		UPDATE guide_img_group
+		<set>
+			<if test="userNo != null" >
+			user_no = #{userNo},
+			</if>
+			<if test="name != null" >
+			name = #{name},
+			</if>
+			<if test="flag != null" >
+			flag = #{flag}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideImgGroup" parameterType="Integer">
+    	DELETE FROM  guide_img_group WHERE id =#{id}
+    </delete>
+</mapper>

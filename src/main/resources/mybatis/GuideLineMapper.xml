@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideLineMapper">
+    <resultMap type="com.mlx.guide.entity.GuideLine" id="guideLineMap">
+		<result property="id" column="id"/>
+		<result property="userNo" column="user_no"/>
+		<result property="userName" column="user_name"/>
+		<result property="lineNo" column="line_no"/>
+		<result property="title" column="title"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="description" column="description"/>
+		<result property="content" column="content"/>
+		<result property="createTime" column="create_time"/>
+		<result property="price" column="price"/>
+		<result property="remark" column="remark"/>
+		<result property="flag" column="flag"/>
+		<result property="status" column="status"/>
+		<result property="auditRemark" column="audit_remark"/>
+		<result property="auditTime" column="audit_time"/>
+		<result property="auditStatus" column="audit_status"/>
+		<result property="sort" column="sort"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="num" column="num"/>
+		<result property="lineType" column="line_type"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="userNo != null and userNo != ''" >
+			and user_no = #{userNo}
+			</if>
+			<if test="userName != null and userName != ''" >
+			and user_name like concat('%',#{userName},'%')
+			</if>
+			<if test="lineNo != null and lineNo != ''" >
+			and line_no = #{lineNo}
+			</if>
+			<if test="title != null and title != ''" >
+			and title like concat('%',#{title},'%')
+			</if>
+			<if test="imgUrl != null and imgUrl != ''" >
+			and img_url = #{imgUrl}
+			</if>
+			<if test="description != null and description != ''" >
+			and description = #{description}
+			</if>
+			<if test="content != null and content != ''" >
+			and content = #{content}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="price != null and price != ''" >
+			and price = #{price}
+			</if>
+			<if test="remark != null and remark != ''" >
+			and remark = #{remark}
+			</if>
+			<if test="flag != null and flag != ''" >
+			and flag = #{flag}
+			</if>
+			<if test="status != null and status != ''" >
+			and status = #{status}
+			</if>
+			<if test="auditRemark != null and auditRemark != ''" >
+			and audit_remark = #{auditRemark}
+			</if>
+			<if test="auditTime != null and auditTime != ''" >
+			and audit_time = #{auditTime}
+			</if>
+			<if test="auditStatus != null and auditStatus != ''" >
+			and audit_status = #{auditStatus}
+			</if>
+			<if test="sort != null and sort != ''" >
+			and sort = #{sort}
+			</if>
+			<if test="updateTime != null and updateTime != ''" >
+			and update_time = #{updateTime}
+			</if>
+			<if test="num != null and num != ''" >
+			and num = #{num}
+			</if>
+			<if test="lineType != null and lineType != ''" >
+			and line_type = #{lineType}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,user_no,user_name,line_no,title,img_url,description,content,create_time,price,remark,flag,status,audit_remark,audit_time,audit_status,sort,update_time,num,line_type
+  </sql>
+    
+    
+    
+    <select id="getGuideLineList" resultMap="guideLineMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line
+    </select>
+    <select id="searcheGuideLinePageList" resultMap="guideLineMap" parameterType="com.mlx.guide.entity.GuideLine">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line where title like CONCAT(CONCAT('%', #{title}), '%')
+    </select>
+    
+    <select id="getGuideLinePageList" resultMap="guideLineMap" parameterType="com.mlx.guide.entity.GuideLine">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideLinePageListByMap" resultMap="guideLineMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getGuideLineByPrimaryKey" parameterType="Integer" resultMap="guideLineMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line WHERE id =#{id}
+    </select>
+    
+    <select id="getGuideLineByLineNo" parameterType="String" resultMap="guideLineMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line where line_no = #{lineNo}
+    </select>
+    
+    <insert id="createGuideLine" parameterType="com.mlx.guide.entity.GuideLine" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_line(
+			id,
+			user_no,
+			user_name,
+			line_no,
+			title,
+			img_url,
+			description,
+			content,
+			create_time,
+			price,
+			remark,
+			flag,
+			status,
+			audit_remark,
+			audit_time,
+			audit_status,
+			sort,update_time,num,line_type
+		)VALUES(
+			#{id},
+			#{userNo},
+			#{userName},
+			#{lineNo},
+			#{title},
+			#{imgUrl},
+			#{description},
+			#{content},
+			now(),
+			#{price},
+			#{remark},
+			#{flag},
+			#{status},
+			#{auditRemark},
+			#{auditTime},
+			#{auditStatus},
+			#{sort},
+			#{update_time},
+			#{num},
+			#{lineType}
+		)
+    </insert>
+    <insert id="createGuideLineSelective" parameterType="com.mlx.guide.entity.GuideLine" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_line
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="userNo != null" >
+			user_no,
+			</if>
+			<if test="userName != null" >
+			user_name,
+			</if>
+			<if test="lineNo != null" >
+			line_no,
+			</if>
+			<if test="title != null" >
+			title,
+			</if>
+			<if test="imgUrl != null" >
+			img_url,
+			</if>
+			<if test="description != null" >
+			description,
+			</if>
+			<if test="content != null" >
+			content,
+			</if>
+			<if test="createTime != null" >
+			create_time,
+			</if>
+			<if test="price != null" >
+			price,
+			</if>
+			<if test="remark != null" >
+			remark,
+			</if>
+			<if test="flag != null" >
+			flag,
+			</if>
+			<if test="status != null" >
+			status,
+			</if>
+			<if test="auditRemark != null" >
+			audit_remark,
+			</if>
+			<if test="auditTime != null" >
+			audit_time,
+			</if>
+			<if test="auditStatus != null" >
+			audit_status,
+			</if>
+			<if test="sort != null" >
+			sort,
+			</if>
+			<if test="num != null" >
+			num,
+			</if>
+			<if test="updateTime != null" >
+			update_time,
+			</if>
+			<if test="lineType != null" >
+			line_type
+			</if>
+			
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="userNo != null" >
+			#{userNo},
+			</if>
+			<if test="userName != null" >
+			#{userName},
+			</if>
+			<if test="lineNo != null" >
+			#{lineNo},
+			</if>
+			<if test="title != null" >
+			#{title},
+			</if>
+			<if test="imgUrl != null" >
+			#{imgUrl},
+			</if>
+			<if test="description != null" >
+			#{description},
+			</if>
+			<if test="content != null" >
+			#{content},
+			</if>
+			<if test="createTime != null" >
+			now(),
+			</if>
+			<if test="price != null" >
+			#{price},
+			</if>
+			<if test="remark != null" >
+			#{remark},
+			</if>
+			<if test="flag != null" >
+			#{flag},
+			</if>
+			<if test="status != null" >
+			#{status},
+			</if>
+			<if test="auditRemark != null" >
+			#{auditRemark},
+			</if>
+			<if test="auditTime != null" >
+			#{auditTime},
+			</if>
+			<if test="auditStatus != null" >
+			#{auditStatus},
+			</if>
+			<if test="sort != null" >
+			#{sort},
+			</if>
+			<if test="num != null" >
+			#{num},
+			</if>
+			<if test="updateTime != null" >
+			#{updateTime},
+			</if>
+			<if test="lineType != null" >
+			#{lineType}
+			</if>
+			
+			</trim>
+    </insert> 
+    <update id="updateGuideLine" parameterType="com.mlx.guide.entity.GuideLine">
+		UPDATE guide_line SET
+			user_no = #{userNo},
+			user_name = #{userName},
+			line_no = #{lineNo},
+			title = #{title},
+			img_url = #{imgUrl},
+			description = #{description},
+			content = #{content},
+			price = #{price},
+			remark = #{remark},
+			flag = #{flag},
+			status = #{status},
+			audit_remark = #{auditRemark},
+			audit_time = #{auditTime},
+			audit_status = #{auditStatus},
+			sort = #{sort},
+			num = #{num},
+			update_time = #{updateTime},
+			line_type=#{lineType}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideLineSelective" parameterType="com.mlx.guide.entity.GuideLine">
+		UPDATE guide_line
+		<set>
+			<if test="userNo != null" >
+			user_no = #{userNo},
+			</if>
+			<if test="userName != null" >
+			user_name = #{userName},
+			</if>
+			<if test="lineNo != null" >
+			line_no = #{lineNo},
+			</if>
+			<if test="title != null" >
+			title = #{title},
+			</if>
+			<if test="imgUrl != null" >
+			img_url = #{imgUrl},
+			</if>
+			<if test="description != null" >
+			description = #{description},
+			</if>
+			<if test="content != null" >
+			content = #{content},
+			</if>
+			<if test="price != null" >
+			price = #{price},
+			</if>
+			<if test="remark != null" >
+			remark = #{remark},
+			</if>
+			<if test="flag != null" >
+			flag = #{flag},
+			</if>
+			<if test="status != null" >
+			status = #{status},
+			</if>
+			<if test="auditRemark != null" >
+			audit_remark = #{auditRemark},
+			</if>
+			<if test="auditTime != null" >
+			audit_time = #{auditTime},
+			</if>
+			<if test="auditStatus != null" >
+			audit_status = #{auditStatus},
+			</if>
+			<if test="sort != null" >
+			sort = #{sort},
+			</if>
+			<if test="num != null" >
+			num = #{num},
+			</if>
+			<if test="updateTime != null" >
+			update_time = #{updateTime},
+			</if>
+			<if test="lineType != null" >
+			line_type = #{lineType}
+			</if>
+			
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideLine" parameterType="Integer">
+    	DELETE FROM  guide_line WHERE id =#{id}
+    </delete>
+</mapper>

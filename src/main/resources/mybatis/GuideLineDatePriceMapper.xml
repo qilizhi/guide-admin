@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.GuideLineDatePriceMapper">
+    <resultMap type="com.mlx.guide.entity.GuideLineDatePrice" id="guideLineDatePriceMap">
+		<result property="id" column="id"/>
+		<result property="lineNo" column="line_no"/>
+		<result property="adultPrice" column="adult_price"/>
+		<result property="childPrice" column="child_price"/>
+		<result property="mlxPrice" column="mlx_price"/>
+		<result property="lineDate" column="line_date"/>
+		<result property="roomDiffPrice" column="room_diff_price"/>
+		<result property="safePrice" column="safe_price"/>
+		<result property="visaPrice" column="visa_price"/>
+		<result property="num" column="num"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="lineNo != null and lineNo != ''" >
+			and line_no = #{lineNo}
+			</if>
+			<if test="adultPrice != null and adultPrice != ''" >
+			and adult_price = #{adultPrice}
+			</if>
+			<if test="childPrice != null and childPrice != ''" >
+			and child_price = #{childPrice}
+			</if>
+			<if test="mlxPrice != null and mlxPrice != ''" >
+			and mlx_price = #{mlxPrice}
+			</if>
+			<if test="lineDate != null and lineDate != ''" >
+			and line_date = #{lineDate}
+			</if>
+			<if test="roomDiffPrice != null and roomDiffPrice != ''" >
+			and room_diff_price = #{roomDiffPrice}
+			</if>
+			<if test="safePrice != null and safePrice != ''" >
+			and safe_price = #{safePrice}
+			</if>
+			<if test="visaPrice != null and visaPrice != ''" >
+			and visa_price = #{visaPrice}
+			</if>
+			<if test="num != null and num != ''" >
+			and num = #{num}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,line_no,adult_price,child_price,mlx_price,line_date,room_diff_price,safe_price,visa_price,num
+  </sql>
+    
+    
+    
+    <select id="getGuideLineDatePriceList" resultMap="guideLineDatePriceMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line_date_price
+    </select>
+    
+    <select id="getGuideLineDatePricePageList" resultMap="guideLineDatePriceMap" parameterType="com.mlx.guide.entity.GuideLineDatePrice">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line_date_price
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getGuideLineDatePricePageListByMap" resultMap="guideLineDatePriceMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line_date_price
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getGuideLineDatePriceByPrimaryKey" parameterType="Integer" resultMap="guideLineDatePriceMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line_date_price WHERE id =#{id}
+    </select>
+    
+    <select id="getGuideLineDatePriceByLineNo" parameterType="String" resultMap="guideLineDatePriceMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM guide_line_date_price WHERE line_no = #{lineNo}
+    </select>
+    
+    <insert id="createGuideLineDatePrice" parameterType="com.mlx.guide.entity.GuideLineDatePrice" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_line_date_price(
+			id,
+			line_no,
+			adult_price,
+			child_price,
+			mlx_price,
+			line_date,
+			room_diff_price,
+			safe_price,
+			visa_price,
+			num
+		)VALUES(
+			#{id},
+			#{lineNo},
+			#{adultPrice},
+			#{childPrice},
+			#{mlxPrice},
+			#{lineDate},
+			#{roomDiffPrice},
+			#{safePrice},
+			#{visaPrice},
+			#{num}
+		)
+    </insert>
+    <insert id="createGuideLineDatePriceSelective" parameterType="com.mlx.guide.entity.GuideLineDatePrice" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_line_date_price
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="lineNo != null" >
+			line_no,
+			</if>
+			<if test="adultPrice != null" >
+			adult_price,
+			</if>
+			<if test="childPrice != null" >
+			child_price,
+			</if>
+			<if test="mlxPrice != null" >
+			mlx_price,
+			</if>
+			<if test="roomDiffPrice != null" >
+			room_diff_price,
+			</if>
+			<if test="safePrice != null" >
+			safe_price,
+			</if>
+			<if test="visaPrice != null" >
+			visa_price,
+			</if>
+			<if test="num != null" >
+			num,
+			</if>
+			<if test="lineDate != null" >
+			line_date
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="lineNo != null" >
+			#{lineNo},
+			</if>
+			<if test="adultPrice != null" >
+			#{adultPrice},
+			</if>
+			<if test="childPrice != null" >
+			#{childPrice},
+			</if>
+			<if test="mlxPrice != null" >
+			#{mlxPrice},
+			</if>
+			<if test="roomDiffPrice != null" >
+			#{roomDiffPrice},
+			</if>
+			<if test="safePrice != null" >
+			#{safePrice},
+			</if>
+			<if test="visaPrice != null" >
+			#{visaPrice},
+			</if>
+			<if test="num != null" >
+			#{num},
+			</if>
+			<if test="lineDate != null" >
+			#{lineDate}
+			</if>
+			</trim>
+    </insert>
+    <update id="updateGuideLineDatePrice" parameterType="com.mlx.guide.entity.GuideLineDatePrice">
+		UPDATE guide_line_date_price SET
+			line_no = #{lineNo},
+			adult_price = #{adultPrice},
+			child_price = #{childPrice},
+			mlx_price = #{mlxPrice},
+			room_diff_price = #{roomDiffPrice},
+			safe_price = #{safePrice},
+			visa_price = #{visaPrice},
+			num = #{num},
+			line_date = #{lineDate}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateGuideLineDatePriceSelective" parameterType="com.mlx.guide.entity.GuideLineDatePrice">
+		UPDATE guide_line_date_price
+		<set>
+			<if test="lineNo != null" >
+			line_no = #{lineNo},
+			</if>
+			<if test="adultPrice != null" >
+			adult_price = #{adultPrice},
+			</if>
+			<if test="childPrice != null" >
+			child_price = #{childPrice},
+			</if>
+			<if test="mlxPrice != null" >
+			mlx_price = #{mlxPrice},
+			</if>
+			<if test="roomDiffPrice != null" >
+			room_diff_price = #{roomDiffPrice},
+			</if>
+			<if test="safePrice != null" >
+			safe_price = #{safePrice},
+			</if>
+			<if test="visaPrice != null" >
+			visa_price = #{visaPrice},
+			</if>
+			<if test="num != null" >
+			num = #{num},
+			</if>
+			<if test="lineDate != null" >
+			line_date = #{lineDate}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteGuideLineDatePrice" parameterType="Integer">
+    	DELETE FROM  guide_line_date_price WHERE id =#{id}
+    </delete>
+    
+    <delete id="deleteGuideLineDatePriceByDate" parameterType="Map">
+    	DELETE FROM  guide_line_date_price 
+    	<where>
+    		<if test="lineNo != null and lineNo != ''"  >
+			and line_no = #{lineNo}
+			</if>
+			<if test="beginTime != null and endTime != null and beginTime != '' and endTime != ''" >
+			and line_date between #{beginTime} and #{endTime}
+			</if>
+    	
+    	</where>
+    </delete>
+    
+</mapper>

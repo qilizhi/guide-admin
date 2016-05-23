@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.EmGroupMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.EmGroup">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_no" property="userNo" jdbcType="VARCHAR" />
+		<result column="enter_rule" property="enterRule" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="owner_sign" property="ownerSign" jdbcType="VARCHAR" />
+		<result column="owner_image" property="ownerImage" jdbcType="VARCHAR" />
+		<result column="em_gid" property="emGid" jdbcType="BIGINT" />
+		<result column="em_guser" property="emGuser" jdbcType="VARCHAR" />
+		<result column="em_gname" property="emGname" jdbcType="VARCHAR" />
+		<result column="em_gdesc" property="emGdesc" jdbcType="VARCHAR" />
+		<result column="image" property="image" jdbcType="VARCHAR" />
+		<result column="em_affiliations_count" property="emAffiliationsCount"
+			jdbcType="INTEGER" />
+		<result column="em_maxusers" property="emMaxusers" jdbcType="INTEGER" />
+		<result column="em_public" property="emPublic" jdbcType="TINYINT" />
+		<result column="em_allowinvites" property="emAllowinvites"
+			jdbcType="TINYINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_no, enter_rule, type, owner_sign, owner_image, em_gid, em_guser,
+		em_gname,
+		em_gdesc, image, em_affiliations_count, em_maxusers, em_public,
+		em_allowinvites,
+		create_time, update_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="Long">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		from em_group
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="listBySelective" resultMap="BaseResultMap"
+		parameterType="com.mlx.guide.entity.EmGroup">
+
+		select
+		<include refid="Base_Column_List" />
+		from em_group
+		<trim prefix="where" prefixOverrides="and||or">
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="userNo != null">
+				and user_no=#{userNo}
+			</if>
+			<if test="enterRule != null">
+				and enter_rule=#{enterRule}
+			</if>
+			<if test="type != null">
+				and type=#{type}
+			</if>
+			<if test="ownerSign != null">
+				and owner_sign=#{ownerSign}
+			</if>
+			<if test="ownerImage != null">
+				and owner_image=#{ownerImage}
+			</if>
+			<if test="emGid != null">
+				and em_gid=#{emGid}
+			</if>
+			<if test="emGuser != null">
+				and em_guser=#{emGuser}
+			</if>
+			<if test="emGname != null">
+				and em_gname like concat("%",#{emGname},"%")
+			</if>
+			<if test="emGdesc != null">
+				and em_gdesc = #{emGdesc}
+			</if>
+			<if test="image != null">
+				and image=#{image}
+			</if>
+			<if test="emAffiliationsCount != null">
+				and em_affiliations_count=#{emAffiliationsCount}
+			</if>
+			<if test="emMaxusers != null">
+				and em_maxusers=#{emMaxusers}
+			</if>
+			<if test="emPublic != null">
+				and em_public=#{emPublic}
+			</if>
+			<if test="emAllowinvites != null">
+				and em_allowinvites=#{emAllowinvites}
+
+			</if>
+			<if test="createTime != null">
+				and create_time=#{createTime}
+			</if>
+			<if test="updateTime != null">
+				and update_time=#{updateTime}
+			</if>
+		</trim>
+	</select>
+	<delete id="batDeleteByPrimaryKey" >
+		
+		delete from em_group
+		where id in
+		<foreach collection="array" item="id" separator="," open="("
+			close=")">#{id,jdbcType=VARCHAR}</foreach>
+	</delete>
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from em_group
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.mlx.guide.entity.EmGroup">
+		insert into em_group (id, user_no, enter_rule,
+		type, owner_sign, owner_image,
+		em_gid, em_guser, em_gname,
+		em_gdesc, image, em_affiliations_count,
+		em_maxusers, em_public, em_allowinvites,
+		create_time, update_time)
+		values (#{id,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR},
+		#{enterRule,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER}, #{ownerSign,jdbcType=VARCHAR}, #{ownerImage,jdbcType=VARCHAR},
+		#{emGid,jdbcType=BIGINT}, #{emGuser,jdbcType=VARCHAR},
+		#{emGname,jdbcType=VARCHAR},
+		#{emGdesc,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{emAffiliationsCount,jdbcType=INTEGER},
+		#{emMaxusers,jdbcType=INTEGER}, #{emPublic,jdbcType=TINYINT},
+		#{emAllowinvites,jdbcType=TINYINT},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.EmGroup">
+		insert into em_group
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userNo != null">
+				user_no,
+			</if>
+			<if test="enterRule != null">
+				enter_rule,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="ownerSign != null">
+				owner_sign,
+			</if>
+			<if test="ownerImage != null">
+				owner_image,
+			</if>
+			<if test="emGid != null">
+				em_gid,
+			</if>
+			<if test="emGuser != null">
+				em_guser,
+			</if>
+			<if test="emGname != null">
+				em_gname,
+			</if>
+			<if test="emGdesc != null">
+				em_gdesc,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="emAffiliationsCount != null">
+				em_affiliations_count,
+			</if>
+			<if test="emMaxusers != null">
+				em_maxusers,
+			</if>
+			<if test="emPublic != null">
+				em_public,
+			</if>
+			<if test="emAllowinvites != null">
+				em_allowinvites,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userNo != null">
+				#{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="enterRule != null">
+				#{enterRule,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="ownerSign != null">
+				#{ownerSign,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerImage != null">
+				#{ownerImage,jdbcType=VARCHAR},
+			</if>
+			<if test="emGid != null">
+				#{emGid,jdbcType=BIGINT},
+			</if>
+			<if test="emGuser != null">
+				#{emGuser,jdbcType=VARCHAR},
+			</if>
+			<if test="emGname != null">
+				#{emGname,jdbcType=VARCHAR},
+			</if>
+			<if test="emGdesc != null">
+				#{emGdesc,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				#{image,jdbcType=VARCHAR},
+			</if>
+			<if test="emAffiliationsCount != null">
+				#{emAffiliationsCount,jdbcType=INTEGER},
+			</if>
+			<if test="emMaxusers != null">
+				#{emMaxusers,jdbcType=INTEGER},
+			</if>
+			<if test="emPublic != null">
+				#{emPublic,jdbcType=TINYINT},
+			</if>
+			<if test="emAllowinvites != null">
+				#{emAllowinvites,jdbcType=TINYINT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.EmGroup">
+		update em_group
+		<set>
+			<if test="userNo != null">
+				user_no = #{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="enterRule != null">
+				enter_rule = #{enterRule,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="ownerSign != null">
+				owner_sign = #{ownerSign,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerImage != null">
+				owner_image = #{ownerImage,jdbcType=VARCHAR},
+			</if>
+			<if test="emGid != null">
+				em_gid = #{emGid,jdbcType=BIGINT},
+			</if>
+			<if test="emGuser != null">
+				em_guser = #{emGuser,jdbcType=VARCHAR},
+			</if>
+			<if test="emGname != null">
+				em_gname = #{emGname,jdbcType=VARCHAR},
+			</if>
+			<if test="emGdesc != null">
+				em_gdesc = #{emGdesc,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				image = #{image,jdbcType=VARCHAR},
+			</if>
+			<if test="emAffiliationsCount != null">
+				em_affiliations_count = #{emAffiliationsCount,jdbcType=INTEGER},
+			</if>
+			<if test="emMaxusers != null">
+				em_maxusers = #{emMaxusers,jdbcType=INTEGER},
+			</if>
+			<if test="emPublic != null">
+				em_public = #{emPublic,jdbcType=TINYINT},
+			</if>
+			<if test="emAllowinvites != null">
+				em_allowinvites = #{emAllowinvites,jdbcType=TINYINT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.EmGroup">
+		update em_group
+		set user_no = #{userNo,jdbcType=VARCHAR},
+		enter_rule = #{enterRule,jdbcType=VARCHAR},
+		type = #{type,jdbcType=INTEGER},
+		owner_sign = #{ownerSign,jdbcType=VARCHAR},
+		owner_image = #{ownerImage,jdbcType=VARCHAR},
+		em_gid = #{emGid,jdbcType=BIGINT},
+		em_guser = #{emGuser,jdbcType=VARCHAR},
+		em_gname = #{emGname,jdbcType=VARCHAR},
+		em_gdesc = #{emGdesc,jdbcType=VARCHAR},
+		image = #{image,jdbcType=VARCHAR},
+		em_affiliations_count = #{emAffiliationsCount,jdbcType=INTEGER},
+		em_maxusers = #{emMaxusers,jdbcType=INTEGER},
+		em_public = #{emPublic,jdbcType=TINYINT},
+		em_allowinvites = #{emAllowinvites,jdbcType=TINYINT},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

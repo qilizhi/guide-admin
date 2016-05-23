@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.WxEventPushArticleMapper">
+    <resultMap type="com.mlx.guide.entity.WxEventPushArticle" id="wxEventPushArticleMap">
+		<result property="id" column="id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="pushEventCode" column="push_event_code"/>
+		<result property="description" column="description"/>
+		<result property="title" column="title"/>
+		<result property="picUrl" column="pic_url"/>
+		<result property="url" column="url"/>
+		<result property="seq" column="seq"/>
+		<result property="weixinPublicId" column="weixin_public_id"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="createDate != null and createDate != ''" >
+			and create_date = #{createDate}
+			</if>
+			<if test="updateDate != null and updateDate != ''" >
+			and update_date = #{updateDate}
+			</if>
+			<if test="pushEventCode != null and pushEventCode != ''" >
+			and push_event_code = #{pushEventCode}
+			</if>
+			<if test="description != null and description != ''" >
+			and description = #{description}
+			</if>
+			<if test="title != null and title != ''" >
+			and title = #{title}
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+			and pic_url = #{picUrl}
+			</if>
+			<if test="url != null and url != ''" >
+			and url = #{url}
+			</if>
+			<if test="seq != null and seq != ''" >
+			and seq = #{seq}
+			</if>
+			<if test="weixinPublicId != null and weixinPublicId != ''" >
+			and weixin_public_id = #{weixinPublicId}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,create_date,update_date,push_event_code,description,title,pic_url,url,seq,weixin_public_id
+  </sql>
+    
+    
+    
+    <select id="getWxEventPushArticleList" resultMap="wxEventPushArticleMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_event_push_article
+    </select>
+    
+    <select id="getWxEventPushArticlePageList" resultMap="wxEventPushArticleMap" parameterType="com.mlx.guide.entity.WxEventPushArticle">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_event_push_article
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getWxEventPushArticlePageListByMap" resultMap="wxEventPushArticleMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_event_push_article
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getWxEventPushArticleByPrimaryKey" parameterType="Long" resultMap="wxEventPushArticleMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_event_push_article WHERE id =#{id}
+    </select>
+    
+    <insert id="createWxEventPushArticle" parameterType="com.mlx.guide.entity.WxEventPushArticle" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_event_push_article(
+			id,
+			create_date,
+			update_date,
+			push_event_code,
+			description,
+			title,
+			pic_url,
+			url,
+			seq,
+			weixin_public_id
+		)VALUES(
+			#{id},
+			#{createDate},
+			#{updateDate},
+			#{pushEventCode},
+			#{description},
+			#{title},
+			#{picUrl},
+			#{url},
+			#{seq},
+			#{weixinPublicId}
+		)
+    </insert>
+    <insert id="createWxEventPushArticleSelective" parameterType="com.mlx.guide.entity.WxEventPushArticle" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_event_push_article
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="createDate != null" >
+			create_date,
+			</if>
+			<if test="updateDate != null" >
+			update_date,
+			</if>
+			<if test="pushEventCode != null" >
+			push_event_code,
+			</if>
+			<if test="description != null" >
+			description,
+			</if>
+			<if test="title != null" >
+			title,
+			</if>
+			<if test="picUrl != null" >
+			pic_url,
+			</if>
+			<if test="url != null" >
+			url,
+			</if>
+			<if test="seq != null" >
+			seq,
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="createDate != null" >
+			#{createDate},
+			</if>
+			<if test="updateDate != null" >
+			#{updateDate},
+			</if>
+			<if test="pushEventCode != null" >
+			#{pushEventCode},
+			</if>
+			<if test="description != null" >
+			#{description},
+			</if>
+			<if test="title != null" >
+			#{title},
+			</if>
+			<if test="picUrl != null" >
+			#{picUrl},
+			</if>
+			<if test="url != null" >
+			#{url},
+			</if>
+			<if test="seq != null" >
+			#{seq},
+			</if>
+			<if test="weixinPublicId != null" >
+			#{weixinPublicId}
+			</if>
+			</trim>
+    </insert> 
+    <update id="updateWxEventPushArticle" parameterType="com.mlx.guide.entity.WxEventPushArticle">
+		UPDATE wx_event_push_article SET
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			push_event_code = #{pushEventCode},
+			description = #{description},
+			title = #{title},
+			pic_url = #{picUrl},
+			url = #{url},
+			seq = #{seq},
+			weixin_public_id = #{weixinPublicId}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateWxEventPushArticleSelective" parameterType="com.mlx.guide.entity.WxEventPushArticle">
+		UPDATE wx_event_push_article
+		<set>
+			<if test="createDate != null" >
+			create_date = #{createDate},
+			</if>
+			<if test="updateDate != null" >
+			update_date = #{updateDate},
+			</if>
+			<if test="pushEventCode != null" >
+			push_event_code = #{pushEventCode},
+			</if>
+			<if test="description != null" >
+			description = #{description},
+			</if>
+			<if test="title != null" >
+			title = #{title},
+			</if>
+			<if test="picUrl != null" >
+			pic_url = #{picUrl},
+			</if>
+			<if test="url != null" >
+			url = #{url},
+			</if>
+			<if test="seq != null" >
+			seq = #{seq},
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id = #{weixinPublicId}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteWxEventPushArticle" parameterType="Long">
+    	DELETE FROM  wx_event_push_article WHERE id =#{id}
+    </delete>
+</mapper>

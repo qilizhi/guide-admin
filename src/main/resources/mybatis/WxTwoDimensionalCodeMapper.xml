@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.WxTwoDimensionalCodeMapper">
+    <resultMap type="com.mlx.guide.entity.WxTwoDimensionalCode" id="wxTwoDimensionalCodeMap">
+		<result property="id" column="id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="updateDate" column="update_date"/>
+		<result property="imageName" column="image_name"/>
+		<result property="userNo" column="user_no"/>
+		<result property="openid" column="openid"/>
+		<result property="sceneStr" column="scene_str"/>
+		<result property="imageUrl" column="image_url"/>
+		<result property="weixinPublicId" column="weixin_public_id"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="createDate != null and createDate != ''" >
+			and create_date = #{createDate}
+			</if>
+			<if test="updateDate != null and updateDate != ''" >
+			and update_date = #{updateDate}
+			</if>
+			<if test="imageName != null and imageName != ''" >
+			and image_name = #{imageName}
+			</if>
+			<if test="userNo != null and userNo != ''" >
+			and user_no = #{userNo}
+			</if>
+			<if test="openid != null and openid != ''" >
+			and openid = #{openid}
+			</if>
+			<if test="sceneStr != null and sceneStr != ''" >
+			and scene_str = #{sceneStr}
+			</if>
+			<if test="imageUrl != null and imageUrl != ''" >
+			and image_url = #{imageUrl}
+			</if>
+			<if test="weixinPublicId != null and weixinPublicId != ''" >
+			and weixin_public_id = #{weixinPublicId}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,create_date,update_date,image_name,user_no,openid,scene_str,image_url,weixin_public_id
+  </sql>
+    
+    
+    
+    <select id="getWxTwoDimensionalCodeList" resultMap="wxTwoDimensionalCodeMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_two_dimensional_code
+    </select>
+    
+    <select id="getWxTwoDimensionalCodePageList" resultMap="wxTwoDimensionalCodeMap" parameterType="com.mlx.guide.entity.WxTwoDimensionalCode">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_two_dimensional_code
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getWxTwoDimensionalCodePageListByMap" resultMap="wxTwoDimensionalCodeMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_two_dimensional_code
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getWxTwoDimensionalCodeByPrimaryKey" parameterType="Long" resultMap="wxTwoDimensionalCodeMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM wx_two_dimensional_code WHERE id =#{id}
+    </select>
+    
+    <insert id="createWxTwoDimensionalCode" parameterType="com.mlx.guide.entity.WxTwoDimensionalCode" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_two_dimensional_code(
+			id,
+			create_date,
+			update_date,
+			image_name,
+			user_no,
+			openid,
+			scene_str,
+			image_url,
+			weixin_public_id
+		)VALUES(
+			#{id},
+			#{createDate},
+			#{updateDate},
+			#{imageName},
+			#{userNo},
+			#{openid},
+			#{sceneStr},
+			#{imageUrl},
+			#{weixinPublicId}
+		)
+    </insert>
+    <insert id="createWxTwoDimensionalCodeSelective" parameterType="com.mlx.guide.entity.WxTwoDimensionalCode" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO wx_two_dimensional_code
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="createDate != null" >
+			create_date,
+			</if>
+			<if test="updateDate != null" >
+			update_date,
+			</if>
+			<if test="imageName != null" >
+			image_name,
+			</if>
+			<if test="userNo != null" >
+			user_no,
+			</if>
+			<if test="openid != null" >
+			openid,
+			</if>
+			<if test="sceneStr != null" >
+			scene_str,
+			</if>
+			<if test="imageUrl != null" >
+			image_url,
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="createDate != null" >
+			#{createDate},
+			</if>
+			<if test="updateDate != null" >
+			#{updateDate},
+			</if>
+			<if test="imageName != null" >
+			#{imageName},
+			</if>
+			<if test="userNo != null" >
+			#{userNo},
+			</if>
+			<if test="openid != null" >
+			#{openid},
+			</if>
+			<if test="sceneStr != null" >
+			#{sceneStr},
+			</if>
+			<if test="imageUrl != null" >
+			#{imageUrl},
+			</if>
+			<if test="weixinPublicId != null" >
+			#{weixinPublicId}
+			</if>
+			</trim>
+    </insert>  
+    <update id="updateWxTwoDimensionalCode" parameterType="com.mlx.guide.entity.WxTwoDimensionalCode">
+		UPDATE wx_two_dimensional_code SET
+			create_date = #{createDate},
+			update_date = #{updateDate},
+			image_name = #{imageName},
+			user_no = #{userNo},
+			openid = #{openid},
+			scene_str = #{sceneStr},
+			image_url = #{imageUrl},
+			weixin_public_id = #{weixinPublicId}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateWxTwoDimensionalCodeSelective" parameterType="com.mlx.guide.entity.WxTwoDimensionalCode">
+		UPDATE wx_two_dimensional_code
+		<set>
+			<if test="createDate != null" >
+			create_date = #{createDate},
+			</if>
+			<if test="updateDate != null" >
+			update_date = #{updateDate},
+			</if>
+			<if test="imageName != null" >
+			image_name = #{imageName},
+			</if>
+			<if test="userNo != null" >
+			user_no = #{userNo},
+			</if>
+			<if test="openid != null" >
+			openid = #{openid},
+			</if>
+			<if test="sceneStr != null" >
+			scene_str = #{sceneStr},
+			</if>
+			<if test="imageUrl != null" >
+			image_url = #{imageUrl},
+			</if>
+			<if test="weixinPublicId != null" >
+			weixin_public_id = #{weixinPublicId}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteWxTwoDimensionalCode" parameterType="Long">
+    	DELETE FROM  wx_two_dimensional_code WHERE id =#{id}
+    </delete>
+</mapper>

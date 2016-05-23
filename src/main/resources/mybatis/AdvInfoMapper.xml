@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.mlx.guide.dao.AdvInfoMapper">
+    <resultMap type="com.mlx.guide.entity.AdvInfo" id="advInfoMap">
+		<result property="id" column="id"/>
+		<result property="position" column="position"/>
+		<result property="href" column="href"/>
+		<result property="description" column="description"/>
+		<result property="createTime" column="create_time"/>
+		<result property="startDate" column="start_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="sort" column="sort"/>
+		<result property="status" column="status"/>
+		<result property="imgUrl" column="img_url"/>
+
+    </resultMap>
+    
+   <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+    			<if test="id != null and id != ''" >
+			and id = #{id}
+			</if>
+			<if test="position != null and position != ''" >
+			and position = #{position}
+			</if>
+			<if test="href != null and href != ''" >
+			and href = #{href}
+			</if>
+			<if test="description != null and description != ''" >
+			and description = #{description}
+			</if>
+			<if test="createTime != null and createTime != ''" >
+			and create_time = #{createTime}
+			</if>
+			<if test="startDate != null and startDate != ''" >
+			and start_date = #{startDate}
+			</if>
+			<if test="endDate != null and endDate != ''" >
+			and end_date = #{endDate}
+			</if>
+			<if test="sort != null and sort != ''" >
+			and sort = #{sort}
+			</if>
+			<if test="status != null and status != ''" >
+			and status = #{status}
+			</if>
+			<if test="imgUrl != null and imgUrl != ''" >
+			and img_url = #{imgUrl}
+			</if>
+
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id,position,href,description,create_time,start_date,end_date,sort,status,img_url
+  </sql>
+    
+    
+    
+    <select id="getAdvInfoList" resultMap="advInfoMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM adv_info
+    </select>
+    
+    <select id="getAdvInfoPageList" resultMap="advInfoMap" parameterType="com.mlx.guide.entity.AdvInfo">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM adv_info
+			<include refid="Example_Where_Clause" />
+    </select>
+    
+    <select id="getAdvInfoPageListByMap" resultMap="advInfoMap" parameterType="map">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM adv_info
+			<include refid="Example_Where_Clause" />
+    </select>    
+    
+    <select id="getAdvInfoByPrimaryKey" parameterType="Integer" resultMap="advInfoMap">
+    	SELECT 
+			<include refid="Base_Column_List" /> 
+			FROM adv_info WHERE id =#{id}
+    </select>
+    
+    <insert id="createAdvInfo" parameterType="com.mlx.guide.entity.AdvInfo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO adv_info(
+			id,
+			position,
+			href,
+			description,
+			create_time,
+			start_date,
+			end_date,
+			sort,
+			status,
+			img_url
+		)VALUES(
+			#{id},
+			#{position},
+			#{href},
+			#{description},
+			#{createTime},
+			#{startDate},
+			#{endDate},
+			#{sort},
+			#{status},
+			#{imgUrl}
+		)
+    </insert>
+    
+    <insert id="createAdvInfoSelective" parameterType="com.mlx.guide.entity.AdvInfo" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO adv_info
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="position != null" >
+			position,
+			</if>
+			<if test="href != null" >
+			href,
+			</if>
+			<if test="description != null" >
+			description,
+			</if>
+			<if test="createTime != null" >
+			create_time,
+			</if>
+			<if test="startDate != null" >
+			start_date,
+			</if>
+			<if test="endDate != null" >
+			end_date,
+			</if>
+			<if test="sort != null" >
+			sort,
+			</if>
+			<if test="status != null" >
+			status,
+			</if>
+			<if test="imgUrl != null" >
+			img_url
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="position != null" >
+			#{position},
+			</if>
+			<if test="href != null" >
+			#{href},
+			</if>
+			<if test="description != null" >
+			#{description},
+			</if>
+			<if test="createTime != null" >
+			#{createTime},
+			</if>
+			<if test="startDate != null" >
+			#{startDate},
+			</if>
+			<if test="endDate != null" >
+			#{endDate},
+			</if>
+			<if test="sort != null" >
+			#{sort},
+			</if>
+			<if test="status != null" >
+			#{status},
+			</if>
+			<if test="imgUrl != null" >
+			#{img_url}
+			</if>
+			</trim>
+    </insert>
+    
+    <update id="updateAdvInfo" parameterType="com.mlx.guide.entity.AdvInfo">
+		UPDATE adv_info SET
+			position = #{position},
+			href = #{href},
+			description = #{description},
+			start_date = #{startDate},
+			end_date = #{endDate},
+			sort = #{sort},
+			status = #{status},
+			img_url = #{imgUrl}
+		WHERE id = #{id}
+
+    </update>
+    
+    <update id="updateAdvInfoSelective" parameterType="com.mlx.guide.entity.AdvInfo">
+		UPDATE adv_info
+		<set>
+			<if test="position != null" >
+			position = #{position},
+			</if>
+			<if test="href != null" >
+			href = #{href},
+			</if>
+			<if test="description != null" >
+			description = #{description},
+			</if>
+			<if test="startDate != null" >
+			start_date = #{startDate},
+			</if>
+			<if test="endDate != null" >
+			end_date = #{endDate},
+			</if>
+			<if test="sort != null" >
+			sort = #{sort},
+			</if>
+			<if test="status != null" >
+			status = #{status},
+			</if>
+			<if test="imgUrl != null" >
+			img_url = #{imgUrl}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+    </update>
+    
+    <delete id="deleteAdvInfo" parameterType="Integer">
+    	DELETE FROM  adv_info WHERE id =#{id}
+    </delete>
+</mapper>

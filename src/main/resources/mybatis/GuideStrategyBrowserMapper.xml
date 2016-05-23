@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mlx.guide.dao.GuideStrategyBrowserMapper">
+	<resultMap type="com.mlx.guide.entity.GuideStrategyBrowser"
+		id="guideStrategyBrowserMap">
+		<result property="id" column="id" />
+		<result property="stragegyNo" column="stragegy_no" />
+		<result property="userNo" column="user_no" />
+		<result property="browserTime" column="browser_time" />
+
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="stragegyNo != null and stragegyNo != ''">
+				and stragegy_no = #{stragegyNo}
+			</if>
+			<if test="userNo != null and userNo != ''">
+				and user_no = #{userNo}
+			</if>
+			<if test="browserTime != null and browserTime != ''">
+				and browser_time = #{browserTime}
+			</if>
+
+		</trim>
+	</sql>
+	<sql id="Base_Column_List">
+		id,stragegy_no,user_no,browser_time
+	</sql>
+	<select id="countByStrategyId" parameterType="Integer"
+		resultType="Long">
+		select count(id) from guide_strategy_browser where stragegy_no=#{strategyId}
+
+	</select>
+
+
+	<select id="getGuideStrategyBrowserList" resultMap="guideStrategyBrowserMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM guide_strategy_browser
+	</select>
+
+	<select id="getGuideStrategyBrowserPageList" resultMap="guideStrategyBrowserMap"
+		parameterType="com.mlx.guide.entity.GuideStrategyBrowser">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM guide_strategy_browser
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<select id="getGuideStrategyBrowserPageListByMap" resultMap="guideStrategyBrowserMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM guide_strategy_browser
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<select id="getGuideStrategyBrowserByPrimaryKey" parameterType="Integer"
+		resultMap="guideStrategyBrowserMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM guide_strategy_browser WHERE id =#{id}
+	</select>
+
+	<insert id="createGuideStrategyBrowser" parameterType="com.mlx.guide.entity.GuideStrategyBrowser"
+		keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_strategy_browser(
+		id,
+		stragegy_no,
+		user_no,
+		browser_time
+		)VALUES(
+		#{id},
+		#{stragegyNo},
+		#{userNo},
+		#{browserTime}
+		)
+	</insert>
+	<insert id="createGuideStrategyBrowserSelective" parameterType="com.mlx.guide.entity.GuideStrategyBrowser" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO guide_strategy_browser
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			id,
+			</if>
+			<if test="stragegyNo != null" >
+			stragegy_no,
+			</if>
+			<if test="userNo != null" >
+			user_no,
+			</if>
+			<if test="browserTime != null" >
+			browser_time
+			</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+			#{id},
+			</if>
+			<if test="stragegyNo != null" >
+			#{stragegyNo},
+			</if>
+			<if test="userNo != null" >
+			#{userNo},
+			</if>
+			<if test="browserTime != null" >
+			#{browserTime}
+			</if>
+			</trim>
+    </insert>
+
+	<update id="updateGuideStrategyBrowser" parameterType="com.mlx.guide.entity.GuideStrategyBrowser">
+		UPDATE
+		guide_strategy_browser SET
+		stragegy_no = #{stragegyNo},
+		user_no = #{userNo},
+		browser_time = #{browserTime}
+		WHERE id = #{id}
+
+	</update>
+
+	<update id="updateGuideStrategyBrowserSelective" parameterType="com.mlx.guide.entity.GuideStrategyBrowser">
+		UPDATE guide_strategy_browser
+		<set>
+			<if test="stragegyNo != null">
+				stragegy_no = #{stragegyNo},
+			</if>
+			<if test="userNo != null">
+				user_no = #{userNo},
+			</if>
+			<if test="browserTime != null">
+				browser_time = #{browserTime}
+			</if>
+		</set>
+		WHERE id = #{id}
+
+	</update>
+
+	<delete id="deleteGuideStrategyBrowser" parameterType="Integer">
+		DELETE FROM guide_strategy_browser WHERE id =#{id}
+	</delete>
+</mapper>

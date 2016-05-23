@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.ResourceMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.Resource">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="path" property="path" jdbcType="VARCHAR" />
+		<result column="flag" property="flag" jdbcType="INTEGER" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, path, flag, description,  name
+	</sql>
+
+	<sql id="base_where_clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="name != null and name != ''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="path != null and path != ''">
+				and path like concat('%',#{path},'%')
+			</if>
+			<if test="flag != null and flag != ''">
+				and flag = #{flag}
+			</if>
+			<if test="description != null and description != ''">
+				and description = #{description}
+			</if>
+
+			
+
+		</trim>
+	</sql>
+	<select id="getResourceByUserNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT DISTINCT
+		(r.id),
+		r.`name`,r.path,
+		r.description
+		FROM sys_resource r,sys_authority_id_resource_id atr,
+		sys_role_id_authority_id ra,
+		sys_user_id_role_id ur
+		WHERE
+	 r.id=atr.resource_id and atr.authority_id=ra.authority_id and ra.role_id=ur.role_id 
+		AND ur.user_no =#{userNo}
+	
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		from sys_resource
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		sys_resource
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteResourceBitch" parameterType="java.lang.String">
+		delete from sys_resource where id in
+		<foreach item="ids" index="id" collection="array" open="("
+			separator="," close=")">
+			#{ids}
+		</foreach>
+
+	</delete>
+
+
+	<insert id="insert" parameterType="com.mlx.guide.entity.Resource">
+		insert into sys_resource (id,
+		path, flag,
+		description,  name
+		)
+		values
+		(#{id,jdbcType=INTEGER}, #{path,jdbcType=VARCHAR},
+		#{flag,jdbcType=INTEGER},
+		#{description,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.Resource">
+		insert into sys_resource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="path != null">
+				path,
+			</if>
+			<if test="flag != null">
+				flag,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			
+			<if test="name != null">
+				name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="path != null">
+				#{path,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+		<!-- 	<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if> -->
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.Resource">
+		update sys_resource
+		<set>
+			<if test="path != null">
+				path = #{path,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				flag = #{flag,jdbcType=INTEGER},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.Resource">
+		update sys_resource
+		set path = #{path,jdbcType=VARCHAR},
+		flag = #{flag,jdbcType=INTEGER},
+		description = #{description,jdbcType=VARCHAR},
+		
+		name = #{name,jdbcType=VARCHAR}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getResourcePageList" resultMap="BaseResultMap"
+		parameterType="com.mlx.guide.entity.Resource">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource
+		<include refid="base_where_clause" />
+	</select>
+	<select id="getResourceList" resultMap="BaseResultMap"
+		parameterType="com.mlx.guide.entity.Resource">
+		select
+		<include refid="Base_Column_List" />
+		from sys_resource
+		<include refid="base_where_clause" />
+	</select>
+	<select id="getResourcesByUserNo" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+
+		SELECT DISTINCT
+		(r.id),
+		r.`name`,
+		r.path,
+	
+		r.flag
+		FROM
+		sys_resource r,
+		sys_authority_id_resource_id ar,
+		sys_role_id_authority_id ra,
+		sys_user_id_role_id ur
+		WHERE
+		r.id = ar.resource_id
+		AND ar.authority_id = ra.authority_id
+		AND ra.role_id = ur.role_id and ur.user_no=#{userNo}
+	</select>
+
+</mapper>
