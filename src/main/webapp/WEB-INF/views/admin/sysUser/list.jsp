@@ -76,9 +76,9 @@
 
 									 <th scope="col">用户编号</th> 
 									 <th scope="col">真实姓名</th> 
-									<th scope="col">性别</th>
+									<!-- <th scope="col">性别</th> -->
 									<th scope="col">手机号</th>
-									<th scope="col">创建时间</th>
+									<!-- <th scope="col">创建时间</th> -->
 									<th scope="col">操作</th>
 								</tr>
 							</thead>
@@ -87,15 +87,15 @@
 									<tr>
 														
 										 <td>${item.userNo}</td> 
-										 <td>${guideInfoMap[item.userNo].realName}</td> 
-										<td>${sexMap[item.sex]}</td>
+										<%--  <td>${guideInfoMap[item.userNo].realName}</td>  --%>
+										  <td>${item.name}</td> 
+										<%-- <td>${sexMap[item.sex]}</td> --%>
 										<td>${item.mobile}</td>
-										<td><fmt:formatDate value="${item.createTime}"
-												pattern="yyyy-MM-dd HH:mm:ss" /></td>
-										<td><a class="btn btn-sm yellow btn-outline"
-											href="javascript:_SysUser.changePassword('${item.id}');" target="_blank">更改密码</a> <a
-											class="btn btn-sm blue btn-outline"
-											href="javascript:_SysUser.authShow('${item.userNo}');"
+								<%-- 		<td><fmt:formatDate value="${item.createTime}"
+												pattern="yyyy-MM-dd HH:mm:ss" /></td> --%>
+										<td>
+										<%-- <a class="btn btn-sm yellow btn-outline" href="javascript:_SysUser.changePassword('${item.id}');" target="_blank">更改密码</a> --%> 
+										<a class="btn btn-sm blue btn-outline"	href="javascript:_SysUser.authShow('${item.userNo}');"
 											target="_blank">管理授权</a></td>
 									</tr>
 								</c:forEach>

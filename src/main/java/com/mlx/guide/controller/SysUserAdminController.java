@@ -119,14 +119,14 @@ public class SysUserAdminController {
 	    public String list(@RequestParam( value = "pageNo", defaultValue = "1" ) Integer pageNo,
 		        @RequestParam( value = "pageSize", defaultValue = Const.PAGE_SIZE ) Integer pageSize, HttpServletRequest request, Model model,UserInfo userInfo ){
 			try {
-			    PageBounds pageBounds = new PageBounds( pageNo, pageSize, Order.formString( "id.desc" ) );
+			   // PageBounds pageBounds = new PageBounds( pageNo, pageSize, Order.formString( "id.desc" ) );
 			    //查找平台用户列表
 			    String url12 = "http://passport.mlxing.com/api/platformUser/getUserInfoList";
 				ParamUtil paramUtil12 = ParamUtil.getNewInstance();
 				//paramUtil12.addParam( "email", "212150754797@162.com" );// 非必须填写
 				//paramUtil12.addParam( "mobile", "13392665401" );// 非必须填写
 				//paramUtil12.addParam( "name", "全" );// 非必须填写
-				//paramUtil12.addParam( "userNo", "212150754797" );// 非必须填写
+				paramUtil12.addParam( "userNo", userInfo.getUserNo());// 非必须填写
 				paramUtil12.addParam( "pageNo", pageNo.toString() );// 非必须填写
 				paramUtil12.addParam( "pageSize", pageSize.toString());// 非必须填写
 				ClientJsonResp<List<PlatformUser>> clientJson = MlxingAPIUtil.getAPIPageData( url12, paramUtil12 ,PlatformUser.class);
