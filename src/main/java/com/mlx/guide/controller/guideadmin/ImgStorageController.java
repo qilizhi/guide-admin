@@ -33,6 +33,7 @@ import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 /**
  * 图库
  * @author cyz
+ * @category 图库
  *
  */
 @RequestMapping(value = "/guideAdmin/imgStorage")
