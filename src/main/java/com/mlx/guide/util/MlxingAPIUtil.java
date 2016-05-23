@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.model.ClientJsonResp;
 import com.mlx.guide.util.HttpClientUtil;
@@ -77,6 +78,29 @@ public class MlxingAPIUtil {
 	 * @return
 	 */
 	public static <T> List<T> getAPIDataTs( String url, ParamUtil paramUtil, Class<T> c ) {
+		try {
+			String result = HttpClientUtil.post( url, paramUtil.getResultParams() );
+			TypeReference<ClientJsonResp<JSONArray>> typeRef = new TypeReference<ClientJsonResp<JSONArray>>() {};
+			ClientJsonResp<JSONArray> cl = JSON.parseObject( result, typeRef );
+			if (cl != null && cl.getCode() == Const.API_RESPONSE_OK) {
+				return JSON.parseArray( cl.getResponse().toJSONString(), c );
+			}
+			logger.error( "美丽行(PC端)接口调用返回状态标识为非成功" );
+		}
+		catch( Exception e ) {
+			logger.error( e.getMessage(), e );
+		}
+		return null;
+	}
+	/**
+	 * 接口调用(带分页集合)
+	 * 
+	 * @param url
+	 * @param paramUtil
+	 * @param c
+	 * @return
+	 */
+	public static <T> List<T> getAPIDataTsPage( String url, ParamUtil paramUtil, Class<T> c ) {
 		try {
 			String result = HttpClientUtil.post( url, paramUtil.getResultParams() );
 			TypeReference<ClientJsonResp<JSONArray>> typeRef = new TypeReference<ClientJsonResp<JSONArray>>() {};
