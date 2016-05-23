@@ -48,7 +48,7 @@ public class GuideTuanController {
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("homeclass", Const.MENU_FIRST);
-		model.addAttribute("tuan_class", Const.MENU_FIRST);
+		model.addAttribute("tuan_class", Const.MENU_SUB);
 	}
 
 	/**

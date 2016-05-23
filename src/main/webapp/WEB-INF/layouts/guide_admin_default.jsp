@@ -117,11 +117,11 @@
 									<i class="fa fa-plus"></i>
 								</button>
 								<ul class="dropdown-menu-v2" role="menu">
-									<li class="active"><a href="${ctx}/guideAdmin/order/list">线路订单</a></li>
+									<li class="active"><a href="${ctx }/guideAdmin/guideOrder">线路订单</a></li>
 									<li><a href="${ctx }/guideAdmin/strategy/list">攻略列表</a></li>
 									<li class="divider"></li>
 									<li><a href="${ctx}/guideAdmin/line/create">新线路</a></li>
-									<li><a href="${ctx}/guideAdmin/strategy/create2">写攻略</a></li>
+									<li><a href="${ctx}/guideAdmin/strategy/create">写攻略</a></li>
 								</ul>
 							</div>
 							<!-- END GROUP INFORMATION -->

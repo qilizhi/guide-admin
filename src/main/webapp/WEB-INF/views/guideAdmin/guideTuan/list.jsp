@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>导游后台主页</title>
+<title>出团列表</title>
 </head>
 
 <body>
@@ -60,7 +60,7 @@
 						<table id="tuan" class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th scope="col"><input type="checkbox" class=" group-checkable check-all"></th>
+									<!-- <th scope="col"><input type="checkbox" class=" group-checkable check-all"></th> -->
 									<th scope="col">出团名称</th>
 									<th scope="col">团编号</th>
 									<th scope="col">出团日期</th>
@@ -79,7 +79,7 @@
 							
 								<c:forEach items="${list}" var="item">
 									<tr>
-										<td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td>
+										<%-- <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
 										<td><a href="${ctx}/guideAdmin/tuan/tuanGuest/${item.tuanNo}">${item.name}</a></td>
 										<td>${item.tuanNo}</td>
 										<td><fmt:formatDate value="${item.tuanDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

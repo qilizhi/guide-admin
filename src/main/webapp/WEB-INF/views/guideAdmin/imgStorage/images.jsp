@@ -267,7 +267,7 @@ margin-left: 190px;
 			});
 			$.ajax({
 				type : "POST",
-				url : "${ctx}//guideAdmin/imgStorage/save",
+				url : "${ctx}/guideAdmin/imgStorage/save",
 				dataType : "json",
 				contentType : "application/json",
 				data : JSON.stringify(imgSrcArray),
