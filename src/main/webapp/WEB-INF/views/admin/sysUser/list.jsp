@@ -75,6 +75,7 @@
 
 
 									 <th scope="col">用户编号</th> 
+									 <th scope="col">登录名</th> 
 									 <th scope="col">真实姓名</th> 
 									<!-- <th scope="col">性别</th> -->
 									<th scope="col">手机号</th>
@@ -88,6 +89,7 @@
 														
 										 <td>${item.userNo}</td> 
 										<%--  <td>${guideInfoMap[item.userNo].realName}</td>  --%>
+										  <td>${item.loginName}</td> 
 										  <td>${item.name}</td> 
 										<%-- <td>${sexMap[item.sex]}</td> --%>
 										<td>${item.mobile}</td>

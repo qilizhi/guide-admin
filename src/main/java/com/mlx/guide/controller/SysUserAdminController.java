@@ -66,7 +66,7 @@ public class SysUserAdminController {
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("systemclass", Const.MENU_FIRST);
-		model.addAttribute("system_userclass", Const.MENU_SUB);
+		model.addAttribute("system_sysUserclass", Const.MENU_SUB);
 	}
 	
 	
