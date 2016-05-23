@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mlx.guide.constant.Const;
 
+/**
+ * 预览
+ * @author cyz
+ * @category 主要预览
+ *
+ */
 @Controller
 @RequestMapping("/guideAdmin/preView")
 public class PreViewController {
