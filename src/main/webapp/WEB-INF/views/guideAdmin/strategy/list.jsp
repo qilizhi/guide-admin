@@ -68,7 +68,6 @@
 							<tbody>
 								<c:forEach items="${list}" var="item">
 									<tr class="odd">
-									    <td></td>
 									   <%--  <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
 										<td>${item.id}</td>
 										<td>${item.userName}</td>

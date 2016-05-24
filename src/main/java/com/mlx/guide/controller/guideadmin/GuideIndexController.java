@@ -109,8 +109,15 @@ public class GuideIndexController {
 			// 本月订单数
 			Integer monthOrders = jsonpObject.getTotal();
 			model.addAttribute("monthOrders", monthOrders);
-			//月收益
-			
+			// 本月销售额
+			long monthSales = 0;
+			/* 已支付 算销售额*/
+			String s_result=guideOrderService.getManageList(null, null,"S", timeStart, timeEnd, null, null);
+			List<OrderModel> s_orders=JSONArray.parseArray(JSON.parseObject(s_result).get("result").toString(), OrderModel.class);
+			for(OrderModel o:s_orders){
+				monthSales+=o.getTotalSellPrice().longValue();
+			}
+			model.addAttribute("monthSales", monthSales);
 			
 			//出团提醒列表(出团状态为1)
 			GuideTuan tuan=new GuideTuan();

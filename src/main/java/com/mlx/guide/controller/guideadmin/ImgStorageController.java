@@ -103,7 +103,7 @@ public class ImgStorageController {
 			guideImgInfo.setCreateTime(new Date());
 			guideImgInfo.setFlag(EFlag.VALID.getId());
 			//当前用户，shiroUser 里获得
-			guideImgInfo.setUserNo("qilizhi");
+			guideImgInfo.setUserNo("weixin4");
 			guideImgInfo.setImgUrl(image);
 			guideImgInfoService.createGuideImgInfoSelective(guideImgInfo);
 			guideImgInfos.add(guideImgInfo);
