@@ -367,7 +367,7 @@
 									<li class="${system_userclass}"><a
 										href="${ctx}/admin/sysUser/list"><i class="icon-docs"></i>
 											系统通知 </a></li>
-									<li class="${system_paramclass}"><a
+									<li class="${system_noticeclass}"><a
 										href="${ctx}/admin/sysNotice"><i class="icon-docs"></i>
 											平台公告 </a></li>
 									<li class="${system_logclass}"><a

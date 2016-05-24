@@ -59,7 +59,7 @@ var Login = function() {
                 	}
                 	$('.alert-danger', $('.login-form')).show().find("span").html(" 您的账号或者密码不正确. ");;
                 	$submitBtn.text("登陆").prop("disabled",false);
-                });
+                },"json");
             }
         });
 
