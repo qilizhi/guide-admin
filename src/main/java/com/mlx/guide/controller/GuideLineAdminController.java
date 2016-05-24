@@ -242,7 +242,7 @@ public class GuideLineAdminController {
 	public String saveOrUpdate(@RequestParam(value = "file", required = false) MultipartFile file,
 			HttpServletRequest request, Model model, GuideLine guideLine) {
 		// 获取当前用户
-		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		//ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 
 			if (guideLine.getId() != null) {
@@ -255,12 +255,13 @@ public class GuideLineAdminController {
 				// 随机生成线路编号
 				int num = (int) (Math.random() * 10000);
 				guideLine.setLineNo("MLX_" + num + System.currentTimeMillis());
-				guideLine.setUserNo(shiroUser.getUserNo());
-				guideLine.setUserName(shiroUser.getName());
+				//guideLine.setUserNo(shiroUser.getUserNo());
+				//guideLine.setUserName(shiroUser.getName());
 				guideLine.setCreateTime(new Date());
 				guideLine.setFlag(1);
+				guideLine.setStatus(EStatus.EDIT.getId());
 				guideLine.setAuditStatus(1);
-				guideLineService.createGuideLine(guideLine);
+				guideLineService.createGuideLineSelective(guideLine);
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
