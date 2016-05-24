@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.ESex;
 import com.mlx.guide.constant.ExceptionCode;
@@ -29,10 +30,14 @@ import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.UserInfo;
 import com.mlx.guide.entity.UserToRole;
+import com.mlx.guide.model.ClientJsonResp;
+import com.mlx.guide.model.PlatformUser;
 import com.mlx.guide.model.Tree;
 import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.UserInfoService;
 import com.mlx.guide.service.UserToRoleService;
+import com.mlx.guide.util.MlxingAPIUtil;
+import com.mlx.guide.util.ParamUtil;
 import com.mlx.guide.util.StringUtil;
 
 /**
@@ -61,7 +66,7 @@ public class SysUserAdminController {
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("systemclass", Const.MENU_FIRST);
-		model.addAttribute("system_userclass", Const.MENU_SUB);
+		model.addAttribute("system_sysUserclass", Const.MENU_SUB);
 	}
 	
 	
@@ -102,7 +107,7 @@ public class SysUserAdminController {
 	}
 	
 	   /**
-		 * 列表
+		 * 平台用户列表
 		 * 
 		 * @param pageNo
 		 * @param pageSize
@@ -114,17 +119,27 @@ public class SysUserAdminController {
 	    public String list(@RequestParam( value = "pageNo", defaultValue = "1" ) Integer pageNo,
 		        @RequestParam( value = "pageSize", defaultValue = Const.PAGE_SIZE ) Integer pageSize, HttpServletRequest request, Model model,UserInfo userInfo ){
 			try {
-			    PageBounds pageBounds = new PageBounds( pageNo, pageSize, Order.formString( "id.desc" ) );
-				PageList<UserInfo> list = userService.getUserInfoPageList(userInfo, pageBounds);
-				model.addAttribute( "paginator", list != null ? list.getPaginator() : null );			
-				model.addAttribute("list", list);
-				model.addAttribute("sexMap", ESex.getMap());
+			   // PageBounds pageBounds = new PageBounds( pageNo, pageSize, Order.formString( "id.desc" ) );
+			    //查找平台用户列表
+			    String url12 = "http://passport.mlxing.com/api/platformUser/getUserInfoList";
+				ParamUtil paramUtil12 = ParamUtil.getNewInstance();
+				//paramUtil12.addParam( "email", "212150754797@162.com" );// 非必须填写
+				//paramUtil12.addParam( "mobile", "13392665401" );// 非必须填写
+				//paramUtil12.addParam( "name", "全" );// 非必须填写
+				paramUtil12.addParam( "userNo", userInfo.getUserNo());// 非必须填写
+				paramUtil12.addParam( "pageNo", pageNo.toString() );// 非必须填写
+				paramUtil12.addParam( "pageSize", pageSize.toString());// 非必须填写
+				ClientJsonResp<List<PlatformUser>> clientJson = MlxingAPIUtil.getAPIPageData( url12, paramUtil12 ,PlatformUser.class);
+				//PageList<UserInfo> list = userService.getUserInfoPageList(userInfo, pageBounds);
+				Paginator paginator =new Paginator(clientJson.getPageNo(), clientJson.getPageSize(), clientJson.getTotalCount());  
+				model.addAttribute( "paginator", paginator);			
+				model.addAttribute("list", clientJson.getResponse());
 				model.addAttribute("pageSize", pageSize);
 				model.addAttribute("pageNo", pageNo);
 				model.addAttribute("userInfo", userInfo);
 				//查询导游信息Map
-			    GuideInfo g=new GuideInfo();
-				model.addAttribute("guideInfoMap", getGuideMapIndexByUserNo(g));
+			   // GuideInfo g=new GuideInfo();
+				//model.addAttribute("guideInfoMap", getGuideMapIndexByUserNo(g));
 			} catch (Exception e) {
 				logger.error( e.getMessage(),e );
 			}

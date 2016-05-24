@@ -170,7 +170,7 @@
 			#{auditTime},
 			#{auditStatus},
 			#{sort},
-			#{update_time},
+			#{updateTime},
 			#{num},
 			#{lineType}
 		)

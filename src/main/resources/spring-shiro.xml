@@ -66,15 +66,15 @@ xmlns:context="http://www.springframework.org/schema/context"
     <property name="filterChainDefinitions">
         <value>
       
-        <!--      /logout = logout
+              /logout = logout
             /login = anon
-            /platformLogin = anon
+         <!--   /platformLogin = anon
             /guideLogin = anon
             /guideAdmin* = role[guideAdmin]
-            /guideAdmin/** =role[guideAdmin],perms
-            /static/** = anon -->
-           <!--  /admin* = role[admin]
-            /admin/** = role[admin] -->
+            /guideAdmin/** =role[guideAdmin],perms-->
+      <!--       /static/** = anon 
+          	/admin* = role[admin]
+            /admin/** = role[admin],perms  -->
             <!-- /** = anon -->
 			<!-- anon表示此地址不需要任何权限即可访问 -->  
 			<!--/acct/login = authc

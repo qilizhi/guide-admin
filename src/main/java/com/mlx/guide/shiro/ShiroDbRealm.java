@@ -159,7 +159,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			info.setRoles(roles);
 			// 用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
 			List<String> perms = new ArrayList<String>();
-		     perms.addAll(info.getStringPermissions());
+		    // perms.addAll(info.getStringPermissions());
 			if (perms != null && perms.size() <= 0) {
 				logger.info("perms is null");
 				perms.add("undefined:*");// 无权限时默认给个权限
