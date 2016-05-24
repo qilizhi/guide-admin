@@ -42,8 +42,8 @@
 			<option value="W" <c:if test="${orderModel.orderStatus=='W'}">selected</c:if>>未支付 </option>
 			<option value="S" <c:if test="${orderModel.orderStatus=='S'}">selected</c:if>>已支付</option>
 			<option value="F" <c:if test="${orderModel.orderStatus=='F'}">selected</c:if>>交易失败</option>
+			<option value="C2" <c:if test="${orderModel.orderStatus=='C2'}">selected</c:if>>已取消</option>
 <!-- 			<option value="SF">已完成</option>
-			<option value="C2">已取消</option>
 			<option value="RC">退款审核中</option>
 			<option value="RW">等待退款</option>
 			<option value="RS">已退款</option>
