@@ -33,7 +33,7 @@ public class GuideInfoController {
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("homeclass", Const.MENU_FIRST);
-		model.addAttribute("aboutMe_class", Const.MENU_FIRST);
+		model.addAttribute("aboutMe_class", Const.MENU_SUB);
 	}
 	
 	@RequestMapping

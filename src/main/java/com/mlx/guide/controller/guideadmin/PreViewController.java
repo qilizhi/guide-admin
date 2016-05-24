@@ -25,7 +25,7 @@ public class PreViewController {
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("homeclass", Const.MENU_FIRST);
-		model.addAttribute("pre_class", Const.MENU_FIRST);
+		model.addAttribute("pre_class", Const.MENU_SUB);
 	}
 	
 	@RequestMapping
