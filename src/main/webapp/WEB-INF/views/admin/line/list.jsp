@@ -259,7 +259,7 @@
 			<div class="modal-content">
 				<div class="col-md-12 col-md-offset-2 text-center">
 					<div
-						style="background: url('/guide-admin/static/img/mobile.gif'); width: 362px; height: 674px;">
+						style="background: url('${ctx}/static/img/mobile.gif'); width: 362px; height: 674px;">
 						<iframe scrolling="no"
 							style="height: 569px; width: 320px; border: 0px solid #000; margin: 0 auto; margin-top: 33px;"></iframe>
 					</div>
