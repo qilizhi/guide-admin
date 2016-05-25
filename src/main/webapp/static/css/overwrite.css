@@ -216,3 +216,14 @@ ul li{
 	margin-top:10px; 
 	
 }
+.none{
+	display: none;
+	
+}
+.mr10{
+	margin-right: 10px;
+}
+.table-scrollable table.table>thead>tr>th:first-child{
+	text-align: left;
+	
+}
