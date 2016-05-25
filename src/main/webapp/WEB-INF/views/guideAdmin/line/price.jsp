@@ -144,7 +144,9 @@
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">指定时间段:</label>
-										<div class="date date-picker" data-date-format="yyyy-mm-dd">
+										</div>
+									<div class="price-condition">	
+										<div class="date date-picker col-md-3" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
 											<input type="text" class="WdatePicker " readonly
 												name="beginTime"> <span class="">
 												<button class="btn default cal" type="button">
@@ -152,8 +154,8 @@
 												</button>
 											</span>
 										</div>
-										<label class="price-condition-label">至</label>
-										<div class="date date-picker" data-date-format="yyyy-mm-dd">
+										<label class="price-condition-label col-md-1">至</label>
+										<div class="date date-picker col-md-8" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
 											<input type="text" class="WdatePicker " readonly
 												name="endTime"> <span class="">
 												<button class="btn default cal" type="button">
@@ -339,10 +341,6 @@
 
 	
 	$(function(){
-		/* $(".WdatePicker").datepicker({
-           
-			language: 'cn'
-        }); */
 		
 		var result = ${lineDataPrices};
 		//console.log(result);
