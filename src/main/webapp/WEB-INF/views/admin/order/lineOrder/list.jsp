@@ -102,7 +102,7 @@
 										</c:forEach>
 										</td>
 										<td>${item.payFee}</td>
-										<td></td>
+										<td>${item.orderDescribe.contactsName }</td>
 										<td>
 										<fmt:parseDate value="${item.orderDate }" var="orderDate" pattern="yyyyMMdd"></fmt:parseDate>
 										<fmt:formatDate value="${orderDate }" pattern="yyyy-MM-dd " />  </td>

@@ -1,25 +1,17 @@
 package com.mlx.guide.service;
 
-
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import com.mlx.guide.controller.WxMenuAdminController;
 import com.mlx.guide.model.WxMenuModel;
 import com.mlx.guide.util.HttpClientUtil;
 
-
-
-
+ 
 @Component 
 public class WeiXinInterface {
     

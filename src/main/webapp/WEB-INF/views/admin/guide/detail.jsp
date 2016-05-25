@@ -15,19 +15,23 @@
  <link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<div class="p10">
+<div class="row">
+	<div class="col-xs-6 ">
 	<table class="data-table"  >
 	   <tr>
 	   <th>编号:</th>
 	   <td>${guideInfo.userNo }</td>
 	   <th>姓名:</th>
 	   <td>${guideInfo.realName}</td>
-	   <th>级别:</th>
-	   <td>${guideInfo.guideLevel }</td>
+	   
 	   </tr>
 	    <tr>
+	    <th>级别:</th>
+	   <td>${guideInfo.guideLevel }</td>
 	   <th>年纪:</th>
 	   <td>${guideInfo.age }</td>
+	   </tr>
+	   <tr>
 	   <th>签名:</th>
 	   <td>${guideInfo.sign }</td>
 	   <th>标签:</th>
@@ -67,6 +71,12 @@
 	
 	
 	</div>
-	</div>	
+	</div>
+	<div class="col-xs-6">
+	23423
+	</div>
+	
+	</div>
+	
 </body>
 </html>

@@ -17,7 +17,6 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.entity.GuideInfo;
-import com.mlx.guide.entity.UserInfo;
 import com.mlx.guide.model.GuideInfoModel;
 import com.mlx.guide.service.GuideInfoService;
 
@@ -96,7 +95,9 @@ public class GuideUserInfoAdminController {
 	public String detail(@RequestParam(required=true)Long id,HttpServletRequest request, Model model){
 		try {
 			GuideInfo guideInfo=guideInfoService.selectByPrimaryKey(id);
+			model.addAttribute( "guide_listclass", Const.MENU_SUB );
 			model.addAttribute("guideInfo",guideInfo);
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
