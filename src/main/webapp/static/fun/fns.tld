@@ -63,4 +63,12 @@
     <example>${fns:RefundStatus()}</example><!--使用列子  -->
   </function>
   
+   <function>
+    <description>毫秒数转时间格式</description>
+    <name>longTimeToDate</name>
+    <function-class>com.mlx.guide.util.DateTimeUtil</function-class><!--类路径 -->
+    <function-signature>java.lang.String longTimeToDate(java.lang.String,java.lang.String)</function-signature><!--调用的方法  -->
+    <example>${fns:longTimeToDate(format,longtime)}</example><!--使用列子  -->
+  </function>
+  
 </taglib>
