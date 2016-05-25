@@ -71,7 +71,8 @@ public class OrderLineInfoAdminController{
     	    	orderStatus=orderModel.getOrderStatus();
     	    }
     	    
-    		String resultJson=guideOrderService.getManageList(null, orderModel.getOrderId(),orderStatus, timeStart, timeEnd, pageNo, pageSize);
+    	    
+    		String resultJson=guideOrderService.getManageListTwo(null, orderModel.getOrderId(),orderStatus, timeStart, timeEnd, pageNo, pageSize,userName,null);
     		logger.info(resultJson);
     		List<OrderModel> list=JSONArray.parseArray(JSON.parseObject(resultJson).get("result").toString(), OrderModel.class);
     		

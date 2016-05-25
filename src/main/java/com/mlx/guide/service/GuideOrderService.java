@@ -76,5 +76,22 @@ public class GuideOrderService {
 		String result = OrderSignUtil.post(url, params);
 		return result;
 	}
+	
+	public String getManageListTwo(String userId,String orderId,String orderStatus,String startDate,String endDate,Integer pageNo,Integer pageSize,String contactsName,String mobile){
+		String url = ORDER_API_HOST+"/order/order/listmanage";
+		TreeMap<String, Object> params = new TreeMap<String, Object>();
+		params.put("userId", userId);
+		params.put("orderId", orderId);
+		params.put("orderStatus", orderStatus);
+		params.put("startDate", startDate);
+		params.put("endDate", endDate); 
+		params.put("pageNo", pageNo); 
+		params.put("pageSize", pageSize); 
+		params.put("contactsName", contactsName); 
+		params.put("mobile", mobile); 
+		params.put("methodType", methodType_manage);
+		String result = OrderSignUtil.post(url, params);
+		return result;
+	}
 
 }

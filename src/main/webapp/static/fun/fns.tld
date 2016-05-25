@@ -55,6 +55,12 @@
     <example>${fns:OrderPayType()}</example><!--使用列子  -->
   </function>
   
-  
+  <function>
+    <description>退款状态</description>
+    <name>RefundStatus</name>
+    <function-class>com.mlx.guide.constant.RefundStatus</function-class><!--类路径 -->
+    <function-signature>java.util.Map getMap()</function-signature><!--调用的方法  -->
+    <example>${fns:RefundStatus()}</example><!--使用列子  -->
+  </function>
   
 </taglib>

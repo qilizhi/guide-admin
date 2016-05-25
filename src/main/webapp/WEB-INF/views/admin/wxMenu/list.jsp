@@ -40,7 +40,7 @@
 				<span  class="text-danger" ng-bind="msg" ng-if="msg"></span>
 				</span>
 				 <div class="bg-mobile">
-				 <iframe frameborder="0" width="282px" height="464px" src="http://www.soso.com" name="mobileFrame" style="margin:30px 0px 0px 20px;"></iframe>
+				 <iframe frameborder="0" width="282px" height="464px" src="http://weixin.mlxing.com" name="mobileFrame" style="margin:30px 0px 0px 20px;"></iframe>
 				 <div class="bg-mobile-sub">
 				   <div class="btn-group dropup  pull-left " >
                         <button class="btn  dropdown-toggle mobile-btn" type="button" data-toggle="dropdown" aria-expanded="true" ng-bind="menu1==null?'菜单一':menu1"> 菜单一

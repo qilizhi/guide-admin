@@ -169,7 +169,7 @@
 										</c:if>
 										<td>
 										  <c:if test="${empty guideInfo.isAuditStatus }">
-											 <a href="${ctx}/admin/guideIntro/list?userNo=${item.userNo}" class="btn green btn-outline btn-sm" >故事详情</a>	 
+											 <a href="${ctx}/admin/guideUserInfo/detail?id=${item.userNo}" class="btn green btn-outline btn-sm" >详情</a>	 
 						                   </c:if>	
 						                 <c:if test="${ not empty guideInfo.isAuditStatus }">	
 										<a href="javascript:showModal(${item.id },2)"  class="btn blue btn-outline btn-sm "  >审核</a>
