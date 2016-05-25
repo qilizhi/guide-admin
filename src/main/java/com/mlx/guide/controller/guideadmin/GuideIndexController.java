@@ -81,7 +81,7 @@ public class GuideIndexController {
 			// 获取当月月末的年月日
 			String timeEnd = simpledateformat.format(calendar.getTime());
 
-			String result=guideOrderService.getOrderList(null, null, null, timeStart, timeEnd, null, null);
+			String result=guideOrderService.getOrderList("12345678", null, null, timeStart, timeEnd, null, null);
 			JsonResult jsonpObject = JSON.parseObject(result, JsonResult.class);
 			
 			// 攻略数
@@ -112,7 +112,7 @@ public class GuideIndexController {
 			// 本月销售额
 			long monthSales = 0;
 			/* 已支付 算销售额*/
-			String s_result=guideOrderService.getManageList("12345678", null,"S", timeStart, timeEnd, null, null);
+			String s_result=guideOrderService.getOrderList("12345678", null,"S", timeStart, timeEnd, null, null);
 			List<OrderModel> s_orders=JSONArray.parseArray(JSON.parseObject(s_result).get("result").toString(), OrderModel.class);
 			for(OrderModel o:s_orders){
 				monthSales+=o.getTotalSellPrice().longValue();
