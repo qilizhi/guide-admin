@@ -310,4 +310,14 @@ public class DateTimeUtil {
 		return new Date( time );
 
 	}
+	
+	public static String longTimeToDate(String format,String time){
+		SimpleDateFormat sf= new SimpleDateFormat(format);
+		
+		return sf.format(new Date(Long.parseLong(time)));
+		
+		
+	}
+	
+	
 }

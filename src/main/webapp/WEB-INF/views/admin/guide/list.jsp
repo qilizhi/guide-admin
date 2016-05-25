@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>导游列表</title>
+<title>${empty guideInfo.isAuditStatus?'导游列表':'导游申请' }</title>
   <link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" />
  
 </head>
@@ -24,7 +24,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="fa fa-cogs"></i><span
-							class="caption-subject font-dark bold uppercase">导游列表</span>		
+							class="caption-subject font-dark bold uppercase">${empty guideInfo.isAuditStatus?'导游列表':'导游申请列表' }</span>		
 					</div>
 				</div>
 				<div class="portlet-body">

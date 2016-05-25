@@ -114,10 +114,7 @@ public class OrderRefundAdminController{
 	@RequestMapping(value="/audit",method=RequestMethod.POST)
 	public String audit(OrderRefundModel orderRefundModel,Model model,RedirectAttributes redirect){
 		try {
-
-			OrderRefundModel order=orderRefundService.getByRefundJnId(orderRefundModel.getRefundJnId());
-			
-			String msg=orderRefundService.audit(order);
+			String msg=orderRefundService.audit(orderRefundModel);
 			redirect.addFlashAttribute("msg", msg);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
