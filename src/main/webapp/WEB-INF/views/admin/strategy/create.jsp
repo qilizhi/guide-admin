@@ -45,7 +45,15 @@
 
 </head>
 <body>
-	<h4 class="modal-title" id="exampleModalLabel">${operaTitle}：</h4>
+		<div class="portlet light portlet-fit portlet-form ">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="icon-settings font-dark"></i> <span
+					class="caption-subject font-dark sbold uppercase">${operaTitle}：</span>
+			</div>
+
+		</div>
+		<div class="portlet-body">
 	<form  id="inputForm" action="${ctx}/admin/guideStrategy/saveOrUpdate" method="post"
 		 class="form-horizontal mlx-form">
 		<input type="hidden" id="id" name="id" value="${guideStrategy.id}" />
@@ -96,7 +104,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-3 control-label">关联的线路编号：</label>
+			<label class="col-lg-3 control-label">关联的线路：</label>
 			<div class="col-lg-5">
 				<%-- <input type="text" class="form-control " name="relatLineNo"
 					id="relatLineNo" value="${guideStrategy.relatLineNo}" /> --%>
@@ -148,6 +156,8 @@
 		</div>
 
 	</form>
+	</div>
+	</div>
 	<script type="text/javascript" charset="utf-8"
 		src="${ctx }/static/assets/global/plugins/UEeditor/ueditor.config.js"></script>
 	<script type="text/javascript" charset="utf-8"

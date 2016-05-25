@@ -97,7 +97,7 @@ public class GuideStrategyAdminController {
 	}
 
 	/**
-	 * 查询导游用户列表。
+	 * 查询导游用户列表下拉树。
 	 * 
 	 * @param guideInfo
 	 * @return
