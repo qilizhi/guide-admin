@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.druid.stat.TableStat.Mode;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -28,7 +27,6 @@ import com.mlx.guide.constant.EFlag;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
-import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.shiro.ShiroDbRealm;

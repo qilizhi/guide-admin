@@ -57,9 +57,9 @@
                                 </div>
                                 <div class="details">
                                     <div class="number">
-                                        <span data-counter="counterup" data-value="${monthOrders}">0</span>￥
+                                        <span data-counter="counterup" data-value="${monthOrders}">0</span>
                                     </div>
-                                    <div class="desc"> 月销售额</div>
+                                    <div class="desc"> 月订单数</div>
                                 </div>
                                 <a class="more" href="javascript:;"> 更多
                                     <i class="m-icon-swapright m-icon-white"></i>
@@ -73,9 +73,9 @@
                                 </div>
                                 <div class="details">
                                     <div class="number"> 
-                                        <span data-counter="counterup" data-value="9999">0</span>￥
+                                        <span data-counter="counterup" data-value="${monthSales}">0</span>￥
                                     </div>
-                                    <div class="desc"> 年销售额 </div>
+                                    <div class="desc"> 月销售额 </div>
                                 </div>
                                 <a class="more" href="javascript:;"> 更多
                                     <i class="m-icon-swapright m-icon-white"></i>

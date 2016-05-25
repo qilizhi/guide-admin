@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>攻略列表</title>
+<title>攻略</title>
 </head>
 <body>
 
@@ -53,7 +53,7 @@
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-								    <th scope="col" colspan="2"><input type="checkbox" class=" group-checkable check-all"></th>
+								  <!--   <th scope="col" colspan="2"><input type="checkbox" class=" group-checkable check-all"></th> -->
 									<th scope="col">编号</th>
 									<th scope="col">作者</th>
 									<th scope="col">标题</th>
@@ -68,8 +68,7 @@
 							<tbody>
 								<c:forEach items="${list}" var="item">
 									<tr class="odd">
-									    <td></td>
-									    <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td>
+									   <%--  <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
 										<td>${item.id}</td>
 										<td>${item.userName}</td>
 										<td>${item.title}</td>
@@ -79,7 +78,7 @@
 										<td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>${EStatus[item.status]}</td>
 										<td>	
-											<a href="${ctx}/guideAdmin/strategy/edit/${item.id}" class="btn btn-sm yellow btn-outline" >编辑</a>
+											<a href="${ctx}/guideAdmin/strategy/edit/${item.id}" class="btn yellow btn-outline" >编辑</a>
 											<a class="btn blue btn-outline" href="javascript:upShow(${item.id})">上线</a>									
 										<%-- 	<a href="${ctx}/guideAdmin/strategy/delete/${item.id}" target="delete" class="btn btn-sm red btn-outline" >删除</a>	 --%>
 										</td>

@@ -265,7 +265,7 @@ public class GuideLineAdminController {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "redirect:/admin/line/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
+		return "redirect:/admin/guideLine/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
 	}
 
 	/**
@@ -288,7 +288,7 @@ public class GuideLineAdminController {
 		model.addAttribute("guideLine", guideLine);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
 
-		return "guideAdmin/line/price";
+		return "admin/line/price";
 	}
 
 	/**
@@ -304,7 +304,7 @@ public class GuideLineAdminController {
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "guideAdmin/line/create";
+		return "admin/line/create";
 	}
 
 	/**

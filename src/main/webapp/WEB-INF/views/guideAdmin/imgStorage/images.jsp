@@ -267,7 +267,7 @@ margin-left: 190px;
 			});
 			$.ajax({
 				type : "POST",
-				url : "${ctx}//guideAdmin/imgStorage/save",
+				url : "${ctx}/guideAdmin/imgStorage/save",
 				dataType : "json",
 				contentType : "application/json",
 				data : JSON.stringify(imgSrcArray),
@@ -317,7 +317,7 @@ margin-left: 190px;
 										//singleFileUploads:false,//设置多文件上传
 										/* sequentialUploads: true, *///是否按顺序上传
 										//limitMultiFileUploads:10, //限制上传文件的个数。
-										url : mlx.ctx + '/upload',
+										url : '${ctx}/upload',
 										//autoUpload:false, 
 										change : function(e, data) {
 											$
@@ -417,10 +417,10 @@ margin-left: 190px;
 								oBox.appendChild(oImg);
 								// 	'<a href="+'data.result[i].imgUrl'+">'
 							}
-							console.log(data);
+							//console.log(data);
 							if (data.result.length > 0) {
 								g_page_no++;
-								console.log(g_page_no);
+								//console.log(g_page_no);
 							}
 							waterfall('main', 'box');
 						},

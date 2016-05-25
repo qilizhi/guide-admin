@@ -29,7 +29,7 @@ public class GuideIntroController {
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("homeclass", Const.MENU_FIRST);
-		model.addAttribute("myStory_class", Const.MENU_FIRST);
+		model.addAttribute("myStory_class", Const.MENU_SUB);
 	}
 	/**
 	 * 我的故事

@@ -45,6 +45,7 @@ public class WxMenuAdminController{
 	@RequestMapping
 	public String list(Model model){
         try {
+        	
         	List<WxPublic> list=wxPublicService.getAllwxPublic();
         	model.addAttribute("list", list);
         	

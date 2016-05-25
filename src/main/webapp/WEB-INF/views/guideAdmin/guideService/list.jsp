@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>导游后台主页</title>
+<title>地陪</title>
 </head>
 
 <body>
@@ -56,7 +56,7 @@
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th scope="col"><input type="checkbox" class=" group-checkable check-all"></th>
+									<!-- <th scope="col"><input type="checkbox" class=" group-checkable check-all"></th> -->
 									
 									<th scope="col">地陪编号</th>
 									<th scope="col">地陪标题</th>
@@ -79,7 +79,7 @@
 							
 								<c:forEach items="${list}" var="item">
 									<tr>
-										<td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td>
+										<%-- <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
 										<td>${item.serviceNo}</td>
 										<td>${item.title}</td>
 										<td><img src="${item.imgUrl}" title="${item.title}" height="50px" width="50px" /></td>

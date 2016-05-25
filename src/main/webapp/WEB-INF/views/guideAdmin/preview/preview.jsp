@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>预览</title>
 <link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" >
 <style>
 #yl_main .BODY{
