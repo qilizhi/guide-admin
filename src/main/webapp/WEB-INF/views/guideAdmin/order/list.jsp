@@ -22,7 +22,7 @@
 			<div class="portlet light portlet-fit bordered">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="fa fa-cogs"></i><span class="caption-subject font-dark bold uppercase">线路订单列表</span>
+						<i class="fa fa-cogs"></i><span class="caption-subject font-dark bold uppercase">订单列表</span>
 					</div>
 				</div>
 				<div class="portlet-body">

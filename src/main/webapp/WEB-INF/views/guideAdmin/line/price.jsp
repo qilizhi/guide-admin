@@ -10,16 +10,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>创建价格</title>
+<link rel="stylesheet" href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
 <script type="text/javascript" src="${ctx}/static/assets/global/plugins/price-calendar/price-calendar.js"></script>
 <link href="${ctx}/static/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
 <link href="${ctx}/static/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctx}/static/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
-<link href="${ctx}/static/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
-<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script> 
+<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/assets/pages/scripts/form-validation.min.js"></script>
-
 
 <style>
 /* css3 控制tab2进度条 */
@@ -142,19 +139,13 @@
 											type="text" id="num" name="num"
 											value="" placeholder="请输入人数" />
 									</div>
-									<%-- <div class="price-condition">
-										<label class="price-condition-label">美丽价：</label> <input
-											type="text" id="mlxPrice" name="mlxPrice"
-											value="${g_price.mlxPrice }" placeholder="请输入美丽价" /> <label
-											class="price-condition-label">儿童价：</label> <input type="text"
-											id="childPrice" name="childPrice"
-											value="${g_price.childPrice }" placeholder="请输入儿童价" />
-									</div> --%>
 									
-
+									<!-- 
 									<div class="price-condition">
 										<label class="price-condition-label">指定时间段:</label>
-										<div class="date date-picker" data-date-format="yyyy-mm-dd">
+										</div>
+									<div class="price-condition">	
+										<div class="date date-picker col-md-3" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
 											<input type="text" class="WdatePicker " readonly
 												name="beginTime"> <span class="">
 												<button class="btn default cal" type="button">
@@ -162,8 +153,8 @@
 												</button>
 											</span>
 										</div>
-										<label class="price-condition-label">至</label>
-										<div class="date date-picker" data-date-format="yyyy-mm-dd">
+										<label class="price-condition-label col-md-1">至</label>
+										<div class="date date-picker col-md-8" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
 											<input type="text" class="WdatePicker " readonly
 												name="endTime"> <span class="">
 												<button class="btn default cal" type="button">
@@ -171,15 +162,31 @@
 												</button>
 											</span>
 										</div>
-
-
+									</div> -->
+									
+									<div class="price-condition">
+									<label class="price-condition-label">指定时间段:</label>
+										<div class="input-group input-large date-picker input-daterange" data-date="2015-5-10" 
+											data-date-format="yyyy-mm-dd" data-date-language="zh-CN"  data-date-start-date="new Date()">
+											<input type="text" class="WdatePicker form-control" name="beginTime" > 
+											<span class="input-group-addon"> to </span> 
+											<input type="text" class="WdatePicker form-control" name="endTime" >
+										</div>
 									</div>
+									</br>
+
+
+
+
+
 
 									<div class="price-condition">
-										<label class="price-condition-label">时间间隔:</label> <input
-											type="checkbox" id="weekday" name="weekday" value="--" /> <label
-											class="label-weekday" for="weekday">天天发团</label> <input
-											type="checkbox" id="weekday0" name="weekday" value="0" /> <label
+										<label class="price-condition-label">时间间隔:</label> 
+										<!-- 
+										<input type="checkbox" id="weekday" name="weekday" value="--" /> <label
+											class="label-weekday" for="weekday">天天发团</label> 
+											 -->
+											<input type="checkbox" id="weekday0" name="weekday" value="0" /> <label
 											class="label-weekday" for="weekday0">星期日</label> <input
 											type="checkbox" id="weekday1" name="weekday" value="1" /> <label
 											class="label-weekday" for="weekday1">星期一</label> <input
@@ -317,10 +324,10 @@
 					var date = $(obj).attr("data-full-date");
 					var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
 				
-					var roomDiffPrice = $(obj).attr("data-roomDiffPrice");
-					var safePrice = $(obj).attr("data-safePrice");
-					var visaPrice = $(obj).attr("data-visaPrice");
-					var num = $(obj).attr("data-num");
+					var roomDiffPrice = $BasePrices.roomDiffPrice;	//$(obj).attr("data-roomDiffPrice");
+					var safePrice = $BasePrices.safePrice;	//$(obj).attr("data-safePrice");
+					var visaPrice = $BasePrices.visaPrice;	//$(obj).attr("data-visaPrice");
+					var num = $BasePrices.num;	//$(obj).attr("data-num");
 					
 					if(parseInt(mlxPrice, 0) > 0 
 							||($b == 0 && parseInt(id,0) > 0)){
@@ -349,7 +356,17 @@
 
 	
 	$(function(){
+		
+        //初始化日历插件 datepicker
+        $('.date-picker').datepicker({
+            rtl: App.isRTL(),
+            autoclose: true
+        });
+		
+		
 		var result = ${lineDataPrices};
+		//console.log(result);
+		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);
 		} */
@@ -357,11 +374,11 @@
 		var $mTemp = '<div class="price-edit" style="width: 50px;color:black;">'
 	        +'<input type="text" name="minprice" value="" placeholder="美丽价" title="美丽价">'
 	        +'<input type="text" name="data-eprice" placeholder="儿童价" title="儿童价" value="">'
-	        +'<input type="text" name="data-cprice" placeholder="门市价" title="门市价" value="">'
-	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
+	        +'<input type="text" name="data-cprice" placeholder="门市价" title="门市价" value=""> </div>';
+/* 	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
-	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""> </div>';
+	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""> </div>'; */
 		
 		 $("#priceCalendar").priceCalendar({
 				showMonthNum: 5, //日历显示月份
@@ -399,7 +416,7 @@
 			    	var $value = $("#select-routeOrderType option:selected").val();
 			    	var $attr = " @attrName = '@attrValue' ";
 			    	var $attrString = "";
-			    	console.log(jsonObj);
+			    	//console.log(jsonObj);
 			    	$attrString += $attr.replace("@attrName", "data-cprice").replace("@attrValue", jsonObj.cPrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-eprice").replace("@attrValue", jsonObj.ePrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-id").replace("@attrValue", jsonObj.id || "");
@@ -463,7 +480,7 @@
 					comm.infoMsg("请输入门市价和美丽价",null,150);
 					return;
 				}
-				//请输入房差,保险价,签证费和人数
+				//请输入保险价,人数
 				if($.trim($BasePrices.safePrice).length <= 0 
 						|| parseInt($BasePrices.safePrice,0) <= 0
 						|| $.trim($BasePrices.num).length <= 0 
@@ -488,9 +505,10 @@
 				
 				//日期选择检查
 				if(!$mPriceEdit.checkDateValid())return;
+				
 				//json生成
 				var $data = $mPriceEdit.getRoutePriceData();
-				console.log($data.length);
+				//console.log($data.length);
 				if($data.length <= 0){
 					comm.infoMsg("请生成日期价格数据",null,150);
 					return;
@@ -576,7 +594,8 @@
 				var $href = $(this).attr("data-url");
 				comm.confirm("提示","您确定要清除该类型价格吗？",function(){
 					//日期选择检查
-					$mPriceEdit.checkDateValid();
+					//$mPriceEdit.checkDateValid();
+					if(!$mPriceEdit.checkDateValid())return;
 					//清除日历中的价格
 					var $BasePrices = $mPriceEdit.getBasePrice();
 					$("#tableCalendar td.td").each(function(i,obj){
@@ -607,7 +626,8 @@
 				});
 				
 				//日期选择检查
-				$mPriceEdit.checkDateValid();
+				
+				//if(!$mPriceEdit.checkDateValid())return;
 				//删除数据库中的价格数据
 				$.post('${ctx}/guideAdmin/line/delLinePrcie/' + $routeId,{"beginTime":$("input[name=beginTime]").val(),
 					"endTime":$("input[name=endTime]").val()},function(result){

@@ -262,10 +262,10 @@
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="${ctx}/static/assets/layouts/layout5/scripts/layout.min.js" type="text/javascript"></script>
         <!-- END THEME LAYOUT SCRIPTS --> 
-	<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+	<%-- <script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script> --%>
 	<script src="${ctx}/static/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
 	<script src="${ctx}/static/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
-	<script src="${ctx}/static/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+	<%-- <script src="${ctx}/static/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script> --%>
 	<script src="${ctx}/static/assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="${ctx}/static/js/page/common.js"></script>	
 	
