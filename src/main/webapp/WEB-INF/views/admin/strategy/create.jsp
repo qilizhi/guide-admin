@@ -46,7 +46,7 @@
 </head>
 <body>
 	<h4 class="modal-title" id="exampleModalLabel">${operaTitle}：</h4>
-	<form  id="inputForm" action="${ctx}/admin/guideStrategy/save" method="post"
+	<form  id="inputForm" action="${ctx}/admin/guideStrategy/saveOrUpdate" method="post"
 		 class="form-horizontal mlx-form">
 		<input type="hidden" id="id" name="id" value="${guideStrategy.id}" />
 		<div class="form-group form-md-line-input">
@@ -61,7 +61,7 @@
 			<label class="col-lg-3 control-label">描述：</label>
 			<div class="col-lg-5">
 				<textarea class="form-control" name="description" id="description"
-					value="${guideStrategy.description}" rows="3" placeholder="这里添加描述"></textarea>
+					rows="3" placeholder="这里添加描述">${guideStrategy.description}</textarea>
 				<label for="form_control_1"></label>
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 
 			<div class="col-lg-5">
 				<div class="col-lg-7" id="supprogress">
-					<input type="hidden" name="imgUrl" /> <span id="imageName"></span>
+					<input type="hidden" name="imgUrl" value="${guideStrategy.imgUrl }"/> <span id="imageName"></span>
 					<div class="progress">
 						<div class="progress-bar progress-bar-success" role="progressbar"
 							aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
@@ -79,7 +79,7 @@
 					</div>
 				</div>
 				<div class="col-lg-2">
-					<img id="image" name="imgUrl" alt="" src=""> <span
+					<img id="image" name="imgUrl" alt="" src="${guideStrategy.imgUrl }"> <span
 						class="btn green fileinput-button pading"> <i
 						class="fa fa-plus"></i> <span id="load">上传 </span> <input
 						class="imgUpload" type="file" name="files[]" multiple>
@@ -100,7 +100,8 @@
 			<div class="col-lg-5">
 				<%-- <input type="text" class="form-control " name="relatLineNo"
 					id="relatLineNo" value="${guideStrategy.relatLineNo}" /> --%>
-					<select class="selectpicker" name="relatLineNo" data-live-search="true">
+					<select class="selectpicker" name="relatLineNo" data-live-search="true" data-value="${guideStrategy.relatLineNo}">
+					<option value="">请选择</option>
 				</select>
 			</div>
 		</div>
@@ -114,10 +115,9 @@
 		<div class="form-group">
 			<label class="col-lg-3 control-label">用户名称：</label>
 			<div class="col-lg-5">
-				<%-- 	<input type="text" class="form-control " name="userName"
-					id="userName" value="${guideStrategy.userName}" /> --%>
-				<select class="selectpicker" name="userNo" data-live-search="true">
-
+					<input type="hidden" name="userName" value="${guideStrategy.userName}" /> 
+				<select class="selectpicker" name="userNo" data-live-search="true" data-value="${guideStrategy.userNo}">
+				<option value="" >请选择</option>
 				</select>
 			</div>
 		</div>
@@ -127,7 +127,7 @@
 				<%-- 	<input type="text" class="form-control " name="content" id="content"
 					value="${guideStrategy.content}" /> --%>
 				<script id="editor" type="text/plain" name="content"
-					style="width:600px;height:500px;"></script>
+					style="width:600px;height:500px;">${guideStrategy.content}</script>
 			</div>
 		</div>
 		<div class="form-group">
@@ -172,14 +172,17 @@
 			//加载用户数据并放到页面上去
 			initImgUpload();
 			initUEeditor();
-			initSelect();
+			initLineSelect("relatLineNo");
+			initGuideSelect("userNo");
+			handleValidation3();
 		})
 		/**下拉框的初始化**/
-		var initSelect = function() {
-			//用户数据
+		var initGuideSelect = function(selectName) {
+			var $selectObject=$("select[name='"+selectName+"']");
+			//导游 用户数据
 			$.ajax({
-				url:mlx.ctx+"/admin/sysUser/listAll",
-				type:"post",
+				url:mlx.ctx+"/admin/guideStrategy/guide/list",
+				type:"get",
 				dataType:"json",
 				success:function(data){
 					var options="";
@@ -192,20 +195,26 @@
 					}
 					
 				
-					$("select[name='userNo']").empty();
-					$("select[name='userNo']").append(options);
+					//$selectObject.empty();
+					$selectObject.append(options);
 				//	$('.selectpicker').selectpicker('render');
-					$("select[name='userNo']").selectpicker('refresh');
-
+					$selectObject.selectpicker('refresh');
+					//加载初始化值 
+					$selectObject.selectpicker('val',$selectObject.attr("data-value"))
+					$selectObject.on("changed.bs.select",function(e){
+						var userName=$(e.currentTarget).find('option:selected').text();
+						$("input[name='userName']").val(userName);
+					})
 					//console.log(options);
 				},error:function(e){
 					//console.log(e);
 					comm.errorMsg("请求出错！");
 				}
 				
-			});
+			});}
+			var initLineSelect = function(selectName) {
 			//线路数据
-			
+			var $selectObject= 	$("select[name='"+selectName+"']");
 			$.ajax({
 				url:mlx.ctx+"/admin/guideLine/listAll",
 				type:"post",
@@ -219,9 +228,10 @@
 						options+="<option value='"+obj.lineNo+"'>"+obj.title+"</option>";
 					});
 					}
-					$("select[name='relatLineNo']").empty();
-					$("select[name='relatLineNo']").append(options);
-					$("select[name='relatLineNo']").selectpicker('refresh');
+					//$selectObject.empty();
+					$selectObject.append(options);
+					$selectObject.selectpicker('refresh');
+					$selectObject.selectpicker('val',$selectObject.attr("data-value"))
 					//console.log(options);
 				},error:function(e){
 					//console.log(e);
@@ -288,6 +298,137 @@
 						}
 					});
 		}
+		
+	//表单校验。
+	
+	
+		var handleValidation3 = function() {
+			var form3 = $('#inputForm');
+			var error3 = $('.alert-danger', form3);
+			var success3 = $('.alert-success', form3);
+            form3.submit(function(e){            	
+            	e.preventDefault();
+            });
+            
+			form3.validate({
+				errorElement : 'span', //default input error message container
+				errorClass : 'help-block help-block-error', // default input error message class
+				focusInvalid : false, // do not focus the last invalid input
+				ignore : "", // validate all fields including form hidden input
+				rules : {
+					title : {
+						required : true
+					},
+			
+					imgUrl : {
+						required : true
+					},
+					description : {
+						required : true
+					},
+					recommendInfo : {
+						required : true
+					},
+					sort : {
+						required : true,
+						digits : true,
+						maxlength : 10
+					},
+					userName : {
+						required : true
+					},
+					remark : {
+						required : true
+					},
+					content : {
+						required : true
+					}
+				},
+
+				messages : { // custom messages for radio buttons and checkboxes
+					title : {
+						required : "不能为空",
+					},
+				
+					imgUrl : {
+						required : "不能为空",
+					},
+					description : {
+						required : "不能为空",
+					},
+					recommendInfo : {
+						required : "不能为空",
+					},
+					sort : {
+						required : "不能为空",
+						digits : "请输入整数",
+						maxlength : "最多输入10位数"
+					},
+					userName : {
+						required : "不能为空"
+					},
+					remark : {
+						required : "不能为空"
+					},
+					content : {
+						required : "攻略内容不能为空"
+					}
+				},
+
+				errorPlacement : function(error, element) { // render error placement for each input type
+					if (element.parent(".input-group").size() > 0) {
+						error.insertAfter(element.parent(".input-group"));
+					} else if (element.attr("data-error-container")) {
+						error.appendTo(element.attr("data-error-container"));
+					} else if (element.parents('.radio-list').size() > 0) {
+						error.appendTo(element.parents('.radio-list').attr(
+								"data-error-container"));
+					} else if (element.parents('.radio-inline').size() > 0) {
+						error.appendTo(element.parents('.radio-inline').attr(
+								"data-error-container"));
+					} else if (element.parents('.checkbox-list').size() > 0) {
+						error.appendTo(element.parents('.checkbox-list').attr(
+								"data-error-container"));
+					} else if (element.parents('.checkbox-inline').size() > 0) {
+						error.appendTo(element.parents('.checkbox-inline')
+								.attr("data-error-container"));
+					} else {
+						error.insertAfter(element); // for other inputs, just perform default behavior
+					}
+				},
+
+				invalidHandler : function(event, validator) { //display error alert on form submit   
+					success3.hide();
+					error3.show();
+					App.scrollTo(error3, -200);
+				},
+
+				highlight : function(element) { // hightlight error inputs
+					$(element).closest('.form-group').addClass('has-error'); // set error class to the control group
+				},
+
+				unhighlight : function(element) { // revert the change done by hightlight
+					$(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+				},
+
+				success : function(label) {
+					label.closest('.form-group').removeClass('has-error'); // set success class to the control group
+				},
+
+				submitHandler : function(form) {
+					error3.hide();
+					//验证UE编辑器是否为空
+					if (UE.getEditor('editor').hasContents() == false) {
+						comm.infoMsg("内容不能为空", null, 150);
+						return;
+					}
+					success3.show();
+					form.submit(); // submit the form
+				}
+
+			});
+
+		};
 	
 		
 	</script>
