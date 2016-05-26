@@ -117,8 +117,6 @@
 							</div>
 							
 							<input type="hidden" name="lineNo" value="${lineNo}"/>
-							<input type="hidden" name="startDate" value="${startDate}"/>
-							<input type="hidden" name="endDate" value="${endDate}"/>
 							<div class="tab-pane" id="tab3">
 						 		
 									<table id="test" class="table table-striped table-bordered">
@@ -176,7 +174,7 @@
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
 										<a class="btn btn-primary btn-sm btn-success" 
-										href="${ctx}/guideAdmin/line/backToPrice/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
+										href="${ctx}/guideAdmin/line/backToPrice/${lineNo}" id="btn-save">上一步</a>
 											
 										<button type="submit" class="btn btn-primary btn-sm btn-success">下一步</button>
 								</div>

@@ -108,10 +108,19 @@ public class GuideLineDatePriceService {
 			if (guideLineDatePrice.getId() != null) {
 				// guideLineDatePriceMapper.updateGuideLineDatePrice(guideLineDatePrice);
 				guideLineDatePriceMapper.updateGuideLineDatePriceSelective(guideLineDatePrice);
-
 				continue;
 			}
 			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
 		}
+	}
+	@Transactional
+	public void saveGuideLineDatePriceByLineNo(List<GuideLineDatePrice> guideLineDatePriceList,String lineNo){
+		//delete 
+		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
+		//save
+		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
+			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
+		}
+		
 	}
 }

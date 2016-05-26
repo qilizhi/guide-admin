@@ -45,7 +45,7 @@
 
 </head>
 <body>
-		<div class="portlet light portlet-fit portlet-form ">
+	<div class="portlet light portlet-fit portlet-form ">
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="icon-settings font-dark"></i> <span
@@ -54,109 +54,132 @@
 
 		</div>
 		<div class="portlet-body">
-	<form  id="inputForm" action="${ctx}/admin/guideStrategy/saveOrUpdate" method="post"
-		 class="form-horizontal mlx-form">
-		<input type="hidden" id="id" name="id" value="${guideStrategy.id}" />
-		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">标题：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control" name="title" id="title"
-					value="${guideStrategy.title}" placeholder="这里输入标题" />
-				<div class="form-control-focus"></div>
-			</div>
-		</div>
-		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">描述：</label>
-			<div class="col-lg-5">
-				<textarea class="form-control" name="description" id="description"
-					rows="3" placeholder="这里添加描述">${guideStrategy.description}</textarea>
-				<label for="form_control_1"></label>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">背景图片：</label>
+			<form id="inputForm" action="${ctx}/admin/guideService/saveOrUpdate"
+				method="post" class="form-horizontal mlx-form">
+				<input type="hidden" id="id" name="id" value="${guideS.id}" />
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">标题：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" name="title" id="title"
+							value="${guideS.title}" placeholder="这里输入标题" />
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">描述：</label>
+					<div class="col-lg-5">
+						<textarea class="form-control" name="description" id="description"
+							rows="3" placeholder="这里添加描述">${guideS.description}</textarea>
+						<label for="form_control_1"></label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">背景图片：</label>
 
-			<div class="col-lg-5">
-				<div class="col-lg-7" id="supprogress">
-					<input type="hidden" name="imgUrl" value="${guideStrategy.imgUrl }"/> <span id="imageName"></span>
-					<div class="progress">
-						<div class="progress-bar progress-bar-success" role="progressbar"
-							aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-							<span class="sr-only">40% Complete (success)</span>
+					<div class="col-lg-5">
+						<div class="col-lg-7" id="supprogress">
+							<input type="hidden" name="imgUrl"
+								value="${guideS.imgUrl }" /> <span id="imageName"></span>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success"
+									role="progressbar" aria-valuenow="40" aria-valuemin="0"
+									aria-valuemax="100">
+									<span class="sr-only">40% Complete (success)</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-2">
+							<img id="image" name="imgUrl" alt=""
+								src="${guideS.imgUrl }"> <span
+								class="btn green fileinput-button pading"> <i
+								class="fa fa-plus"></i> <span id="load">上传 </span> <input
+								class="imgUpload" type="file" name="files[]" multiple>
+							</span>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-2">
-					<img id="image" name="imgUrl" alt="" src="${guideStrategy.imgUrl }"> <span
-						class="btn green fileinput-button pading"> <i
-						class="fa fa-plus"></i> <span id="load">上传 </span> <input
-						class="imgUpload" type="file" name="files[]" multiple>
-					</span>
+			
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">价格：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="price"
+							 value="${guideS.price}" />
+						<div class="form-control-focus"></div>
+					</div>
 				</div>
-			</div>
-		</div>
-		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">推荐理由：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control " name="recommendInfo"
-					id="recommendInfo" value="${guideStrategy.recommendInfo}" />
-				<div class="form-control-focus"></div>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">关联的线路：</label>
-			<div class="col-lg-5">
-				<%-- <input type="text" class="form-control " name="relatLineNo"
-					id="relatLineNo" value="${guideStrategy.relatLineNo}" /> --%>
-					<select class="selectpicker" name="relatLineNo" data-live-search="true" data-value="${guideStrategy.relatLineNo}">
-					<option value="">请选择</option>
-				</select>
-			</div>
-		</div>
-		<%-- 	<div class="form-group">
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">满员人数：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="num"
+							value="${guideS.num}" />
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+			<%-- 	<div class="form-group">
+					<label class="col-lg-3 control-label">关联的线路编号：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="relatLineNo"
+					id="relatLineNo" value="${guideS.relatLineNo}" />
+						<select class="selectpicker" name="relatLineNo"
+							data-live-search="true" data-value="${guideS.relatLineNo}">
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div> --%>
+				<%-- 	<div class="form-group">
 			<label class="col-lg-3 control-label">用户编号：</label>
 			<div class="col-lg-5">
 				<input type="text" class="form-control " name="userNo" id="userNo"
-					value="${guideStrategy.userNo}" />
+					value="${guideS.userNo}" />
 			</div>
 		</div> --%>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">用户名称：</label>
-			<div class="col-lg-5">
-					<input type="hidden" name="userName" value="${guideStrategy.userName}" /> 
-				<select class="selectpicker" name="userNo" data-live-search="true" data-value="${guideStrategy.userNo}">
-				<option value="" >请选择</option>
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">攻略内容文本：</label>
-			<div class="col-lg-5">
-				<%-- 	<input type="text" class="form-control " name="content" id="content"
-					value="${guideStrategy.content}" /> --%>
-				<script id="editor" type="text/plain" name="content"
-					style="width:600px;height:500px;">${guideStrategy.content}</script>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">排序号：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control" name="sort" id="sort"
-					value="${guideStrategy.sort}" />
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-lg-9 col-lg-offset-3">
-				<button id="submit_btn" type="submit" data-loading-text="提交中..."
-					autocomplete="off" class="btn btn-primary" >提交</button>  <input
-					id="cancel_btn" class="btn btn-primary " type="button" value="返回"
-					onclick="history.back()" />
-			</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">选择导游：</label>
+					<div class="col-lg-5">
+						<input type="hidden" name="userName"
+							value="${guideS.userName}" /> <select
+							class="selectpicker" name="userNo" data-live-search="true"
+							data-value="${guideS.userNo}">
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">攻略内容文本：</label>
+					<div class="col-lg-5">
+						<%-- 	<input type="text" class="form-control " name="content" id="content"
+					value="${guideS.content}" /> --%>
+						<script id="editor" type="text/plain" name="content"
+							style="width: 600px; height: 500px;">${guideS.content}</script>
+					</div>
+				</div>
+					<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">备注：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="remark"
+							id="recommendInfo" value="${guideS.remark}" />
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">排序号：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" name="sort" id="sort"
+							value="${guideS.sort}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-9 col-lg-offset-3">
+						<button id="submit_btn" type="submit" data-loading-text="提交中..."
+							autocomplete="off" class="btn btn-primary">提交</button>
+						<input id="cancel_btn" class="btn btn-primary " type="button"
+							value="返回" onclick="history.back()" />
+					</div>
 
-		</div>
+				</div>
 
-	</form>
-	</div>
+			</form>
+		</div>
 	</div>
 	<script type="text/javascript" charset="utf-8"
 		src="${ctx }/static/assets/global/plugins/UEeditor/ueditor.config.js"></script>
@@ -182,76 +205,82 @@
 			//加载用户数据并放到页面上去
 			initImgUpload();
 			initUEeditor();
-			initLineSelect("relatLineNo");
+			//initLineSelect("relatLineNo");
 			initGuideSelect("userNo");
 			handleValidation3();
 		})
 		/**下拉框的初始化**/
 		var initGuideSelect = function(selectName) {
-			var $selectObject=$("select[name='"+selectName+"']");
+			var $selectObject = $("select[name='" + selectName + "']");
 			//导游 用户数据
 			$.ajax({
-				url:mlx.ctx+"/admin/guideStrategy/guide/list",
-				type:"get",
-				dataType:"json",
-				success:function(data){
-					var options="";
-					if(data.code=="200"){
-					var users=data.result;
-					//console.log(users);
-					$.each(users,function(index,obj){
-						options+="<option value='"+obj.userNo+"'>"+obj.realName+"</option>";
-					});
+				url : mlx.ctx + "/admin/guideService/guide/list",
+				type : "get",
+				dataType : "json",
+				success : function(data) {
+					var options = "";
+					if (data.code == "200") {
+						var users = data.result;
+						//console.log(users);
+						$.each(users, function(index, obj) {
+							options += "<option value='"+obj.userNo+"'>"
+									+ obj.realName + "</option>";
+						});
 					}
-					
-				
+
 					//$selectObject.empty();
 					$selectObject.append(options);
-				//	$('.selectpicker').selectpicker('render');
+					//	$('.selectpicker').selectpicker('render');
 					$selectObject.selectpicker('refresh');
 					//加载初始化值 
-					$selectObject.selectpicker('val',$selectObject.attr("data-value"))
-					$selectObject.on("changed.bs.select",function(e){
-						var userName=$(e.currentTarget).find('option:selected').text();
+					$selectObject.selectpicker('val', $selectObject
+							.attr("data-value"))
+					$selectObject.on("changed.bs.select", function(e) {
+						var userName = $(e.currentTarget).find(
+								'option:selected').text();
 						$("input[name='userName']").val(userName);
 					})
 					//console.log(options);
-				},error:function(e){
+				},
+				error : function(e) {
 					//console.log(e);
 					comm.errorMsg("请求出错！");
 				}
-				
-			});}
-			var initLineSelect = function(selectName) {
+
+			});
+		}
+		/* var initLineSelect = function(selectName) {
 			//线路数据
-			var $selectObject= 	$("select[name='"+selectName+"']");
+			var $selectObject = $("select[name='" + selectName + "']");
 			$.ajax({
-				url:mlx.ctx+"/admin/guideLine/listAll",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					var options="";
-					if(data.code=="200"){
-					var users=data.result;
-					//console.log(users);
-					$.each(users,function(index,obj){
-						options+="<option value='"+obj.lineNo+"'>"+obj.title+"</option>";
-					});
+				url : mlx.ctx + "/admin/guideLine/listAll",
+				type : "post",
+				dataType : "json",
+				success : function(data) {
+					var options = "";
+					if (data.code == "200") {
+						var users = data.result;
+						//console.log(users);
+						$.each(users, function(index, obj) {
+							options += "<option value='"+obj.lineNo+"'>"
+									+ obj.title + "</option>";
+						});
 					}
 					//$selectObject.empty();
 					$selectObject.append(options);
 					$selectObject.selectpicker('refresh');
-					$selectObject.selectpicker('val',$selectObject.attr("data-value"))
+					$selectObject.selectpicker('val', $selectObject
+							.attr("data-value"))
 					//console.log(options);
-				},error:function(e){
+				},
+				error : function(e) {
 					//console.log(e);
 					comm.errorMsg("请求出错！");
 				}
-				
+
 			});
-			
-			
-		}
+
+		} */
 
 		/** UEeditor 的初始化**/
 		var initUEeditor = function() {
@@ -308,18 +337,17 @@
 						}
 					});
 		}
-		
-	//表单校验。
-	
-	
+
+		//表单校验。
+
 		var handleValidation3 = function() {
 			var form3 = $('#inputForm');
 			var error3 = $('.alert-danger', form3);
 			var success3 = $('.alert-success', form3);
-            form3.submit(function(e){            	
-            	e.preventDefault();
-            });
-            
+			form3.submit(function(e) {
+				e.preventDefault();
+			});
+
 			form3.validate({
 				errorElement : 'span', //default input error message container
 				errorClass : 'help-block help-block-error', // default input error message class
@@ -329,7 +357,7 @@
 					title : {
 						required : true
 					},
-			
+
 					imgUrl : {
 						required : true
 					},
@@ -340,6 +368,16 @@
 						required : true
 					},
 					sort : {
+						required : true,
+						digits : true,
+						maxlength : 10
+					},
+					price : {
+						required : true,
+						number : true,
+						maxlength : 10
+					},
+					num : {
 						required : true,
 						digits : true,
 						maxlength : 10
@@ -359,7 +397,7 @@
 					title : {
 						required : "不能为空",
 					},
-				
+
 					imgUrl : {
 						required : "不能为空",
 					},
@@ -371,7 +409,17 @@
 					},
 					sort : {
 						required : "不能为空",
-						digits : "请输入整数",
+						digits : "请输入正整数",
+						maxlength : "最多输入10位数"
+					},
+					price : {
+						required : "不能为空",
+						munber : "请输入正整数",
+						maxlength : "最多输入10位数"
+					},
+					num: {
+						required : "不能为空",
+						digits : "请输入正整数",
 						maxlength : "最多输入10位数"
 					},
 					userName : {
@@ -439,8 +487,6 @@
 			});
 
 		};
-	
-		
 	</script>
 </body>
 </html>
