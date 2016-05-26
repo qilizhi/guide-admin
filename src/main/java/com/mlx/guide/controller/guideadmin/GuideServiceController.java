@@ -72,8 +72,7 @@ public class GuideServiceController {
 			PageList<GuideService> list = guideServiceService.getGuideServicePageList(guideService,pageBounds);
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
-			model.addAttribute("title", guideService.getTitle());
-			model.addAttribute("serviceNo", guideService.getServiceNo());
+			model.addAttribute("guideService", guideService);
 			model.addAttribute("EStatus", EStatus.getMap());
 			model.addAttribute("EAuditStatus", EAuditStatus.getMap());
 
@@ -122,7 +121,7 @@ public class GuideServiceController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "/guideAdmin/guideService/create";
+//			return "/guideAdmin/guideService/create";
 		}
 		return "redirect:/guideAdmin/guideService";
 	}

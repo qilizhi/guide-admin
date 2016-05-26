@@ -52,7 +52,7 @@
 				and service_no=#{serviceNo}
 			</if>
 			<if test="title != null and title!=''">
-				and title=#{title}
+				and title like concat('%',#{title},'%')
 			</if>
 			<if test="imgUrl != null and imgUrl!=''">
 				and img_url=#{imgUrl}
