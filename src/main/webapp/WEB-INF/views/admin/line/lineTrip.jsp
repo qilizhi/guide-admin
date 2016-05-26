@@ -102,7 +102,7 @@
 					</div>
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
-					<form action="${ctx }/guideAdmin/trip/save" id=form_sample_3
+					<form action="${ctx }/admin/trip/save?startDate=${startDate}&endDate=${endDate}" id=form_sample_3
 						class="form-horizontal" method="post"
 						enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${guideLineTrip.id }" />
@@ -174,7 +174,7 @@
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
 										<a class="btn btn-primary btn-sm btn-success" 
-										href="${ctx}/guideAdmin/line/backToPrice/${lineNo}" id="btn-save">上一步</a>
+										href="${ctx}/admin/guideLine/backToPrice/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
 											
 										<button type="submit" class="btn btn-primary btn-sm btn-success">下一步</button>
 								</div>
@@ -226,7 +226,7 @@
 		  		$(el).val(i+1);
 		  	});
 		  	if(id!=undefined){
-			  	$.post("${ctx}/guideAdmin/trip/delete/"+id,function(data){
+			  	$.post("${ctx}/admin/trip/delete/"+id,function(data){
 			  		//console.log(data);
 			  		comm.infoMsg(data.msg);
 			  	});

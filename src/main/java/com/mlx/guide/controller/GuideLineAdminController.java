@@ -1,5 +1,6 @@
 package com.mlx.guide.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -32,11 +33,15 @@ import com.mlx.guide.constant.EFlag;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
+import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.entity.GuideService;
+import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
+import com.mlx.guide.service.GuideLineTripService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 import com.mlx.guide.util.StringUtil;
@@ -51,6 +56,10 @@ public class GuideLineAdminController {
 	private GuideLineService guideLineService;
 	@Autowired
 	private GuideLineDatePriceService guideLineDatePriceService;
+	@Autowired
+	private GuideInfoService guideInfoService;
+	@Autowired
+	private GuideLineTripService guideLineTripService;
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
@@ -81,6 +90,25 @@ public class GuideLineAdminController {
 			new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
 		return new JsonResult(ExceptionCode.SUCCESSFUL, lines);
+	}
+	/**
+	 * 查询导游用户列表下拉树。
+	 * 
+	 * @param guideInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/guide/list", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult getUserList(GuideInfo guideInfo) {
+
+		List<GuideInfo> guides = new ArrayList<GuideInfo>();
+		try {
+			guides = guideInfoService.getGuideInfoList(guideInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("获取用户出错：" + e.getMessage());
+		}
+		return new JsonResult(ExceptionCode.SUCCESSFUL, guides);
 	}
 	/**
 	 * 列表
@@ -131,6 +159,98 @@ public class GuideLineAdminController {
 	}
 	
 	
+	/**
+	 * 保存价格
+	 * 
+	 * @param linePrices
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/price/save/{lineNo}", method = RequestMethod.POST)
+	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo) {
+		try {
+			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
+			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
+			// guideLineDatePriceService.saveGuideLineDatePriceBitch(lsGuideLineDatePrices);
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
+	}
+	
+	
+	/**
+	 * 上一步,返回线路页面
+	 * 
+	 * @param lineNo
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "backToLine/{lineNo}")
+	public String backToLine(@PathVariable String lineNo, Model model) {
+		// 根据线路no获取对应的线路
+		try {
+			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
+			model.addAttribute("guideLine", guideLine);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			//return "admin/line/create";
+		}
+		return "admin/line/create";
+	}
+	/**
+	 * 上一步，返回到行程页面
+	 * 
+	 * @param lineNo
+	 * @param guideLineTrip
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "backToTrip/{lineNo}")
+	public String backToTrip(@PathVariable String lineNo, GuideLineTrip guideLineTrip, Model model) {
+		try {
+			guideLineTrip.setLineNo(lineNo);
+			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
+			model.addAttribute("list", list);
+			model.addAttribute("lineNo", lineNo);
+			return "guideAdmin/line/lineTrip";
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return "guideAdmin/line/lineTrip";
+		}
+	}
+	/**
+	 * 上一步,返回价格页面
+	 * 
+	 * @param lineNo
+	 * @param guideLineDatePrice
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "backToPrice/{lineNo}")
+	public String backToPrice(@PathVariable String lineNo, GuideLineDatePrice guideLineDatePrice,
+			@RequestParam String startDate, @RequestParam String endDate, Model model) {
+		try {
+
+			// 根据线路no获取对应的线路
+			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
+			// 根据线路no获取对应的价格表
+			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+					.getGuideLineDatePriceByLineNo(lineNo);
+			String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+			model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+			model.addAttribute("guideLine", guideLine);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
+			return "admin/line/price";
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return "admin/line/price";
+		}
+	}
+
 	/**
 	 * 上下线功能。
 	 * 
@@ -233,40 +353,50 @@ public class GuideLineAdminController {
 	
 	
 	/**
-	 * 新增
+	 * 新增或更新
 	 * 
+	 * @param file
+	 * @param request
+	 * @param model
 	 * @param guideLine
+	 * @param oldPrice
 	 * @return
 	 */
-	@RequestMapping(value = "add", method = RequestMethod.POST)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String saveOrUpdate(@RequestParam(value = "file", required = false) MultipartFile file,
-			HttpServletRequest request, Model model, GuideLine guideLine) {
+			HttpServletRequest request, Model model, GuideLine guideLine,
+			@RequestParam(value = "oldPrice") BigDecimal oldPrice) {
 		// 获取当前用户
 		//ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
-
 			if (guideLine.getId() != null) {
+				// 比较价格
+				if (oldPrice.compareTo(guideLine.getPrice()) != 0) {
+					guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
+				}
 				// 更新
-				guideLine.setAuditStatus(1);// 每次修改审核状态都改为待审核
 				guideLineService.updateGuideLineSelective(guideLine);
-				return "redirect:/guideAdmin/line/list";
+				return "redirect:/admin/guideLine/editPrice/" + guideLine.getLineNo();
 			} else {
 				// 新增
 				// 随机生成线路编号
 				int num = (int) (Math.random() * 10000);
-				guideLine.setLineNo("MLX_" + num + System.currentTimeMillis());
-				//guideLine.setUserNo(shiroUser.getUserNo());
-				//guideLine.setUserName(shiroUser.getName());
+				guideLine.setLineNo("MLXLINE_" + num + System.currentTimeMillis());
+				// guideLine.setUserNo(shiroUser.getUserNo());
+				// guideLine.setUserName(shiroUser.getName());
+				//guideLine.setUserNo("weixin4");
+				//guideLine.setUserName("全志安");
 				guideLine.setCreateTime(new Date());
-				guideLine.setFlag(1);
 				guideLine.setStatus(EStatus.EDIT.getId());
-				guideLine.setAuditStatus(1);
+				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideLineService.createGuideLineSelective(guideLine);
+				model.addAttribute("guideLine", guideLine);
+				return "redirect:/admin/guideLine/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
+			return "admin/line/create";
 		}
-		return "redirect:/admin/guideLine/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
 	}
 
 	/**

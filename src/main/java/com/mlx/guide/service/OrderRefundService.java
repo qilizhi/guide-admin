@@ -4,19 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSONObject;
-import com.mlx.guide.controller.OrderRefundAdminController;
 import com.mlx.guide.model.OrderRefundModel;
 import com.mlx.guide.util.OrderSignUtil;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 
 @Component
@@ -29,28 +24,8 @@ public class OrderRefundService {
 	private  String ORDER_API_HOST;
 	
 	
- /**
- * 
- * @param startDate Y 开始时间
- * @param endDate  Y 结束时间
- * @param pageNo N
- * @param pageSize N
- * @param refundJnId N  退款订单流水号
- * @param refundStatus N   退款订单状态
- * @return
- */
-	public String getList(String startDate,String endDate,Integer pageNo,Integer pageSize,String refundJnId,String refundStatus){
-		String url = ORDER_API_HOST+"/order/refund/list";
-		TreeMap<String, Object> params = new TreeMap<String, Object>();
-		params.put("startDate", startDate);
-		params.put("endDate", endDate);
-		params.put("pageNo", pageNo);
-		params.put("pageSize", pageSize);
-		params.put("refundJnId", refundJnId); 
-		params.put("refundStatus", refundStatus); 
-		params.put("methodType", "refundList");
-		return  OrderSignUtil.post(url, params);
-	}
+
+	
 	/**
 	 * 退款审核
 	 * @return
@@ -92,22 +67,34 @@ public class OrderRefundService {
 			throw new Exception("退款流水号为空");
 		}else if(StringUtils.isBlank(order.getRefundStatus())){
 			throw new Exception("退款状态为空");
-		}else if(StringUtils.isBlank(order.getAmount())){
-			throw new Exception("退款金额为空,小数不能超过两位");
-		}else if(StringUtils.isBlank(order.getUserId())){
-			throw new Exception("用户ID为空");		
+		}
+		//当审核通过时金额不能为空,并且是数字
+		else if(order.getCheckStatus().equals("1")&&order.getRefundStatus().equals("RR")&&StringUtils.isBlank(order.getAmount())&&!order.getAmount().matches("^(([0-9]+\\d*)|([0-9]+\\d*\\.\\d{1,2}))$")){
+			throw new Exception("金额不能为空,并且只能两位小数");
 		}
 		
 		//校验当审核不通过时,备注参数不能为空
-		if(order.getCheckStatus().equals("-1")&&StringUtils.isBlank(order.getRemark())){
+		else if(order.getCheckStatus().equals("-1")&&StringUtils.isBlank(order.getRemark())){
 			throw new Exception("审核不通过,备注不能为空");
 		}
-		
 		OrderRefundModel orderRefundModel=this.getByRefundJnId(order.getRefundJnId());
 		
-		if(Double.parseDouble(order.getAmount())>Double.parseDouble(orderRefundModel.getPayFee())){
+		if(order.getCheckStatus().equals("1")){
+			order.setRemark(null);
+		}
+		if(order.getCheckStatus().equals("-1")){
+			order.setAmount("0.01");
+		}
+		//如果是财务退款,并且通过,则设置退款金额就是审核金额
+		if(order.getCheckStatus().equals("1")&&order.getRefundStatus().equals("RC")){
+			order.setAmount(orderRefundModel.getAmount());
+		}
+		if(StringUtils.isNotBlank(order.getAmount())&&Double.parseDouble(order.getAmount())>Double.parseDouble(orderRefundModel.getPayFee())){
 			throw new Exception("退款额大于订单额");	
 		}
+		
+		
+		order.setUserId(orderRefundModel.getUserId());
 
 		//调用退款审核接口
            String resultJson=this.auditInterface(order);
@@ -133,19 +120,19 @@ public class OrderRefundService {
 		
 	}
 	
-	public static void main(String[] args) {
-		String str = "123.02";
-		/*String regex="/^\d+(\.\d{1,2})?$/";
-		str.matches(regex)
-		new re
-		str.matches(/^\d+(\.\d{1,2})?$/);
-	    String match = str.match(/^\d+(\.\d{1,2})?$/)[0];
-	    alert(match);
-	    
-	    String a="123.02";
-	    a.matches("/^\d+(\.\d{1,2})?$/");*/
-	   
-	    boolean result=Pattern.compile("/^\\d+(\\.\\d{1,2})$/").matcher(str).matches();
-	    System.out.println(result);
+	
+	
+	public String getList(Integer pageNo,Integer pageSize,OrderRefundModel orderRefundModel) {
+		String url = ORDER_API_HOST+"/order/refund/list";
+		TreeMap<String, Object> params = new TreeMap<String, Object>();
+		params.put("startDate", orderRefundModel.getStartDate().replace("-", ""));
+		params.put("endDate", orderRefundModel.getEndDate().replace("-", ""));
+		params.put("pageNo", pageNo);
+		params.put("pageSize", pageSize);
+		params.put("refundStatus", orderRefundModel.getRefundStatus()); 
+		params.put("orderId", orderRefundModel.getOrderId()); 
+		params.put("refundStatus", orderRefundModel.getRefundStatus()); 
+		params.put("methodType", "refundList");
+		return  OrderSignUtil.post(url, params);
 	}
 }
