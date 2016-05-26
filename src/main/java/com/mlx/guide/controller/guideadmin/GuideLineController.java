@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
@@ -50,6 +52,7 @@ import com.mlx.guide.util.StringUtil;
  */
 @Controller
 @RequestMapping("/guideAdmin/line")
+
 public class GuideLineController {
 
 	private static Logger logger = LoggerFactory.getLogger(GuideLineController.class);
@@ -201,15 +204,17 @@ public class GuideLineController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public JsonResult savePrice(@RequestParam("params") String linePrices) {
+	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
+	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo) {
 		try {
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
-			guideLineDatePriceService.saveGuideLineDatePriceBitch(lsGuideLineDatePrices);
+			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
+			// guideLineDatePriceService.saveGuideLineDatePriceBitch(lsGuideLineDatePrices);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
+
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
@@ -242,8 +247,10 @@ public class GuideLineController {
 	 * @return
 	 */
 	@RequestMapping(value = "backToPrice/{lineNo}")
-	public String backToPrice(@PathVariable String lineNo, GuideLineDatePrice guideLineDatePrice, Model model) {
+	public String backToPrice(@PathVariable String lineNo, GuideLineDatePrice guideLineDatePrice,
+			@RequestParam String startDate, @RequestParam String endDate, Model model) {
 		try {
+
 			// 根据线路no获取对应的线路
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
 			// 根据线路no获取对应的价格表
@@ -252,6 +259,8 @@ public class GuideLineController {
 			String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 			model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
 			model.addAttribute("guideLine", guideLine);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
 			return "guideAdmin/line/price";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

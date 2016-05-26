@@ -247,4 +247,8 @@
     	</where>
     </delete>
     
+    <delete id="deleteGuideLineDatePriceByLineNo" parameterType="String">
+    	DELETE FROM  guide_line_date_price WHERE line_no = #{lineNo}
+    </delete>
+    
 </mapper>

@@ -38,4 +38,6 @@ public interface GuideLineDatePriceMapper {
 	public void deleteGuideLineDatePrice(Integer id);
 	
 	public void deleteGuideLineDatePriceByDate(Map<String, Object> map);
+
+	public void deleteGuideLineDatePriceByLineNo(String lineNo);
 }
