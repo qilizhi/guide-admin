@@ -358,7 +358,8 @@
                ignore: "", // validate all fields including form hidden input
                rules: {
                    title: {
-                       required: true
+                       required: true,
+                       maxlength:50
                    },  
                    price: {
                        required: true,
@@ -366,7 +367,8 @@
                        maxlength:10
                    },
                    description: {
-                       required: true
+                       required: true,
+                       maxlength:50
                    },
                    sort: {
                        required: true,
@@ -374,16 +376,20 @@
                        maxlength:10
                    },
                    remark: {
-                       required: true
+                       required: true,
+                       maxlength:255
                    },
-                   content1: {
-                       required: true
+                   num:{
+                       required: true,
+                       digits:true,
+                       maxlength:5
                    }
                },
 
                messages: { // custom messages for radio buttons and checkboxes
                	title: {
                        required: "不能为空",
+                       maxlength:"最多输入50个汉字"
                    },
                    price: {
                        required: "不能为空",
@@ -392,6 +398,7 @@
                    },
                    description: {
                        required: "不能为空",
+                       maxlength:"最多输入50个汉字"
                    },
                    sort: {
                        required: "不能为空",
@@ -399,10 +406,13 @@
                        maxlength:"最多输入10位数"
                    },
                    remark: {
-                   	required: "不能为空"
+                	   required: "不能为空",
+                	   maxlength:"最多输入255个汉字"
                    },
-                   content1: {
-                   	required: "攻略内容不能为空"
+                   num:{
+                       required:"不能为空",
+                       digits:"请输入整数",
+                       maxlength:"最多输入5位数"
                    }
                },
 

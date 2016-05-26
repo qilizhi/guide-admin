@@ -121,7 +121,6 @@ public class GuideServiceController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-//			return "/guideAdmin/guideService/create";
 		}
 		return "redirect:/guideAdmin/guideService";
 	}
