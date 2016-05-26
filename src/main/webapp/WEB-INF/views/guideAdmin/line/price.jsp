@@ -508,7 +508,7 @@
 				
 				//json生成
 				var $data = $mPriceEdit.getRoutePriceData();
-				//console.log($data.length);
+				console.log($data.length);
 				if($data.length <= 0){
 					comm.infoMsg("请生成日期价格数据",null,150);
 					return;
@@ -589,10 +589,10 @@
 			});
 			
 			$("#btn-clear").on("click",function(e){
-				var $orderType = $('#select-routeOrderType').val();
+				/* var $orderType = $('#select-routeOrderType').val();
 				var $supplierId = $("[name='supplierId']").val();
 				var $routeId = $("[name='routeid']").val();
-				var $href = $(this).attr("data-url");
+				var $href = $(this).attr("data-url"); */
 				comm.confirm("提示","您确定要清除该类型价格吗？",function(){
 					//日期选择检查
 					$mPriceEdit.checkDateValid();

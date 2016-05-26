@@ -112,7 +112,7 @@ public class GuideLineTripController {
 	 */
 	@RequestMapping(value = "/save")
 	public String add(GuideLineTripModel guideLineTripModel, @RequestParam(value = "lineNo") String lineNo,
-			Model model) {
+			@RequestParam String startDate, @RequestParam String endDate,Model model) {
 		try {
 
 			model.addAttribute("lineNo", lineNo);
@@ -131,6 +131,8 @@ public class GuideLineTripController {
 			guideLineTrip.setLineNo(lineNo);
 			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
 			model.addAttribute("trips", trips);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

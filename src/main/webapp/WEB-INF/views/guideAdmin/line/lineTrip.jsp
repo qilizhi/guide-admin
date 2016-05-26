@@ -117,6 +117,8 @@
 							</div>
 							
 							<input type="hidden" name="lineNo" value="${lineNo}"/>
+							<input type="hidden" name="startDate" value="${startDate}"/>
+							<input type="hidden" name="endDate" value="${endDate}"/>
 							<div class="tab-pane" id="tab3">
 						 		
 									<table id="test" class="table table-striped table-bordered">

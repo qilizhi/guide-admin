@@ -262,7 +262,7 @@
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
 											<a class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/backToTrip/${lineNo}" id="btn-save">上一步</a>
+											href="${ctx}/guideAdmin/line/backToTrip/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
 											
 										<button type="submit" class="btn btn-primary btn-sm btn-success">发布</button>
 								</div>

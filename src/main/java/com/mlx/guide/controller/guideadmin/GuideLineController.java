@@ -277,11 +277,14 @@ public class GuideLineController {
 	 * @return
 	 */
 	@RequestMapping(value = "backToTrip/{lineNo}")
-	public String backToTrip(@PathVariable String lineNo, GuideLineTrip guideLineTrip, Model model) {
+	public String backToTrip(@PathVariable String lineNo, GuideLineTrip guideLineTrip, @RequestParam String startDate,
+			@RequestParam String endDate, Model model) {
 		try {
 			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
 			return "guideAdmin/line/lineTrip";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
