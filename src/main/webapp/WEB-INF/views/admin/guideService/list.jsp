@@ -31,8 +31,8 @@
 							class="caption-subject font-dark bold uppercase">地陪列表</span>
 					</div>
 					<div class="actions">
-						<%-- <a href="${ctx}/admin/guideService/create"
-							class="btn btn-sm green btn-outline">新增</a> --%>
+					 <a href="${ctx}/admin/guideService/create"
+							class="btn btn-sm green btn-outline">新增</a>
 						<!--  <a class="btn btn-sm dark btn-outline batAudit">审核</a>
 						  <a
 							class="btn btn-sm red btn-outline batDel">批量删除</a>  -->
@@ -129,6 +129,7 @@
 										<td id="${item.id}">
 										
 										<a  href="${ctx}/admin/guideService/detail/${item.id}" class="btn btn-sm yellow btn-outline detail">详情</a>
+										<a  href="${ctx}/admin/guideService/edit/${item.id}" class="btn btn-sm red btn-outline detail">编辑</a>
 										<a class="btn btn-sm dark btn-outline audit">审核 </a>
 											<c:if test="${item.status== 3 || item.status==1}">
 											<a status="2" class="btn btn-sm green btn-outline onOff">上线</a>

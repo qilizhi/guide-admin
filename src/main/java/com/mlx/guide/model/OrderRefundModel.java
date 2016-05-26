@@ -23,6 +23,9 @@ public class OrderRefundModel {
 		private String startTime;
 		private String updateTime;
 		private String userId;
+		
+		private String payFee;
+		
 		public String getAmount() {
 			return amount;
 		}
@@ -148,6 +151,12 @@ public class OrderRefundModel {
 		}
 		public void setUserId(String userId) {
 			this.userId = userId;
+		}
+		public String getPayFee() {
+			return payFee;
+		}
+		public void setPayFee(String payFee) {
+			this.payFee = payFee;
 		}
 		
 		
