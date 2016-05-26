@@ -37,7 +37,7 @@ public class SysNoticeAdminController {
 	@ModelAttribute
 	public void common(Model model,PlatformMsg platformMsg) {
 		model.addAttribute("systemclass", Const.MENU_FIRST );
-		model.addAttribute( "system_paramclass", Const.MENU_SUB );
+		model.addAttribute( "system_noticeclass", Const.MENU_SUB );
 	
 	}
 	

@@ -104,9 +104,16 @@
 										<td>${item.payFee}</td>
 										<td>${item.orderDescribe.contactsName }</td>
 										<td>
+										
 										<fmt:parseDate value="${item.orderDate }" var="orderDate" pattern="yyyyMMdd"></fmt:parseDate>
 										<fmt:formatDate value="${orderDate }" pattern="yyyy-MM-dd " />  </td>
-										<td></td>
+										<td>
+										
+										<fmt:parseDate value="${item.payDate}" pattern="yyyyMMdd" var="payDate"/>
+										<fmt:parseDate value="${item.payTime}"  pattern="HHmmss" var="payTime"/>
+										<fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd"/>&nbsp;
+										<fmt:formatDate value="${payTime}" pattern="HH:mm:ss"/>
+										</td>
 										<td>${fns:OrderPayType()[item.orderStatus]}</td>
 										<td>
 											<a  href="${ctx}/admin/orderLineInfo/detail?orderId=${item.orderId}&userId=${item.userId}" class="btn btn-sm yellow btn-outline" >详情</a>																								

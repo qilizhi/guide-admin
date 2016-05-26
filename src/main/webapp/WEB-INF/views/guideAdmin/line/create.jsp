@@ -362,7 +362,7 @@
                    },  
                    price: {
                        required: true,
-                       digits:true,
+                       number:true,
                        maxlength:10
                    },
                    description: {
@@ -387,7 +387,7 @@
                    },
                    price: {
                        required: "不能为空",
-                       digits:"请输入整数",
+                       number:"请输入合法数字",
                        maxlength:"最多输入10位数"
                    },
                    description: {

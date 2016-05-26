@@ -53,7 +53,7 @@
                                  <th>订单市场总额:</th>
                                  <td>${orderModel.totalMarketPrice }</td>
                                  <th>下单终端渠道:</th>
-                                 <td>${orderModel.sysCnl }</td>
+                                 <td>${fns:SysCnlStatus()[orderModel.sysCnl]}</td>
                                  <th>订单备注:</th>
                                  <td>${orderModel.remark }</td>
                                </tr>
@@ -78,20 +78,23 @@
                                </tr>
                                 <tr>
                                  <th>失效时间:</th>
-                                 <td>${orderModel.expTime }</td>
+                                 <td>${fns:longTimeToDate("yyyy-MM-dd HH:mm:ss",orderModel.expTime) }</td>
                                  <th>订单日期:</th>
-                                 <td>${orderModel.orderDate }</td>
-                                 <th>订单时间:</th>
-                                 <td>${orderModel.orderTime }</td>
-                               </tr>
-                                <tr>
+                                 <td>
+                                 <fmt:parseDate value="${orderModel.orderDate}" pattern="yyyyMMdd" var="orderDate"/>
+                                 <fmt:parseDate value="${orderModel.orderTime}" pattern="HHmmss" var="orderTime"/>
+                                 <fmt:formatDate value="${orderDate}" pattern="yyyy-MM-dd"/>&nbsp;
+                                  <fmt:formatDate value="${orderTime}" pattern="HH:mm:ss"/>
+                                
+                                 </td>
                                  <th>支付日期:</th>
-                                 <td>${orderModel.payDate }</td>
-                                 <th>支付时间:</th>
-                                 <td>${orderModel.payTime }</td>
-                                 <th></th>
-                                 <td></td>
+                                 <td>
+                                  <fmt:parseDate value="${orderModel.payDate}" pattern="yyyyMMdd" var="payDate"/>
+                                 <fmt:parseDate value="${orderModel.payTime}" pattern="HHmmss" var="payTime"/>
+                                 <fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd"/>&nbsp;
+                                  <fmt:formatDate value="${payTime}" pattern="HH:mm:ss"/></td>
                                </tr>
+                                
                                 <tr>
                                 <th colspan="10"><div class="text-center">订单详情</div></th>
                                 </tr>
@@ -160,7 +163,8 @@
                                  </td>
                                   <th>更新时间:</th>
                                   <td>
-                                  ${orderModel.orderDescribe.updateTime}
+                                  ${fns:longTimeToDate('yyyy-MM-dd HH:mm:ss',orderModel.orderDescribe.updateTime)}
+              
                                      </td>
                                 </tr>
                                  <tr>

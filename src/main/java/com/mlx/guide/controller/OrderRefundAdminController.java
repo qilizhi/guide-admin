@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +56,17 @@ public class OrderRefundAdminController{
 	        @RequestParam( value = "pageSize", defaultValue = Const.PAGE_SIZE ) Integer pageSize,Model model){
         try {
         	String startDate="20130101";
-        	String endDate=null;
+        	
     		SimpleDateFormat sf= new SimpleDateFormat("yyyyMMdd");
-    		endDate=sf.format(new Date());
-    		String refundJnId=null;
-    		String refundStatus=null;
-
-                            
-    		String resultJson=orderRefundService.getList(startDate, endDate, pageNo, pageSize, refundJnId, refundStatus);
+    		String endDate=sf.format(new Date());
+    		if(StringUtils.isBlank(orderRefundModel.getStartDate())){
+    			orderRefundModel.setStartDate(startDate);
+    		}
+    		if(StringUtils.isBlank(orderRefundModel.getEndDate())){
+    			orderRefundModel.setEndDate(endDate);
+    		}
+    		
+    		String resultJson=orderRefundService.getList(pageNo,pageSize,orderRefundModel);
     		
     		List<OrderRefundModel> list= JSONObject.parseArray(JSONObject.parseObject(resultJson).getString("result"), OrderRefundModel.class);
     		//分页
@@ -112,7 +116,7 @@ public class OrderRefundAdminController{
 	 * @return
 	 */
 	@RequestMapping(value="/audit",method=RequestMethod.POST)
-	public String audit(OrderRefundModel orderRefundModel,Model model,RedirectAttributes redirect){
+	public String audit(OrderRefundModel orderRefundModel,@RequestParam( value = "pageNo", defaultValue = "1" ) Integer pageNo,@RequestParam( value = "pageSize", defaultValue = "10" ) Integer pageSize,Model model,RedirectAttributes redirect){
 		try {
 			String msg=orderRefundService.audit(orderRefundModel);
 			redirect.addFlashAttribute("msg", msg);
@@ -120,7 +124,7 @@ public class OrderRefundAdminController{
 			logger.error(e.getMessage(),e);
 			redirect.addFlashAttribute("msg", "系统异常,请联系管理员");
 		}
-		return "redirect:/admin/orderRefund";
+		return "redirect:/admin/orderRefund?pageNo="+pageNo+"&pageSize"+pageSize;
 		
 		
 	}
