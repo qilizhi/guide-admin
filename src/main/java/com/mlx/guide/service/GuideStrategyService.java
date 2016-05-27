@@ -122,4 +122,10 @@ public class GuideStrategyService {
 	public List<GuideStrategy> getGuideStrategyRankingList(PageBounds pageBounds){
 		return guideStrategyMapper.getGuideStrategyRankingList( pageBounds );
 	}
+
+	
+	public List<GuideStrategy> getGuideStrategyByUserNo(String userNo) {
+		
+		return guideStrategyMapper.getGuideStrategyByUserNo(userNo);
+	}
 }

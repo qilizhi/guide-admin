@@ -164,23 +164,23 @@
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>${fns:EAuditStatus()[item.auditStatus]}</td>
 										
-										<c:if test="${empty guideInfo.isAuditStatus }">
+										<c:if test="${empty guideInfo.isAuditStatus}">
 										<td>${fns:EUserStatus()[item.status]}</td>
 										</c:if>
 										<td>
-										  <c:if test="${empty guideInfo.isAuditStatus }">
-											 <a href="${ctx}/admin/guideUserInfo/detail?id=${item.userNo}" class="btn green btn-outline btn-sm" >详情</a>	 
+										  <c:if test="${empty guideInfo.isAuditStatus}">
+											 <a href="${ctx}/admin/guideUserInfo/detail?userNo=${item.userNo}" class="btn green btn-outline btn-sm" >详情</a>	 
 						                   </c:if>	
 						                 <c:if test="${ not empty guideInfo.isAuditStatus }">	
-										<a href="javascript:showModal(${item.id },2)"  class="btn blue btn-outline btn-sm "  >审核</a>
+										<a href="javascript:showModal(${item.id},2)"  class="btn blue btn-outline btn-sm "  >审核</a>
 										 </c:if>
-										 <c:if test="${empty guideInfo.isAuditStatus }">
+										 <c:if test="${empty guideInfo.isAuditStatus}">
 										<c:choose>										
-										<c:when test="${item.status==1 }">
-										<a href="javascript:editStatus(${item.id },2)"  class="btn red btn-outline btn-sm "  >冻结</a>
+										<c:when test="${item.status==1}">
+										<a href="javascript:editStatus(${item.id},2)"  class="btn red btn-outline btn-sm "  >冻结</a>
 										</c:when>
 										<c:otherwise>
-										<a href="javascript:editStatus(${item.id },1)"  class="btn green btn-outline btn-sm "  >解禁</a>	
+										<a href="javascript:editStatus(${item.id},1)"  class="btn green btn-outline btn-sm "  >解禁</a>	
 										</c:otherwise>
 										</c:choose>	
 										 </c:if>											

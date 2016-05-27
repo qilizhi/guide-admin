@@ -109,4 +109,9 @@ public class GuideLineService {
 		return guideLineMapper.searcheGuideLinePageList(guideLine, pageBounds);
 	}
 
+	public List<GuideLine> getGuideLineByUserNo(String userNo) {
+		
+		return guideLineMapper.getGuideLineByUserNo(userNo);
+	}
+
 }

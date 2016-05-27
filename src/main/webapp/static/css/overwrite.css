@@ -227,3 +227,12 @@ ul li{
 	text-align: left;
 	
 }
+.my-table th{
+	text-align: right;
+	margin-top: 10px;
+	min-width: 100px;
+	
+}
+.pb20{
+	padding-bottom: 20px;
+}

@@ -1,5 +1,7 @@
 package com.mlx.guide.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -17,8 +19,16 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.entity.GuideInfo;
+import com.mlx.guide.entity.GuideIntro;
+import com.mlx.guide.entity.GuideLine;
+import com.mlx.guide.entity.GuideService;
+import com.mlx.guide.entity.GuideStrategy;
 import com.mlx.guide.model.GuideInfoModel;
 import com.mlx.guide.service.GuideInfoService;
+import com.mlx.guide.service.GuideIntroService;
+import com.mlx.guide.service.GuideLineService;
+import com.mlx.guide.service.GuideServiceService;
+import com.mlx.guide.service.GuideStrategyService;
 
 
 /**
@@ -35,6 +45,19 @@ public class GuideUserInfoAdminController {
 	
 	@Autowired
 	private GuideInfoService guideInfoService;
+	
+	
+	@Autowired
+	private GuideLineService guideLineService;
+	
+	@Autowired
+	private GuideServiceService guideServiceService;
+	
+	@Autowired
+	private GuideIntroService guideIntroService;
+	
+	@Autowired
+	private GuideStrategyService guideStrategyService;
 	
 	@ModelAttribute
 	public void common(Model model) {
@@ -92,12 +115,24 @@ public class GuideUserInfoAdminController {
 	 * @return
 	 */
 	@RequestMapping("/detail")
-	public String detail(@RequestParam(required=true)Long id,HttpServletRequest request, Model model){
+	public String detail(@RequestParam(required=true)String userNo,HttpServletRequest request, Model model){
 		try {
-			GuideInfo guideInfo=guideInfoService.selectByPrimaryKey(id);
 			model.addAttribute( "guide_listclass", Const.MENU_SUB );
+			GuideInfo guideInfo=guideInfoService.getGuideInfoByUserNo(userNo);
+			//导游详情
 			model.addAttribute("guideInfo",guideInfo);
-			
+			//地陪
+			List<GuideService> guideServiceList=guideServiceService.getGuideServiceByUserNo(userNo);
+			model.addAttribute("guideServiceList",guideServiceList);
+			//线路
+			List<GuideLine> guideLineList=guideLineService.getGuideLineByUserNo(userNo);
+			model.addAttribute("guideLineList",guideLineList);
+			//故事
+			GuideIntro guideIntro=guideIntroService.getGuideIntroByUserNo(userNo);
+			model.addAttribute("guideIntro",guideIntro);
+			//攻略
+			List<GuideStrategy> guideStrategyList=guideStrategyService.getGuideStrategyByUserNo(userNo);
+			model.addAttribute("guideStrategyList",guideStrategyList);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
