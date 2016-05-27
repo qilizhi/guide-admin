@@ -19,6 +19,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <meta content="" name="description" />
 <meta content="" name="author" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
 <link rel="shortcut icon"
 	href="http://www.mlxing.com/static/images/favicon.ico" />
 <%@ include file="header.jsp"%>
