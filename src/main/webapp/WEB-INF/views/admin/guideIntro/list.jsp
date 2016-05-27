@@ -13,6 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>导游故事</title>
+<link href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
 <link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -39,7 +40,7 @@
 		<input type="hidden" name="pageNo" value="1">
 		<div class="pull-right">
 		<span class="pull-left" style="line-height:30px;margin-right:20px;">上线时间:</span>
-		<div class="input-group date date-picker pull-left"  data-date-format="yyyy-mm-dd"  style="width:200px">
+		<%-- <div class="input-group date date-picker pull-left"  data-date-format="yyyy-mm-dd"  style="width:200px">
               <input type="text" class="form-control form-filter input-sm" readonly="readonly" placeholder="开始时间" name="startTime" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error" value="${guideIntroModel.startTime}">
               <span class="input-group-btn">
                   <button class="btn default" type="button" style="line-height: 17px;">
@@ -55,7 +56,13 @@
                       <i class="fa fa-calendar "></i>
                   </button>
               </span>
-          </div>
+          </div> --%>
+          <div class="input-group input-large date-picker input-daterange pull-left " data-date="2015-5-10" 
+				data-date-format="yyyy-mm-dd" data-date-language="zh-CN"  >
+				<input type="text" class="WdatePicker form-control input-sm" name="startTime" placeholder="开始时间" value="${guideIntroModel.startTime}"> 
+				<span class="input-group-addon"> 至 </span> 
+				<input type="text" class="WdatePicker form-control input-sm" name="endTime" placeholder="结束时间" value="${guideIntroModel.endTime}">
+			</div>
           
          <input type="text" class="form-filter input-sm pull-left ml10" placeholder="标题" name="title" value="${guideIntroModel.title }">
 		 <input type="text" class="form-filter input-sm pull-left ml10" placeholder="作者" name="userName" value="${guideIntroModel.userName }">
@@ -95,7 +102,7 @@
 									<tr>
 									    <td class="add" onclick="toggleDetail(this)"></td>
 										<td>${item.title }</td>
-										<td><a href="${item.imgUrl }" title="背景图片" ><img src="${item.imgUrl }" alt="加载中.." width="80px"></a></td>
+										<td><img src="${item.imgUrl }"   data-preview='true' alt="加载中.." width="80px"></td>
 										<td>${item.userName}</td>
 										<td><fmt:formatDate value="${item.createTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td><fmt:formatDate value="${item.updateTime }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -220,12 +227,9 @@
 			</div>
 		</div>
 	</div>
-	<script
-		src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
-		type="text/javascript"></script>
-	
-	
-	<script src="${ctx}/static/assets/pages/scripts/form-validation.min.js"></script>
+	<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script> 
+	<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
+	<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="${ctx}/static/js/handle.js"></script>
 	<tg:pagination searchFormId="searchForm" paginator="${paginator}"/>
 	
@@ -266,7 +270,13 @@
 	     
 	     })
 	     }
-	    
+	     $(function(){
+	    	 $('.date-picker').datepicker({
+	             rtl: App.isRTL(),
+	             autoclose: true
+	         });
+	    	
+	    });
 	     
 	     
 	    

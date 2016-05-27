@@ -365,9 +365,9 @@
 									<%--       <li class="${system_roleuserclass}">
                                             <a href="#"><i class="icon-docs"></i>用户权限分配 </a>
                                         </li> --%>
-									<li class="${system_userclass}"><a
+									<%-- <li class="${system_userclass}"><a
 										href="${ctx}/admin/sysUser/list"><i class="icon-docs"></i>
-											系统通知 </a></li>
+											系统通知 </a></li> --%>
 									<li class="${system_noticeclass}"><a
 										href="${ctx}/admin/sysNotice"><i class="icon-docs"></i>
 											平台公告 </a></li>

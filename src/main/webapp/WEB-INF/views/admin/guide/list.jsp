@@ -30,69 +30,7 @@
 				<div class="portlet-body">
 					<form:form id="searchForm" action="${ctx}/admin/guideUserInfo/list" modelAttribute="guideInfoModel" method="post" >
 						<div class="row">
-						<%--<div class="col-md-12" >
-						 <table class="search-table">
-						 <tr>
-						   <th>姓名：</th>
-						    <td> <form:input path="realName" placeholder="姓名" cssClass="form-filter input-sm"/></td>
-						    
-						  <th>身份证号码：</th>
-						 <td><form:input path="idCard" cssClass="form-filter input-sm"  placeholder="身份证号码"/></td>
-						 </tr>
-						  <tr>
-						   <th>导游证号：</th>
-						    <td>
-						    <form:input path="guideCardNo" cssClass="form-filter input-sm" placeholder="导游证号"/>
-						    </td>
-						     
-						    <th>审核状态：</th>
-						      <td>
-						       <label for="audit1"><form:radiobutton path="auditStatus" value="1" id="audit1"/>待审核</label>&nbsp;&nbsp;
-						       <label for="audit2"><form:radiobutton path="auditStatus" value="2" id="audit2"/>已通过</label>&nbsp;&nbsp;
-						       <label for="audit3"> <form:radiobutton path="auditStatus" value="3" id="audit3"/>不通过</label>
-						     </td>
-						 </tr>
-						 <tr>
-						 <th>导游状态：</th>
-						      <td>
-						   
-				         <label for="status1"><form:radiobutton path="status" value="1" id="status1"/>正常</label>&nbsp;&nbsp;
-						       <label for="status2"><form:radiobutton path="status" value="2" id="status2"/>禁止</label>&nbsp;&nbsp; 
-						      </td>
-						 <th>创建时间：</th>
-						    <td>
-						    <div class="input-group date date-picker pull-left"  data-date-format="yyyy-mm-dd"  style="width:200px">
-                                                        <input type="text" class="form-control " readonly="readonly" placeholder="开始时间" name="startTime" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error" value="${guideInfo.startTime}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                    <span class="pull-left" style="margin-top:7px;">—</span>
-                                                    <div class="input-group date date-picker pull-left" data-date-format="yyyy-mm-dd" style="width:200px">
-                                                        <input type="text" class="form-control" readonly="readonly"  placeholder="结束时间" name="endTime" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error" value="${guideInfo.endTime}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-						  </td>
-						 </tr>
-						 
-						</table> 
-					
-								<button type="button"  onclick="formReset();"
-									class="btn btn-sm green btn-outline margin-bottom pull-right m10 ">
-									<i class="fa fa-mail-reply-all"></i> 重置
-								</button>
-									
-								<button type="submit" 
-									class="btn btn-sm green btn-outline margin-bottom pull-right m10 ">
-									<i class="fa fa-search"></i> 搜索
-								</button>
-						</div>--%>
+						
 							<input type="hidden" name="pageNo" value="1">
 							<div class="col-md-12">
 								<select name="pageSize"
@@ -194,9 +132,9 @@
 									     <li><strong>标签:</strong>${item.tag}</li>
 									     <li><strong>身份证:</strong>${item.idCard}</li>
 									     <li><strong>工作年限:</strong>${item.workYear}</li>
-									     <li><strong>背景图:</strong><a href="${item.bgImgUrl}" target="_blank"><img src="${item.bgImgUrl }" width="120px" alt="加载中.." title="背景图"/></a>
-									                     <strong>身份证正面:</strong><a href="${item.idCardFrontPic}" target="_blank"><img src="${item.idCardFrontPic }" width="120px" alt="加载中.." title="身份证正面"/></a>
-									           <strong>身份证反面:</strong><a href="${item.idCardSidePic}" target="_blank"><img src="${item.idCardSidePic }" width="120px" alt="加载中.." title="身份证正面"/></a>
+									     <li><strong>背景图:</strong><img src="${item.bgImgUrl }"  data-preview='true' width="120px" alt="加载中.." title="背景图"/>
+									                     <strong>身份证正面:</strong><img src="${item.idCardFrontPic }"  data-preview='true' width="120px" alt="加载中.." title="身份证正面"/>
+									           <strong>身份证反面:</strong><img src="${item.idCardSidePic }"  data-preview='true' width="120px" alt="加载中.." title="身份证正面"/>
 									     </li>
 									     <li><strong>简介:</strong>${item.intro }</li>
 									   </ul>
