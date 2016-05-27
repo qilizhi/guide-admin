@@ -38,8 +38,8 @@
 
 <title>创建行程</title>
 	<!-- 验证框架 -->
-	<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+	<%-- <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script> --%>
 
 
 
@@ -251,10 +251,6 @@
 	 });
 	 
 	 
-	 $(function(){
-		$("#form_sample_3").validate() ;
-		
-	 });
 	 
 	 
 	</script>

@@ -29,6 +29,9 @@
 	padding: 0;
 }
 </style>
+<!-- fancybox -->
+<link href="${ctx}/static/css/fancybox.css" rel="stylesheet" type="text/css" />
+
 <script src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js" type="text/javascript"></script>
 <script src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js" type="text/javascript"></script>
 <script src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js" type="text/javascript"></script>
@@ -40,7 +43,9 @@
 <script type="text/javascript" src="${ctx}/static/assets/global/plugins/bootstrap-select/js/i18n/defaults-zh_CN.min.js"></script>
 <!-- 验证框架 -->
 <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>	
+<!-- fancybox -->
+<script type="text/javascript" src="${ctx}/static/js/jquery.fancybox-1.3.1.pack.js"></script>
 </head>
 
 <body>
@@ -100,10 +105,11 @@
 						<div class="col-xs-2 line-img">
 							<div class="thumbnail relative">
 								<input type="hidden" name="imgUrl" value="${guideStrategy.imgUrl }"/>
-										<img id="image"  alt="" src="${guideStrategy.imgUrl }" class="img-thumbnail"> <span
+									<a class="grouped_elements" rel="group" href="${guideStrategy.imgUrl }">
+										<img id="image"  alt="" src="${guideStrategy.imgUrl }" class="img-thumbnail"/></a> <span
 											class="btn green fileinput-button pading"> <i
 											class="fa fa-plus"></i> <span id="load">上传 </span> <input
-											class="imgUpload" type="file" name="files[]" multiple>
+											class="imgUpload" type="file" name="files[]" multiple />
 										</span>
 									</div>
 									<div class="col-lg-7" id="supprogress">
@@ -184,43 +190,33 @@
 			initImgUpload();
 			initUEeditor();
 			handleValidation3();
+			//初始化fancyBox
+			$("a.grouped_elements").fancybox();
 		
 		})
 		//上传图片
 		var initImgUpload = function() {
 
 			$("#supprogress").css('display', "none");
-			$('.imgUpload').on(
-					'change',
-					function(e) {
+			$('.imgUpload').on('change',function(e) {
 						var files = this.files;
 						var fullname = $(this).val();
-						$("#imageName")
-								.html(
-										fullname.substring(fullname
-												.lastIndexOf("\\") + 1));
+						$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
 						$("#supprogress").css('display', "block");
 						$("#image").attr("src", "");
 					})
-			$('.imgUpload').fileupload(
-					{
+			$('.imgUpload').fileupload({
 
 						dataType : 'json',
 						url : '${ctx}/upload',
 						progressall : function(e, data) {
-							var progress = parseInt(data.loaded / data.total
-									* 100, 10);
+							var progress = parseInt(data.loaded / data.total * 100, 10);
 							var $progressBar=$('#supprogress .progress .progress-bar-success');
-							if(progress==100){
-								$progressBar.css('width',
-									(progress-1) + '%');
-							$progressBar.text(
-									(progress-1) + '%');
+							if(progress==100){$progressBar.css('width',(progress-1) + '%');
+							$progressBar.text((progress-1) + '%');
 							}else{
-								$progressBar.css('width',
-										progress + '%');
-								$progressBar.text(
-										progress + '%');
+								$progressBar.css('width',progress + '%');
+								$progressBar.text(progress + '%');
 							}
 						},
 
@@ -230,12 +226,12 @@
 								var imgUrl=data.result.result[0].filePath;
 								$("input[name='imgUrl']").val(imgUrl);
 								$("#image").attr("src",imgUrl);
+								$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
 								$("#load").html("重传");
 							} else {
-								$('.progress .progress-bar-success').text(
-										data.result.msg);
+								$('.progress .progress-bar-success').text(data.result.msg);
 							}
-							console.log(data);
+							//console.log(data);
 							$('.progress .progress-bar-success').text("done");
 						}
 					});
@@ -255,10 +251,12 @@
 	                ignore: "", // validate all fields including form hidden input
 	                rules: {
 	                    title: {
-	                        required: true
+	                        required: true,
+	                        maxlength:50
 	                    }, 
 	                    description: {
-	                        required: true
+	                        required: true,
+	                        maxlength:50
 	                    },
 	                    sort: {
 	                        required: true,
@@ -266,7 +264,8 @@
 	                        maxlength:10
 	                    },
 	                    recommendInfo: {
-	                        required: true
+	                        required: true,
+	                        maxlength:100
 	                    },
 	                    relatLineNo: {
 	                    	required: true
@@ -276,9 +275,11 @@
 	                messages: { // custom messages for radio buttons and checkboxes
 	                	title: {
 	                        required: "不能为空",
+	                        maxlength:"最多输入50个汉字"
 	                    },
 	                    description: {
 	                        required: "不能为空",
+	                        maxlength:"最多输入100个汉字"
 	                    },
 	                    sort: {
 	                        required: "不能为空",
@@ -286,7 +287,8 @@
 	                        maxlength:"最多输入10位数"
 	                    },
 	                    recommendInfo: {
-	                    	required: "不能为空"
+	                    	required: "不能为空",
+	                    	maxlength:"最多输入100个汉字"
 	                    },
 	                    relatLineNo: {
 	                    	required: "不能为空"
