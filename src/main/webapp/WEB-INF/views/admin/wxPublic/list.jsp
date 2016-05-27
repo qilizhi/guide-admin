@@ -85,7 +85,7 @@
 									<tr >
 										 <td class="add" onclick="toggleDetail(this)"></td>
 										<td>${item.name}</td>
-										<td><a href="${item.iconUrl }" target="_blank"><img src="${item.iconUrl }" width="70px" title=" ${item.name }" alt="加载中.."></a></td>
+										<td><img src="${item.iconUrl }"  data-preview='true' width="70px" title=" ${item.name }" alt="加载中.."></td>
 										<td>${item.appId}</td>
 										<td>${item.appSecret}</td>
 										<td><fmt:formatDate value="${item.createTime}"

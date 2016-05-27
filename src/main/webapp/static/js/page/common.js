@@ -196,3 +196,24 @@ $.ajaxSetup({
 });
 
 comm.init();
+
+//图片放大预览,使用方式,在img标签上面,添加 data-preview='true'
+$(function(){
+   var $img_list=$("img[data-preview]");
+	$img_list.css("cursor", "pointer")
+  $img_list.on("click",function(){
+  $(".js-prewimg").remove();
+   var img=document.createElement("img");
+   img.className="img-thumbnail js-prewimg";
+   img.src=this.src;
+   var cssJson={"position":"fixed","top":"40%","left":"50%","width":"400px","zIndex":"999","marginLeft":"-200px", "boxShadow":"0 2px 10px rgba(0, 0, 0, .5), 0 2px 3px rgba(0, 0, 0, .5)"}
+   var $img=$(img);
+    $img.css(cssJson);
+    document.body.appendChild(img);    
+})
+document.onclick=function(e){
+  if(!(e.target.className=='img-thumbnail js-prewimg'||e.target.getAttribute("data-preview")!=null)){
+	  $(".js-prewimg").remove();
+  };
+}
+});
