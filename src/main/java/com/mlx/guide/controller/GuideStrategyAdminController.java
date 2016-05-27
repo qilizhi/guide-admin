@@ -28,33 +28,38 @@ import com.mlx.guide.constant.EFlag;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideStrategy;
+import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.GuideStrategyService;
 import com.mlx.guide.util.StringUtil;
 
-@RequestMapping(value="/admin/guideStrategy")
+@RequestMapping(value = "/admin/guideStrategy")
 @Controller
 public class GuideStrategyAdminController {
-	
-	private static Logger logger = LoggerFactory.getLogger( GuideStrategyAdminController.class );
-	
+
+	private static Logger logger = LoggerFactory.getLogger(GuideStrategyAdminController.class);
+
 	@Autowired
 	private GuideStrategyService guideStrategyService;
-	
+	@Autowired
+	private GuideInfoService guideInfoService;
+
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
+	 * 
 	 * @param menuBar
 	 * @param model
 	 */
 	@ModelAttribute
 	public void common(Model model) {
-		model.addAttribute( "contentclass", Const.MENU_FIRST );
-		model.addAttribute( "content_strategyclass", Const.MENU_SUB );
+		model.addAttribute("contentclass", Const.MENU_FIRST);
+		model.addAttribute("content_strategyclass", Const.MENU_SUB);
 		model.addAttribute("EStatus", EStatus.getMap());
 		model.addAttribute("EAuditStatus", EAuditStatus.getMap());
 	}
-	
+
 	/**
 	 * 列表
 	 * 
@@ -67,14 +72,14 @@ public class GuideStrategyAdminController {
 	 */
 	@RequestMapping(method = { RequestMethod.GET, RequestMethod.POST })
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, GuideStrategy guideStrategy,
-			HttpServletRequest request, Model model) {
+			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize,
+			GuideStrategy guideStrategy, HttpServletRequest request, Model model) {
 		// 获取当前用户
-		//ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		// ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 			guideStrategy.setFlag(EFlag.VALID.getId());
-			//guideStrategy.setUserNo(shiroUser.getUserNo());
-			//guideStrategy.setUserNo("qilizhi");
+			// guideStrategy.setUserNo(shiroUser.getUserNo());
+			// guideStrategy.setUserNo("qilizhi");
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 			PageList<GuideStrategy> list = guideStrategyService.getGuideStrategyPageList(guideStrategy, pageBounds);
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
@@ -84,15 +89,33 @@ public class GuideStrategyAdminController {
 			model.addAttribute("status", guideStrategy.getStatus());
 			model.addAttribute("auditStatus", guideStrategy.getAuditStatus());
 			model.addAttribute("pageSize", pageSize);
-		
+
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 		return "admin/strategy/list";
 	}
 
-	
-	
+	/**
+	 * 查询导游用户列表下拉树。
+	 * 
+	 * @param guideInfo
+	 * @return
+	 */
+	@RequestMapping(value = "/guide/list", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonResult getUserList(GuideInfo guideInfo) {
+
+		List<GuideInfo> guides = new ArrayList<GuideInfo>();
+		try {
+			guides = guideInfoService.getGuideInfoList(guideInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("获取用户出错：" + e.getMessage());
+		}
+		return new JsonResult(ExceptionCode.SUCCESSFUL, guides);
+	}
+
 	/**
 	 * 编辑页面跳转
 	 */
@@ -102,8 +125,7 @@ public class GuideStrategyAdminController {
 		model.addAttribute("item", gs);
 		return "/admin/strategy/detail";
 	}
-	
-	
+
 	/**
 	 * 上下线功能。
 	 * 
@@ -117,9 +139,9 @@ public class GuideStrategyAdminController {
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
-		
-		//检查是否审核通过
-		if(guideStrategyService.getGuideStrategyByPrimaryKey(id).getAuditStatus()!=EAuditStatus.AUDIT_OK.getId()){
+
+		// 检查是否审核通过
+		if (guideStrategyService.getGuideStrategyByPrimaryKey(id).getAuditStatus() != EAuditStatus.AUDIT_OK.getId()) {
 			return new JsonResult(ExceptionCode.FAIL, "审核不通过不能上线！");
 		}
 		GuideStrategy gs = new GuideStrategy();
@@ -150,8 +172,9 @@ public class GuideStrategyAdminController {
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
-		
-		if(EAuditStatus.AUDIT_NOSUBMIT.getId()==guideStrategyService.getGuideStrategyByPrimaryKey(id).getAuditStatus()){
+
+		if (EAuditStatus.AUDIT_NOSUBMIT.getId() == guideStrategyService.getGuideStrategyByPrimaryKey(id)
+				.getAuditStatus()) {
 			return new JsonResult(ExceptionCode.FAIL, "未提交审核，不能审核");
 		}
 		GuideStrategy gs = new GuideStrategy();
@@ -186,13 +209,13 @@ public class GuideStrategyAdminController {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
 		String[] idsArray = ids.split(",");
-		List<Integer> idsInteger=new ArrayList<Integer>();
-		for(String id:idsArray){
-			if(id!=null&&!id.equals(""))
-			idsInteger.add(Integer.parseInt(id));
+		List<Integer> idsInteger = new ArrayList<Integer>();
+		for (String id : idsArray) {
+			if (id != null && !id.equals(""))
+				idsInteger.add(Integer.parseInt(id));
 		}
 		// 标志删除
-		
+
 		try {
 			guideStrategyService.deleteGuideStrategyBitch(idsInteger);
 		} catch (Exception e) {
@@ -203,7 +226,7 @@ public class GuideStrategyAdminController {
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
- 
+
 	/**
 	 * 编辑
 	 * 
@@ -211,171 +234,174 @@ public class GuideStrategyAdminController {
 	 * @return
 	 */
 
-	@RequestMapping( value = "edit/{id}", method = RequestMethod.GET )
-	public String edit( @PathVariable( value = "id" ) Integer id, Model model ) {
-		GuideStrategy guideStrategy = guideStrategyService.getGuideStrategyByPrimaryKey( id );
-		model.addAttribute("guideStrategy",guideStrategy);
+	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
+	public String edit(@PathVariable(value = "id") Integer id, Model model) {
+		GuideStrategy guideStrategy = guideStrategyService.getGuideStrategyByPrimaryKey(id);
+		model.addAttribute("guideStrategy", guideStrategy);
 		model.addAttribute("statusMap", EStatus.getMap());
 		model.addAttribute("flagMap", EFlag.getMap());
 		model.addAttribute("auditStatusMap", EAuditStatus.getMap());
-		model.addAttribute("operaTitle","编辑");
-		return "admin/strategy/edit";
+		model.addAttribute("operaTitle", "编辑");
+		return "admin/strategy/create";
 	}
-	
+
 	/**
 	 * 保存信息
+	 * 
 	 * @param model
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping( value = "/save", method = RequestMethod.POST)
-	public String save( GuideStrategy guideStrategy) {	
-		if( guideStrategy == null ){
-			return null; 
+	@RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
+	public String save(GuideStrategy guideStrategy) {
+		if (guideStrategy == null) {
+			return null;
 		}
 		try {
-			if(guideStrategy.getId() != null && guideStrategy.getId() != 0){
+			if (guideStrategy.getId() != null && guideStrategy.getId() != 0) {
 				guideStrategy.setUpdateTime(new Date());
-				guideStrategyService.updateGuideStrategySelective( guideStrategy );
-			}else{
+				guideStrategyService.updateGuideStrategySelective(guideStrategy);
+			} else {
 				guideStrategy.setStatus(EStatus.EDIT.getId());
 				guideStrategy.setCreateTime(new Date());
 				guideStrategy.setUpdateTime(new Date());
 				guideStrategy.setFlag(EFlag.VALID.getId());
 				guideStrategy.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
-				guideStrategyService.createGuideStrategy( guideStrategy );
+				guideStrategyService.createGuideStrategySelective(guideStrategy);
 			}
 			return "redirect:/admin/guideStrategy";
-        }
-        catch( Exception e ) {
-	        logger.error( e.getMessage(), e );
-	        return null;
-        }
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		}
 	}
-   
-   /**
+
+	/**
 	 * 创建
 	 * 
 	 * @param model
 	 * @return
 	 */
-    @RequestMapping(value="/create", method = RequestMethod.GET )
-    public String create( Model model ){
-    	model.addAttribute("operaTitle","新增");
-        return "admin/strategy/create";
-    }
-	
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public String create(Model model) {
+		model.addAttribute("operaTitle", "新增");
+		return "admin/strategy/create";
+	}
+
 	/**
 	 * 序号修改
+	 * 
 	 * @param id
 	 * @param sort
 	 * @return
 	 */
-	@RequestMapping( value = "updateSort/{id}" )
+	@RequestMapping(value = "updateSort/{id}")
 	@ResponseBody
-	public JsonResult updateSort( @PathVariable( value = "id" ) Integer id,@RequestParam Integer sort) {
+	public JsonResult updateSort(@PathVariable(value = "id") Integer id, @RequestParam Integer sort) {
 		JsonResult ajaxResult = null;
 		GuideStrategy guideStrategy = new GuideStrategy();
-		guideStrategy.setId( id );
-		guideStrategy.setSort( sort );
+		guideStrategy.setId(id);
+		guideStrategy.setSort(sort);
 		try {
-			guideStrategyService.updateGuideStrategySelective( guideStrategy );
-			ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL );
-        }
-        catch( Exception e ) {
-	        logger.error( e.getMessage(), e );
-	        ajaxResult = new JsonResult( ExceptionCode.FAIL,"内部出现错误" );
-        }
+			guideStrategyService.updateGuideStrategySelective(guideStrategy);
+			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ajaxResult = new JsonResult(ExceptionCode.FAIL, "内部出现错误");
+		}
 		return ajaxResult;
-	}	
-    
+	}
+
 	/**
 	 * 删除
 	 * 
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping( value = "delete/{id}", method = RequestMethod.POST , produces = MediaType.APPLICATION_JSON_VALUE  )
+	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public JsonResult delete( @PathVariable( value = "id" ) Integer id ) {
+	public JsonResult delete(@PathVariable(value = "id") Integer id) {
 		JsonResult ajaxResult = null;
 		try {
-		    guideStrategyService.deleteGuideStrategy( id );
-			ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL );
+			guideStrategyService.deleteGuideStrategy(id);
+			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL);
 		} catch (Exception e) {
-			logger.error( e.getMessage(),e );
-			ajaxResult = new JsonResult( ExceptionCode.FAIL, e.getMessage() );
+			logger.error(e.getMessage(), e);
+			ajaxResult = new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
-        return ajaxResult;
+		return ajaxResult;
 	}
-    
-   /**
+
+	/**
 	 * 批量删除
 	 * 
-	 * @param ids id集合,例如:1,2,3,4
+	 * @param ids
+	 *            id集合,例如:1,2,3,4
 	 * @return
 	 */
-    @RequestMapping(value="/deletes/{ids}", method = RequestMethod.POST , produces = MediaType.APPLICATION_JSON_VALUE )
+	@RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-    public JsonResult delete(@PathVariable String ids){
+	public JsonResult delete(@PathVariable String ids) {
 		JsonResult ajaxResult = null;
 		try {
-		    List<Integer> idList = StringUtil.generateListInteger(ids);
+			List<Integer> idList = StringUtil.generateListInteger(ids);
 			guideStrategyService.deleteGuideStrategyBitch(idList);
-			ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL );
+			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL);
 		} catch (Exception e) {
-			logger.error( e.getMessage(),e );
-			ajaxResult = new JsonResult( ExceptionCode.FAIL, e.getMessage() );
+			logger.error(e.getMessage(), e);
+			ajaxResult = new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
-        return ajaxResult;
-    }
-    
+		return ajaxResult;
+	}
+
 	/**
 	 * 单个审核
 	 * 
-	 * @param id 例如:1
-	 * @param auditRemark 审核备注说明
-	 * @param auditStatus 审核状态
+	 * @param id
+	 *            例如:1
+	 * @param auditRemark
+	 *            审核备注说明
+	 * @param auditStatus
+	 *            审核状态
 	 * @return
 	 */
-/*	@ResponseBody
-	@RequestMapping( value = "/audit/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE )
-	public JsonResult audits( @PathVariable int id, @RequestParam String auditRemark, @RequestParam Integer auditStatus ) {
-		JsonResult ajaxResult = null;
-		try {
-		    guideStrategyService.updateAuditStatusBitch( auditRemark, auditStatus, id );
-			ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL );
-		} catch (Exception e) {
-			logger.error( e.getMessage(),e );
-			ajaxResult = new JsonResult( ExceptionCode.FAIL, e.getMessage() );
-		}
-        return ajaxResult;
-	} */     
-    
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping( value = "/audit/{id}", method = RequestMethod.POST,
+	 * produces = MediaType.APPLICATION_JSON_VALUE ) public JsonResult
+	 * audits( @PathVariable int id, @RequestParam String
+	 * auditRemark, @RequestParam Integer auditStatus ) { JsonResult ajaxResult
+	 * = null; try { guideStrategyService.updateAuditStatusBitch( auditRemark,
+	 * auditStatus, id ); ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL
+	 * ); } catch (Exception e) { logger.error( e.getMessage(),e ); ajaxResult =
+	 * new JsonResult( ExceptionCode.FAIL, e.getMessage() ); } return
+	 * ajaxResult; }
+	 */
+
 	/**
 	 * 批量审核
 	 * 
-	 * @param ids id集合,例如:1,2,3,4
-	 * @param auditRemark 审核备注说明
-	 * @param auditStatus 审核状态
+	 * @param ids
+	 *            id集合,例如:1,2,3,4
+	 * @param auditRemark
+	 *            审核备注说明
+	 * @param auditStatus
+	 *            审核状态
 	 * @return
 	 */
-	/*@ResponseBody
-	@RequestMapping( value = "/audits", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE )
-	public JsonResult audits( @RequestParam String ids, @RequestParam String auditRemark, @RequestParam Integer auditStatus ) {
-		JsonResult ajaxResult = null;
-		try {
-			int[] lsIds = StringUtil.generateIntArray( ids );
-			if(lsIds == null){
-				return new JsonResult( ExceptionCode.FAIL, "id参数出现错误" );
-			}
-		    guideStrategyService.updateAuditStatusBitch( auditRemark, auditStatus, lsIds );
-			ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL );
-		} catch (Exception e) {
-			logger.error( e.getMessage(),e );
-			ajaxResult = new JsonResult( ExceptionCode.FAIL, e.getMessage() );
-		}
-        return ajaxResult;
-	}    
-    */
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping( value = "/audits", method = RequestMethod.POST, produces
+	 * = MediaType.APPLICATION_JSON_VALUE ) public JsonResult
+	 * audits( @RequestParam String ids, @RequestParam String
+	 * auditRemark, @RequestParam Integer auditStatus ) { JsonResult ajaxResult
+	 * = null; try { int[] lsIds = StringUtil.generateIntArray( ids ); if(lsIds
+	 * == null){ return new JsonResult( ExceptionCode.FAIL, "id参数出现错误" ); }
+	 * guideStrategyService.updateAuditStatusBitch( auditRemark, auditStatus,
+	 * lsIds ); ajaxResult = new JsonResult( ExceptionCode.SUCCESSFUL ); } catch
+	 * (Exception e) { logger.error( e.getMessage(),e ); ajaxResult = new
+	 * JsonResult( ExceptionCode.FAIL, e.getMessage() ); } return ajaxResult; }
+	 */
 }

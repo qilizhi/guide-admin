@@ -102,7 +102,7 @@
 					</div>
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
-					<form action="${ctx }/guideAdmin/trip/save" id=form_sample_3
+					<form action="${ctx }/admin/trip/save?startDate=${startDate}&endDate=${endDate}" id=form_sample_3
 						class="form-horizontal" method="post"
 						enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${guideLineTrip.id }" />
@@ -117,8 +117,6 @@
 							</div>
 							
 							<input type="hidden" name="lineNo" value="${lineNo}"/>
-							<input type="hidden" name="startDate" value="${startDate}"/>
-							<input type="hidden" name="endDate" value="${endDate}"/>
 							<div class="tab-pane" id="tab3">
 						 		
 									<table id="test" class="table table-striped table-bordered">
@@ -156,10 +154,10 @@
 											 </td>
 											 <td align="center" class="js-num" width="80">
 											 <input type="text" class="js-day" name="guideLineTrips[${st.index}].day" id="day" value='${item.day}' readonly required ></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].address" id="address" value='${item.address}' required ></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].traffic" id="traffic" value='${item.traffic}' required ></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].hotel" id="hotel" value='${item.hotel}' required ></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].tripDetail" id="tripDetail" value='${item.tripDetail}' required ></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].address" id="address" value='${item.address}' required></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].traffic" id="traffic" value='${item.traffic}' required></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].hotel" id="hotel" value='${item.hotel}' required></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].tripDetail" id="tripDetail" value='${item.tripDetail}' required></td>
 											 <td>
 											 <a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
 											 <a class="btn blue btn-outline" name="addBtn" onClick="delRow(this,${item.id});">删除</a>
@@ -176,7 +174,7 @@
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
 										<a class="btn btn-primary btn-sm btn-success" 
-										href="${ctx}/guideAdmin/line/backToPrice/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
+										href="${ctx}/admin/guideLine/backToPrice/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
 											
 										<button type="submit" class="btn btn-primary btn-sm btn-success">下一步</button>
 								</div>
@@ -228,7 +226,7 @@
 		  		$(el).val(i+1);
 		  	});
 		  	if(id!=undefined){
-			  	$.post("${ctx}/guideAdmin/trip/delete/"+id,function(data){
+			  	$.post("${ctx}/admin/trip/delete/"+id,function(data){
 			  		//console.log(data);
 			  		comm.infoMsg(data.msg);
 			  	});
@@ -246,124 +244,6 @@
 			 return true;
 		 } 
 	 });
-	 
-	 
-	 
-	//验证框架
-	  var handleValidation3 = function() {	
-      var form3 = $('#form_sample_3');
-      var error3 = $('.alert-danger', form3);
-      var success3 = $('.alert-success', form3);
-
-    
-      form3.validate({
-          errorElement: 'span', //default input error message container
-          errorClass: 'help-block help-block-error', // default input error message class
-          focusInvalid: false, // do not focus the last invalid input
-          ignore: "", // validate all fields including form hidden input
-          rules: {
-              title: {
-                  required: true
-              },  
-              price: {
-                  required: true,
-                  number:true,
-                  maxlength:10
-              },
-              description: {
-                  required: true
-              },
-              sort: {
-                  required: true,
-                  digits:true,
-                  maxlength:10
-              },
-              remark: {
-                  required: true
-              },
-              content1: {
-                  required: true
-              }
-          },
-
-          messages: { // custom messages for radio buttons and checkboxes
-          	title: {
-                  required: "不能为空",
-              },
-              price: {
-                  required: "不能为空",
-                  number:"请输入合法数字",
-                  maxlength:"最多输入10位数"
-              },
-              description: {
-                  required: "不能为空",
-              },
-              sort: {
-                  required: "不能为空",
-                  digits:"请输入整数",
-                  maxlength:"最多输入10位数"
-              },
-              remark: {
-              	required: "不能为空"
-              },
-              content1: {
-              	required: "攻略内容不能为空"
-              }
-          },
-
-          errorPlacement: function (error, element) { // render error placement for each input type
-              if (element.parent(".input-group").size() > 0) {
-                  error.insertAfter(element.parent(".input-group"));
-              } else if (element.attr("data-error-container")) { 
-                  error.appendTo(element.attr("data-error-container"));
-              } else if (element.parents('.radio-list').size() > 0) { 
-                  error.appendTo(element.parents('.radio-list').attr("data-error-container"));
-              } else if (element.parents('.radio-inline').size() > 0) { 
-                  error.appendTo(element.parents('.radio-inline').attr("data-error-container"));
-              } else if (element.parents('.checkbox-list').size() > 0) {
-                  error.appendTo(element.parents('.checkbox-list').attr("data-error-container"));
-              } else if (element.parents('.checkbox-inline').size() > 0) { 
-                  error.appendTo(element.parents('.checkbox-inline').attr("data-error-container"));
-              } else {
-                  error.insertAfter(element); // for other inputs, just perform default behavior
-              }
-          },
-
-          invalidHandler: function (event, validator) { //display error alert on form submit   
-              success3.hide();
-              error3.show();
-              App.scrollTo(error3, -200);
-          },
-
-          highlight: function (element) { // hightlight error inputs
-             $(element)
-                  .closest('.form-group').addClass('has-error'); // set error class to the control group
-          },
-
-          unhighlight: function (element) { // revert the change done by hightlight
-              $(element)
-                  .closest('.form-group').removeClass('has-error'); // set error class to the control group
-          },
-
-          success: function (label) {
-              label
-                  .closest('.form-group').removeClass('has-error'); // set success class to the control group
-          },
-
-          submitHandler: function (form) {
-              error3.hide();
-              //验证UE编辑器是否为空
-              if(UE.getEditor('editor').hasContents()==false){
-	    		   comm.infoMsg("内容不能为空",null,150);
-	    		   return ;
-	    	   }
-              success3.show();
-              form[0].submit(); // submit the form
-          }
-
-      });
-
-}; 
 	</script>
 
 

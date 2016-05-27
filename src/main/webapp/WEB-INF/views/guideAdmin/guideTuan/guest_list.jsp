@@ -60,7 +60,7 @@
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th scope="col"><input type="checkbox" class=" group-checkable check-all"></th>
+									<!-- <th scope="col"><input type="checkbox" class=" group-checkable check-all"></th> -->
 									<th scope="col">出团编号</th>
 									<th scope="col">成员名称</th>
 									<th scope="col">手机号码</th>
@@ -75,12 +75,12 @@
 							
 								<c:forEach items="${list}" var="item">
 									<tr>
-										<td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td>
+										<%-- <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
 										<td>${item.tuanNo}</td>
 										<td>${item.guestName}</td>
 										<td>${item.mobile}</td>
 										<td>${item.orderNo}</td>
-										<td><fmt:formatDate value="${item.updateTime}"/> </td>
+										<td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd"/></td>
 										<td>${ESignInStatus[item.status]} </td>
 										<td>${item.remark}</td>
 										

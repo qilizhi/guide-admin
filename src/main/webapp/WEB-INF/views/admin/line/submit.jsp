@@ -98,7 +98,7 @@
                        <div class="tab-pane active" id="tab3"></div>
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
-					<form action="${ctx }/guideAdmin/trip/preView/${line.lineNo}" id=form_sample_3
+					<form action="${ctx }/admin/trip/preView/${line.lineNo}" id=form_sample_3
 						class="form-horizontal" method="post"
 						enctype="multipart/form-data">
 						<div class="form-body">
@@ -262,8 +262,7 @@
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
 											<a class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/backToTrip/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
-											
+											href="${ctx}/admin/guideLine/backToTrip/${lineNo}?startDate=${startDate}&endDate=${endDate}" id="btn-save">上一步</a>
 										<button type="submit" class="btn btn-primary btn-sm btn-success">发布</button>
 								</div>
 							</div>

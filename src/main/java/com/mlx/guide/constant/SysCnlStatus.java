@@ -5,19 +5,18 @@ import java.util.Map;
 
 
 
-public enum RefundStatus {
-	O("","请选择"),
-	A("RR","待审核"),
-	B("RC","待退款"),
-	C("RW","退款中"),
-	D("RS","退款成功"),
-	E("F","不通过");
+public enum SysCnlStatus {
+	O("WAP","wap"),
+	A("IOS","苹果"),
+	B("ANDROID","安卓"),
+	C("WEB","网站");
+	
 	
 	private String code;
 	
 	private String name;
 
-	private RefundStatus(String code, String name) {
+	private SysCnlStatus(String code, String name) {
 		this.code = code;
 		this.name = name;
 	}
@@ -41,7 +40,7 @@ public enum RefundStatus {
 	
 	public static Map<String, String> getMap() {
 		Map<String, String> map = new LinkedHashMap<String, String>();
-		for( RefundStatus status : RefundStatus.values() ) {
+		for( SysCnlStatus status : SysCnlStatus.values() ) {
 			map.put(status.getCode(), status.getName() );
 		}
 		return map;

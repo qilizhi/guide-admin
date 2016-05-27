@@ -30,13 +30,13 @@
 						<i class="fa fa-cogs"></i><span
 							class="caption-subject font-dark bold uppercase">攻略列表</span>
 					</div>
-					<%-- <div class="actions">
+					 <div class="actions">
 						<a href="${ctx}/admin/guideStrategy/create"
-							class="btn btn-sm green btn-outline">新增</a> <a
-							href="javascript:;" class="btn btn-sm dark btn-outline">审核</a> <a
+							class="btn btn-sm green btn-outline">新增</a>
+			<%-- <a					href="javascript:;" class="btn btn-sm dark btn-outline">审核</a> <a
 							href="${ctx}/admin/guideStrategy/deletes" target="deletes"
-							class="btn btn-sm red btn-outline">删除</a>
-					</div> --%>
+							class="btn btn-sm red btn-outline">删除</a> --%>
+					</div> 
 				</div>
 				<div class="portlet-body">
 					<form id="searchForm" action="${ctx}/admin/guideStrategy"
@@ -124,9 +124,12 @@
 												pattern="yyyy-MM-dd HH:mm:ss" /></td>
 										<td>${EStatus[item.status]}</td>
 										<td>${EAuditStatus[item.auditStatus]}</td>
-										<td id="${item.id}"><a
-											href="${ctx}/admin/guideStrategy/detail/${item.id}"
-											class="btn btn-sm yellow btn-outline detail">详情</a> <a
+										<td id="${item.id}">
+										<a href="${ctx}/admin/guideStrategy/detail/${item.id}"
+											class="btn btn-sm yellow btn-outline detail">详情</a>
+										<a href="${ctx}/admin/guideStrategy/edit/${item.id}"
+											class="btn btn-sm red btn-outline detail">编辑</a>
+											 <a
 											class="btn btn-sm dark btn-outline audit">审核 </a>
 										<c:if test="${item.status== 3 || item.status==1}">
 												<a status="2" class="btn btn-sm green btn-outline onOff">上线</a>

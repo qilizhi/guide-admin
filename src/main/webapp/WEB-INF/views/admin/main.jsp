@@ -296,7 +296,7 @@
 					</div>
 					<div class="scroller-footer">
 						<div class="btn-arrow-link pull-right">
-							<a href="${admin}admin/guideUserInfo/list?isAuditStatus=true"">查看更多记录</a> <i class="icon-arrow-right"></i>
+							<a href="${ctx}/admin/guideUserInfo/list?isAuditStatus=true"">查看更多记录</a> <i class="icon-arrow-right"></i>
 						</div>
 					</div>
 				</div>
@@ -400,7 +400,7 @@
 					</div>
 					<div class="scroller-footer">
 						<div class="btn-arrow-link pull-right">
-							<a href="${admin}/admin/orderLineInfo">查看更多记录</a> <i class="icon-arrow-right"></i>
+							<a href="${ctx}/admin/orderLineInfo">查看更多记录</a> <i class="icon-arrow-right"></i>
 						</div>
 					</div>
 				</div>

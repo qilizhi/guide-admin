@@ -204,16 +204,15 @@
 
 									<div class="price-condition price-condition-primary">
 										<a class="btn btn-primary btn-sm btn-success"
-											href="javascript:;" id="btn-auto-create-price">生成价格</a> <a
+											id="btn-auto-create-price">生成价格</a> <a
 											class="btn btn-primary btn-sm btn-warning"
 											href="javascript:void(0);"
-											data-url="/travelAgent/routeDatePrice/deleteOrderType"
 											id="btn-clear">清除价格</a> <a
 											class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/save/${guideLine.lineNo}" id="btn-save">保存并下一步</a>
+											href="${ctx}/admin/guideLine/price/save/${guideLine.lineNo}" id="btn-save">保存并下一步</a>
 											
 											<a class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/backToLine/${guideLine.lineNo}" id="btn-save">上一步</a>
+											href="${ctx}/admin/guideLine/backToLine/${guideLine.lineNo}" id="btn-save">上一步</a>
 									</div>
 
 								</div>
@@ -263,8 +262,6 @@
 					safePrice:$.isNumeric($("#safePrice").val()) ? $("#safePrice").val() : 0,
 					visaPrice:$.isNumeric($("#visaPrice").val()) ? $("#visaPrice").val() : 0,
 					num:$.isNumeric($("#num").val()) ? $("#num").val() : 0,
-							
-							
 					beginTime:$("input[type='text'][name='beginTime']").val(),
 					endTime:$("input[type='text'][name='endTime']").val(),
 					weekDays:$weekDays,
@@ -330,7 +327,7 @@
 					var num = $BasePrices.num;	//$(obj).attr("data-num");
 					
 					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
-						if(mlxPrice!=null&&mlxPrice!=''&&mlxPrice!=undefined){
+						if(mlxPrice!=null &&mlxPrice!=''&&mlxPrice!=undefined){
 						var lineDatePrice = {};
 						lineDatePrice.id = id;
 						lineDatePrice.lineNo = routeid;
@@ -344,8 +341,10 @@
 						lineDatePrice.lineDate = date;
 						
 						$routePrices.push(lineDatePrice);	
+						
 					}
 				});
+				console.log($routePrices);
 				return $routePrices;
 			},
 			
@@ -365,7 +364,7 @@
 		
 		
 		var result = ${lineDataPrices};
-		//console.log(result);
+	//	console.log(result);
 		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);
@@ -379,9 +378,7 @@
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
 	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""> </div>'; */
-	        
-	   
-	      
+		
 		 $("#priceCalendar").priceCalendar({
 				showMonthNum: 5, //日历显示月份
 				defaultText:"点击编辑",
@@ -510,7 +507,7 @@
 				
 				//json生成
 				var $data = $mPriceEdit.getRoutePriceData();
-				console.log($data.length);
+				//console.log($data);
 				if($data.length <= 0){
 					comm.infoMsg("请生成日期价格数据",null,150);
 					return;
@@ -524,7 +521,7 @@
 						comm.infoMsg(result.msg);
 						if(result.code === '200'){
 							setTimeout(function(){
-								window.location.href = "${ctx}/guideAdmin/trip?lineNo="+$lineNo+"&startDate="
+								window.location.href = "${ctx}/admin/trip?lineNo="+$lineNo+"&startDate="
 										+$("input[name=beginTime]").val()+"&endDate="+$("input[name=endTime]").val();
 							},1000);
 						}
@@ -594,7 +591,7 @@
 				var $orderType = $('#select-routeOrderType').val();
 				var $supplierId = $("[name='supplierId']").val();
 				var $routeId = $("[name='routeid']").val();
-				var $href = $(this).attr("data-url"); 
+				var $href = $(this).attr("data-url");
 				comm.confirm("提示","您确定要清除该类型价格吗？",function(){
 					//日期选择检查
 					$mPriceEdit.checkDateValid();
@@ -638,7 +635,7 @@
 				    	$("input[name=beginTime]").val("");
 				    	$("input[name=endTime]").val("");
 				    	//初始化日历插件 datepicker
-				        //$('.date-picker').datepicker();
+				        $('.date-picker').datepicker();
 				    	
 					});
 				});

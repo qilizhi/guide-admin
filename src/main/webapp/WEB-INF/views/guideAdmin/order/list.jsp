@@ -28,7 +28,7 @@
 				<div class="portlet-body">
 				<form id="searchForm" action="${ctx}/guideAdmin/guideOrder" method="post">
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-6">
 		<select name="pageSize" class="form-control input-sm input-xsmall input-inline">
 		<%-- <option value="5" <c:if test="${pageSize == 5}">selected</c:if> >5</option> --%>
 		<option value="10" <c:if test="${pageSize == 10}">selected</c:if> >10</option>
@@ -53,22 +53,21 @@
 		</select>
 		</div>
 		<input type="hidden" name="pageNo" value="1">
-		<div class="col-md-2">
+		<div class="col-md-3">
 		<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd">
 			<input type="text" class="form-control" name="startDate" value="${orderModel.startDate}" style="height:30px;"> 
 			<span class="input-group-addon"> to </span> 
 			<input type="text" class="form-control" name="endDate" value="${orderModel.endDate}" style="height:30px;">
+		</div>	
 		</div>
-		</div>
-		<div class="col-md-2" style="text-align: right;">
+		<div class="col-md-3 pull-right" >
 		<input type="text" class="form-filter input-sm" placeholder="订单号" name="orderId" value="${orderModel.orderId}">
 		<%-- <input type="text" class="form-filter input-sm" placeholder="用户名" name="userName" value="${userName}">
 		<input type="text" class="form-filter input-sm" placeholder="手机号码" name="mobile" value="${mobile}"> --%>	
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom">
-		<i class="fa fa-search"></i> 查询</button>
-				
-		</div>		
+		<i class="fa fa-search"></i> 查询</button>	
 		
+	</div>
 	</div>
 	</form>				
 					<div class="table-scrollable">

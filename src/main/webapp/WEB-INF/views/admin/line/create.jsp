@@ -148,8 +148,11 @@
 													class="required"> * </span>
 												</label>
 												<div class="col-md-4">
-													<input type="text" name="description" data-required="1"
-														class="form-control" value="${guideLine.description }" />
+												<%-- 	<input type="text" name="description" data-required="1"
+														class="form-control" value="${guideLine.description }" /> --%>
+														<textarea class="form-control textarea" 
+														name="description" maxlength="1800" rows="8" cols="20"
+														>${guideLine.description  }</textarea>
 												</div>
 											</div>
 											<div class="form-group">
@@ -387,7 +390,7 @@
 					},
 					price : {
 						required : true,
-						digits : true,
+						number : true,
 						maxlength : 10
 					},
 					description : {
@@ -485,7 +488,7 @@
 						return;
 					}
 					success3.show();
-					form[0].submit(); // submit the form
+					form.submit(); // submit the form
 				}
 
 			});
@@ -503,7 +506,7 @@
 			var $selectObject = $("select[name='"+selectName+"']");
 			//用户数据
 			$.ajax({
-				url : mlx.ctx + "/admin/guideLine/guide/listAll",
+				url : mlx.ctx + "/admin/guideLine/guide/list",
 				type : "get",
 				dataType : "json",
 				success : function(data) {
@@ -519,8 +522,6 @@
 					}
 					$selectObject.append(options);
 					$selectObject.selectpicker('refresh');
-					
-
 				},
 				error : function(e) {
 					comm.errorMsg("请求出错！");

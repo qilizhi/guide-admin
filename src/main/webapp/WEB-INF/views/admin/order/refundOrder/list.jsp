@@ -66,8 +66,6 @@
   <form:select path="refundStatus" items="${fns:RefundStatus()}" cssClass="form-control input-sm  input-inline pull-left" cssStyle="margin-left:10px;"/>
          <input type="text" class="form-filter input-sm pull-left ml10" placeholder="订单编号" name="orderId" value="${orderRefundModel.orderId }">
 		
-		  <input type="text" class="form-filter input-sm pull-left ml10" placeholder="申请人" name="userName" value="">
-		
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom pull-left ml10">
 		
 		<i class="fa fa-search"></i>  搜索</button>
@@ -84,13 +82,13 @@
 								<tr>
 									<th>订单编号</th>
 									<th>退款单号</th>
-									<th>商品名称</th>
+									<th>订单金额</th>
 									<th>退款金额</th>
-									<th>申请人</th>
+									<th>申请用户ID</th>
 									<th>申请时间</th>
-									<th>退款时间</th>
-									<th>审核状态</th>
+									<th>退款标识</th>
 									<th>退款状态</th>
+									<th>不通过原因</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -99,17 +97,37 @@
 									<tr>
 										<td>${item.orderId}</td>
 										<td>${item.refundJnId}</td>
-										<td>商品名称</td>
+										<td>${item.payFee}</td>
 										<td>${item.amount}</td>
-										<td></td>
-										<td>${item.createTime}</td>
-										<td>${item.refundTime}</td>
-										<td>${item.checkStatus}</td>
+										<td>${item.userId }</td>
+										<td>
+										${fns:longTimeToDate('yyyy-MM-dd HH:mm:ss',item.createTime)} </td>
+										<td>
+										<c:if test="${item.refundFlag==0 }">用户发起退款</c:if>
+										<c:if test="${item.refundFlag==1 }">系统退款</c:if>
+									
+										</td>
+										
 										<td>${fns:RefundStatus()[item.refundStatus]}</td>
+										<td>${item.remark }</td>
 										<td>
 											<a href="${ctx}/admin/orderLineInfo/detail?orderId=${item.orderId}&userId=${item.userId}" class="btn btn-sm yellow btn-outline" >详情</a>	
-											<a href="javascript:audit('${item.refundJnId }');" class="btn btn-sm blue btn-outline" >审核</a>			
-											<a href="${ctx}" class="btn btn-sm red btn-outline" >退款</a>																										
+											
+											<c:choose>
+											<c:when test="${ item.refundStatus=='RR'}">
+											<a onclick="audit('${item.refundJnId }',${item.payFee });" class="btn btn-sm blue btn-outline" >审核</a>
+											</c:when>
+											<c:otherwise>
+											<a  class="btn btn-sm  btn-outline disabled" >已审</a>	
+											</c:otherwise>
+											</c:choose>
+											
+														
+											<c:choose>
+											<c:when test="${ item.refundStatus=='RC'}">
+											<a class="btn btn-sm red btn-outline" onclick="refund(${item.refundJnId },${item.payFee });">退款</a>	
+											</c:when>
+											</c:choose>																									
 										</td>
 									</tr>
 								</c:forEach>
@@ -126,7 +144,7 @@
 		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form  id="myform" action="${ctx}/admin/orderRefund/audit" method="post">
+				<form  id="myform" action="${ctx}/admin/orderRefund/audit" method="POST" onsubmit="return validForm();">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true"></button>
@@ -136,54 +154,55 @@
 								<div class="alert alert-danger display-hide">
 									<button class="close" data-close="alert"></button>
 								</div>
-								<input type="hidden" name="refundJnId" id="refundJnId" />
-								<!--审核  -->
-								<div class="form-group  margin-top-20"  id="my_auditStatus" style="margin-left:120px;">
-									<label for="auditStatus2">通过
-										<input type="radio" id="auditStatus2" name="refundStatus" value="1"   checked="checked"/>
-									</label>
+								<input type="hidden" name="refundJnId"  />
+								<input type="hidden" name="refundStatus" value="RR" />
+								<input type="hidden" name="pageSize" value="${paginator.limit}" />
+								<input type="hidden" name="pageNo" value="${paginator.page}" />
 									
-									<label  for="auditStatus3" style="margin-left:100px">不通过
-										<input type="radio" id="auditStatus3" name="refundStatus" value="-1"   />
-									</label>
-								</div>		
 						</div>
 						<div style="height:200px;">
 						
 						<div class="form-group form-md-line-input " >
 										<label class="col-lg-3 row control-label text-right mr10">审核状态</label>
 										<div class="col-lg-5">
-										<label for="auditStatus2">通过
-										<input type="radio" id="auditStatus2" name="refundStatus" value="1"   />
+										<label for="auditStatus2" style="white-space: nowrap;" onclick="show(1);">通过
+										<input type="radio" id="auditStatus2" name="checkStatus" class="checkStatus1" value="1"  checked="checked" />
 									</label>
 									
-									<label  for="auditStatus3" style="margin-left:100px">不通过
-										<input type="radio" id="auditStatus3" name="refundStatus" value="-1"   />
+									<label  for="auditStatus3" style="margin-left:100px;white-space: nowrap;" onclick="show(-1)">不通过
+										<input type="radio" id="auditStatus3" name="checkStatus" class="checkStatus1" value="-1"   />
 									</label>
 										</div>
 						</div>
 						
-						<div class="form-group form-md-line-input " >
-										<label class="col-lg-3 row control-label text-right mr10">退款金额</label>
+						       <div class="form-group form-md-line-input " >
+										<label class="col-lg-3 row control-label text-right mr10">订单金额:</label>
 										<div class="col-lg-5">
-										<input name="amount" class="form-control" placeholder="退款金额" required="required"/>
+										<span id="money"></span>
+										</div>
+									</div>
+						
+						            <div class="form-group form-md-line-input " id="amount">
+										<label class="col-lg-3 row control-label text-right mr10">退款金额:</label>
+										<div class="col-lg-5">
+										<input type="text"  name="amount"  id="amount1" class="form-control" placeholder="退款金额"  />
 											
 											<div class="form-control-focus"></div>
 										</div>
 									</div>
-                              <div class="form-group form-md-line-input " >
-									<label class="col-lg-3 control-label row text-right mr10">不通过原因：</label>
+                              <div class="form-group form-md-line-input none" id="remark" >
+									<label class="col-lg-3 control-label row text-right mr10">不通过原因:</label>
 									<div class="col-lg-5">
-								
-									<textarea name="remark" class="form-control"  rows="3" placeholder="不通过原因"></textarea>
-	
+									<textarea name="remark" id="remark1" class="form-control"  rows="3" placeholder="不通过原因" ></textarea>
 										<label for="form_control_1"></label>
 									</div>
 								</div>
-						
+								
+								
 						</div>
 					</div>
 					<div class="modal-footer">
+					<span  id="my_error" class="ml10 text-danger"></span>
 						<button type="button" data-dismiss="modal"
 							class="btn dark btn-outline">关闭</button>
 						<button type="submit"  class="btn green" >提交</button>
@@ -193,16 +212,161 @@
 		</div>
 	</div>
 	
+	
+	<div id="responsive2"
+		class="modal fade draggable-modal ui-draggable" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form  id="myform" action="${ctx}/admin/orderRefund/audit" method="POST" onsubmit="return validForm2();">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true"></button>
+					</div>
+						<div class="portlet-body">
+							<div class="form-body " style="height: 40px;">
+								<div class="alert alert-danger display-hide">
+									<button class="close" data-close="alert"></button>
+								</div>
+								<input type="hidden" name="refundJnId"  />
+							
+								<input type="hidden" name="refundStatus" value="RC" />
+								<input type="hidden" name="pageSize" value="${paginator.limit}" />
+								<input type="hidden" name="pageNo" value="${paginator.page}" />
+									
+						</div>
+						<div style="height:200px;">
+						
+						<div class="form-group form-md-line-input " >
+										<label class="col-lg-3 row control-label text-right mr10">审核状态</label>
+										<div class="col-lg-5">
+										<label for="auditStatus4" style="white-space: nowrap;" onclick="show(1);">通过
+										<input type="radio" id="auditStatus4" name="checkStatus" value="1" class="checkStatus2"  checked="checked" />
+									</label>
+									
+									<label  for="auditStatus5" style="margin-left:100px;white-space: nowrap;" onclick="show(-1)">不通过
+										<input type="radio" id="auditStatus5" name="checkStatus" value="-1"  class="checkStatus2" />
+									</label>
+										</div>
+						</div>
+						
+						       <div class="form-group form-md-line-input " >
+										<label class="col-lg-3 row control-label text-right mr10">订单金额:</label>
+										<div class="col-lg-5">
+										<span id="money2"></span>
+										</div>
+									</div>
+						
+						           
+                              <div class="form-group form-md-line-input "  >
+									<label class="col-lg-3 control-label row text-right mr10">不通过原因:</label>
+									<div class="col-lg-5">
+									<textarea name="remark" id="remark2" class="form-control"  rows="3" placeholder="不通过原因" ></textarea>
+										<label for="form_control_1"></label>
+									</div>
+								</div>
+								
+								
+						</div>
+					</div>
+					<div class="modal-footer">
+					<span  id="my_error2" class="ml10 text-danger"></span>
+						<button type="button" data-dismiss="modal"
+							class="btn dark btn-outline">关闭</button>
+						<button type="submit"  class="btn green" >提交</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	
 	<tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
 	<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 	<script src="${ctx}/static/assets/pages/scripts/form-validation.min.js"></script>
     <script src="${ctx}/static/js/handle.js"></script>
     
     <script>
-       function audit(id){
-       refundJnId.value=id;
-          $("#responsive").modal();
+       /*审核弹出模态框  */
+       function audit(id,payFee){
+    	 $("input[name='refundJnId']").val(id);
+       money.innerHTML=payFee;
+       my_error.innerHTML=null;
+       $("textarea[name='remark']").val('');
+       $("input[name='amount']").val('');
+        $("#responsive").modal();
        }
+       
+       /*退款弹出模态框  */
+       function refund(id,payFee){
+    	   $("input[name='refundJnId']").val(id);
+    	   money2.innerHTML=payFee;
+    	   my_error2.innerHTML=null;
+    	   $("#responsive2").modal();
+    	   
+       }
+
+       function show(num){
+    	   if(num==1){
+    		   remark.style.display="none";
+    		   amount.style.display="block";
+    	   }else{
+    		   remark.style.display="block";
+    		   amount.style.display="none";
+    		   
+    	   }  
+       }
+       
+       //审核检验
+       function validForm(){
+    	 var checkStatus=$(".checkStatus1:checked").val();
+    	 var amount=amount1.value;
+    	 var remark=remark1.value;
+    	 var money=$("#money").html();
+    	 console.log(checkStatus+"++"+amount+"++"+remark+"=="+money);
+    	 var reg=/^(([0-9]+\d*)|([0-9]+\d*\.\d{1,2}))$/;
+    	 if(checkStatus==1){
+    		
+    		if($.trim(amount)==''||amount==null){
+    			my_error.innerHTML="退款金额不能为空";   		
+    			return false;
+    		}
+    		if(!reg.test(amount)){
+    			my_error.innerHTML="只能为数字,并且最多两位小数";
+    			return false;
+    		}
+    		if(parseFloat(amount)>parseFloat(money)){
+    			my_error.innerHTML="退款金额不能大于订单金额";
+    			return false;
+    		}
+    	 }else {
+    		 if($.trim(remark)==''||remark==null){
+    			 my_error.innerHTML="备注不能为空";
+    			 return false;
+    		 }
+    	 }
+    	   return true;
+       }
+       
+       //退款校验
+       function validForm2 (){
+    	   var checkStatus=$(".checkStatus2:checked").val();
+    	   var remark=remark2.value;
+    	   if(checkStatus!=1){
+    			 my_error2.innerHTML="审核不通过,原因不能为空";
+    		   return false;
+    	   }
+    	   return true;
+       }
+       
+      $(function(){
+    	  if("${msg}"!=""){
+    		  comm.successMsg("${msg}");
+    	  }
+    	  
+      });
     </script>
 </body>
 </html>

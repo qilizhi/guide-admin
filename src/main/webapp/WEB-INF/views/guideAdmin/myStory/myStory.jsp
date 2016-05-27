@@ -246,25 +246,31 @@
 	                ignore: "", // validate all fields including form hidden input
 	                rules: {
 	                    title: {
-	                        required: true
+	                        required: true,
+	                        maxlength:50
 	                    }, 
 	                    description: {
-	                        required: true
+	                        required: true,
+	                        maxlength:50
 	                    },
 	                    recommendInfo: {
-	                        required: true
+	                        required: true,
+	                        maxlength:100
 	                    }
 	                },
 
 	                messages: { // custom messages for radio buttons and checkboxes
 	                	title: {
 	                        required: "不能为空",
+	                        maxlength:"最多输入50个汉字"
 	                    },
 	                    description: {
 	                        required: "不能为空",
+	                        maxlength:"最多输入50个汉字"
 	                    },
 	                    recommendInfo: {
-	                    	required: "不能为空"
+	                    	required: "不能为空",
+	                    	maxlength:"最多输入100个汉字"
 	                    }
 	                },
 
