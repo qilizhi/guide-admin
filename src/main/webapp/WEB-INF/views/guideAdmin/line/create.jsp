@@ -176,8 +176,8 @@
 								</label>
 								<div class="col-xs-2">
 
-									<input type="hidden" name="imgUrl" value="${guideLine.imgUrl }"/><img id="image" alt=""
-										src="${guideLine.imgUrl }" class="img-thumbnail"><span
+									<input type="hidden" name="imgUrl" value="${guideLine.imgUrl }"/>
+									<img id="image" alt="" src="${guideLine.imgUrl }" class="img-thumbnail"><span
 										class="btn green fileinput-button pading"> <i
 										class="fa fa-plus"></i> <span id="load">上传 </span> <input
 										class="imgUpload" type="file" name="files[]" multiple>
@@ -330,6 +330,7 @@
 							if (data.result.code == "200") {
 								$("#supprogress").css('display', "none");
 								var imgUrl = data.result.result[0].filePath;
+								console.log(imgUrl)
 								$("input[name='imgUrl']").val(imgUrl);
 								$("#image").attr("src", imgUrl);
 								$("#load").html("重传");

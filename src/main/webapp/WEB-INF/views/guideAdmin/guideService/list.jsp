@@ -21,7 +21,7 @@
 			<div class="portlet light portlet-fit bordered">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="fa fa-cogs"></i><span class="caption-subject font-dark bold uppercase">导游线路列表</span>
+						<i class="fa fa-cogs"></i><span class="caption-subject font-dark bold uppercase">地陪列表</span>
 					</div>
 					<div class="actions">
 		<a href="${ctx}/guideAdmin/guideService/create"  class="btn btn-sm green btn-outline" >新增</a>
@@ -61,11 +61,11 @@
 									<th scope="col">地陪编号</th>
 									<th scope="col">地陪标题</th>
 									<th scope="col">背景图</th>
-									<th scope="col">简介</th>
+									<!-- <th scope="col">简介</th> -->
 									<th scope="col">创建时间</th>
 									<th scope="col">价格</th>
 									<th scope="col">满员人数</th>
-									<th scope="col">体验说明</th>
+									<!-- <th scope="col">体验说明</th> -->
 									<th scope="col">地陪状态</th>
 									<th scope="col">审核说明</th>
 									<th scope="col">审核时间</th>
@@ -83,11 +83,11 @@
 										<td>${item.serviceNo}</td>
 										<td>${item.title}</td>
 										<td><img src="${item.imgUrl}" title="${item.title}" height="50px" width="50px" /></td>
-										<td>${item.description}</td>
+										<%-- <td>${item.description}</td> --%>
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>${item.price}</td>
 										<td>${item.num}</td>
-										<td>${item.remark}</td>
+										<%-- <td>${item.remark}</td> --%>
 										<td>${EStatus[item.status]}</td>
 										<td>${item.auditRemark}</td>
 										<td><fmt:formatDate value="${item.auditTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

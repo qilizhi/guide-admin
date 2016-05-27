@@ -10,6 +10,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>线路</title>
+
 </head>
 
 <body>
@@ -61,7 +62,7 @@
 									<th scope="col">线路编号</th>
 									<th scope="col">线路标题</th>
 									<th scope="col">背景图片</th>
-									<th scope="col">线路简介</th>
+									<!-- <th scope="col">线路简介</th> -->
 									<th scope="col">创建时间</th>
 									<th scope="col">价格</th>
 									<th scope="col">线路状态</th>
@@ -80,7 +81,7 @@
 										<td>${item.lineNo}</td>
 										<td>${item.title}</td>
 										<td><img src="${item.imgUrl}" title="${item.title}" height="50px" width="50px" /></td>
-										<td>${item.description}</td>
+										<%-- <td>${item.description}</td> --%>
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>${item.price}</td>
 										<td>${EStatus[item.status]}</td>
@@ -164,10 +165,6 @@
 	
 	
 	<script>
-		window.mlx = {
-			ctx : "${ctx}"
-		};
-		
 
 		//上线
 		function upShow(id) {
