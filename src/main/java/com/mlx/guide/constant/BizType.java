@@ -15,7 +15,8 @@ public enum BizType {
 	STTATEGY(2,"攻略"),
 	LINE(3,"线路"),
 	DIPEI(4,"地陪"),
-	OTHER(5,"其他");
+	OTHER(5,"其他"),
+	REFUND(6,"退款操作日志");
 	
 	
 

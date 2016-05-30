@@ -42,8 +42,11 @@
                                  <th colspan="10"><div class="text-center">支付详情</div></th>
                               </tr>
                               <tr>
-                                <th>登录账号:</th>
-                                <td>${orderModel.userName }</td>
+                                
+                                <th>购买的商品</th>
+                                <td><c:forEach var="item" items="${orderModel.orderGoods }">
+										   ${item.goodsName }
+										</c:forEach></td>
                                 <th>用户ID:</th>
                                 <td>${orderModel.userId }</td>
                                 <th>订单总销售额:</th>
@@ -168,52 +171,67 @@
                                      </td>
                                 </tr>
                                  <tr>
-                                 <th colspan="10"><div class="text-center">商品信息</div></th>
+                                 <th colspan="10"><div class="text-center">购买的商品信息</div></th>
                                  </tr>
                                  
                                  <c:forEach items="${orderModel.orderGoods }" var="item">
                                  <tr>
+                                 <th>商品ID:</th>
+                                  <td>${item.goodsId }</td>
+                                  <th>商品名称:</th>
+                                  <td >${item.goodsName }</td>
+                                   <th>商品类型:</th>
+                                  <td >
+                                   ${fns:EGoodsType()[item.goodsType]}
+                                  </td>
+                                   
+                                 <tr>
+                                 <tr>
                                   <th>成人市场价格:</th>
                                   <td>${item.adultMarketPrice }</td>
-                                  <th>成人人数:</th>
-                                  <td>${item.adultNum }</td>
-                                  <th>剩余儿童销售人数:</th>
-                                  <td>${item.childSellCount }</td>
-                                 </tr>
-                                  <tr>
                                   <th>成人销售价格:</th>
                                   <td>${item.adultSellPrice }</td>
-                                  <th>儿童市场价格:</th>
-                                  <td>${item.childMarketPrice }</td>
-                                  <th>儿童人数:</th>
-                                  <td>${item.childNum }</td>
-                                 </tr>
-                                  <tr>
                                   <th>剩余成人销售人数:</th>
                                   <td>${item.adultSellCount }</td>
-                                  <th>儿童销售价格</th>
+                                
+                                 
+                                 </tr>
+                                  <tr>
+                                  <th>儿童市场价格:</th>
+                                  <td>${item.childMarketPrice }</td>
+                                  <th>儿童销售价格:</th>
                                   <td>${item.childSellPrice }</td>
-                                  <th>商品ID</th>
-                                  <td>${item.goodsId }</td>
+                                  <th>剩余儿童销售人数:</th>
+                                  <td>${item.childSellPrice }</td>
                                  </tr>
                                  
-                                 <tr>
-                                   <th colspan="10"><div class="text-center">订单保险信息</div></th>
+                                  <tr>
+                                   <th>单房差价:</th>
+                                  <td>${item.singleRoomPrice }</td>
+                                  <th>单房差数量:</th>
+                                  <td>${item.singleRoomNum }</td>                              
+                                  <th>出团日期:</th>
+                                  <td>
+                                   <c:if test="${not empty item.tripDate }">
+                                   <fmt:parseDate value="${item.tripDate }" var="tripDate" pattern="yyyyMMdd"/>
+                                   <fmt:formatDate value="${tripDate }" pattern="yyyy-MM-dd"/>
+                                   </c:if>  
+                                  </td>
                                  </tr>
-                                 <c:forEach var="s_item" items="${item.goodsInsurances }" >
-                                   <tr>
-                                    <th>保险ID</th>
-                                    <td>${s_item.insuranceId }</td>
-                                      <th>保险数量</th>
-                                    <td>${s_item.insuranceNum }</td>
-                                      <th>保险价格</th>
-                                    <td>${s_item.insurancePrice }</td>
-                                   </tr>
-                                 </c:forEach>
+                                 <tr>
                                  
-                                 <tr>
-                                   <th colspan="10"><div class="text-center">其他旅客信息</div></th>
+                                 <th>签证数:</th>
+                                 <td>${item.visaNum }</td>
+                                 <th>签证价格:</th>
+                                 <td>${item.visaPrice }</td>
                                  </tr>
+                                 
+                                 
+                                 <c:if test="${ not empty item.goodsTourists }">
+                                 <tr>
+                                   <th colspan="10"><div class="text-center">当前商品旅客信息</div></th>
+                                 </tr>
+                                 
                                  
                                  <c:forEach var="s_item" items="${item.goodsTourists }" >
                                    <tr>
@@ -245,9 +263,23 @@
                                      <td>${s_item.touristMobile }</td>
                                    </tr>
                                  </c:forEach>
-                                 
+                                 </c:if>
                                  </c:forEach>
-                                 
+                                 <c:if test="${not empty item.goodsInsurances }">
+                                 <tr>
+                                   <th colspan="10"><div class="text-center">订单保险信息</div></th>
+                                 </tr>
+                                 <c:forEach var="s_item" items="${item.goodsInsurances }" >
+                                   <tr>
+                                    <th>保险ID</th>
+                                    <td>${s_item.insuranceId }</td>
+                                      <th>保险数量</th>
+                                    <td>${s_item.insuranceNum }</td>
+                                      <th>保险价格</th>
+                                    <td>${s_item.insurancePrice }</td>
+                                   </tr>
+                                 </c:forEach>
+                                 </c:if>
                               </table>
                                  <div class="text-center "><a  class="btn default  mt10 "    href="javascript:history.go(-1);">返回</a></div>
                                 </div>

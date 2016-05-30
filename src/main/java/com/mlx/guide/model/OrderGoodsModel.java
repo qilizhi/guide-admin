@@ -31,6 +31,8 @@ public class OrderGoodsModel implements Serializable{
 	private String visaNum;
 	private String adultMarketPrice;
 	
+	private String visaPrice;
+	
 	private String adultNum;
 	private String childSellCount;
 	private String adultSellPrice;
@@ -48,7 +50,13 @@ public class OrderGoodsModel implements Serializable{
     
     private List<GoodsTourists> goodsTourists = new ArrayList<GoodsTourists>();
 	
-     public List<GoodsInsurances> getGoodsInsurances() {
+     public String getVisaPrice() {
+		return visaPrice;
+	}
+	public void setVisaPrice(String visaPrice) {
+		this.visaPrice = visaPrice;
+	}
+	public List<GoodsInsurances> getGoodsInsurances() {
 		return goodsInsurances;
 	}
 	public void setGoodsInsurances(List<GoodsInsurances> goodsInsurances) {

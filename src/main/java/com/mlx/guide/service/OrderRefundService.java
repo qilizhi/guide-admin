@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
@@ -23,8 +24,8 @@ public class OrderRefundService {
 	@Value("${order_api_host}")
 	private  String ORDER_API_HOST;
 	
-	
-
+	 @Autowired
+     private SysBizLogService sysBizLogService;
 	
 	/**
 	 * 退款审核
@@ -92,8 +93,9 @@ public class OrderRefundService {
 		if(StringUtils.isNotBlank(order.getAmount())&&Double.parseDouble(order.getAmount())>Double.parseDouble(orderRefundModel.getPayFee())){
 			throw new Exception("退款额大于订单额");	
 		}
-		
-		
+	
+		order.setPayFee(orderRefundModel.getPayFee());
+		order.setOrderId(orderRefundModel.getOrderId());
 		order.setUserId(orderRefundModel.getUserId());
 
 		//调用退款审核接口
@@ -102,6 +104,8 @@ public class OrderRefundService {
         	   logger.info(resultJson);
         	  throw new Exception("调用订单退款接口失败");
            }
+         //日志记录
+		sysBizLogService.saveOrderRefundLog(order);
 		return "操作成功";
 	}
 	

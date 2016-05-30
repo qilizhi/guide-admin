@@ -79,6 +79,13 @@
     <example>${fns:SysCnlStatus()}</example><!--使用列子  -->
   </function>
   
+  <function>
+    <description>商品类别名称</description>
+    <name>EGoodsType</name>
+    <function-class>com.mlx.guide.constant.EGoodsType</function-class><!--类路径 -->
+    <function-signature>java.util.Map getMap()</function-signature><!--调用的方法  -->
+    <example>${fns:EGoodsType()}</example><!--使用列子  -->
+  </function>
   
   
 </taglib>
