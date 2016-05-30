@@ -48,9 +48,8 @@ var GuideStrategy=function(){
 	var del = function(ids) {
 		var url = delUrl + "/" + ids;
 		/* 设置按钮的语言 */
-		bootbox.setLocale("zh_CN");
-		bootbox.confirm("你确定要删除这条记录吗?", function(result) {
-			if (result) {
+	//	bootbox.setLocale("zh_CN");
+		comm.confirm("提示","你确定要删除这条记录吗?", function() {
 
 				$.ajax({
 					url : url,
@@ -72,7 +71,6 @@ var GuideStrategy=function(){
 
 				});
 
-			}
 		});
 	}
 
