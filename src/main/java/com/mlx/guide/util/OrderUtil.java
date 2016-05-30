@@ -69,7 +69,7 @@ public class OrderUtil {
 		signStr.append(KEY);
 		logger.info("待签名串："+signStr.toString());
 		String sign =getSign(signStr.toString());
-		logger.info("签名串："+signStr.toString());
+		logger.info("签名串："+sign);
 		params.put("sign", sign);
 		String result=HttpClientUtil.post(url, params);
 		return result;
