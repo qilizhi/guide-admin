@@ -6,8 +6,8 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="tuan_no" property="tuanNo" jdbcType="VARCHAR" />
     <result column="tuan_date" property="tuanDate" jdbcType="DATE" />
-    <result column="line_type" property="lineType" jdbcType="TINYINT" />
-    <result column="line_no" property="lineNo" jdbcType="VARCHAR" />
+    <result column="goods_type" property="goodsType" jdbcType="TINYINT" />
+    <result column="goods_no" property="goodsNo" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="full_num" property="fullNum" jdbcType="INTEGER" />
     <result column="person_num" property="personNum" jdbcType="INTEGER" />
@@ -17,7 +17,7 @@
     <result column="tuan_status" property="tuanStatus" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, tuan_no, tuan_date, line_type, line_no, create_time, full_num, person_num, 
+    id, name, tuan_no, tuan_date, goods_type, goods_no, create_time, full_num, person_num, 
     order_num, user_no, user_name, tuan_status
   </sql>
   <sql id="Example_Where_Clause" >
@@ -34,11 +34,11 @@
 			<if test="tuanDate != null and tuanDate != ''" >
 			and tuan_date = #{tuanDate}
 			</if>
-			<if test="lineType != null and lineType != ''" >
-			and line_type = #{lineType}
+			<if test="goodsType != null and goodsType != ''" >
+			and goods_type = #{goodsType}
 			</if>
-			<if test="lineNo != null and lineNo != ''" >
-			and line_no = #{lineNo}
+			<if test="goodsNo != null and goodsNo != ''" >
+			and goods_no = #{goodsNo}
 			</if>
 			<if test="createTime != null and createTime != ''" >
 			and create_time = #{createTime}
@@ -94,12 +94,12 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
   </delete>
   <insert id="insert" parameterType="com.mlx.guide.entity.GuideTuan" >
     insert into guide_tuan (id, name, tuan_no, 
-      tuan_date, line_type, line_no, 
+      tuan_date, goods_type, goods_no, 
       create_time, full_num, person_num, 
       order_num, user_no, user_name, 
       tuan_status)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tuanNo,jdbcType=VARCHAR}, 
-      #{tuanDate,jdbcType=DATE}, #{lineType,jdbcType=TINYINT}, #{lineNo,jdbcType=VARCHAR}, 
+      #{tuanDate,jdbcType=DATE}, #{goodsType,jdbcType=TINYINT}, #{goodsNo,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{fullNum,jdbcType=INTEGER}, #{personNum,jdbcType=INTEGER}, 
       #{orderNum,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{tuanStatus,jdbcType=TINYINT})
@@ -119,11 +119,11 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
       <if test="tuanDate != null" >
         tuan_date,
       </if>
-      <if test="lineType != null" >
-        line_type,
+      <if test="goodsType != null" >
+        goods_type,
       </if>
-      <if test="lineNo != null" >
-        line_no,
+      <if test="goodsNo != null" >
+        goods_no,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -160,11 +160,11 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
       <if test="tuanDate != null" >
         #{tuanDate,jdbcType=DATE},
       </if>
-      <if test="lineType != null" >
-        #{lineType,jdbcType=TINYINT},
+      <if test="goodsType != null" >
+        #{goodsType,jdbcType=TINYINT},
       </if>
-      <if test="lineNo != null" >
-        #{lineNo,jdbcType=VARCHAR},
+      <if test="goodsNo != null" >
+        #{goodsNo,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -201,11 +201,11 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
       <if test="tuanDate != null" >
         tuan_date = #{tuanDate,jdbcType=DATE},
       </if>
-      <if test="lineType != null" >
-        line_type = #{lineType,jdbcType=TINYINT},
+      <if test="goodsType != null" >
+        goods_type = #{goodsType,jdbcType=TINYINT},
       </if>
-      <if test="lineNo != null" >
-        line_no = #{lineNo,jdbcType=VARCHAR},
+      <if test="goodsNo != null" >
+        goods_no = #{goodsNo,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -236,8 +236,8 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
     set name = #{name,jdbcType=VARCHAR},
       tuan_no = #{tuanNo,jdbcType=VARCHAR},
       tuan_date = #{tuanDate,jdbcType=DATE},
-      line_type = #{lineType,jdbcType=TINYINT},
-      line_no = #{lineNo,jdbcType=VARCHAR},
+      goods_type = #{goodsType,jdbcType=TINYINT},
+      goods_no = #{goodsNo,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       full_num = #{fullNum,jdbcType=INTEGER},
       person_num = #{personNum,jdbcType=INTEGER},

@@ -11,9 +11,9 @@ public class GuideTuan {
 
     private Date tuanDate;
 
-    private Byte lineType;
+    private String goodsType;
 
-    private String lineNo;
+    private String goodsNo;
 
     private Date createTime;
 
@@ -61,23 +61,25 @@ public class GuideTuan {
         this.tuanDate = tuanDate;
     }
 
-    public Byte getLineType() {
-        return lineType;
-    }
+   
 
-    public void setLineType(Byte lineType) {
-        this.lineType = lineType;
-    }
+    public String getGoodsType() {
+		return goodsType;
+	}
 
-    public String getLineNo() {
-        return lineNo;
-    }
+	public void setGoodsType(String goodsType) {
+		this.goodsType = goodsType;
+	}
 
-    public void setLineNo(String lineNo) {
-        this.lineNo = lineNo;
-    }
+	public String getGoodsNo() {
+		return goodsNo;
+	}
 
-    public Date getCreateTime() {
+	public void setGoodsNo(String goodsNo) {
+		this.goodsNo = goodsNo;
+	}
+
+	public Date getCreateTime() {
         return createTime;
     }
 
