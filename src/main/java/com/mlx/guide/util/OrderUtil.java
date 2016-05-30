@@ -69,8 +69,9 @@ public class OrderUtil {
 		signStr.append(KEY);
 		logger.info("待签名串："+signStr.toString());
 		String sign =getSign(signStr.toString());
-		logger.info("签名串："+signStr.toString());
+		logger.info("签名串："+sign);
 		params.put("sign", sign);
+		logger.info("请示的url:"+url+" 参数："+params.toString());
 		String result=HttpClientUtil.post(url, params);
 		return result;
 	}
@@ -97,10 +98,12 @@ public class OrderUtil {
 		signStr.append(KEY);
 		logger.info("待签名串："+signStr.toString());
 		String sign =getSign(signStr.toString());
-		logger.info("签名串："+signStr.toString());
+		logger.info("签名串："+sign);
 		params.put("sign", sign);
 		String getUrl=HttpClientUtil.getParamUrl(url, params);
 		logger.info("转化后的请求url:"+getUrl);
+		
+		logger.info("请示的url:"+url+" 参数："+params.toString());
 		String result=HttpClientUtil.get(getUrl);
 		return result;
 	}
