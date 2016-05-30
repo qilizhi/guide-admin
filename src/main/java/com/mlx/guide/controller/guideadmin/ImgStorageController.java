@@ -37,8 +37,6 @@ public class ImgStorageController {
 
 	@Autowired
 	private GuideImgInfoService guideImgInfoService;
-	// 获取当前用户
-	ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -55,7 +53,9 @@ public class ImgStorageController {
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue ="30") Integer pageSize,
 			HttpServletRequest request, Model model) {
-		
+
+		// 获取当前用户
+		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		GuideImgInfo guideImgInfo=new GuideImgInfo();
 		guideImgInfo.setUserNo(shiroUser.getUserNo());
 		PageList<GuideImgInfo> list = guideImgInfoService.getGuideImgInfoPageList(guideImgInfo, new PageBounds(pageNo, pageSize));
@@ -79,6 +79,8 @@ public class ImgStorageController {
 		
 		JsonResult jsonResult = new JsonResult();
 		try {
+			// 获取当前用户
+			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 			GuideImgInfo guideImgInfo=new GuideImgInfo();
 			guideImgInfo.setUserNo(shiroUser.getUserNo());
 			PageList<GuideImgInfo> list = guideImgInfoService.getGuideImgInfoPageList(guideImgInfo, new PageBounds(pageNo, pageSize));
@@ -98,7 +100,9 @@ public class ImgStorageController {
 	@RequestMapping(value="/save")
 	@ResponseBody
 	public JsonResult uploadImage(@RequestBody List<String> images,HttpServletRequest request){
-		
+
+		// 获取当前用户
+		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		List<GuideImgInfo> guideImgInfos=new ArrayList<GuideImgInfo>();
 		for(String image:images){
 			GuideImgInfo guideImgInfo =new GuideImgInfo();
