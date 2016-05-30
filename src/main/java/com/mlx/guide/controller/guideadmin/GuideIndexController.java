@@ -2,7 +2,9 @@ package com.mlx.guide.controller.guideadmin;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,39 +82,39 @@ public class GuideIndexController {
 			calendar.set(Calendar.DATE, monthEnd);
 			// 获取当月月末的年月日
 			String timeEnd = simpledateformat.format(calendar.getTime());
-
-			String result=guideOrderService.getOrderList("12345678", null, null, timeStart, timeEnd, null, null);
+			
+			Map<String,Object> m_maps=new HashMap<String,Object>();
+			m_maps.put("userId", "12345678");
+			m_maps.put("startDate", timeStart);
+			m_maps.put("endDate", timeEnd);
+    	    String result = guideOrderService.getMemberList(m_maps);
 			JsonResult jsonpObject = JSON.parseObject(result, JsonResult.class);
 			
 			// 攻略数
 			GuideStrategy guideStrategy=new GuideStrategy();
-			guideStrategy.setUserNo("weixin4");
 			guideStrategy.setFlag(EFlag.VALID.getId());
-			//guideStrategy.setUserNo(shiroUser.getUserNo());
+			guideStrategy.setUserNo(shiroUser.getUserNo());
 			List<GuideStrategy> lsStrategy = guideStrategyService.getGuideStrategyPageList(guideStrategy);
-			if(lsStrategy.size()==0){
-				model.addAttribute("lsStrategy", 0);
-			}else {
-				model.addAttribute("lsStrategy", lsStrategy.size());
-			}
+			model.addAttribute("lsStrategy", lsStrategy == null ? 0 : lsStrategy.size());
+
 			//线路数
 			GuideLine guideLine=new GuideLine();
-			guideLine.setUserNo("weixin4");
 			guideLine.setFlag(EFlag.VALID.getId());
-			//guideLine.setUserNo(shiroUser.userNo);
+			guideLine.setUserNo(shiroUser.userNo);
 			List<GuideLine> lsLine = guideLineService.getGuideLinePageList(guideLine);
-			if (lsLine.size()==0) {
-				model.addAttribute("lsLine", 0);
-			}else {
-				model.addAttribute("lsLine", lsLine.size());
-			}
+			model.addAttribute("lsLine", lsLine == null ? 0 : lsLine.size());
 			// 本月订单数
 			Integer monthOrders = jsonpObject.getTotal();
 			model.addAttribute("monthOrders", monthOrders);
 			// 本月销售额
 			long monthSales = 0;
 			/* 已支付 算销售额*/
-			String s_result=guideOrderService.getOrderList("12345678", null,"S", timeStart, timeEnd, null, null);
+			Map<String,Object> s_maps=new HashMap<String,Object>();
+			s_maps.put("userId", "12345678");
+			s_maps.put("orderStatus", "S");
+			s_maps.put("startDate", timeStart);
+			s_maps.put("endDate", timeEnd);
+    	    String s_result = guideOrderService.getMemberList(s_maps);
 			List<OrderModel> s_orders=JSONArray.parseArray(JSON.parseObject(s_result).get("result").toString(), OrderModel.class);
 			for(OrderModel o:s_orders){
 				monthSales+=o.getTotalSellPrice().longValue();
@@ -121,8 +123,7 @@ public class GuideIndexController {
 			
 			//出团提醒列表(出团状态为1)
 			GuideTuan tuan=new GuideTuan();
-			//tuan.setUserNo(shiroUser.getUserNo());
-			tuan.setUserNo("weixin4");
+			tuan.setUserNo(shiroUser.getUserNo());
 			tuan.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
 			List<GuideTuan> lsGuideTuan = guideTuanService.getGuideTuanPageList(tuan);
 			model.addAttribute("lsGuideTuan", lsGuideTuan);
@@ -131,7 +132,11 @@ public class GuideIndexController {
 			model.addAttribute("lsMsg", lsMsg);
 			
 			//最新订单列表
-			String orderList = guideOrderService.getOrderList("12345678", null, null, timeStart, timeEnd, null, null);
+			Map<String,Object> l_maps=new HashMap<String,Object>();
+			l_maps.put("userId", "12345678");
+			l_maps.put("startDate", timeStart);
+			l_maps.put("endDate", timeEnd);
+			String orderList = guideOrderService.getMemberList(l_maps);
 			List<OrderModel> list=JSONArray.parseArray(JSON.parseObject(orderList).get("result").toString(), OrderModel.class);
 			model.addAttribute("list", list);
 			

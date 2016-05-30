@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.entity.GuideIntro;
 import com.mlx.guide.service.GuideIntroService;
+import com.mlx.guide.shiro.ShiroDbRealm;
+import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 
 /**
  * 我的故事
@@ -39,7 +41,9 @@ public class GuideIntroController {
 	@RequestMapping
 	public String myStory(Model model) {
 		try {
-			GuideIntro myStory = guideIntroService.getGuideIntroByUserNo("weixin4");
+			// 获取当前用户
+			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+			GuideIntro myStory = guideIntroService.getGuideIntroByUserNo(shiroUser.getUserNo());
 			model.addAttribute("myStory", myStory);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

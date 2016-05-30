@@ -30,6 +30,9 @@ public class GuideOrderService {
 	//订单详情
 	@Value("${uri.order.detail}")
 	private String orderDetail;
+	@Value("${uri.order.list}")
+	private String orderMemberList;
+	
 	//接口主域 
 	@Value("${order_api_host}")
 	private  String ORDER_API_HOST;
@@ -131,7 +134,7 @@ public class GuideOrderService {
 	}
 	
 	/**
-	 * 订单查询通用接口
+	 * 订单查询管理通用接口
 	 * @param maps <String,Object> map 的参数。
 	 * @param uri 接口的相对地址
 	 * @return
@@ -144,6 +147,23 @@ public class GuideOrderService {
 			treeMapParams.put(key, maps.get(key));			
 		}
 		treeMapParams.put("methodType", methodType_manage);
+		String result=OrderUtil.post(url, treeMapParams);
+		return result;
+	}
+	/**
+	 * 订单查询会员通用接口
+	 * @param maps <String,Object> map 的参数。
+	 * @param uri 接口的相对地址
+	 * @return
+	 */
+	public String getMemberList(Map<String, Object> maps){
+		String url=ORDER_API_HOST+orderMemberList;
+		
+		TreeMap<String, Object> treeMapParams=new TreeMap<String,Object>();
+		for(String key:maps.keySet()){
+			treeMapParams.put(key, maps.get(key));			
+		}
+		treeMapParams.put("methodType",methodType_member);
 		String result=OrderUtil.post(url, treeMapParams);
 		return result;
 	}

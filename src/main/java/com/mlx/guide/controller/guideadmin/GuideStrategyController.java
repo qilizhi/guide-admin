@@ -79,8 +79,7 @@ public class GuideStrategyController {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
-			//guideStrategy.setUserNo(shiroUser.getUserNo());
-			guideStrategy.setUserNo("weixin4");
+			guideStrategy.setUserNo(shiroUser.getUserNo());
 			guideStrategy.setFlag(EFlag.VALID.getId());
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 			PageList<GuideStrategy> list = guideStrategyService.getGuideStrategyPageList(guideStrategy, pageBounds);
@@ -167,10 +166,8 @@ public class GuideStrategyController {
 				return "redirect:/guideAdmin/strategy/list";
 			} else {
 				// 新增
-				//guideStrategy.setUserName(shiroUser.getName());
-				//guideStrategy.setUserNo(shiroUser.getUserNo());
-				guideStrategy.setUserName("全志安");
-				guideStrategy.setUserNo("weixin4");
+				guideStrategy.setUserName(shiroUser.getName());
+				guideStrategy.setUserNo(shiroUser.getUserNo());
 				guideStrategy.setCreateTime(new Date());
 				guideStrategy.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideStrategyService.createGuideStrategySelective(guideStrategy);
@@ -224,9 +221,13 @@ public class GuideStrategyController {
 	 */
 	@RequestMapping(value = "delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
-		GuideStrategy guideStrategy = guideStrategyService.getGuideStrategyByPrimaryKey(id);
-		guideStrategy.setFlag(EFlag.INVALID.getId());
-		guideStrategyService.updateGuideStrategySelective(guideStrategy);
+		try {
+			GuideStrategy guideStrategy = guideStrategyService.getGuideStrategyByPrimaryKey(id);
+			guideStrategy.setFlag(EFlag.INVALID.getId());
+			guideStrategyService.updateGuideStrategySelective(guideStrategy);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 		return "redirect:/guideAdmin/strategy/list";
 	}
 }
