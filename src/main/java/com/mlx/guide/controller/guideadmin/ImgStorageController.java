@@ -37,6 +37,8 @@ public class ImgStorageController {
 
 	@Autowired
 	private GuideImgInfoService guideImgInfoService;
+	// 获取当前用户
+	ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -53,7 +55,9 @@ public class ImgStorageController {
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue ="30") Integer pageSize,
 			HttpServletRequest request, Model model) {
+		
 		GuideImgInfo guideImgInfo=new GuideImgInfo();
+		guideImgInfo.setUserNo(shiroUser.getUserNo());
 		PageList<GuideImgInfo> list = guideImgInfoService.getGuideImgInfoPageList(guideImgInfo, new PageBounds(pageNo, pageSize));
 		model.addAttribute("list", list);
 		return "guideAdmin/imgStorage/images";
@@ -72,13 +76,11 @@ public class ImgStorageController {
 	public JsonResult getImgs(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize,
 			HttpServletRequest request, Model model) {
-		// 获取当前用户
-		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-
+		
 		JsonResult jsonResult = new JsonResult();
 		try {
 			GuideImgInfo guideImgInfo=new GuideImgInfo();
-			guideImgInfo.setUserNo("weixin4");
+			guideImgInfo.setUserNo(shiroUser.getUserNo());
 			PageList<GuideImgInfo> list = guideImgInfoService.getGuideImgInfoPageList(guideImgInfo, new PageBounds(pageNo, pageSize));
 			model.addAttribute("list", list);
 			jsonResult = new JsonResult(ExceptionCode.SUCCESSFUL, list);
@@ -103,7 +105,7 @@ public class ImgStorageController {
 			guideImgInfo.setCreateTime(new Date());
 			guideImgInfo.setFlag(EFlag.VALID.getId());
 			//当前用户，shiroUser 里获得
-			guideImgInfo.setUserNo("weixin4");
+			guideImgInfo.setUserNo(shiroUser.getUserNo());
 			guideImgInfo.setImgUrl(image);
 			guideImgInfoService.createGuideImgInfoSelective(guideImgInfo);
 			guideImgInfos.add(guideImgInfo);

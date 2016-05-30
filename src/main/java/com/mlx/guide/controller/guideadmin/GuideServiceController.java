@@ -66,7 +66,7 @@ public class GuideServiceController {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
-			guideService.setUserNo("weixin4");
+			guideService.setUserNo(shiroUser.getUserNo());
 			guideService.setFlag(EFlag.VALID.getId());
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 			PageList<GuideService> list = guideServiceService.getGuideServicePageList(guideService,pageBounds);
@@ -113,8 +113,8 @@ public class GuideServiceController {
 				// 随机生成编号
 				int num = (int) (Math.random() * 10000);
 				guideService.setServiceNo("MLX_SERVICE" + num + System.currentTimeMillis());
-				guideService.setUserNo("weixin4");
-				guideService.setUserName("全志安");
+				guideService.setUserNo(shiroUser.getUserNo());
+				guideService.setUserName(shiroUser.getName());
 				guideService.setCreateTime(new Date());
 				guideService.setStatus(EStatus.EDIT.getId());
 				guideServiceService.insertSelective(guideService);

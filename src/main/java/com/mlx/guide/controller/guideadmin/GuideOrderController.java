@@ -2,7 +2,9 @@ package com.mlx.guide.controller.guideadmin;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +24,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
+import com.mlx.guide.constant.EOrderType;
 import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.service.GuideOrderService;
 /**
@@ -76,8 +79,16 @@ public class GuideOrderController {
     	    	timeStart=orderModel.getStartDate().replaceAll("-", "");
     	    	timeEnd=orderModel.getEndDate().replaceAll("-", "");
     		}
-    	    
-			String orderList = guideOrderService.getOrderList("12345678", orderModel.getOrderId(), orderModel.getOrderStatus(), timeStart, timeEnd, pageNo, pageSize);
+    	    Map<String,Object> maps=new HashMap<String,Object>();
+    	    maps.put("userId", "12345678");
+    	    maps.put("orderId", orderModel.getOrderId());
+    	    maps.put("orderStatus", orderModel.getOrderStatus());
+    	    maps.put("startDate", timeStart);
+    	    maps.put("endDate", timeEnd);
+    	    maps.put("pageNo", pageNo);
+    	    maps.put("pageSize", pageSize);
+    	    String orderList = guideOrderService.getMemberList(maps);
+//			String orderList = guideOrderService.getOrderList("12345678", orderModel.getOrderId(), orderModel.getOrderStatus(), timeStart, timeEnd, pageNo, pageSize);
 			
 			JSONObject jsonObject = JSON.parseObject(orderList);
 			List<OrderModel> list = JSONArray.parseArray(jsonObject.get("result").toString(),OrderModel.class);
@@ -85,6 +96,7 @@ public class GuideOrderController {
 			model.addAttribute("list", list);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("orderModel", orderModel);
+			model.addAttribute("EOrderType", EOrderType.getMap());
 			model.addAttribute("paginator", paginator);
 
 		} catch (Exception e) {

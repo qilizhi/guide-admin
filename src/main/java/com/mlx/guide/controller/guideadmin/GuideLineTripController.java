@@ -26,6 +26,8 @@ import com.mlx.guide.model.GuideLineTripModel;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideLineTripService;
+import com.mlx.guide.shiro.ShiroDbRealm;
+import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 
 /**
  * 行程
@@ -69,6 +71,9 @@ public class GuideLineTripController {
 	public String list(@RequestParam String lineNo, @RequestParam String startDate, @RequestParam String endDate,
 			GuideLineTrip guideLineTrip, Model model) {
 		try {
+			// 获取当前用户
+			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+			
 			guideLineTrip.setLineNo(lineNo);
 			guideLineTrip.setFlag(EFlag.VALID.getId().byteValue());
 			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
@@ -105,8 +110,10 @@ public class GuideLineTripController {
 
 	/**
 	 * 新增或修改
-	 * 
 	 * @param guideLineTripModel
+	 * @param lineNo 线路编号
+	 * @param startDate 价格页面需要保留的开始时间和结束时间
+	 * @param endDate
 	 * @param model
 	 * @return
 	 */
