@@ -322,15 +322,15 @@
 					var routeOrderType = $(obj).attr("data-routeordertype");
 					var mlxPrice = $(obj).attr("minprice");
 					var date = $(obj).attr("data-full-date");
-					var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
+					//var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
 				
 					var roomDiffPrice = $BasePrices.roomDiffPrice;	//$(obj).attr("data-roomDiffPrice");
 					var safePrice = $BasePrices.safePrice;	//$(obj).attr("data-safePrice");
 					var visaPrice = $BasePrices.visaPrice;	//$(obj).attr("data-visaPrice");
 					var num = $BasePrices.num;	//$(obj).attr("data-num");
 					
-					if(parseInt(mlxPrice, 0) > 0 
-							||($b == 0 && parseInt(id,0) > 0)){
+					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
+						if(mlxPrice!=null&&mlxPrice!=''&&mlxPrice!=undefined){
 						var lineDatePrice = {};
 						lineDatePrice.id = id;
 						lineDatePrice.lineNo = routeid;
@@ -379,7 +379,9 @@
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
 	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""> </div>'; */
-		
+	        
+	   
+	      
 		 $("#priceCalendar").priceCalendar({
 				showMonthNum: 5, //日历显示月份
 				defaultText:"点击编辑",
@@ -589,10 +591,10 @@
 			});
 			
 			$("#btn-clear").on("click",function(e){
-				/* var $orderType = $('#select-routeOrderType').val();
+				var $orderType = $('#select-routeOrderType').val();
 				var $supplierId = $("[name='supplierId']").val();
 				var $routeId = $("[name='routeid']").val();
-				var $href = $(this).attr("data-url"); */
+				var $href = $(this).attr("data-url"); 
 				comm.confirm("提示","您确定要清除该类型价格吗？",function(){
 					//日期选择检查
 					$mPriceEdit.checkDateValid();
@@ -608,13 +610,13 @@
 						if(!$mPriceEdit.checkWeekDays($BasePrices.weekDays, $week)){
 							return;
 						} */
-						$(obj).attr("data-cprice","");
-						$(obj).attr("data-eprice","");
-						$(obj).attr("minprice","");
-						$(obj).attr("data-roomDiffPrice","");
-						$(obj).attr("data-safePrice","");
-						$(obj).attr("data-visaPrice","");
-						$(obj).attr("data-num","");
+						$(obj).removeAttr("data-cprice","");
+						$(obj).removeAttr("data-eprice","");
+						$(obj).removeAttr("minprice","");
+						$(obj).removeAttr("data-roomDiffPrice","");
+						$(obj).removeAttr("data-safePrice","");
+						$(obj).removeAttr("data-visaPrice","");
+						$(obj).removeAttr("data-num","");
 						
 						$("span.price",$(obj)).html("<dfn>¥</dfn>--");
 						$("input[type='text'][name='minprice']",$(obj)).val("");
@@ -636,7 +638,7 @@
 				    	$("input[name=beginTime]").val("");
 				    	$("input[name=endTime]").val("");
 				    	//初始化日历插件 datepicker
-				        $('.date-picker').datepicker();
+				        //$('.date-picker').datepicker();
 				    	
 					});
 				});

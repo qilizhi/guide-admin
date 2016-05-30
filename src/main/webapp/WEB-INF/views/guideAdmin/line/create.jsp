@@ -30,6 +30,8 @@
 }
 
 </style>
+<!-- fancybox -->
+<link href="${ctx}/static/css/fancybox.css" rel="stylesheet" type="text/css" />
 <title>创建线路</title>
 
 
@@ -175,12 +177,13 @@
 									class="required"> * </span>
 								</label>
 								<div class="col-xs-2">
-
-									<input type="hidden" name="imgUrl" value="${guideLine.imgUrl }"/><img id="image" alt=""
-										src="${guideLine.imgUrl }" class="img-thumbnail"><span
+									<input type="hidden" name="imgUrl" value="${guideLine.imgUrl }"/>
+									
+									<a class="grouped_elements" rel="group" href="${guideLine.imgUrl }">
+									<img id="image" alt="" src="${guideLine.imgUrl }" class="img-thumbnail"/></a><span
 										class="btn green fileinput-button pading"> <i
 										class="fa fa-plus"></i> <span id="load">上传 </span> <input
-										class="imgUpload" type="file" name="files[]" multiple>
+										class="imgUpload" type="file" name="files[]" multiple />
 									</span>
 
 									<div class="col-lg-7" id="supprogress">
@@ -276,7 +279,8 @@
 	<!-- 验证框架 -->
 	<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
     <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-	
+	<!-- fancybox -->
+	<script type="text/javascript" src="${ctx}/static/js/jquery.fancybox-1.3.1.pack.js"></script>
 	<script>
 	
 	$(function() {
@@ -284,6 +288,8 @@
 		initImgUpload();
 		initUEeditor();
 		handleValidation3();
+		//初始化fancyBox
+		$("a.grouped_elements").fancybox();
 		
 	});
 	
@@ -291,38 +297,27 @@
 		var initImgUpload = function() {
 
 			$("#supprogress").css('display', "none");
-			$('.imgUpload').on(
-					'change',
-					function(e) {
+			$('.imgUpload').on('change',function(e) {
 						var files = this.files;
 						var fullname = $(this).val();
-						$("#imageName")
-								.html(
-										fullname.substring(fullname
-												.lastIndexOf("\\") + 1));
+						$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
 						$("#supprogress").css('display', "block");
 						$("#image").attr("src", "");
 						
 					})
-			$('.imgUpload').fileupload(
-					{
+			$('.imgUpload').fileupload({
 
 						dataType : 'json',
 						url : '${ctx}/upload',
 						progressall : function(e, data) {
-							var progress = parseInt(data.loaded / data.total
-									* 100, 10);
+							var progress = parseInt(data.loaded / data.total * 100, 10);
 							var $progressBar=$('#supprogress .progress .progress-bar-success');
 							if(progress==100){
-								$progressBar.css('width',
-									(progress-1) + '%');
-							$progressBar.text(
-									(progress-1) + '%');
+								$progressBar.css('width',(progress-1) + '%');
+								$progressBar.text((progress-1) + '%');
 							}else{
-								$progressBar.css('width',
-										progress + '%');
-								$progressBar.text(
-										progress + '%');
+								$progressBar.css('width',progress + '%');
+								$progressBar.text(progress + '%');
 							}
 						},
 
@@ -330,12 +325,13 @@
 							if (data.result.code == "200") {
 								$("#supprogress").css('display', "none");
 								var imgUrl = data.result.result[0].filePath;
+								//console.log(imgUrl)
 								$("input[name='imgUrl']").val(imgUrl);
 								$("#image").attr("src", imgUrl);
+								$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
 								$("#load").html("重传");
 							} else {
-								$('#supprogress .progress .progress-bar-success').text(
-										data.result.msg);
+								$('#supprogress .progress .progress-bar-success').text(data.result.msg);
 							}
 							$('#supprogress .progress .progress-bar-success').text("done");
 						}
@@ -358,7 +354,8 @@
                ignore: "", // validate all fields including form hidden input
                rules: {
                    title: {
-                       required: true
+                       required: true,
+                       maxlength:50
                    },  
                    price: {
                        required: true,
@@ -366,7 +363,8 @@
                        maxlength:10
                    },
                    description: {
-                       required: true
+                       required: true,
+                       maxlength:50
                    },
                    sort: {
                        required: true,
@@ -374,16 +372,20 @@
                        maxlength:10
                    },
                    remark: {
-                       required: true
+                       required: true,
+                       maxlength:255
                    },
-                   content1: {
-                       required: true
+                   num:{
+                       required: true,
+                       digits:true,
+                       maxlength:5
                    }
                },
 
                messages: { // custom messages for radio buttons and checkboxes
                	title: {
                        required: "不能为空",
+                       maxlength:"最多输入50个汉字"
                    },
                    price: {
                        required: "不能为空",
@@ -392,6 +394,7 @@
                    },
                    description: {
                        required: "不能为空",
+                       maxlength:"最多输入50个汉字"
                    },
                    sort: {
                        required: "不能为空",
@@ -399,10 +402,13 @@
                        maxlength:"最多输入10位数"
                    },
                    remark: {
-                   	required: "不能为空"
+                	   required: "不能为空",
+                	   maxlength:"最多输入255个汉字"
                    },
-                   content1: {
-                   	required: "攻略内容不能为空"
+                   num:{
+                       required:"不能为空",
+                       digits:"请输入整数",
+                       maxlength:"最多输入5位数"
                    }
                },
 

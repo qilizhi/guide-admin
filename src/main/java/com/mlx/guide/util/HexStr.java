@@ -41,7 +41,7 @@ public class HexStr {
 	
 	public static void main(String[] args) {  
 	    byte[] bt = new byte[]{10, 2, 12, 14, 1, 0, 0, 1, 0, 31, 45, 1, 8, 0, 1, 0, -96, -45, 10, 3};  
-	    System.out.println(bytesToHexString(bt));  
-	    System.out.println(Arrays.toString(hexStringToBytes("0A020C0E01000001001F2D0108000100A0D30A03")));  
+	    //System.out.println(bytesToHexString(bt));  
+	    //System.out.println(Arrays.toString(hexStringToBytes("0A020C0E01000001001F2D0108000100A0D30A03")));  
 	}  
 }

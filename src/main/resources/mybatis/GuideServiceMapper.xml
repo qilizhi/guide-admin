@@ -414,4 +414,14 @@
 		where
 		id = #{id,jdbcType=INTEGER}
 	</update>
+	
+	<select id="getGuideServiceByUserNo" resultMap="BaseResultMap">
+	  select 
+	  <include refid="Base_Column_List"/>
+	   from guide_service 
+	  <where>
+	   user_no=#{userNo}
+	  </where>
+	
+	</select>
 </mapper>

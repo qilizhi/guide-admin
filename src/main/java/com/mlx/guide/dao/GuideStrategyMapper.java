@@ -34,4 +34,6 @@ public interface GuideStrategyMapper {
 	public int deleteGuideStrategy(Integer id);
 
 	public List<GuideStrategy> getGuideStrategyRankingList(PageBounds pageBounds);
+
+	public List<GuideStrategy> getGuideStrategyByUserNo(String userNo);
 }

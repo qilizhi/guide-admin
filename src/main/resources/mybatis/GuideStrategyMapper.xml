@@ -341,4 +341,14 @@
     <delete id="deleteGuideStrategy" parameterType="Integer">
     	DELETE FROM  guide_strategy WHERE id =#{id}
     </delete>
+    
+    <select id="getGuideStrategyByUserNo" resultMap="guideStrategyMap">
+     select 
+     <include refid="Base_Column_List"/>
+      from guide_strategy
+     <where>
+      user_no = #{userNo}
+     </where>
+    
+    </select>
 </mapper>

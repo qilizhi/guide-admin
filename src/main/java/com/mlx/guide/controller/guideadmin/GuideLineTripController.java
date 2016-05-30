@@ -155,11 +155,10 @@ public class GuideLineTripController {
 			guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 			guideLineService.updateGuideLineSelective(guideLine);
 			model.addAttribute("lineNo", lineNo);
-			return "redirect:/guideAdmin/line/list";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "guideAdmin/line/submit";
 		}
+		return "redirect:/guideAdmin/line/list";
 	}
 
 	/**

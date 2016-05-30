@@ -59,6 +59,8 @@ public class OrderRefundAdminController{
         	
     		SimpleDateFormat sf= new SimpleDateFormat("yyyyMMdd");
     		String endDate=sf.format(new Date());
+    		String starTime=orderRefundModel.getStartDate();
+    		String endTime=orderRefundModel.getEndDate();
     		if(StringUtils.isBlank(orderRefundModel.getStartDate())){
     			orderRefundModel.setStartDate(startDate);
     		}
@@ -71,7 +73,8 @@ public class OrderRefundAdminController{
     		List<OrderRefundModel> list= JSONObject.parseArray(JSONObject.parseObject(resultJson).getString("result"), OrderRefundModel.class);
     		//分页
     		Paginator paginator = new Paginator(pageNo, pageSize, JSONObject.parseObject(resultJson).getInteger("total"));
-    		
+    		orderRefundModel.setStartDate(starTime);
+    		orderRefundModel.setEndDate(endTime);
     		model.addAttribute( "pageSize", pageSize );
     		model.addAttribute( "paginator", paginator );			
 			model.addAttribute("list", list);

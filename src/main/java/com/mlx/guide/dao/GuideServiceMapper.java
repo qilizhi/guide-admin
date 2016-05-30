@@ -1,5 +1,7 @@
 package com.mlx.guide.dao;
 
+import java.util.List;
+
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.entity.GuideService;
@@ -28,4 +30,7 @@ public interface GuideServiceMapper {
 	int batDelByflag(String[] idsArray);
 
 	Long countByDate(Integer month);
+
+	
+	List<GuideService> getGuideServiceByUserNo(String userNo);
 }

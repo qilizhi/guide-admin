@@ -141,6 +141,7 @@ public class GuideTuanController {
 		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("list", lsGuests);
+		model.addAttribute("guest", guest);
 		model.addAttribute("ESignInStatus", ESignInStatus.getByteMap());
 		return "guideAdmin/guideTuan/guest_list";
 	}

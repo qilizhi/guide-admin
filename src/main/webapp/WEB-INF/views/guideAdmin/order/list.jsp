@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
 <script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 
-
 </head>
 <body>
 	<div class="row">
@@ -78,13 +77,13 @@
 									<th scope="col">用户编号</th>
 									<th scope="col">用户名</th>
 									<th scope="col">订单类型</th>
-									<th scope="col">订单流水日期</th>
+<!-- 									<th scope="col">订单流水日期</th>
 									<th scope="col">订单流水时间</th>
 									<th scope="col">订单流水状态</th>
 									<th scope="col">订单市场总额</th>
-									<th scope="col">订单总销售额</th>
+									<th scope="col">订单总销售额</th> -->
 									<th scope="col">应付金额</th>
-									<th scope="col">退款标识</th>
+									<!-- <th scope="col">退款标识</th> -->
 									<th scope="col">退款金额</th>
 									<th scope="col">币种</th>
 									<th scope="col">失效时间</th>
@@ -103,13 +102,13 @@
 										<td>${item.userId}</td>
 										<td>${item.userName}</td>
 										<td>${item.orderType}</td>
-										<td>${item.orderDate}</td>
+										<%-- <td>${item.orderDate}</td>
 										<td>${item.orderTime}</td>
 										<td>${item.orderStatus}</td>
 										<td>${item.totalMarketPrice}</td>
-										<td>${item.totalSellPrice}</td>
+										<td>${item.totalSellPrice}</td> --%>
 										<td>${item.payFee}</td>
-										<td>${item.refundFlag}</td>
+										<%-- <td>${item.refundFlag}</td> --%>
 										<td>${item.refundFee}</td>
 										<td>${item.currency}</td>
 										<td>${item.expTime}</td>

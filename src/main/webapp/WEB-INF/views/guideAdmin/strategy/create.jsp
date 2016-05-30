@@ -29,6 +29,8 @@
 	padding: 0;
 }
 </style>
+<!-- fancybox -->
+<link href="${ctx}/static/css/fancybox.css" rel="stylesheet" type="text/css" />
  <!-- 下拉选择框样式 -->
 <link rel="stylesheet" href="${ctx}/static/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
 <script type="text/javascript" src="${ctx}/static/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
@@ -45,6 +47,8 @@
 <!-- 验证框架 -->
 <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+	<!-- fancybox -->
+	<script type="text/javascript" src="${ctx}/static/js/jquery.fancybox-1.3.1.pack.js"></script>
 </head>
 
 <body>
@@ -98,23 +102,25 @@
 						 <span class="required"> * </span>
 						</label>
 						<div class="col-xs-2 line-img">
-								<input type="hidden" name="imgUrl" value="${guideStrategy.imgUrl }"/>
-										<img id="image"  alt="" src="${guideStrategy.imgUrl}" class="img-thumbnail"> <span
-											class="btn green fileinput-button pading"> <i
-											class="fa fa-plus"></i> <span id="load">上传 </span> <input
-											class="imgUpload" type="file" name="files[]" multiple>
-										</span>
-									<div class="col-lg-7" id="supprogress">
-										<span id="imageName"></span>
-										<div class="progress">
-											<div class="progress-bar progress-bar-success"
-												role="progressbar" aria-valuenow="40" aria-valuemin="0"
-												aria-valuemax="100">
-												<span class="sr-only">40% Complete (success)</span>
-											</div>
-										</div>
-
+							<input type="hidden" name="imgUrl" value="${guideStrategy.imgUrl }"/>
+						
+								<a class="grouped_elements" rel="group" href="${guideStrategy.imgUrl }">
+								<img id="image"  alt="" src="${guideStrategy.imgUrl}" class="img-thumbnail"/></a> <span
+									class="btn green fileinput-button pading"> <i
+									class="fa fa-plus"></i> <span id="load">上传 </span> <input
+									class="imgUpload" type="file" name="files[]" multiple/>
+								</span>
+							<div class="col-lg-7" id="supprogress">
+								<span id="imageName"></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success"
+										role="progressbar" aria-valuenow="40" aria-valuemin="0"
+										aria-valuemax="100">
+										<span class="sr-only">40% Complete (success)</span>
 									</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
                     <div class="form-group">
@@ -183,43 +189,33 @@
 			initUEeditor();
 			handleValidation3();
 			initSelect();
+			//初始化fancyBox
+			$("a.grouped_elements").fancybox();
 		
 		})
 		//上传图片
 		var initImgUpload = function() {
 
 			$("#supprogress").css('display', "none");
-			$('.imgUpload').on(
-					'change',
-					function(e) {
+			$('.imgUpload').on('change',function(e) {
 						var files = this.files;
 						var fullname = $(this).val();
-						$("#imageName")
-								.html(
-										fullname.substring(fullname
-												.lastIndexOf("\\") + 1));
+						$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
 						$("#supprogress").css('display', "block");
 						$("#image").attr("src", "");
 					})
-			$('.imgUpload').fileupload(
-					{
+			$('.imgUpload').fileupload({
 
 						dataType : 'json',
 						url : '${ctx}/upload',
 						progressall : function(e, data) {
-							var progress = parseInt(data.loaded / data.total
-									* 100, 10);
+							var progress = parseInt(data.loaded / data.total * 100, 10);
 							var $progressBar=$('#supprogress .progress .progress-bar-success');
-							if(progress==100){
-								$progressBar.css('width',
-									(progress-1) + '%');
-							$progressBar.text(
-									(progress-1) + '%');
+							if(progress==100){$progressBar.css('width',(progress-1) + '%');
+							$progressBar.text((progress-1) + '%');
 							}else{
-								$progressBar.css('width',
-										progress + '%');
-								$progressBar.text(
-										progress + '%');
+								$progressBar.css('width',progress + '%');
+								$progressBar.text(progress + '%');
 							}
 						},
 
@@ -229,12 +225,12 @@
 								var imgUrl=data.result.result[0].filePath;
 								$("input[name='imgUrl']").val(imgUrl);
 								$("#image").attr("src",imgUrl);
+								$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
 								$("#load").html("重传");
 							} else {
-								$('.progress .progress-bar-success').text(
-										data.result.msg);
+								$('.progress .progress-bar-success').text(data.result.msg);
 							}
-							console.log(data);
+							//console.log(data);
 							$('.progress .progress-bar-success').text("done");
 						}
 					});
@@ -273,12 +269,6 @@
 	            var error3 = $('.alert-danger', form3);
 	            var success3 = $('.alert-success', form3);
 
-	            /* form3.on('submit', function() {
-	                for(var instanceName in CKEDITOR.instances) {
-	                    CKEDITOR.instances[instanceName].updateElement();
-	                }
-	            }) */
-
 	            form3.validate({
 	                errorElement: 'span', //default input error message container
 	                errorClass: 'help-block help-block-error', // default input error message class
@@ -286,10 +276,12 @@
 	                ignore: "", // validate all fields including form hidden input
 	                rules: {
 	                    title: {
-	                        required: true
+	                        required: true,
+	                        maxlength:50
 	                    }, 
 	                    description: {
-	                        required: true
+	                        required: true,
+	                        maxlength:100
 	                    },
 	                    sort: {
 	                        required: true,
@@ -297,7 +289,8 @@
 	                        maxlength:10
 	                    },
 	                    recommendInfo: {
-	                        required: true
+	                        required: true,
+	                        maxlength:100
 	                    },
 	                    relatLineNo: {
 	                    	required: true
@@ -307,9 +300,11 @@
 	                messages: { // custom messages for radio buttons and checkboxes
 	                	title: {
 	                        required: "不能为空",
+	                        maxlength:"最多输入50个汉字"
 	                    },
 	                    description: {
 	                        required: "不能为空",
+	                        maxlength:"最多输入100个汉字"
 	                    },
 	                    sort: {
 	                        required: "不能为空",
@@ -317,7 +312,8 @@
 	                        maxlength:"最多输入10位数"
 	                    },
 	                    recommendInfo: {
-	                    	required: "不能为空"
+	                    	required: "不能为空",
+	                    	maxlength:"最多输入100个汉字"
 	                    },
 	                    relatLineNo: {
 	                    	required: "不能为空"

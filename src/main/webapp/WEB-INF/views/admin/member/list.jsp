@@ -27,67 +27,7 @@
 				<div class="portlet-body">
 					<form id="searchForm" action="${ctx}/admin/member/list" method="post">
 						<div class="row">
-						<%-- <div class="col-md-12" >
-						<table class="search-table">
-						 <tr>
-						   <th>用户昵称：</th>
-						    <td><input type="text" class="form-filter input-sm"
-									placeholder="用户名称" name="nickName" value="${userInfo.nickName}"></td>
-						     <th>手机号码：</th>
-						      <td><input type="text" class="form-filter input-sm"
-									placeholder="手机号码" name="mobile" value="${userInfo.mobile}"></td>
-						 </tr>
-						  <tr>
-						     <th>邮箱：</th>
-						      <td><input type="text" class="form-filter input-sm"
-									placeholder="邮箱" name="email" value="${userInfo.email}"></td>
-									 <th>性别：</th>
-						    <td>
-						     
-						    <label for="sex1" > <input type="radio" name="sex" value="1" id="sex1" ${userInfo.sex==1?'checked':''}  >女</label>&nbsp;&nbsp;&nbsp;
-						        <label for="sex2"> <input type="radio" name="sex" value="2" id="sex2"  ${userInfo.sex==2?'checked':''}>男</label>&nbsp;&nbsp;&nbsp;
-						        <label for="sex0"> <input type="radio" name="sex" value="1" id="sex0"  ${userInfo.sex==0?'checked':''}>未填</label>
-						    </td>
-						 </tr>
-						 <tr>
-						  <th>创建时间：</th>
-						    <td>
-						    <div class="input-group date date-picker pull-left"  data-date-format="yyyy-mm-dd"  style="width:200px">
-                                                        <input type="text" class="form-control" readonly="readonly" placeholder="开始时间" name="startTime" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error" value="${userInfo.startTime}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                    <span class="pull-left" style="margin-top:7px;">—</span>
-                                                    <div class="input-group date date-picker pull-left" data-date-format="yyyy-mm-dd" style="width:200px">
-                                                        <input type="text" class="form-control" readonly="readonly"  placeholder="结束时间" name="endTime" aria-required="true" aria-invalid="false" aria-describedby="datepicker-error" value="${userInfo.endTime}">
-                                                        <span class="input-group-btn">
-                                                            <button class="btn default" type="button">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-						  </td>
-						     <th>用户状态：</th>
-						      <td>
-						       <label for="status1" ><input type="radio" name="status" value="1" id="status1" ${userInfo.status==1?'checked':''} >正常</label>&nbsp;&nbsp;&nbsp;
-						        <label for="status2"> <input type="radio" name="status" value="2" id="status2"  ${userInfo.status==2?'checked':''}>冻结</label>
-						      </td>
-						 
-						 </tr>
-						</table>
-								<button type="button"  onclick="formReset();"
-									class="btn btn-sm green btn-outline margin-bottom pull-right m10 ">
-									<i class="fa fa-mail-reply-all"></i> 重置
-								</button>
-									
-								<button type="submit" 
-									class="btn btn-sm green btn-outline margin-bottom pull-right m10 ">
-									<i class="fa fa-search"></i> 查询
-								</button>
-						</div> --%>
+						
 							<input type="hidden" name="pageNo" value="1">
 							<div class="col-md-12">
 								<select name="pageSize"
@@ -117,10 +57,7 @@
 		<i class="fa fa-mail-reply-all"></i> 重置</button>
 		</div>
 							</div>
-							
-							
-							
-							
+
 							</div>
 					</form>
 					<div class="table-scrollable">
@@ -149,7 +86,7 @@
 									   
 									     <td class="add" onclick="toggleDetail(this)"></td>
 										 <td>${item.userNo}</td>
-										 <td><a href="${item.headImgUrl}" target="_blank"><img src="${item.headImgUrl}" width="50px"></a></td>
+										 <td><img src="${item.headImgUrl}" data-preview="true" width="50px"></td>
 										<td>${item.nickName}</td>
 										<td>${item.openId}</td>
 										<td>
@@ -185,10 +122,6 @@
 										</c:choose>
 										</td>
 											<td> 
-											 <%--  <a
-											class="btn green btn-outline btn-sm addShow"
-											 onclick="showModal('${item.id}')">详情</a> --%>
-											
 										<c:choose>
 										<c:when test="${item.status==1}">
 										<a
@@ -212,7 +145,6 @@
 									     <li><strong>语种:</strong>${item.language }</li>
 									     <li><strong> 环信账号:</strong>${item.huanxinAccount}</li>
 									     <li><strong>环信密码:</strong>${item.huanxinPwd}</li>
-									    
 									   </ul>
 									  </td>
 									</tr>
@@ -263,11 +195,7 @@
 	<script src="${ctx}/static/js/handle.js"></script>
 	<tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
 	<script>
-	      //弹出详情模态框
-         /*  function showModal(id){
-          myframe.src="${ctx}/admin/member/detail?id="+id
-          	  $("#responsive").modal();
-          	}; */
+	      
           
         //冻结，解冻操作
            function handle(id,status){
@@ -280,6 +208,8 @@
            }	
       
           	
+        
+        
           	
  	</script>
 </body>

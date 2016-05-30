@@ -37,6 +37,9 @@
 </style>
 
 <title>创建行程</title>
+	<!-- 验证框架 -->
+	<%-- <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script> --%>
 
 
 
@@ -155,11 +158,11 @@
 											 <input type="hidden" name="guideLineTrips[${st.index}].lineNo" value="${lineNo}"/>
 											 </td>
 											 <td align="center" class="js-num" width="80">
-											 <input type="text" class="js-day" name="guideLineTrips[${st.index}].day" id="day" value='${item.day}' readonly required ></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].address" id="address" value='${item.address}' required></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].traffic" id="traffic" value='${item.traffic}' required></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].hotel" id="hotel" value='${item.hotel}' required></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].tripDetail" id="tripDetail" value='${item.tripDetail}' required></td>
+											 <input type="text" class="js-day" name="guideLineTrips[${st.index}].day" id="day" value='${item.day}' readonly required  ></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].address" id="address" value='${item.address}' required maxlength="100"></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].traffic" id="traffic" value='${item.traffic}' required maxlength="200"></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].hotel" id="hotel" value='${item.hotel}' required maxlength="50"></td>
+											 <td><input type="text" name="guideLineTrips[${st.index}].tripDetail" id="tripDetail" value='${item.tripDetail}' required maxlength="255"></td>
 											 <td>
 											 <a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
 											 <a class="btn blue btn-outline" name="addBtn" onClick="delRow(this,${item.id});">删除</a>
@@ -203,10 +206,10 @@
 				<td>${lineNo}<input type="hidden" name="guideLineTrips[{{id-1}}].lineNo" value="${lineNo}"/>
 							<input type="hidden" name="guideLineTrips[{{id-1}}].id" value=""/></td>
 				<td align="center" class="js-num" width="80"><input type="text" name="guideLineTrips[{{id-1}}].day" id="day" value='{{id}}' readonly="readonly"></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].address" id="address" value='' required></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].traffic" id="traffic" value='' required></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].hotel" id="hotel" value='' required></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].tripDetail" id="tripDetail" value='' required></td>
+				<td><input type="text" name="guideLineTrips[{{id-1}}].address" id="address" value='' required maxlength="100"></td>
+				<td><input type="text" name="guideLineTrips[{{id-1}}].traffic" id="traffic" value='' required maxlength="200"></td>
+				<td><input type="text" name="guideLineTrips[{{id-1}}].hotel" id="hotel" value='' required maxlength="50"></td>
+				<td><input type="text" name="guideLineTrips[{{id-1}}].tripDetail" id="tripDetail" value='' required maxlength="255"></td>
 				<td><a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
 					<a class="btn blue btn-outline" name="addBtn" onClick="delRow(this);">删除</a>
 				</td>
@@ -246,6 +249,10 @@
 			 return true;
 		 } 
 	 });
+	 
+	 
+	 
+	 
 	</script>
 
 

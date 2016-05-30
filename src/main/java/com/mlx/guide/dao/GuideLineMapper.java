@@ -38,4 +38,6 @@ public interface GuideLineMapper {
 	 PageList<GuideLine> getGuideLineByUserNoPageList(String userNo, GuideLine guideLine, PageBounds pageBounds);
 
 	 PageList<GuideLine> searcheGuideLinePageList(GuideLine guideLine, PageBounds pageBounds);
+
+	 List<GuideLine> getGuideLineByUserNo(String userNo);
 }
