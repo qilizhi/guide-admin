@@ -2,6 +2,7 @@ package com.mlx.guide.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -63,16 +65,26 @@ public class HttpClientUtil {
 	 * 向服务api,post数据
 	 * 
 	 * @param url
-	 * @param jsonString
+	 * @param 
 	 * @return
 	 */
 	public static String post(String url, Map<String, Object> params) {
 
 		try {
-			String postUrl=getParamUrl(url, params);
-			logger.info("请求的URl:"+postUrl);
-			HttpPost httpPost = new HttpPost(postUrl);
-			httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
+			
+			logger.info("请求的URl:"+url);
+			HttpPost httpPost = new HttpPost(url);
+			//httpPost.addHeader(HTTP.CONTENT_TYPE, "application/json");
+			List<NameValuePair> nvPairs=new ArrayList<NameValuePair>();
+		   for(String key:params.keySet()){
+			   if (params.get(key) != null) {
+			   nvPairs.add(new BasicNameValuePair(key, params.get(key).toString()));
+			   }else{
+				   logger.info("参数：" + key + "值为null忽略！");   
+			   }
+		   }
+			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nvPairs, Consts.UTF_8);
+			httpPost.setEntity(entity);
 			CloseableHttpResponse response = httpClient.execute(httpPost);
 			// return response.getEntity();
 			String resultContent = new BasicResponseHandler().handleResponse(response);

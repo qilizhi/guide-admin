@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
  *@category 订单util
  *
  */
-public class OrderSignUtil {
+public class OrderUtil {
 
-	private static Logger logger =LoggerFactory.getLogger(OrderSignUtil.class);
+	private static Logger logger =LoggerFactory.getLogger(OrderUtil.class);
 	private static final String ALGORITHM = "MD5";
     private static final String KEY="HsB1ZqZUr6UDG553e37e8S06JN3vj1ng";//私钥，加密验签干扰项
 

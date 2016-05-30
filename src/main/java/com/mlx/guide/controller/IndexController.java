@@ -31,7 +31,7 @@ import com.mlx.guide.service.GuideOrderService;
 import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.service.GuideTuanService;
 import com.mlx.guide.service.UserInfoService;
-import com.mlx.guide.util.OrderSignUtil;
+import com.mlx.guide.util.OrderUtil;
 
 /**
  * 平台后台主页

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.mlx.guide.model.OrderRefundModel;
-import com.mlx.guide.util.OrderSignUtil;
+import com.mlx.guide.util.OrderUtil;
 
 
 @Component
@@ -51,7 +51,7 @@ public class OrderRefundService {
 		params.put("endDate", endDate);
 		params.put("refundJnId", refundJnId); 
 		params.put("methodType", "refundList");
-		String result=OrderSignUtil.post(url, params);
+		String result=OrderUtil.post(url, params);
 		List<OrderRefundModel> list= JSONObject.parseArray(JSONObject.parseObject(result).getString("result"), OrderRefundModel.class);
 		return list.get(0);
 		
@@ -115,7 +115,7 @@ public class OrderRefundService {
 		params.put("refundStatus", order.getRefundStatus());
 		params.put("remark", order.getRemark());
 		params.put("methodType", "orderRefundCheck");
-		return  OrderSignUtil.post(url, params);
+		return  OrderUtil.post(url, params);
 		
 		
 	}
@@ -133,6 +133,6 @@ public class OrderRefundService {
 		params.put("orderId", orderRefundModel.getOrderId()); 
 		params.put("refundStatus", orderRefundModel.getRefundStatus()); 
 		params.put("methodType", "refundList");
-		return  OrderSignUtil.post(url, params);
+		return  OrderUtil.post(url, params);
 	}
 }
