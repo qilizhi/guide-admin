@@ -136,14 +136,14 @@
 										alt="">
 								</button>
 								<ul class="dropdown-menu-v2" role="menu">
-									<li><a href="page_user_profile_1.html"> <i
-											class="icon-user"></i> 我的设置 <span class="badge badge-danger">1</span>
+									<li><a href="${ctx}/guideAdmin/tuan"> <i
+											class="icon-user"></i> 出团列表<!--  <span class="badge badge-danger">1</span> -->
 									</a></li>
 									<li><a href="${ctx}/guideAdmin/aboutMe"> <i
 											class="icon-calendar"></i> 我的资料
 									</a></li>
 									<li><a href="${ctx}/guideAdmin/myStory"> <i class="icon-rocket"></i>
-											我的故事 <span class="badge badge-success"> 7 </span>
+											我的故事 <!-- <span class="badge badge-success"> 7 </span> -->
 									</a></li>
 									<li class="divider"></li>
 									
