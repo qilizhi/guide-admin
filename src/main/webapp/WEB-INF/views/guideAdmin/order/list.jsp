@@ -117,7 +117,7 @@
 										   ${goods.goodsName }
 										</c:forEach>
 										</td>
-										<td>${EGoodsType }</td>
+										<td>${EGoodsType[item.orderType]}</td>
 										<td>${item.payFee}</td>
 										<td>${item.orderDescribe.contactsName }</td>
 										<td>
@@ -131,7 +131,7 @@
 										<fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd"/>&nbsp;
 										<fmt:formatDate value="${payTime}" pattern="HH:mm:ss"/>
 										</td>
-										<td>${fns:OrderPayType()[item.orderStatus]}</td>
+										<td>${OrderPayType[item.orderStatus]}</td>
 										<td>
 											<a  href="${ctx}/guideAdmin/guideOrder/detail?orderId=${item.orderId}&userId=${item.userId}" class="btn btn-sm yellow btn-outline" >详情</a>																								
 										</td>

@@ -24,6 +24,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EGoodsType;
+import com.mlx.guide.constant.OrderPayType;
 import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.service.GuideOrderService;
 /**
@@ -69,7 +70,6 @@ public class GuideOrderController {
 		
 			String timeStart="20130101";
         	String timeEnd=null;
-       
     		SimpleDateFormat sf= new SimpleDateFormat("yyyyMMdd");
     		timeEnd=sf.format(new Date());
 
@@ -87,17 +87,16 @@ public class GuideOrderController {
     	    maps.put("pageNo", pageNo);
     	    maps.put("pageSize", pageSize);
     	    String orderList = guideOrderService.getMemberList(maps);
-			
 			JSONObject jsonObject = JSON.parseObject(orderList);
 			List<OrderModel> list = JSONArray.parseArray(jsonObject.get("result").toString(),OrderModel.class);
+			System.out.println(list);
 			Paginator paginator = new Paginator(pageNo, pageSize, jsonObject.getInteger("total"));
-			
 			model.addAttribute("list", list);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("orderModel", orderModel);
 			model.addAttribute("EGoodsType", EGoodsType.getMap());
+			model.addAttribute("OrderPayType", OrderPayType.getMap());
 			model.addAttribute("paginator", paginator);
-
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
