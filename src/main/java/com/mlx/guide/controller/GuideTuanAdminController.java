@@ -249,7 +249,7 @@ public class GuideTuanAdminController {
 				touristNum += om.getGoodsTourists().size();
 				logger.info("旅客人数：" + om.getGoodsTourists().size());
 				p.setTripDate(om.getTripDate());
-				p.setGoodIds(om.getGoodsId());
+				p.setGoodsId(om.getGoodsId());
 				p.setGoodsType(om.getGoodsType());
 				p.setGoodsName(om.getGoodsName());
 			}
