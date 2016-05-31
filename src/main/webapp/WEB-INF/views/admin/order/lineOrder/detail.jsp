@@ -39,99 +39,39 @@
                               
                               <table width="100%" class="data-table" >
                               <tr>
-                                 <th colspan="10"><div class="text-center">支付详情</div></th>
+                                 <th colspan="10"><div class="text-center">用户详情</div></th>
                               </tr>
-                              <tr>
-                                
-                                <th>购买的商品</th>
-                                <td><c:forEach var="item" items="${orderModel.orderGoods }">
-										   ${item.goodsName }
-										</c:forEach></td>
-                                <th>用户ID:</th>
+                               <tr>
+                                 <th>用户ID:</th>
                                 <td>${orderModel.userId }</td>
-                                <th>订单总销售额:</th>
-                                <td>${orderModel.totalSellPrice }</td>
-                              </tr>
-                              <tr>
-                                 <th>订单市场总额:</th>
-                                 <td>${orderModel.totalMarketPrice }</td>
-                                 <th>下单终端渠道:</th>
-                                 <td>${fns:SysCnlStatus()[orderModel.sysCnl]}</td>
-                                 <th>订单备注:</th>
-                                 <td>${orderModel.remark }</td>
-                               </tr>
-                                <tr>
-                                 <th>退款标识:</th>
-                                 <td>
-                                 <c:if test="${orderModel.refundFlag==0 }">用户发起退款</c:if>
-                                 <c:if test="${orderModel.refundFlag==1 }">重复支付退款</c:if>
-                                 </td>
-                                 <th>退款金额:</th>
-                                 <td>${orderModel.refundFee }</td>
-                                 <th>应付金额:</th>
-                                 <td>${orderModel.payFee }</td>
-                               </tr>
-                                <tr>
-                                 <th>订单流水状态:</th>
-                                 <td>${fns:OrderPayType()[orderModel.orderStatus]}</td>
-                                 <th>用户客户端IP:</th>
-                                 <td>${orderModel.clientIp }</td>
-                                 <th>币种:</th>
-                                 <td>${orderModel.currency }</td>
-                               </tr>
-                                <tr>
-                                 <th>失效时间:</th>
-                                 <td>${fns:longTimeToDate("yyyy-MM-dd HH:mm:ss",orderModel.expTime) }</td>
-                                 <th>订单日期:</th>
-                                 <td>
-                                 <fmt:parseDate value="${orderModel.orderDate}" pattern="yyyyMMdd" var="orderDate"/>
-                                 <fmt:parseDate value="${orderModel.orderTime}" pattern="HHmmss" var="orderTime"/>
-                                 <fmt:formatDate value="${orderDate}" pattern="yyyy-MM-dd"/>&nbsp;
-                                  <fmt:formatDate value="${orderTime}" pattern="HH:mm:ss"/>
-                                
-                                 </td>
-                                 <th>支付日期:</th>
-                                 <td>
-                                  <fmt:parseDate value="${orderModel.payDate}" pattern="yyyyMMdd" var="payDate"/>
-                                 <fmt:parseDate value="${orderModel.payTime}" pattern="HHmmss" var="payTime"/>
-                                 <fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd"/>&nbsp;
-                                  <fmt:formatDate value="${payTime}" pattern="HH:mm:ss"/></td>
-                               </tr>
-                                
-                                <tr>
-                                <th colspan="10"><div class="text-center">订单详情</div></th>
-                                </tr>
-                                <tr>
                                   <th>联系人:</th>
                                   <td>${orderModel.orderDescribe.contactsName }</td>
                                   <th>手机号:</th>
                                   <td>${orderModel.orderDescribe.mobile }</td>
-                                  <th>电话 :</th>
-                                  <td>${orderModel.orderDescribe.tel }</td>
+                                  
                                 </tr>
                                  <tr>
-                                  <th>地址:</th>
-                                  <td>${orderModel.orderDescribe.address }</td>
+                                 <th>电话 :</th>
+                                  <td>${orderModel.orderDescribe.tel }</td>
                                   <th>地址类型:</th>
                                   <td>
                                   <c:if test="${orderModel.orderDescribe.addressType ==1}">公司</c:if>
                                   <c:if test="${orderModel.orderDescribe.addressType ==2}">家庭</c:if>
                                   <c:if test="${orderModel.orderDescribe.addressType ==3}">其他</c:if>
                                   </td>
-                                  <th>优惠金额:</th>
-                                  <td>${orderModel.orderDescribe.favourableFee }</td>
+                                  <th>地址:</th>
+                                  <td>${orderModel.orderDescribe.address }</td>
+                                  
+                                  
                                 </tr>
                                  <tr>
+                                 <th>优惠金额:</th>
+                                  <td>${orderModel.orderDescribe.favourableFee }</td>
                                   <th>优惠编号:</th>
                                   <td>${orderModel.orderDescribe.favourableId }</td>
                                   <th>发票抬头:</th>
                                   <td>${orderModel.orderDescribe.invoice }</td>
-                                  <th>开票方式:</th>
-                                  <td>
-                                   <c:if test=" ${orderModel.orderDescribe.invoiceMethod==0 }">不开发票</c:if>
-                                   <c:if test=" ${orderModel.orderDescribe.invoiceMethod==1 }">纸质发票</c:if>
-                                   <c:if test=" ${orderModel.orderDescribe.invoiceMethod==2 }">电子发票</c:if>
-                                 </td>
+                                  
                                 </tr>
                                  <tr>
                                   <th>发票类型:</th>
@@ -148,8 +88,8 @@
                                   <th>收货时间类型:</th>
                                   <td>
                                    <c:if test="${orderModel.orderDescribe.transportDayType ==0}">周一至周五</c:if>
-                                     <c:if test="${orderModel.orderDescribe.transportDayType ==1}">周一至周日均可</c:if>
-                                       <c:if test="${orderModel.orderDescribe.transportDayType ==2}">周六日、节假日</c:if>
+                                   <c:if test="${orderModel.orderDescribe.transportDayType ==1}">周一至周日均可</c:if>
+                                   <c:if test="${orderModel.orderDescribe.transportDayType ==2}">周六日、节假日</c:if>
                                  </td>
                                   <th>配送金额:</th>
                                   <td>${orderModel.orderDescribe.transportFee }</td>
@@ -170,6 +110,67 @@
               
                                      </td>
                                 </tr>
+                               
+                               <tr>
+                                <th style="text-align: center" colspan="10" >订单详情</th>
+                               </tr>
+                               
+                               
+                              
+                              <tr>
+                                 <th>商品市场价:</th>
+                                 <td>${orderModel.totalMarketPrice }</td>
+                                  <th>商品销售额:</th>
+                                <td>${orderModel.totalSellPrice }</td>
+                                 <th>下单终端渠道:</th>
+                                 <td>${fns:SysCnlStatus()[orderModel.sysCnl]}</td>
+                                
+                               </tr>
+                                <tr>
+                                 <th>退款标识:</th>
+                                 <td>
+                                 <c:if test="${orderModel.refundFlag==0 }">用户发起退款</c:if>
+                                 <c:if test="${orderModel.refundFlag==1 }">重复支付退款</c:if>
+                                 </td>
+                                  <th>支付金额:</th>
+                                 <td>${orderModel.payFee }</td>
+                                 <th>退款金额:</th>
+                                 <td>${orderModel.refundFee }</td>
+                                
+                               </tr>
+                                <tr>
+                                 <th>订单流水状态:</th>
+                                 <td>${fns:OrderPayType()[orderModel.orderStatus]}</td>
+                                 <th>用户客户端IP:</th>
+                                 <td>${orderModel.clientIp }</td>
+                                 <th>币种:</th>
+                                 <td>${orderModel.currency }</td>
+                               </tr>
+                                <tr>
+                                 <th>失效时间:</th>
+                                 <td>${fns:longTimeToDate("yyyy-MM-dd HH:mm:ss",orderModel.expTime) }</td>
+                                 <th>订单日期:</th>
+                                 <td>
+                                 <fmt:parseDate value="${orderModel.orderDate}" pattern="yyyyMMdd" var="orderDate"/>
+                                 <fmt:parseDate value="${orderModel.orderTime}" pattern="HHmmss" var="orderTime"/>
+                                 <fmt:formatDate value="${orderDate}" pattern="yyyy-MM-dd"/>&nbsp;
+                                 <fmt:formatDate value="${orderTime}" pattern="HH:mm:ss"/>
+                                
+                                 </td>
+                                 <th>支付日期:</th>
+                                 <td>
+                                 ${orderModel.payDate}
+                                  <fmt:parseDate value="${orderModel.payDate}" pattern="yyyyMMdd" var="payDate"/>
+                                 <fmt:parseDate value="${orderModel.payTime}" pattern="HHmmss" var="payTime"/>
+                                 <fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd"/>&nbsp;
+                                  <fmt:formatDate value="${payTime}" pattern="HH:mm:ss"/></td>
+                               </tr>
+                                <tr>
+                                 <th>订单备注:</th>
+                                 <td colspan="9">${orderModel.remark }</td>
+                              </tr>
+                                
+                               
                                  <tr>
                                  <th colspan="10"><div class="text-center">购买的商品信息</div></th>
                                  </tr>
@@ -224,6 +225,8 @@
                                  <td>${item.visaNum }</td>
                                  <th>签证价格:</th>
                                  <td>${item.visaPrice }</td>
+                                 <th>商品类别</th>
+                                 <td>${item.goodsCategory=='v'?'虚拟':'实物' }</td>
                                  </tr>
                                  
                                  
@@ -239,6 +242,7 @@
                                     <td>${s_item.touristName }</td>
                                       <th>性别</th>
                                     <td>
+                                      <c:if test="${s_item.touristSex==0 }">未知</c:if>
                                     <c:if test="${s_item.touristSex==1 }">男</c:if>
                                      <c:if test="${s_item.touristSex==2 }">女</c:if>
                                   </td>
