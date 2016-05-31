@@ -93,9 +93,13 @@ public class GuideOrderController {
 			JSONObject jsonObject = JSON.parseObject(orderList);
 			List<OrderModel> list = JSONArray.parseArray(jsonObject.get("result").toString(),OrderModel.class);
 			Paginator paginator = new Paginator(pageNo, pageSize, jsonObject.getInteger("total"));
+			for (OrderModel o : list) {
+				o.getOrderType().toUpperCase();
+			}
 			model.addAttribute("list", list);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("orderModel", orderModel);
+//			model.addAttribute("orderType", orderModel.getOrderType()==null? "":orderModel.getOrderType().toString().toUpperCase());
 			model.addAttribute("EOrderType", EOrderType.getMap());
 			model.addAttribute("paginator", paginator);
 
@@ -107,19 +111,21 @@ public class GuideOrderController {
 	
 	/**
 	 * 订单详情
-	 * @param orderId
+	 * @param orderModel
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/details/{orderId}")
-	public String details(@PathVariable("orderId") String orderId,Model model){
+	@RequestMapping("/detail")
+	public String detail(OrderModel orderModel,Model model){
 		try {
-			String orderDetails = guideOrderService.getDetail("12345678", orderId);
-			OrderModel Object =  JSON.parseObject(JSON.parseObject(orderDetails).get("result").toString(),OrderModel.class);
-			model.addAttribute("orderDetails", Object);
+			String json=guideOrderService.getDetail(orderModel.getUserId(), orderModel.getOrderId());
+			OrderModel order=JSON.parseObject(JSON.parseObject(json).get("result").toString(),OrderModel.class);
+		
+			model.addAttribute("orderModel", order);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			logger.error(e.getMessage(),e);
 		}
-		return "guideAdmin/order/details";
+		 return "guideAdmin/order/detail";
+
 	}
 }

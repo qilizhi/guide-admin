@@ -101,7 +101,7 @@
 										<td>${item.orderId}</td>
 										<td>${item.userId}</td>
 										<td>${item.userName}</td>
-										<td>${EOrderType}</td>
+										<td>${item.orderType}</td>
 										<%-- <td>${item.orderDate}</td>
 										<td>${item.orderTime}</td>
 										<td>${item.orderStatus}</td>
@@ -116,7 +116,7 @@
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>
-											<a class="btn yellow btn-outline" href="${ctx}/guideAdmin/guideOrder/details/${item.orderId}">详情</a>
+											<a class="btn yellow btn-outline" href="${ctx}/guideAdmin/guideOrder/detail?orderId=${item.orderId}&userId=${item.userId}">详情</a>
 										</td>
 										
 									</tr>
