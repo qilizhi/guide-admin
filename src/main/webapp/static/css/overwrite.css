@@ -236,3 +236,12 @@ ul li{
 .pb20{
 	padding-bottom: 20px;
 }
+.accordion-toggle-styled{
+	display: block;
+	width: 100%;
+	padding: 10px 15px;
+	
+}
+.panel-heading{
+	padding:0px;
+}

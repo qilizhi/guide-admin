@@ -6,6 +6,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fns" uri="/static/fun/fns.tld"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,7 +26,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<form id="searchForm" action="${ctx}/admin/sysBizLog" method="post">
+					<form:form id="searchForm" action="${ctx}/admin/sysBizLog" method="post" modelAttribute="sysBizLog">
 						
 							<input type="hidden" name="pageNo" value="1">
 							<div class="col-md-12" style="margin-bottom:20px;">
@@ -62,6 +63,8 @@
               </span>
           </div>
 							 &nbsp; &nbsp; &nbsp; &nbsp; --%>
+							 <form:select path="bizType" cssClass="form-control input-sm  input-inline pull-left " items="${fns:BizType()}"/>&nbsp;
+							 
 								<input type="text" class="form-filter input-sm"
 									placeholder="操作人" name="operatPerson" value="${sysBizLog.operatPerson}">
 								
@@ -75,7 +78,7 @@
 								</button>
 							</div>
 							</div>
-					</form>
+					</</form:form>
 					<div class="table-scrollable">
 						<table class="table table-striped table-bordered table-hover">
 							<thead>

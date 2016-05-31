@@ -46,9 +46,9 @@
 								<div class="pull-right">
 	
           
-         <input type="text" class="form-filter input-sm pull-left ml10" placeholder="昵称" name="nickName" value="${userInfo.nickName }">
-		 <input type="text" class="form-filter input-sm pull-left ml10" placeholder="手机号码" name="mobile" value="${userInfo.mobile }">
-				 <input type="text" class="form-filter input-sm pull-left ml10" placeholder="邮箱" name="email" value="${userInfo.email }">
+         <input type="text" class="form-filter input-sm pull-left ml10" placeholder="昵称/手机号码/邮箱" name="nickName" value="${userInfo.nickName }">
+		<%--  <input type="text" class="form-filter input-sm pull-left ml10" placeholder="手机号码" name="mobile" value="${userInfo.mobile }">
+				 <input type="text" class="form-filter input-sm pull-left ml10" placeholder="邮箱" name="email" value="${userInfo.email }"> --%>
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom pull-left ml10">
 		
 		<i class="fa fa-search"></i>  搜索</button>

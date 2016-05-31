@@ -26,7 +26,7 @@
                                 <div class="portlet light profile-sidebar-portlet ">
 
                                     <div class="profile-userpic">
-                                        <img src="${guideInfo.bgImgUrl }" class="img-responsive" alt=""> </div>
+                                        <img src="${guideInfo.bgImgUrl }" class="img-responsive" data-preview="true" alt=""> </div>
                                   
                                     <div class="profile-usertitle">
                                         <div class="profile-usertitle-name"> ${guideInfo.realName } </div>
@@ -90,11 +90,11 @@
                                     </div>
                                     <div>
                                       <span class="profile-desc-title">身份证正面:</span>
-                                     <a class="profile-desc-text" href="${guideInfo.idCardFrontPic }" target="_blank"> <img src="${guideInfo.idCardFrontPic }" class="img-thumbnail" title="身份证正面" alt="加载中.." width="150px"/></a>
+                                      <img src="${guideInfo.idCardFrontPic }" class="img-thumbnail"  data-preview="true" title="身份证正面" alt="加载中.." width="150px"/>
                                      </div>
                                      <div>
                                       <span class="profile-desc-title">身份证反面:</span>
-                                     <a class="profile-desc-text" target="_blank" > <img src="${guideInfo.idCardSidePic }" class="img-thumbnail" title="身份证反面" alt="加载中.." width="150px"/></a>
+                                     <img src="${guideInfo.idCardSidePic }" class="img-thumbnail" data-preview="true" title="身份证反面" alt="加载中.." width="150px"/>
                                     </div>
                                 </div>
                             </div>
@@ -109,16 +109,16 @@
                                                 </div>
                                                 <ul class="nav nav-tabs">
                                                     <li class="active">
-                                                        <a href="#tab_1_1" data-toggle="tab" aria-expanded="true">导游故事</a>
+                                                        <a href="#tab_1_1" data-toggle="tab" aria-expanded="true">故事</a>
                                                     </li>
                                                     <li class="">
-                                                        <a href="#tab_1_2" data-toggle="tab" aria-expanded="false">线路详情</a>
+                                                        <a href="#tab_1_2" data-toggle="tab" aria-expanded="false">线路</a>
                                                     </li>
                                                     <li class="">
-                                                        <a href="#tab_1_3" data-toggle="tab" aria-expanded="false">地陪详情</a>
+                                                        <a href="#tab_1_3" data-toggle="tab" aria-expanded="false">地陪</a>
                                                     </li>
                                                     <li class="">
-                                                        <a href="#tab_1_4" data-toggle="tab" aria-expanded="false">攻略详情</a>
+                                                        <a href="#tab_1_4" data-toggle="tab" aria-expanded="false">攻略</a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -137,7 +137,7 @@
                                                            <div id="accordion1_1" class="panel-collapse collapse  in ">
                                                            <div class="panel-body">
                                                            <div class="text-center">  
-                                            <strong style="position: relative;top:-60px;">背景图:</strong>  <img src="${guideIntro.imgUrl}" class="img-thumbnail" alt="" width="150px"/> </div>
+                                            <strong style="position: relative;top:-60px;">背景图:</strong>  <img src="${guideIntro.imgUrl}" class="img-thumbnail" data-preview="true" alt="" width="150px"/> </div>
                                                           <table class="table mt10 my-table">
                                                             <tr>
                                                             <th>标题:</th>
@@ -209,7 +209,7 @@
                                                                     <div class="panel-body">
                                                                         
                                                                         <div class="text-center">  
-                                                          <strong style="position: relative;top:-60px;">背景图:</strong>  <img src="${item.imgUrl}" class="img-thumbnail" alt="加载中" width="150px"/> </div>
+                                                          <strong style="position: relative;top:-60px;">背景图:</strong>  <img src="${item.imgUrl}" class="img-thumbnail" data-preview="true" alt="加载中" width="150px"/> </div>
                                                                         
                                                                         <table class="table my-table">
                                                                         <th>标题:</th>
@@ -295,7 +295,7 @@
                                                     <c:if test="${empty guideServiceList }"><div class="text-center text-danger">没有相关数据</div></c:if>
                                                         <div id="accordion3" class="panel-group">
                                                            <c:forEach var="item" varStatus="status" items="${guideServiceList }">
-                                                            <div class="panel panel-warning">
+                                                            <div class="panel panel-success">
                                                                 <div class="panel-heading">
                                                                     <h4 class="panel-title">
                                                                         <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion3" href="#accordion3_${status.count }"> ${status.count }. ${item.title } </a>
@@ -304,12 +304,16 @@
                                                                 <div id="accordion3_${status.count }" class="panel-collapse collapse ${status.count==1?'in':'' }">
                                                                     <div class="panel-body">
                                                                         <div class="text-center">  
-                                                          <strong style="position: relative;top:-60px;">背景图:</strong>  <img src="${item.imgUrl}" class="img-thumbnail" alt="加载中" width="150px"/> </div>
+                                                          <strong style="position: relative;top:-60px;">背景图:</strong>  <img src="${item.imgUrl}" class="img-thumbnail" data-preview="true" alt="加载中" width="150px"/> </div>
                                                                    
                                                                    <table class="table my-table">
+                                                                          <tr>
+                                                                           <th>标题</th>
+                                                                           <td colspan="6">${item.title }</td>
+                                                                          </tr>
+                                                                         
                                                                          
                                                                             <tr>
-                                                                             
                                                                               <th>价格</th>
                                                                              <td>${item.price }</td>
                                                                              <th>满员人数</th>
@@ -383,7 +387,7 @@
                                                                 <div id="accordion4_${status.count}" class="panel-collapse collapse ${status.count==1?'in':'' }">
                                                                     <div class="panel-body">
                                                                        <div class="text-center">
-                                                                          <img src="${item.imgUrl }" width="150px" class="img-thumbnail"/>
+                                                                          <img src="${item.imgUrl }" width="150px" class="img-thumbnail" data-preview="true"/>
                                                                        </div>
                                                                        
                                                                        <table class="table my-table">

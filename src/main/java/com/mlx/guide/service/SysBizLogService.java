@@ -11,6 +11,9 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.dao.SysBizLogMapper;
 import com.mlx.guide.entity.SysBizLog;
+import com.mlx.guide.model.OrderRefundModel;
+import com.mlx.guide.shiro.ShiroDbRealm;
+import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 
 @Service
 @Transactional
@@ -90,5 +93,43 @@ public class SysBizLogService {
 			sysBizLogMapper.deleteSysBizLog(id);
 		}
 	}
-
+     
+	/**
+	 * 保存退款日志
+	 * @param orderRefundModel
+	 */
+	public void saveOrderRefundLog(OrderRefundModel orderRefundModel) {
+		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		SysBizLog sysBizLog =new SysBizLog();
+		
+		sysBizLog.setBizType(6);
+		sysBizLog.setFlag(1);
+		sysBizLog.setOperatUserNo(shiroUser==null?"未登陆用户":shiroUser.getUserNo());
+		sysBizLog.setOperatPerson(shiroUser==null?"未登陆用户":shiroUser.getName());
+		StringBuilder log=new StringBuilder();
+		log.append("订单号:"+orderRefundModel.getOrderId());
+		log.append(",退款流水号:"+orderRefundModel.getRefundJnId());
+		log.append(",订单金额:"+orderRefundModel.getPayFee());
+		if(orderRefundModel.getRefundStatus().equals("RR")){
+			log.append(",操作流程为:审核,审核金额为"+orderRefundModel.getAmount());
+			
+		//退款操作日志记录
+		}else if(orderRefundModel.getRefundStatus().equals("RC")){
+			log.append(",操作流程为:退款,退款金额为"+orderRefundModel.getAmount());
+			
+		}else{
+			log.append(",异常操作退款金额"+orderRefundModel.getAmount());
+	  }
+		
+		if(orderRefundModel.getCheckStatus().equals("1")){
+			log.append(",操作:通过");
+		}else if(orderRefundModel.getCheckStatus().equals("-1")){
+			log.append(",操作:不通过");
+		}else{
+			log.append(",操作:异常操作");
+		}
+		
+		sysBizLog.setContent(log.toString());
+		sysBizLogMapper.createSysBizLogSelective(sysBizLog);
+	}
 }

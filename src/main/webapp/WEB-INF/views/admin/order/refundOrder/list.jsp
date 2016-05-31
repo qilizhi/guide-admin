@@ -90,7 +90,7 @@
 									<th>退款单号</th>
 									<th>订单金额</th>
 									<th>退款金额</th>
-									<th>申请用户ID</th>
+								
 									<th>申请时间</th>
 									<th>退款标识</th>
 									<th>退款状态</th>
@@ -105,7 +105,7 @@
 										<td>${item.refundJnId}</td>
 										<td>${item.payFee}</td>
 										<td>${item.amount}</td>
-										<td>${item.userId }</td>
+										
 										<td>
 										${fns:longTimeToDate('yyyy-MM-dd HH:mm:ss',item.createTime)} </td>
 										<td>
@@ -131,7 +131,7 @@
 														
 											<c:choose>
 											<c:when test="${ item.refundStatus=='RC'}">
-											<a class="btn btn-sm red btn-outline" onclick="refund(${item.refundJnId },${item.payFee });">退款</a>	
+											<a class="btn btn-sm red btn-outline" onclick="refund(${item.refundJnId },${item.payFee },${item.amount });">退款</a>	
 											</c:when>
 											</c:choose>																									
 										</td>
@@ -241,7 +241,7 @@
 								<input type="hidden" name="pageNo" value="${paginator.page}" />
 									
 						</div>
-						<div style="height:200px;">
+						<div style="height:260px;">
 						
 						<div class="form-group form-md-line-input " >
 										<label class="col-lg-3 row control-label text-right mr10">审核状态</label>
@@ -260,6 +260,12 @@
 										<label class="col-lg-3 row control-label text-right mr10">订单金额:</label>
 										<div class="col-lg-5">
 										<span id="money2"></span>
+										</div>
+									</div>
+									<div class="form-group form-md-line-input " >
+										<label class="col-lg-3 row control-label text-right mr10">退款金额:</label>
+										<div class="col-lg-5">
+										<span id="money3"></span>
 										</div>
 									</div>
 						
@@ -307,9 +313,10 @@
        }
        
        /*退款弹出模态框  */
-       function refund(id,payFee){
+       function refund(id,payFee,amount){
     	   $("input[name='refundJnId']").val(id);
     	   money2.innerHTML=payFee;
+    	   money3.innerHTML=amount;
     	   my_error2.innerHTML=null;
     	   $("#responsive2").modal();
     	   
@@ -332,7 +339,7 @@
     	 var amount=amount1.value;
     	 var remark=remark1.value;
     	 var money=$("#money").html();
-    	 console.log(checkStatus+"++"+amount+"++"+remark+"=="+money);
+    
     	 var reg=/^(([0-9]+\d*)|([0-9]+\d*\.\d{1,2}))$/;
     	 if(checkStatus==1){
     		
