@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
  *@category 订单util
  *
  */
-public class OrderSignUtil {
+public class OrderUtil {
 
-	private static Logger logger =LoggerFactory.getLogger(OrderSignUtil.class);
+	private static Logger logger =LoggerFactory.getLogger(OrderUtil.class);
 	private static final String ALGORITHM = "MD5";
     private static final String KEY="HsB1ZqZUr6UDG553e37e8S06JN3vj1ng";//私钥，加密验签干扰项
 
@@ -69,8 +69,9 @@ public class OrderSignUtil {
 		signStr.append(KEY);
 		logger.info("待签名串："+signStr.toString());
 		String sign =getSign(signStr.toString());
-		logger.info("签名串："+signStr.toString());
+		logger.info("签名串："+sign);
 		params.put("sign", sign);
+		logger.info("请示的url:"+url+" 参数："+params.toString());
 		String result=HttpClientUtil.post(url, params);
 		return result;
 	}
@@ -97,10 +98,12 @@ public class OrderSignUtil {
 		signStr.append(KEY);
 		logger.info("待签名串："+signStr.toString());
 		String sign =getSign(signStr.toString());
-		logger.info("签名串："+signStr.toString());
+		logger.info("签名串："+sign);
 		params.put("sign", sign);
 		String getUrl=HttpClientUtil.getParamUrl(url, params);
 		logger.info("转化后的请求url:"+getUrl);
+		
+		logger.info("请示的url:"+url+" 参数："+params.toString());
 		String result=HttpClientUtil.get(getUrl);
 		return result;
 	}

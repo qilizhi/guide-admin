@@ -37,18 +37,17 @@
 		<option value="100" <c:if test="${pageSize == 100}">selected</c:if> >100</option>
 		</select>
 		</div>
-		<input type="hidden" name="pageNo" value="1">
-		
-		<div class="col-md-8" style="text-align: right;">
+			
+	<%-- 	<div class="col-md-8" style="text-align: right;">
 		<input type="text" class="form-filter input-sm" placeholder="手机号码" name="mobile" value="${mobile}">
 		<input type="text" class="form-filter input-sm" placeholder="姓名" name="guestName" value="${guestName}">
 		<input type="text" class="form-filter input-sm" placeholder="订单号" name="orderNo" value="${orderNo}">
-		<input type="text" class="form-filter input-sm" placeholder="订单号" name="tuanNo" value="${tuanNo}">
+		<input type="text" class="form-filter input-sm" placeholder="订单号" name="tuanNo" value="${tuanNo}"> 
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom">
 		<i class="fa fa-search"></i> 查询</button>
 			
 		</div>		
-		
+		--%>
 	</div>
 	</form>				
 					<div class="table-scrollable">

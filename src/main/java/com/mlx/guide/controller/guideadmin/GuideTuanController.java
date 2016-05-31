@@ -67,8 +67,7 @@ public class GuideTuanController {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
-			// guideTuan.setUserNo(shiroUser.getUserNo());
-			guideTuan.setUserNo("weixin4");
+			 guideTuan.setUserNo(shiroUser.getUserNo());
 			PageList<GuideTuan> list = guideTuanService.getGuideTuanPageList(guideTuan,
 					new PageBounds(pageNo, pageSize));
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);

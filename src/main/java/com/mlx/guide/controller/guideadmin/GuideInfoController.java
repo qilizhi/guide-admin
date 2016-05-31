@@ -13,6 +13,8 @@ import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EUserStatus;
 import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.service.GuideInfoService;
+import com.mlx.guide.shiro.ShiroDbRealm;
+import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 
 /**
  * 基本资料
@@ -38,8 +40,10 @@ public class GuideInfoController {
 	
 	@RequestMapping
 	public String list(Model model) {
+		// 获取当前用户
+		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
-			GuideInfo guide = guideInfoService.getGuideInfoByUserNo("weixin4");
+			GuideInfo guide = guideInfoService.getGuideInfoByUserNo(shiroUser.getUserNo());
 			model.addAttribute("guide", guide);
 			model.addAttribute("EUserStatus", EUserStatus.getMap());
 			model.addAttribute("EAuditStatus", EAuditStatus.getMap());

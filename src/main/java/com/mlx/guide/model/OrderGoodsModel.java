@@ -17,7 +17,6 @@ public class OrderGoodsModel implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String goodsName;
-	
 	private String goodsType;
 	private String groupId;
 	private String id;
@@ -29,34 +28,56 @@ public class OrderGoodsModel implements Serializable{
 	private String tripDate;
 	private String updateTime;
 	private String visaNum;
-	private String adultMarketPrice;
-	
 	private String visaPrice;
-	
+	private String adultMarketPrice;
+
 	private String adultNum;
 	private String childSellCount;
 	private String adultSellPrice;
-	
 	private String childMarketPrice;
 	private String childNum;
 	private String adultSellCount;
-	
 	private String childSellPrice;
 	private String createTime;
 	private String goodsId;
-	
-	
+	private String goodsCategory;
+	private String goodsNum;
+	private String groupNo;//出团编号
+	private String source;//来源
     private List<GoodsInsurances> goodsInsurances=new ArrayList<GoodsInsurances>();
     
     private List<GoodsTourists> goodsTourists = new ArrayList<GoodsTourists>();
 	
+
      public String getVisaPrice() {
 		return visaPrice;
 	}
 	public void setVisaPrice(String visaPrice) {
 		this.visaPrice = visaPrice;
 	}
-	public List<GoodsInsurances> getGoodsInsurances() {
+	
+
+	
+	public String getGoodsCategory() {
+		return goodsCategory;
+	}
+	public void setGoodsCategory(String goodsCategory) {
+		this.goodsCategory = goodsCategory;
+	}
+	public String getGoodsNum() {
+		return goodsNum;
+	}
+	public void setGoodsNum(String goodsNum) {
+		this.goodsNum = goodsNum;
+	}
+	public String getGroupNo() {
+		return groupNo;
+	}
+	public void setGroupNo(String groupNo) {
+		this.groupNo = groupNo;
+	}
+     public List<GoodsInsurances> getGoodsInsurances() {
+
 		return goodsInsurances;
 	}
 	public void setGoodsInsurances(List<GoodsInsurances> goodsInsurances) {
@@ -206,6 +227,13 @@ public class OrderGoodsModel implements Serializable{
 		this.visaNum = visaNum;
 	}
 	
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+
 	public  class  GoodsInsurances {
 		private String createTime;
 		private String id;

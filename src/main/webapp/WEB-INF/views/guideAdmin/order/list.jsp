@@ -83,9 +83,9 @@
 									<th scope="col">订单市场总额</th>
 									<th scope="col">订单总销售额</th> -->
 									<th scope="col">应付金额</th>
-									<th scope="col">退款标识</th>
+									<!-- <th scope="col">退款标识</th> -->
 									<th scope="col">退款金额</th>
-									<th scope="col">币种</th>
+									<!-- <th scope="col">币种</th> -->
 									<th scope="col">失效时间</th>
 									<th scope="col">下单终端渠道</th>
 									<th scope="col">创建时间</th>
@@ -101,16 +101,16 @@
 										<td>${item.orderId}</td>
 										<td>${item.userId}</td>
 										<td>${item.userName}</td>
-										<td>${item.orderType}</td>
+										<td>${EOrderType}</td>
 										<%-- <td>${item.orderDate}</td>
 										<td>${item.orderTime}</td>
 										<td>${item.orderStatus}</td>
 										<td>${item.totalMarketPrice}</td>
 										<td>${item.totalSellPrice}</td> --%>
 										<td>${item.payFee}</td>
-										<td>${item.refundFlag}</td>
+										<%-- <td>${item.refundFlag}</td> --%>
 										<td>${item.refundFee}</td>
-										<td>${item.currency}</td>
+										<%-- <td>${item.currency}</td> --%>
 										<td>${item.expTime}</td>
 										<td>${item.sysCnl}</td>
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

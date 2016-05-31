@@ -15,7 +15,7 @@
 <body>
 	<div class="note note-success">
 		<p>
-			温馨提示<br />1.查询普通微信用户信息,管理平台微信用户信息。<br />2.查询导游用户请点击<a
+			温馨提示<br />1.查询导游用户请点击<a
 				class="btn red btn-outline" href="${ctx}/admin/guideUserInfo/list"
 				target="_blank">导游用户</a>
 		</p>

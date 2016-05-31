@@ -92,8 +92,7 @@ public class GuideLineController {
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 			guideLine.setFlag(EFlag.VALID.getId());
-			// guideLine.setUserNo(shiroUser.getUserNo());
-			guideLine.setUserNo("weixin4");
+			guideLine.setUserNo(shiroUser.getUserNo());
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 			PageList<GuideLine> list = guideLineService.getGuideLinePageList(guideLine, pageBounds);
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
@@ -141,10 +140,8 @@ public class GuideLineController {
 				// 随机生成线路编号
 				int num = (int) (Math.random() * 10000);
 				guideLine.setLineNo("MLXLINE_" + num + System.currentTimeMillis());
-				// guideLine.setUserNo(shiroUser.getUserNo());
-				// guideLine.setUserName(shiroUser.getName());
-				guideLine.setUserNo("weixin4");
-				guideLine.setUserName("全志安");
+				guideLine.setUserNo(shiroUser.getUserNo());
+				guideLine.setUserName(shiroUser.getName());
 				guideLine.setCreateTime(new Date());
 				guideLine.setStatus(EStatus.EDIT.getId());
 				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
