@@ -117,7 +117,7 @@
 										   ${goods.goodsName }
 										</c:forEach>
 										</td>
-										<td>${fns:EOrderType()[item.orderType] }</td>
+										<td>${EGoodsType }</td>
 										<td>${item.payFee}</td>
 										<td>${item.orderDescribe.contactsName }</td>
 										<td>

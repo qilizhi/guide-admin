@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +23,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
-import com.mlx.guide.constant.EOrderType;
+import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.service.GuideOrderService;
 /**
@@ -96,7 +95,7 @@ public class GuideOrderController {
 			model.addAttribute("list", list);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("orderModel", orderModel);
-			model.addAttribute("EOrderType", EOrderType.getMap());
+			model.addAttribute("EGoodsType", EGoodsType.getMap());
 			model.addAttribute("paginator", paginator);
 
 		} catch (Exception e) {
