@@ -2,8 +2,6 @@ package com.mlx.guide.entity;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 public class GuideTuanGuest {
     private Long id;
 
@@ -19,9 +17,6 @@ public class GuideTuanGuest {
 
     private Byte status;
 	private Date updateTime;
-
-  
-
 	public Long getId() {
         return id;
     }

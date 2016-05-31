@@ -104,7 +104,7 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
       #{orderNum,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{tuanStatus,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideTuan" >
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideTuan"  keyColumn="id" useGeneratedKeys="true">
     insert into guide_tuan
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

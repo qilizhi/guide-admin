@@ -424,4 +424,13 @@
 	  </where>
 	
 	</select>
+	<select id="getGuideServiceByServiceNo" resultMap="BaseResultMap">
+	  select 
+	  <include refid="Base_Column_List"/>
+	   from guide_service 
+	  <where>
+	   service_no=#{serviceNo}
+	  </where>
+	
+	</select>
 </mapper>

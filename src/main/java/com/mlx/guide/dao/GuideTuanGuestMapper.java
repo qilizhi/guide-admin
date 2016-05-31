@@ -22,4 +22,6 @@ public interface GuideTuanGuestMapper {
 	List<GuideTuanGuest> getGuideTuanGuestPageList(GuideTuanGuest record);
 
 	PageList<GuideTuanGuest> getGuideTuanGuestPageList(GuideTuanGuest record, PageBounds pageBounds);
+
+	int batTnsertSelective(List<GuideTuanGuest> records);
 }

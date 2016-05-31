@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>导游后台主页</title>
+<title>近期出团</title>
 <%--  <link href="${ctx}/static/assets/global/plugins/datatables/datatables.css" rel="stylesheet" type="text/css" />  --%>
 <%-- <link href="${ctx}/static/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" /> --%>
 </head>
@@ -109,10 +109,14 @@
 													<td>${item.goodsType}</td>
 													<td>${item.orderNum}</td>
 													<td>${item.touristNum}</td>
-													<td> 
+													<td 
+													data-orderNum="${item.orderNum}"
+													data-touristNum="${item.touristNum}"
+												data-name="${item.goodsName}"	data-tuanNo="${item.groupNo}" data-tuanDate="${item.tripDate}"  data-goodsType="${item.goodsType }" data-goodsNo="${item.goodsId}"
+													> 
 											<a  href="${ctx}/admin/guideTuan/detail/${item.groupNo}" class="btn btn-sm yellow btn-outline detail">详情</a>
-											<a  href="${ctx}/admin/guideTuan/submit/${item.groupNo}" class="btn btn-sm red btn-outline detail">出团</a>
-											<a class="btn btn-sm dark btn-outline audit">取消 </a>
+											<a 	data-href="${ctx}/admin/guideTuan/submit/out" class="btn btn-sm red btn-outline out">出团</a>
+											<a data-href="${ctx}/admin/guideTuan/submit/cancel"  class="btn btn-sm dark btn-outline cancel">取消 </a>
 													</td>
 												</tr>
 											</c:forEach>
@@ -134,6 +138,11 @@
 		src="${ctx}/static/assets/global/plugins/datatables/datatables.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			//初始化
+			OCsubmit(".cancel");
+			OCsubmit(".out");
+			
+			//初始化排序列表
 			$('#tuan').DataTable({
 
 				"paging" : false,
@@ -145,12 +154,46 @@
 		                        { "orderable": true },
 		                        { "orderable": true },
 		                        { "orderable": true },
+		                        { "orderable": true },
+		                        { "orderable": true },
 		                        { "orderable": false }
 		                     
 		                       
 		                      ]
 			});
 		});
+		
+	//数据提交。
+	var OCsubmit=function(_class){
+		$(_class).on("click",function(e){
+			var $a=$(e.currentTarget).parent();
+			var $hrefUrl=$(e.currentTarget).attr("data-href");
+			//sconsole.log($a);
+			var data=new Object();
+			data.name=$a.attr("data-name");
+			data.tuanNo=$a.attr("data-tuanNo");
+			data.tuanDate=$a.attr("data-tuanDate");
+			data.goodsType=$a.attr("data-goodsType");
+			data.goodsNo=$a.attr("data-goodsNo");
+			data.personNum=$a.attr("data-touristNum");
+			data.orderNum=$a.attr("data-orderNum");
+			$.post($hrefUrl,data,function(e){
+				//console.log(e)
+				if(e.code=='200'){
+					comm.showMsg("success","提示","操作成功")
+					setTimeout(function(){
+						location.reload();	
+					},500)
+				}else{
+					
+					comm.showMsg("error","提示","更新错误 ！");
+				}
+			},"json")
+			//console.log(data);
+		});
+		
+		
+	}
 	</script>
 
 

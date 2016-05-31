@@ -26,9 +26,11 @@
 					<div class="actions"></div>
 				</div>
 				<div class="portlet-body">
-				<form id="searchForm" action="${ctx}/guideAdmin/tuan/tuanGuest/search" method="post">
+				<form id="searchForm" action="${ctx}/admin/guideTuan/detail/${groupNo}" method="post">
 	<div class="row">
+	
 		<div class="col-md-4">
+	<input type="hidden"  name="pageNo" >
 		<select name="pageSize" class="form-control input-sm input-xsmall input-inline">
 		<option value="5" <c:if test="${pageSize == 5}">selected</c:if> >5</option>
 		<option value="10" <c:if test="${pageSize == 10}">selected</c:if> >10</option>

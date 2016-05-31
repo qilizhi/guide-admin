@@ -5,12 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresUser;
+import org.junit.internal.runners.statements.Fail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -31,14 +34,21 @@ import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.ELineType;
 import com.mlx.guide.constant.ESignInStatus;
+import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ETuanStatus;
+import com.mlx.guide.constant.ExceptionCode;
+import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.entity.GuideLine;
+import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.entity.GuideTuanGuest;
 import com.mlx.guide.model.OrderGoodsModel;
 import com.mlx.guide.model.OrderGoodsModel.GoodsTourists;
 import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.model.PreTuanModel;
+import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideOrderService;
+import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.service.GuideTuanGuestService;
 import com.mlx.guide.service.GuideTuanService;
 import com.mlx.guide.shiro.ShiroDbRealm;
@@ -59,7 +69,10 @@ public class GuideTuanAdminController {
 	private GuideTuanService guideTuanService;
 	@Autowired
 	private GuideTuanGuestService guideTuanGuestService;
-
+	@Autowired
+	private GuideLineService guideLineService;
+	@Autowired
+	private GuideServiceService guideservice;
 	@Autowired
 	private GuideOrderService guideOrderService;
 
@@ -84,7 +97,7 @@ public class GuideTuanAdminController {
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, GuideTuan guideTuan,
 			HttpServletRequest request, Model model) {
 		// 获取当前用户
-		//ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		// ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 			// guideTuan.setUserNo(shiroUser.getUserNo());
 			PageList<GuideTuan> list = guideTuanService.getGuideTuanPageList(guideTuan,
@@ -103,27 +116,174 @@ public class GuideTuanAdminController {
 
 		return "admin/guideTuan/list";
 	}
-	
+
 	@RequestMapping("/submit/out")
-	public String groupOut(){
-		
-		//1.插入一条出团记录到出团表里，并修改状态为已出团；
-		
-		
-		//2.从环信创建一个群。
-		
-		//3.把报团人员拉入群里。
-		
-		return "redirect:/admin/guideTuan/success";
-	}
-	@RequestMapping(value="/submit/cancel",method=RequestMethod.GET)
+	@ResponseBody
+	public JsonResult groupOut(GuideTuan gt, Model model) {
+
+		String userNo = "";
+		String userName = "";
+		// 1.查询线路及地陪信息
+		if (gt.getGoodsType().equals(EGoodsType.LOCAL.getId())) {
+			GuideService gss = guideservice.getGuideServiceByServiceNo(gt.getGoodsNo());
+			if (gss == null) {
+				logger.info("查到的地陪为空！");
+				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
+			} else {
+
+				userNo = gss.getUserNo();
+				userName = gss.getUserName();
+			}
+		} else if (gt.getGoodsType().equals(EGoodsType.LINE.getId())) {
+			GuideLine gl = guideLineService.getGuideLineByLineNo(gt.getGoodsNo());
+			if (gl == null) {
+				logger.info("查到的线路为空！");
+				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
+			} else {
+				userNo = gl.getUserNo();
+				userName = gl.getUserName();
+			}
+		}
+		// 2.插入一条出团记录到出团表里，并修改状态为已取消出团；
+		gt.setUserName(userName);
+		gt.setUserNo(userNo);
+		gt.setTuanStatus(ETuanStatus.CANCEL.getId().byteValue());
 	
-	public String groupCancel(GuideTuan gt,Model model){
+		int id;
+		try {
+			id = guideTuanService.insertSelective(gt);
+		} catch (Exception e) {
+			logger.info("数据库更新出错！");
+			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
+		}
 		
-		//1.插入一条出团记录到出团表里，并修改状态为已取消出团；
-		guideTuanService.insertSelective(gt);
-		
-		return "redirect:/admin/guideTuan/cancel";
+		// 3.1 查询该团下的订单
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("orderStatus", "W");
+				params.put("groupNo", gt.getTuanNo());
+				params.put("pageSize", Integer.MAX_VALUE);
+				params.put("startDate", getPreMonthStartDate(6));// 暂定前后6个月
+				params.put("endDate", getNextMonthEndDate(6));
+				String result = guideOrderService.getMangeList(params);
+				if ("".equals(result) || result == null) {
+					logger.error("调用订单接口出错。返回数结果为空！请检查网络！");
+				}
+				List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
+						OrderModel.class);
+		// 3.2 将用户插入到tuanGuest
+				List<GuideTuanGuest> guideTuanGuests = new ArrayList<GuideTuanGuest>();
+				for (OrderModel order : orders) {
+					for (OrderGoodsModel orderGoods : order.getOrderGoods()) {
+						for (GoodsTourists goodsT : orderGoods.getGoodsTourists()) {
+							GuideTuanGuest gtg = new GuideTuanGuest();
+							gtg.setGuestName(goodsT.getTouristName());
+							gtg.setMobile(goodsT.getTouristMobile());
+							gtg.setOrderNo(order.getOrderId());
+							gtg.setTuanNo(orderGoods.getGroupNo());
+							guideTuanGuests.add(gtg);
+						}
+					}
+				}
+				if (guideTuanGuests.size() > 0) {
+					guideTuanGuestService.batInsertSelective(guideTuanGuests);
+				} else {
+					logger.info("客户信息为空！");
+				}
+
+
+		// 4.从环信创建一个群。
+
+		// 5.把报团人员拉入群里。
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
+	}
+
+	@RequestMapping(value = "/submit/cancel", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult groupCancel(GuideTuan gt, Model model) {
+
+		String userNo = "";
+		String userName = "";
+		// 1.查询线路及地陪信息
+		if (gt.getGoodsType().equals(EGoodsType.LOCAL.getId())) {
+			GuideService gss = guideservice.getGuideServiceByServiceNo(gt.getGoodsNo());
+			if (gss == null) {
+				logger.info("查到的地陪为空！");
+				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
+			} else {
+
+				userNo = gss.getUserNo();
+				userName = gss.getUserName();
+			}
+		} else if (gt.getGoodsType().equals(EGoodsType.LINE.getId())) {
+			GuideLine gl = guideLineService.getGuideLineByLineNo(gt.getGoodsNo());
+			if (gl == null) {
+				logger.info("查到的线路为空！");
+				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
+			} else {
+				userNo = gl.getUserNo();
+				userName = gl.getUserName();
+			}
+		}
+		// 2.插入一条出团记录到出团表里，并修改状态为已取消出团；
+		gt.setUserName(userName);
+		gt.setUserNo(userNo);
+		gt.setTuanStatus(ETuanStatus.CANCEL.getId().byteValue());
+	
+		int id;
+		try {
+			id = guideTuanService.insertSelective(gt);
+		} catch (Exception e) {
+			logger.info("数据库更新出错！");
+			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
+		}
+		// 4.申请退款
+		// 4.1 查询该团下的订单
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderStatus", "W");
+		params.put("groupNo", gt.getTuanNo());
+		params.put("pageSize", Integer.MAX_VALUE);
+		params.put("startDate", getPreMonthStartDate(6));// 暂定前后6个月
+		params.put("endDate", getNextMonthEndDate(6));
+		String result = guideOrderService.getMangeList(params);
+		if ("".equals(result) || result == null) {
+			logger.error("调用订单接口出错。返回数结果为空！请检查网络！");
+		}
+		List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
+				OrderModel.class);
+		// 4.2 将用户插入到tuanGuest
+		List<GuideTuanGuest> guideTuanGuests = new ArrayList<GuideTuanGuest>();
+		for (OrderModel order : orders) {
+			for (OrderGoodsModel orderGoods : order.getOrderGoods()) {
+				for (GoodsTourists goodsT : orderGoods.getGoodsTourists()) {
+					GuideTuanGuest gtg = new GuideTuanGuest();
+					gtg.setGuestName(goodsT.getTouristName());
+					gtg.setMobile(goodsT.getTouristMobile());
+					gtg.setOrderNo(order.getOrderId());
+					gtg.setTuanNo(orderGoods.getGroupNo());
+					guideTuanGuests.add(gtg);
+				}
+			}
+		}
+		if (guideTuanGuests.size() > 0) {
+			guideTuanGuestService.batInsertSelective(guideTuanGuests);
+		} else {
+			logger.info("客户信息为空！");
+		}
+
+		// 4.3 调用退款接口退款
+		for (OrderModel o : orders) {
+			Map<String, Object> p = new HashMap<String, Object>();
+			p.put("userId", o.getUserId());
+			p.put("orderId", o.getOrderId());
+			guideOrderService.refundApply(p);
+			String resultCode = JSON.parseObject(result).get("code").toString();
+			if (!resultCode.equals("0000")) {
+				logger.info("订单：" + o.getOrderId() + "申请退款失败！");
+			}
+		}
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL, id);
 	}
 
 	/**
@@ -216,14 +376,14 @@ public class GuideTuanAdminController {
 		List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
 				OrderModel.class);
 		Map<String, List<OrderGoodsModel>> groupNoMaps = new HashMap<String, List<OrderGoodsModel>>();
-		logger.info("订单总数：" + orders.size());
+		// logger.info("订单总数：" + orders.size());
 		// 根据groupNo 出团编号来分组。
 		for (OrderModel o : orders) {
 
 			if (o.getOrderGoods() != null && o.getOrderGoods().size() > 0) {
 				for (OrderGoodsModel og : o.getOrderGoods()) {
-					logger.info("正在统计分组：" + og.getGroupNo());
-					logger.info("该商品的人数：" + og.getGoodsTourists().size());
+					// logger.info("正在统计分组：" + og.getGroupNo());
+					// logger.info("该商品的人数：" + og.getGoodsTourists().size());
 					if (!groupNoMaps.containsKey(og.getGroupNo()))
 						groupNoMaps.put(og.getGroupNo(), new ArrayList<OrderGoodsModel>());
 					groupNoMaps.get(og.getGroupNo()).add(og);
@@ -237,7 +397,7 @@ public class GuideTuanAdminController {
 		List<PreTuanModel> preTuanModels = new ArrayList<PreTuanModel>();
 		// 根据分组来统做统计
 		for (String g : groupNoMaps.keySet()) {
-			logger.info("正在统计团编号:" + g);
+			//logger.info("正在统计团编号:" + g);
 			Integer touristNum = 0;
 			List<OrderGoodsModel> oms = groupNoMaps.get(g);
 			PreTuanModel p = new PreTuanModel();
@@ -247,7 +407,7 @@ public class GuideTuanAdminController {
 			// 统计该团下面的旅客人数
 			for (OrderGoodsModel om : oms) {
 				touristNum += om.getGoodsTourists().size();
-				logger.info("旅客人数：" + om.getGoodsTourists().size());
+				// logger.info("旅客人数：" + om.getGoodsTourists().size());
 				p.setTripDate(om.getTripDate());
 				p.setGoodsId(om.getGoodsId());
 				p.setGoodsType(om.getGoodsType());
@@ -269,12 +429,18 @@ public class GuideTuanAdminController {
 			gtuansMap.put(gt.getTuanNo(), gt);
 		}
 		// 2.过滤
-		for (PreTuanModel ptm : preTuanModels) {
-			// 只要本地库有这条记就说明有出团过，不显示
-			if (gtuansMap.get(ptm.getGroupNo()) != null) {
-				preTuanModels.remove(ptm);
+		Iterator<PreTuanModel> itRTM = preTuanModels.iterator();
+		while (itRTM.hasNext()) {
+
+			if (gtuansMap.get(itRTM.next().getGroupNo()) != null) {
+				itRTM.remove();
 			}
 		}
+		/*
+		 * for (PreTuanModel ptm : preTuanModels) { // 只要本地库有这条记就说明有出团过，不显示 if
+		 * (gtuansMap.get(ptm.getGroupNo()) != null) {
+		 * preTuanModels.remove(ptm); } }
+		 */
 		Paginator p = new Paginator(pageNo, pageSize, preTuanModels.size());
 
 		model.addAttribute("list", preTuanModels.subList(p.getOffset(),

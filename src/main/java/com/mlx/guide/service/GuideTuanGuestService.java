@@ -1,7 +1,6 @@
 package com.mlx.guide.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.dao.GuideTuanGuestMapper;
-import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.entity.GuideTuanGuest;
 
 @Service
@@ -30,6 +28,9 @@ public class GuideTuanGuestService {
 
 	public int insertSelective(GuideTuanGuest record){
 		return guideTuanGuestMapper.insertSelective(record);
+	}
+	public int batInsertSelective(List<GuideTuanGuest>records){
+		return guideTuanGuestMapper.batTnsertSelective(records);
 	}
 
 	public GuideTuanGuest selectByPrimaryKey(Long id){
