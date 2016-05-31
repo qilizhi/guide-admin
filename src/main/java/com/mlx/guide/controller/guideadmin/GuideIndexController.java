@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
@@ -111,7 +112,7 @@ public class GuideIndexController {
 			/* 已支付 算销售额*/
 			Map<String,Object> s_maps=new HashMap<String,Object>();
 			s_maps.put("userId", "12345678");
-			s_maps.put("orderStatus", "S");
+//			s_maps.put("orderStatus", "S");
 			s_maps.put("startDate", timeStart);
 			s_maps.put("endDate", timeEnd);
     	    String s_result = guideOrderService.getMemberList(s_maps);
@@ -139,7 +140,7 @@ public class GuideIndexController {
 			String orderList = guideOrderService.getMemberList(l_maps);
 			List<OrderModel> list=JSONArray.parseArray(JSON.parseObject(orderList).get("result").toString(), OrderModel.class);
 			model.addAttribute("list", list);
-			
+			model.addAttribute("EGoodsType", EGoodsType.getMap());
 			//系统通知列表
 		
 			

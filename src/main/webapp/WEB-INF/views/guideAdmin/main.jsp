@@ -228,7 +228,7 @@
                                                         </div>
                                                         <div class="cont-col2">
                                                             <div class="desc"> 订单号： ${item.orderId}
-                                                                <span class="label label-sm label-success">订单类型: ${item.orderType} </span>
+                                                                <span class="label label-sm label-success">订单类型: ${EGoodsType[item.orderType]} </span>
                                                             </div>
                                                         </div>
                                                     </div>

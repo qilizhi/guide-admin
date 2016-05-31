@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
+import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.ELineType;
 import com.mlx.guide.constant.ESignInStatus;
 import com.mlx.guide.constant.ETuanStatus;
@@ -75,7 +76,7 @@ public class GuideTuanController {
 			model.addAttribute("list", list);
 			model.addAttribute("guideTuan", guideTuan);
 			model.addAttribute("ETuanStatus", ETuanStatus.getByteMap());
-			model.addAttribute("ELineType", ELineType.getByteMap());
+			model.addAttribute("EGoodsType", EGoodsType.getMap());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
