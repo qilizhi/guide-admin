@@ -98,6 +98,7 @@
 									
 									<th>订单编号</th>
 									<th>商品名称</th>
+									<th>订单类型</th>
 									<th>订单支付总额</th>
 									<th>购买人</th>
 									<th>下单时间</th>
@@ -116,6 +117,7 @@
 										   ${goods.goodsName }
 										</c:forEach>
 										</td>
+										<td>${fns:EOrderType()[item.orderType] }</td>
 										<td>${item.payFee}</td>
 										<td>${item.orderDescribe.contactsName }</td>
 										<td>

@@ -88,18 +88,14 @@ public class GuideOrderController {
     	    maps.put("pageNo", pageNo);
     	    maps.put("pageSize", pageSize);
     	    String orderList = guideOrderService.getMemberList(maps);
-//			String orderList = guideOrderService.getOrderList("12345678", orderModel.getOrderId(), orderModel.getOrderStatus(), timeStart, timeEnd, pageNo, pageSize);
 			
 			JSONObject jsonObject = JSON.parseObject(orderList);
 			List<OrderModel> list = JSONArray.parseArray(jsonObject.get("result").toString(),OrderModel.class);
 			Paginator paginator = new Paginator(pageNo, pageSize, jsonObject.getInteger("total"));
-			for (OrderModel o : list) {
-				o.getOrderType().toUpperCase();
-			}
+			
 			model.addAttribute("list", list);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("orderModel", orderModel);
-//			model.addAttribute("orderType", orderModel.getOrderType()==null? "":orderModel.getOrderType().toString().toUpperCase());
 			model.addAttribute("EOrderType", EOrderType.getMap());
 			model.addAttribute("paginator", paginator);
 

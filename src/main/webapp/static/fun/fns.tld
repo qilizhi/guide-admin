@@ -48,7 +48,7 @@
   </function>
   
   <function>
-    <description>订单类型枚举</description>
+    <description>订单支付类型枚举</description>
     <name>OrderPayType</name>
     <function-class>com.mlx.guide.constant.OrderPayType</function-class><!--类路径 -->
     <function-signature>java.util.Map getMap()</function-signature><!--调用的方法  -->
