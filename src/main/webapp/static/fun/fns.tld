@@ -79,7 +79,9 @@
     <example>${fns:SysCnlStatus()}</example><!--使用列子  -->
   </function>
   
-  <function>
+ 
+  
+   <function>
     <description>商品类别名称</description>
     <name>EGoodsType</name>
     <function-class>com.mlx.guide.constant.EGoodsType</function-class><!--类路径 -->
