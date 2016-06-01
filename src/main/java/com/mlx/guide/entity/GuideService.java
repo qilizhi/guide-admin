@@ -4,193 +4,214 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class GuideService {
-    private Long id;
+	private Long id;
 
-    private String userNo;
+	private String userNo;
 
-    private String userName;
+	private String userName;
 
-    private String serviceNo;
+	private String serviceNo;
 
-    private String title;
+	private String title;
 
-    private String imgUrl;
+	private String imgUrl;
 
-    private String description;
+	private String description;
 
-    private Date updateTime;
+	private Date updateTime;
 
-    private Date createTime;
+	private Date createTime;
 
-    private BigDecimal price;
+	private BigDecimal price;
 
-    private Integer num;
+	private Integer num;
 
-    private String remark;
+	private String remark;
 
-    private Integer flag;
+	private Integer flag;
 
-    private Integer status;
+	private Integer status;
 
-    private String auditRemark;
+	private String auditRemark;
 
-    private Date auditTime;
+	private Date auditTime;
 
-    private Integer auditStatus;
+	private Integer auditStatus;
 
-    private Integer sort;
+	private Integer sort;
 
-    private String content;
+	private String content;
+	
+	private String smallImgUrl;
+	
+	private Integer totalDay;
+	
 
-    public Long getId() {
-        return id;
-    }
+	public String getSmallImgUrl() {
+		return smallImgUrl;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setSmallImgUrl(String smallImgUrl) {
+		this.smallImgUrl = smallImgUrl;
+	}
 
-    public String getUserNo() {
-        return userNo;
-    }
+	public Integer getTotalDay() {
+		return totalDay;
+	}
 
-    public void setUserNo(String userNo) {
-        this.userNo = userNo;
-    }
+	public void setTotalDay(Integer totalDay) {
+		this.totalDay = totalDay;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getServiceNo() {
-        return serviceNo;
-    }
+	public String getUserNo() {
+		return userNo;
+	}
 
-    public void setServiceNo(String serviceNo) {
-        this.serviceNo = serviceNo;
-    }
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public String getImgUrl() {
-        return imgUrl;
-    }
+	public String getServiceNo() {
+		return serviceNo;
+	}
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
+	public void setServiceNo(String serviceNo) {
+		this.serviceNo = serviceNo;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public String getImgUrl() {
+		return imgUrl;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public BigDecimal getPrice() {
-        return price;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 
-    public Integer getNum() {
-        return num;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setNum(Integer num) {
-        this.num = num;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public String getRemark() {
-        return remark;
-    }
+	public BigDecimal getPrice() {
+		return price;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-    public Integer getFlag() {
-        return flag;
-    }
+	public Integer getNum() {
+		return num;
+	}
 
-    public void setFlag(Integer flag) {
-        this.flag = flag;
-    }
+	public void setNum(Integer num) {
+		this.num = num;
+	}
 
-    public Integer getStatus() {
-        return status;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    public String getAuditRemark() {
-        return auditRemark;
-    }
+	public Integer getFlag() {
+		return flag;
+	}
 
-    public void setAuditRemark(String auditRemark) {
-        this.auditRemark = auditRemark;
-    }
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
 
-    public Date getAuditTime() {
-        return auditTime;
-    }
+	public Integer getStatus() {
+		return status;
+	}
 
-    public void setAuditTime(Date auditTime) {
-        this.auditTime = auditTime;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    public Integer getAuditStatus() {
-        return auditStatus;
-    }
+	public String getAuditRemark() {
+		return auditRemark;
+	}
 
-    public void setAuditStatus(Integer auditStatus) {
-        this.auditStatus = auditStatus;
-    }
+	public void setAuditRemark(String auditRemark) {
+		this.auditRemark = auditRemark;
+	}
 
-    public Integer getSort() {
-        return sort;
-    }
+	public Date getAuditTime() {
+		return auditTime;
+	}
 
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
+	public void setAuditTime(Date auditTime) {
+		this.auditTime = auditTime;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public Integer getAuditStatus() {
+		return auditStatus;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public void setAuditStatus(Integer auditStatus) {
+		this.auditStatus = auditStatus;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 }
