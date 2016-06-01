@@ -13,8 +13,8 @@
 <title>导游详情</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="${ctx }/static/assets/layouts/layout5/css/layout.min.css" type="text/css">
- <link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" />
- <link href="${ctx }/static/assets/layouts/layout5/css/profile.min.css" rel="stylesheet" type="text/css"/>
+<link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" />
+<link href="${ctx }/static/assets/layouts/layout5/css/profile.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div class="row">
@@ -213,7 +213,7 @@
                                                                         
                                                                         <table class="table my-table">
                                                                         <th>标题:</th>
-                                                            <td>${guideIntro.title}</td>
+                                                            <td>${item.title }</td>
                                                                          <tr>
                                                                            <th>线路类型</th>
                                                                            <td>
