@@ -29,8 +29,16 @@ public class GuideLine{
 	private Integer lineType;
 	private String smallImgUrl;
 	private Integer totalDay;
+	private String recommendInfo;
+	
 	
 
+	public String getRecommendInfo() {
+		return recommendInfo;
+	}
+	public void setRecommendInfo(String recommendInfo) {
+		this.recommendInfo = recommendInfo;
+	}
 	public String getSmallImgUrl() {
 		return smallImgUrl;
 	}

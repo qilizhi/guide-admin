@@ -24,6 +24,7 @@
 		<result property="lineType" column="line_type"/>
 		<result property="smallImgUrl" column="small_img_url"/>
 		<result property="totalDay" column="total_day"/>
+		<result property="recommendInfo" column="recommend_info"/>
 
     </resultMap>
     
@@ -95,11 +96,15 @@
 			<if test="totalDay != null and totalDay != ''" >
 			and total_day = #{totalDay}
 			</if>
+			<if test="recommendInfo != null and recommendInfo != ''" >
+			and recommend_info = #{recommendInfo}
+			</if>
 
     </trim>
   </sql>
   <sql id="Base_Column_List" >
-    id,user_no,user_name,line_no,title,img_url,description,content,create_time,price,remark,flag,status,audit_remark,audit_time,audit_status,sort,update_time,num,line_type,small_img_url,total_day
+    id,user_no,user_name,line_no,title,img_url,description,content,create_time,price,remark,
+    flag,status,audit_remark,audit_time,audit_status,sort,update_time,num,line_type,small_img_url,total_day,recommend_info
   </sql>
     
     
@@ -159,7 +164,7 @@
 			audit_remark,
 			audit_time,
 			audit_status,
-			sort,update_time,num,line_type,small_img_url,total_day
+			sort,update_time,num,line_type,small_img_url,total_day,recommend_info
 		)VALUES(
 			#{id},
 			#{userNo},
@@ -182,7 +187,8 @@
 			#{num},
 			#{lineType},
 			#{smallImgUrl},
-			#{totalDay}
+			#{totalDay},
+			#{recommendInfo}
 		)
     </insert>
     <insert id="createGuideLineSelective" parameterType="com.mlx.guide.entity.GuideLine" keyProperty="id" useGeneratedKeys="true">
@@ -252,9 +258,13 @@
 			small_img_url,
 			</if>
 			<if test="totalDay != null" >
-			total_day
+			total_day,
+			</if>
+			<if test="recommendInfo != null" >
+			recommend_info
 			</if>
 			</trim>
+			
 			<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="id != null" >
 			#{id},
@@ -320,7 +330,10 @@
 			#{smallImgUrl},
 			</if>
 			<if test="totalDay != null" >
-			#{totalDay}
+			#{totalDay},
+			</if>
+			<if test="recommendInfo != null" >
+			#{recommendInfo}
 			</if>
 			
 			</trim>
@@ -346,7 +359,8 @@
 			update_time = #{updateTime},
 			line_type=#{lineType},
 			small_img_url=#{smallImgUrl},
-			total_day=#{totalDay}
+			total_day=#{totalDay},
+			recommend_info=#{recommendInfo}
 		WHERE id = #{id}
 
     </update>
@@ -413,6 +427,9 @@
 			</if>
 			<if test="totalDay != null" >
 			total_day = #{totalDay}
+			</if>
+			<if test="recommendInfo != null" >
+			recommend_info = #{recommendInfo}
 			</if>
 			
 		</set>
