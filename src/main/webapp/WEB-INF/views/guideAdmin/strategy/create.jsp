@@ -247,7 +247,7 @@
 					var options="";
 					if(data.code=="200"){
 					var line=data.result;
-					//console.log(line);
+					console.log(line);
 					$.each(line,function(index,obj){
 						options+="<option value='"+obj.lineNo+"'>"+obj.title+"</option>";
 					});

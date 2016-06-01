@@ -112,7 +112,7 @@ public class GuideIndexController {
 			/* 已支付 算销售额*/
 			Map<String,Object> s_maps=new HashMap<String,Object>();
 			s_maps.put("userId", "12345678");
-//			s_maps.put("orderStatus", "S");
+			s_maps.put("orderStatus", "S");
 			s_maps.put("startDate", timeStart);
 			s_maps.put("endDate", timeEnd);
     	    String s_result = guideOrderService.getMemberList(s_maps);
