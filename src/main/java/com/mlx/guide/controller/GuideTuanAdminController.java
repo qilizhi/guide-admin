@@ -192,6 +192,7 @@ public class GuideTuanAdminController {
 
 
 		// 4.从环信创建一个群。
+				
 
 		// 5.把报团人员拉入群里。
 

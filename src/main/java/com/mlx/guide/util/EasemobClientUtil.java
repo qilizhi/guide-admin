@@ -19,6 +19,8 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -29,27 +31,35 @@ import com.alibaba.fastjson.JSONObject;
  * @author QiQi-04-PC
  *
  */
+@Component
 public class EasemobClientUtil {
 
 	private static Logger logger = LoggerFactory.getLogger(EasemobClientUtil.class);
 	private static PoolingHttpClientConnectionManager poolCM = new PoolingHttpClientConnectionManager();
 	private static CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(poolCM).build();
-	private static String API_PROTOCAL = "https";
-	private static String API_HOST = "a1.easemob.com";
-	private static String API_ORG_NAME = "mlx";
-	private static String API_APP_NAME = "mlxing2016";
-	private static String APP_CLIENT_ID = "YXA6fZM-MOHaEeWnoLMsm-GKRg";
-	private static String APP_CLIENT_SECRET = "YXA6aLaQtwr_TDi9rrAR_kj2NkLl19E";
-	private static String APP_IMP_LIB = "httpclient";
+	@Value("${API_PROTOCAL}")
+	private String api_protocal;
+	@Value("${API_HOST}")
+	private String api_host;
+	@Value("${API_ORG_NAME}")
+	private String api_org_name;
+	@Value("${API_APP_NAME}")
+	private String api_app_name;
+	@Value("${APP_CLIENT_ID}")
+	private String app_client_id;
+	@Value("${APP_CLIENT_SECRET}")
+	private String app_client_secret;
+	//private  String APP_IMP_LIB ;
+	
 
 	/**
 	 * 基本url
 	 * 
 	 * @return
 	 */
-	public static String getBaseUrl() {
+	public  String getBaseUrl() {
 
-		return API_PROTOCAL + "://" + API_HOST + "/" + API_ORG_NAME + "/" + API_APP_NAME;
+		return api_protocal + "://" + api_host + "/" + api_org_name + "/" + api_app_name;
 	}
 
 	/**
@@ -57,7 +67,7 @@ public class EasemobClientUtil {
 	 * 
 	 * @return
 	 */
-	public static String getTokenUrl() {
+	public  String getTokenUrl() {
 		return getBaseUrl() + "/token";
 	}
 
@@ -66,10 +76,10 @@ public class EasemobClientUtil {
 	 * 
 	 * @return
 	 */
-	public static String getToken() {
+	public  String getToken() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("client_id", APP_CLIENT_ID);
-		params.put("client_secret", APP_CLIENT_SECRET);
+		params.put("client_id", app_client_id);
+		params.put("client_secret", app_client_secret);
 		params.put("grant_type", "client_credentials");
 		String jsonNames = JSON.toJSONString(params);
 		System.out.println(jsonNames);
@@ -89,7 +99,7 @@ public class EasemobClientUtil {
 	 * @param uri 环信相对路径
 	 * @return resultContent
 	 */
-	public static String get(String uri){
+	public  String get(String uri){
 		try {
 			String url=getBaseUrl()+"/"+uri;
 			HttpGet httpGet = new HttpGet(url);
@@ -114,7 +124,7 @@ public class EasemobClientUtil {
 	 * @param jsonString json参数字符
 	 * @return
 	 */
-	public static String post(String uri,String jsonString){
+	public  String post(String uri,String jsonString){
 		try {
 			String url=getBaseUrl()+"/"+uri;
 			HttpPost httpPost = new HttpPost(url);
@@ -137,15 +147,13 @@ public class EasemobClientUtil {
 
 	}
 
-	
-	
 	/**
 	 * 
 	 * @param uri 环信相对路径
 	 * @param jsonString json参数字符
 	 * @return
 	 */
-	public static String put(String uri,String jsonString){
+	public String put(String uri,String jsonString){
 		try {
 			String url=getBaseUrl()+"/"+uri;
 			HttpPut httpPost = new HttpPut(url);
@@ -174,7 +182,7 @@ public class EasemobClientUtil {
 	 * @param jsonString
 	 * @return
 	 */
-	public static String delete(String uri){
+	public  String delete(String uri){
 		try {
 			String url=getBaseUrl()+"/"+uri;
 			HttpDelete httpDelete = new HttpDelete(url);
@@ -193,6 +201,7 @@ public class EasemobClientUtil {
 		return "";
 	}
 	
+
 	
 
 }
