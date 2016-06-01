@@ -112,7 +112,7 @@ public class GuideStrategyController {
 			if (guideLineList.size() == 0) {
 				jsonResult = new JsonResult(ExceptionCode.FAIL, "没有该线路");
 			} else {
-				jsonResult = new JsonResult(ExceptionCode.SUCCESSFUL, guideLineList.subList(0, 20));//下拉框只显示10条信息
+				jsonResult = new JsonResult(ExceptionCode.SUCCESSFUL, guideLineList.subList(0, 10));//下拉框只显示10条信息
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>地陪</title>
+<title>导服</title>
 </head>
 
 <body>
@@ -21,7 +21,7 @@
 			<div class="portlet light portlet-fit bordered">
 				<div class="portlet-title">
 					<div class="caption">
-						<i class="fa fa-cogs"></i><span class="caption-subject font-dark bold uppercase">地陪列表</span>
+						<i class="fa fa-cogs"></i><span class="caption-subject font-dark bold uppercase">导服列表</span>
 					</div>
 					<div class="actions">
 		<a href="${ctx}/guideAdmin/guideService/create"  class="btn btn-sm green btn-outline" >新增</a>
@@ -58,15 +58,15 @@
 								<tr>
 									<!-- <th scope="col"><input type="checkbox" class=" group-checkable check-all"></th> -->
 									
-									<th scope="col">地陪编号</th>
-									<th scope="col">地陪标题</th>
+									<th scope="col">导服编号</th>
+									<th scope="col">导服标题</th>
 									<th scope="col">背景图</th>
 									<!-- <th scope="col">简介</th> -->
 									<th scope="col">创建时间</th>
 									<th scope="col">价格</th>
 									<th scope="col">满员人数</th>
 									<!-- <th scope="col">体验说明</th> -->
-									<th scope="col">地陪状态</th>
+									<th scope="col">状态</th>
 									<th scope="col">审核说明</th>
 									<th scope="col">审核时间</th>
 									<th scope="col">审核状态</th>
@@ -184,7 +184,7 @@
 		    	dataType:"json",
 		    	type:"get",
 		    	success:function(data){
-		    		console.log(data);  
+		    		//console.log(data);  
 		    		
 		    		//判断是否已通过审核
 		    		if(data.result.auditStatus==2){

@@ -92,9 +92,6 @@
 												<li><span class="dtr-title">推荐理由:</span>
 													<span class="dtr-data">${item.recommendInfo}</span>
 												</li>
-												<li><span class="dtr-title">关联的线路编号:</span>
-													<span class="dtr-data">${item.relatLineNo}</span>
-												</li>
 										</ul>
 										</td>
 									</tr>							

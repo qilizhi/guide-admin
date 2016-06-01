@@ -138,8 +138,7 @@ public class GuideLineController {
 			} else {
 				// 新增
 				// 随机生成线路编号
-				int num = (int) (Math.random() * 10000);
-				guideLine.setLineNo("MLXLINE_" + num + System.currentTimeMillis());
+				guideLine.setLineNo(StringUtil.generateSerialNumber("L"));
 				guideLine.setUserNo(shiroUser.getUserNo());
 				guideLine.setUserName(shiroUser.getName());
 				guideLine.setCreateTime(new Date());

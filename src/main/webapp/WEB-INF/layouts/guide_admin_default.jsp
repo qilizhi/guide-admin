@@ -194,7 +194,7 @@
 							</a></li>
 								
 								<li class="dropdown dropdown-fw ${guideService_localclass}"><a href="${ctx }/guideAdmin/guideService"
-								class="text-uppercase"> <i class="icon-pointer"></i> 地陪
+								class="text-uppercase"> <i class="icon-pointer"></i> 导服
 							</a></li>
 							
 							<li class="dropdown dropdown-fw ${guide_imgclass}"><a href="${ctx }/guideAdmin/imgStorage"
