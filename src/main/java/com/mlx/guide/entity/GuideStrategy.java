@@ -11,7 +11,6 @@ public class GuideStrategy{
 	private String content;
 	private String imgUrl;
 	private String recommendInfo;
-	private String relatLineNo;
 	private String userNo;
 	private String userName;
 	private Integer flag;
@@ -59,12 +58,6 @@ public class GuideStrategy{
 	}
 	public void setRecommendInfo(String recommendInfo) {
 		this.recommendInfo = recommendInfo;
-	}
-	public String getRelatLineNo() {
-		return relatLineNo;
-	}
-	public void setRelatLineNo(String relatLineNo) {
-		this.relatLineNo = relatLineNo;
 	}
 	public String getUserNo() {
 		return userNo;
