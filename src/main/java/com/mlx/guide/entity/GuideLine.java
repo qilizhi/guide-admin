@@ -27,7 +27,22 @@ public class GuideLine{
 	private Integer auditStatus;
 	private Integer sort;
 	private Integer lineType;
+	private String smallImgUrl;
+	private Integer totalDay;
+	
 
+	public String getSmallImgUrl() {
+		return smallImgUrl;
+	}
+	public void setSmallImgUrl(String smallImgUrl) {
+		this.smallImgUrl = smallImgUrl;
+	}
+	public Integer getTotalDay() {
+		return totalDay;
+	}
+	public void setTotalDay(Integer totalDay) {
+		this.totalDay = totalDay;
+	}
 	public Integer getLineType() {
 		return lineType;
 	}

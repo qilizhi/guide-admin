@@ -22,6 +22,8 @@
 		<result property="updateTime" column="update_time"/>
 		<result property="num" column="num"/>
 		<result property="lineType" column="line_type"/>
+		<result property="smallImgUrl" column="small_img_url"/>
+		<result property="totalDay" column="total_day"/>
 
     </resultMap>
     
@@ -87,11 +89,17 @@
 			<if test="lineType != null and lineType != ''" >
 			and line_type = #{lineType}
 			</if>
+			<if test="smallImgUrl != null and smallImgUrl != ''" >
+			and small_img_url = #{smallImgUrl}
+			</if>
+			<if test="totalDay != null and totalDay != ''" >
+			and total_day = #{totalDay}
+			</if>
 
     </trim>
   </sql>
   <sql id="Base_Column_List" >
-    id,user_no,user_name,line_no,title,img_url,description,content,create_time,price,remark,flag,status,audit_remark,audit_time,audit_status,sort,update_time,num,line_type
+    id,user_no,user_name,line_no,title,img_url,description,content,create_time,price,remark,flag,status,audit_remark,audit_time,audit_status,sort,update_time,num,line_type,small_img_url,total_day
   </sql>
     
     
@@ -151,7 +159,7 @@
 			audit_remark,
 			audit_time,
 			audit_status,
-			sort,update_time,num,line_type
+			sort,update_time,num,line_type,small_img_url,total_day
 		)VALUES(
 			#{id},
 			#{userNo},
@@ -172,7 +180,9 @@
 			#{sort},
 			#{updateTime},
 			#{num},
-			#{lineType}
+			#{lineType},
+			#{smallImgUrl},
+			#{totalDay}
 		)
     </insert>
     <insert id="createGuideLineSelective" parameterType="com.mlx.guide.entity.GuideLine" keyProperty="id" useGeneratedKeys="true">
@@ -236,9 +246,14 @@
 			updateTime,
 			</if>
 			<if test="lineType != null" >
-			line_type
+			line_type,
 			</if>
-			
+			<if test="smallImgUrl != null" >
+			small_img_url,
+			</if>
+			<if test="totalDay != null" >
+			total_day
+			</if>
 			</trim>
 			<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="id != null" >
@@ -299,7 +314,13 @@
 			#{updateTime},
 			</if>
 			<if test="lineType != null" >
-			#{lineType}
+			#{lineType},
+			</if>
+			<if test="smallImgUrl != null" >
+			#{smallImgUrl},
+			</if>
+			<if test="totalDay != null" >
+			#{totalDay}
 			</if>
 			
 			</trim>
@@ -323,7 +344,9 @@
 			sort = #{sort},
 			num = #{num},
 			update_time = #{updateTime},
-			line_type=#{lineType}
+			line_type=#{lineType},
+			small_img_url=#{smallImgUrl},
+			total_day=#{totalDay}
 		WHERE id = #{id}
 
     </update>
@@ -383,7 +406,13 @@
 			update_time = #{updateTime},
 			</if>
 			<if test="lineType != null" >
-			line_type = #{lineType}
+			line_type = #{lineType},
+			</if>
+			<if test="smallImgUrl != null" >
+			small_img_url = #{smallImgUrl},
+			</if>
+			<if test="totalDay != null" >
+			total_day = #{totalDay}
 			</if>
 			
 		</set>
