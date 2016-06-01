@@ -28,8 +28,19 @@ public class GuideTuan {
     private String userName;
 
     private Byte tuanStatus;
+    
+	private Date updateTime;
+	
 
-    public Long getId() {
+    public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Long getId() {
         return id;
     }
 
