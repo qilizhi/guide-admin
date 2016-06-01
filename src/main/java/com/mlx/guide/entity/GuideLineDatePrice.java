@@ -10,7 +10,6 @@ public class GuideLineDatePrice{
 	private String lineNo;
 	private BigDecimal adultPrice;
 	private BigDecimal childPrice;
-	private BigDecimal mlxPrice;
 	private BigDecimal roomDiffPrice;
 	private BigDecimal safePrice;
 	private BigDecimal visaPrice;
@@ -42,12 +41,7 @@ public class GuideLineDatePrice{
 	public void setChildPrice(BigDecimal childPrice) {
 		this.childPrice = childPrice;
 	}
-	public BigDecimal getMlxPrice() {
-		return mlxPrice;
-	}
-	public void setMlxPrice(BigDecimal mlxPrice) {
-		this.mlxPrice = mlxPrice;
-	}
+
 	public Date getLineDate() {
 		return lineDate;
 	}
