@@ -23,7 +23,7 @@ public class VirtualGoods {
     private Integer num;
 
     private Integer sort;
-
+    private Integer goodsType;
     private String auditRemark;
 
     private Date auditTime;
@@ -141,5 +141,13 @@ public class VirtualGoods {
 
 	public void setFlag(Byte flag) {
 		this.flag = flag;
+	}
+
+	public Integer getGoodsType() {
+		return goodsType;
+	}
+
+	public void setGoodsType(Integer goodsType) {
+		this.goodsType = goodsType;
 	}
 }
