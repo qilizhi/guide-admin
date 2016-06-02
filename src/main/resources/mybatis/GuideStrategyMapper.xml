@@ -8,7 +8,6 @@
 		<result property="content" column="content"/>
 		<result property="imgUrl" column="img_url"/>
 		<result property="recommendInfo" column="recommend_info"/>
-		<result property="relatLineNo" column="relat_line_no"/>
 		<result property="userNo" column="user_no"/>
 		<result property="userName" column="user_name"/>
 		<result property="flag" column="flag"/>
@@ -41,9 +40,6 @@
 			</if>
 			<if test="recommendInfo != null and recommendInfo != ''" >
 			and recommend_info = #{recommendInfo}
-			</if>
-			<if test="relatLineNo != null and relatLineNo != ''" >
-			and relat_line_no = #{relatLineNo}
 			</if>
 			<if test="userNo != null and userNo != ''" >
 			and user_no = #{userNo}
@@ -79,7 +75,7 @@
     </trim>
   </sql>
   <sql id="Base_Column_List" >
-    id,title,description,content,img_url,recommend_info,relat_line_no,user_no,user_name,flag,audit_remark,audit_time,audit_status,create_time,update_time,status,sort
+    id,title,description,content,img_url,recommend_info,user_no,user_name,flag,audit_remark,audit_time,audit_status,create_time,update_time,status,sort
   </sql>
     
     <select id="getGuideStrategyRankingList"  resultMap="guideStrategyMap"> 
@@ -124,7 +120,6 @@
 			content,
 			img_url,
 			recommend_info,
-			relat_line_no,
 			user_no,
 			user_name,
 			flag,
@@ -142,7 +137,6 @@
 			#{content},
 			#{imgUrl},
 			#{recommendInfo},
-			#{relatLineNo},
 			#{userNo},
 			#{userName},
 			#{flag},
@@ -175,9 +169,6 @@
 			</if>
 			<if test="recommendInfo != null" >
 			recommend_info,
-			</if>
-			<if test="relatLineNo != null" >
-			relat_line_no,
 			</if>
 			<if test="userNo != null" >
 			user_no,
@@ -229,9 +220,6 @@
 			<if test="recommendInfo != null" >
 			#{recommendInfo},
 			</if>
-			<if test="relatLineNo != null" >
-			#{relatLineNo},
-			</if>
 			<if test="userNo != null" >
 			#{userNo},
 			</if>
@@ -271,7 +259,6 @@
 			content = #{content},
 			img_url = #{imgUrl},
 			recommend_info = #{recommendInfo},
-			relat_line_no = #{relatLineNo},
 			user_no = #{userNo},
 			user_name = #{userName},
 			flag = #{flag},
@@ -302,9 +289,6 @@
 			</if>
 			<if test="recommendInfo != null" >
 			recommend_info = #{recommendInfo},
-			</if>
-			<if test="relatLineNo != null" >
-			relat_line_no = #{relatLineNo},
 			</if>
 			<if test="userNo != null" >
 			user_no = #{userNo},

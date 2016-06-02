@@ -24,6 +24,7 @@ import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.model.OrderRefundModel;
 import com.mlx.guide.service.GuideOrderService;
 import com.mlx.guide.service.OrderRefundService;
+import com.mlx.guide.service.SysBizLogService;
 
 /**
  * 退款列表
@@ -42,6 +43,7 @@ public class OrderRefundAdminController{
 	
 	@Autowired
 	private GuideOrderService guideOrderService;
+	
 	
 	
 	@ModelAttribute
@@ -86,10 +88,10 @@ public class OrderRefundAdminController{
 		
 	}
 	
-	/**
+/*	*//**
 	 * 跳转审核页面
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value="/audit",method=RequestMethod.GET)
 	public String audit(OrderRefundModel orderRefundModel,Model model){
 		try {
@@ -111,7 +113,7 @@ public class OrderRefundAdminController{
 		 return "/admin/order/refundOrder/audit";
 		
 		
-	}
+	}*/
 	
 	
 	/**
@@ -123,6 +125,8 @@ public class OrderRefundAdminController{
 		try {
 			String msg=orderRefundService.audit(orderRefundModel);
 			redirect.addFlashAttribute("msg", msg);
+			
+
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			redirect.addFlashAttribute("msg", "系统异常,请联系管理员");

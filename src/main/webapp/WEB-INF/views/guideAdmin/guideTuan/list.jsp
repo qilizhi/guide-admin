@@ -47,7 +47,7 @@
 		<input type="hidden" name="id" value="${guideTuan.id}">
 		
 		<div class="col-md-8" style="text-align: right;">
-		<input type="text" class="form-filter input-sm" placeholder="线路编号" name="lineNo" value="${guideTuan.lineNo}">
+		<input type="text" class="form-filter input-sm" placeholder="线路编号" name="goodsNo" value="${guideTuan.goodsNo}">
 		<input type="text" class="form-filter input-sm" placeholder="出团名称" name="name" value="${guideTuan.name}">	
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom">
 		<i class="fa fa-search"></i> 查询</button>
@@ -82,9 +82,9 @@
 										<%-- <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
 										<td><a href="${ctx}/guideAdmin/tuan/tuanGuest/${item.tuanNo}">${item.name}</a></td>
 										<td>${item.tuanNo}</td>
-										<td><fmt:formatDate value="${item.tuanDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-										<td>${ELineType[item.lineType]}</td>
-										<td>${item.lineNo}</td>
+										<td><fmt:formatDate value="${item.tuanDate}" pattern="yyyy-MM-dd"/></td>
+										<td>${EGoodsType[item.goodsType]}</td>
+										<td>${item.goodsNo}</td>
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>${item.fullNum}</td>
 										<td>${item.personNum}</td>
@@ -117,7 +117,7 @@
 	
 	<script type="text/javascript" src="${ctx}/static/assets/global/plugins/datatables/datatables.js"></script>
 	<script>
-
+	//初始化DataTable 
 	$(document).ready(function() {
 	    $('#tuan').DataTable({
 	    

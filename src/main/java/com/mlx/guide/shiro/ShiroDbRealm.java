@@ -42,10 +42,12 @@ import org.springframework.stereotype.Component;
 
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EUserType;
+import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.Resource;
 import com.mlx.guide.entity.Role;
 import com.mlx.guide.entity.UserInfo;
 import com.mlx.guide.model.PlatformUser;
+import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.UserInfoService;
 import com.mlx.guide.shiro.http.HttpCredentialsMatcher;
 import com.mlx.guide.shiro.http.HttpOAuthAuthenticationInfo;
@@ -69,6 +71,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	private static final String PLATFORM_USERINFO_LOGIN = "http://passport.mlxing.com/api/platformUser/getUserInfo";
 
 	private UserInfoService userInfoService;
+	
+	@Autowired
+	private GuideInfoService guideInfoService;
 
 	@Autowired
 	public void setUserInfoService(UserInfoService userInfoService) {
@@ -112,10 +117,17 @@ public class ShiroDbRealm extends AuthorizingRealm {
 				return null;
 			}
 			userInfo = lsUserInfos.get(0);
+			GuideInfo guideInfo = guideInfoService.getGuideInfoByUserNo(userInfo.getUserNo());
+			
+			if(guideInfo == null || guideInfo.getRealName() == null){
+				logger.error("验证登录错误: 非导游账号");
+				return null;
+			}
+			
 			// TODO:需要进行密码加密处理进行验证
 /*			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), userInfo.getRealName(), userInfo.getUserNo(),
 					userInfo.getOpenId(), token.getUserType());*/
-					ShiroUser user1 = new ShiroUser(userInfo.getMobile(), userInfo.getEmail(), userInfo.getUserNo(),
+					ShiroUser user1 = new ShiroUser(userInfo.getMobile(), guideInfo.getRealName(), userInfo.getUserNo(),
 					userInfo.getOpenId(), token.getUserType());
 			HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true, user1.getName());
 			return ai;

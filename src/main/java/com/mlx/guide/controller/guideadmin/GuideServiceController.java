@@ -31,6 +31,7 @@ import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
+import com.mlx.guide.util.StringUtil;
 
 /**
  * 地陪控制器
@@ -111,8 +112,7 @@ public class GuideServiceController {
 			} else {
 				// 新增
 				// 随机生成编号
-				int num = (int) (Math.random() * 10000);
-				guideService.setServiceNo("MLX_SERVICE" + num + System.currentTimeMillis());
+				guideService.setServiceNo(StringUtil.generateSerialNumber("S"));
 				guideService.setUserNo(shiroUser.getUserNo());
 				guideService.setUserName(shiroUser.getName());
 				guideService.setCreateTime(new Date());

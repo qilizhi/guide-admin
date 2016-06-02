@@ -2,6 +2,7 @@ package com.mlx.guide.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.mlx.guide.constant.Const;
 import com.mlx.guide.entity.UserInfo;
 import com.mlx.guide.model.UserInfoModel;
 import com.mlx.guide.service.UserInfoService;
+import com.mlx.guide.util.StringUtil;
 
 
 /**
@@ -50,8 +52,23 @@ public class MemberAdminController {
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize,
 			HttpServletRequest request, Model model, UserInfoModel userInfoModel) {
 		try {
+			String temNickName=userInfoModel.getNickName();
+			//条件动态判断
+			if(StringUtils.isNotBlank(userInfoModel.getNickName())){
+				if(StringUtil.isEmail(userInfoModel.getNickName())){
+					userInfoModel.setEmail(userInfoModel.getNickName());
+					userInfoModel.setNickName(null);
+				}else if(StringUtil.isMobileNumber(userInfoModel.getNickName())){
+					userInfoModel.setMobile(userInfoModel.getNickName());
+					userInfoModel.setNickName(null);	
+				}
+			}
+			
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 			PageList<UserInfo> list = userInfoService.getUserInfoPageList(userInfoModel, pageBounds);
+			userInfoModel.setNickName(temNickName);
+			userInfoModel.setMobile(null);
+			userInfoModel.setEmail(null);
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("userInfo", userInfoModel);

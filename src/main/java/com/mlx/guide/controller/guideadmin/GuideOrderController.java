@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +23,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
-import com.mlx.guide.constant.EOrderType;
+import com.mlx.guide.constant.EGoodsType;
+import com.mlx.guide.constant.OrderPayType;
 import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.service.GuideOrderService;
 /**
@@ -70,7 +70,6 @@ public class GuideOrderController {
 		
 			String timeStart="20130101";
         	String timeEnd=null;
-       
     		SimpleDateFormat sf= new SimpleDateFormat("yyyyMMdd");
     		timeEnd=sf.format(new Date());
 
@@ -88,17 +87,16 @@ public class GuideOrderController {
     	    maps.put("pageNo", pageNo);
     	    maps.put("pageSize", pageSize);
     	    String orderList = guideOrderService.getMemberList(maps);
-//			String orderList = guideOrderService.getOrderList("12345678", orderModel.getOrderId(), orderModel.getOrderStatus(), timeStart, timeEnd, pageNo, pageSize);
-			
 			JSONObject jsonObject = JSON.parseObject(orderList);
 			List<OrderModel> list = JSONArray.parseArray(jsonObject.get("result").toString(),OrderModel.class);
+			System.out.println(list);
 			Paginator paginator = new Paginator(pageNo, pageSize, jsonObject.getInteger("total"));
 			model.addAttribute("list", list);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("orderModel", orderModel);
-			model.addAttribute("EOrderType", EOrderType.getMap());
+			model.addAttribute("EGoodsType", EGoodsType.getMap());
+			model.addAttribute("OrderPayType", OrderPayType.getMap());
 			model.addAttribute("paginator", paginator);
-
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -107,19 +105,21 @@ public class GuideOrderController {
 	
 	/**
 	 * 订单详情
-	 * @param orderId
+	 * @param orderModel
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/details/{orderId}")
-	public String details(@PathVariable("orderId") String orderId,Model model){
+	@RequestMapping("/detail")
+	public String detail(OrderModel orderModel,Model model){
 		try {
-			String orderDetails = guideOrderService.getDetail("12345678", orderId);
-			OrderModel Object =  JSON.parseObject(JSON.parseObject(orderDetails).get("result").toString(),OrderModel.class);
-			model.addAttribute("orderDetails", Object);
+			String json=guideOrderService.getDetail(orderModel.getUserId(), orderModel.getOrderId());
+			OrderModel order=JSON.parseObject(JSON.parseObject(json).get("result").toString(),OrderModel.class);
+		
+			model.addAttribute("orderModel", order);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			logger.error(e.getMessage(),e);
 		}
-		return "guideAdmin/order/details";
+		 return "guideAdmin/order/detail";
+
 	}
 }

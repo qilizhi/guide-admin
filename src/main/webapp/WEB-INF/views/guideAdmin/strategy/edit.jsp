@@ -69,21 +69,7 @@
                         <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
                     <div class="alert alert-success display-hide">
                         <button class="close" data-close="alert"></button> Your form validation is successful! </div>
-                        
-                    <div class="form-group">
-                    <label class="control-label col-md-3">关联的线路
-                        <span class="required"> * </span>
-                    </label>
-                    <div class="col-md-4">
-                    <c:if test="${empty guideStrategy.id}">
-                       <input type="text" name="relatLineNo" id="relatLineNo" data-required="1" class="form-control" value="${guideLine.lineNo}" readonly="readonly"/>       
-                    </c:if>
-                    <c:if test="${not empty guideStrategy.id}">
-                       <input type="text" name="relatLineNo" id="relatLineNo" data-required="1" class="form-control" value="${guideStrategy.relatLineNo}" readonly="readonly"/>   
-                    </c:if>
-                    </div>
-                    
-                    </div>
+                     
                     <div class="form-group">
                         <label class="control-label col-md-3">攻略标题
                             <span class="required"> * </span>
@@ -266,9 +252,6 @@
 	                    recommendInfo: {
 	                        required: true,
 	                        maxlength:100
-	                    },
-	                    relatLineNo: {
-	                    	required: true
 	                    }
 	                },
 
@@ -289,9 +272,6 @@
 	                    recommendInfo: {
 	                    	required: "不能为空",
 	                    	maxlength:"最多输入100个汉字"
-	                    },
-	                    relatLineNo: {
-	                    	required: "不能为空"
 	                    }
 	                },
 

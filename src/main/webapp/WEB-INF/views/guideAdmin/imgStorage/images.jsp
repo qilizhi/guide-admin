@@ -305,13 +305,9 @@ margin-left: 190px;
 			$('.quick-save-img').toggleClass("none",$(".tpl-item ul li").length<=0);
 		})
 		//点击上传
-		$(".c_tx3_add")
-				.on(
-						"click",
-						function() {
+		$(".c_tx3_add").on("click",function() {
 							inputFileButton.click();
-							inputFileButton
-									.fileupload({
+							inputFileButton.fileupload({
 										type : "post",
 										dataType : 'json',
 										//singleFileUploads:false,//设置多文件上传
@@ -320,39 +316,25 @@ margin-left: 190px;
 										url : '${ctx}/upload',
 										//autoUpload:false, 
 										change : function(e, data) {
-											$
-													.each(
-															data.files,
-															function(index,
-																	file) {
+											$.each(data.files,function(index,file) {
 
 																var imageObject = '<li id="'+file.name+'"><div class="item"><img title="'+file.name+'" width="168"></div>'
 																		+ ' <i class="img-load"><span id>0</span>%</i> <a class="img-remove" '
 																		+ 'href="javascript:void(0)" title="删除图片"> <i class="hide_clip">移除</i> </a> </li>';
-																img_ul
-																		.append(imageObject);
+																img_ul.append(imageObject);
 																//  console.log('Selected file: ' + file.name);
 															});
 											$('.quick-save-img').toggleClass("none",$(".tpl-item ul li").length<=0);
 										},
 										progress : function(e, data) {
 											//console.log(data);
-											var progress = parseInt(data.loaded
-													/ data.total * 100, 10);
-											$
-													.each(
-															data.files,
-															function(index,
-																	file) {
-																var progressbar = $("li[id='"
-																		+ file.name
-																		+ "'] i span");
+											var progress = parseInt(data.loaded / data.total * 100, 10);
+											$.each(data.files,function(index,file) {
+																var progressbar = $("li[id='"+ file.name+ "'] i span");
 																if (progress == 100) {
-																	progressbar
-																			.text(progress - 1);
+																	progressbar.text(progress - 1);
 																} else {
-																	progressbar
-																			.text(progress);
+																	progressbar.text(progress);
 																}
 															});
 
@@ -364,17 +346,10 @@ margin-left: 190px;
 											var progress = $(".img-load");
 											if (objectRusult.code == "200") {
 												progress.css('display', "none");
-												var img = $("li[id='"
-														+ objectRusult.result[0].fileName
-														+ "'] .item img");
-												img
-														.attr(
-																"src",
-																objectRusult.result[0].filePath);
+												var img = $("li[id='"+ objectRusult.result[0].fileName+ "'] .item img");
+												img.attr("src",objectRusult.result[0].filePath);
 											} else {
-												$(
-														'.progress .progress-bar-success')
-														.text(objectRusult.msg);
+												$('.progress .progress-bar-success').text(objectRusult.msg);
 											}
 										}
 									});

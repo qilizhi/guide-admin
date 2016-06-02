@@ -41,6 +41,9 @@
 <!-- 验证框架 -->
 <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+<!-- fancybox -->
+<script type="text/javascript" src="${ctx}/static/js/jquery.fancybox-1.3.1.pack.js"></script>
+<link href="${ctx}/static/css/fancybox.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -86,10 +89,11 @@
 						</label>
 						<div class="col-xs-2 line-img">
 								<input type="hidden" name="imgUrl" value="${myStory.imgUrl }"/>
-										<img id="image"  alt="" src="${myStory.imgUrl }" class="img-thumbnail"> <span
+								<a class="grouped_elements" rel="group" href="${myStory.imgUrl }">
+										<img id="image"  alt="" src="${myStory.imgUrl }" class="img-thumbnail" /></a> <span
 											class="btn green fileinput-button pading"> <i
 											class="fa fa-plus"></i> <span id="load">上传 </span> <input
-											class="imgUpload" type="file" name="files[]" multiple>
+											class="imgUpload" type="file" name="files[]" multiple />
 										</span>
 									<div class="col-lg-7" id="supprogress">
 										<span id="imageName"></span>
@@ -149,6 +153,8 @@
 			initUEeditor();
 			handleValidation3();
 			initSelect();
+			//初始化fancyBox
+			$("a.grouped_elements").fancybox();
 		
 		})
 		//上传图片
@@ -195,6 +201,7 @@
 								var imgUrl=data.result.result[0].filePath;
 								$("input[name='imgUrl']").val(imgUrl);
 								$("#image").attr("src",imgUrl);
+								$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
 								$("#load").html("重传");
 							} else {
 								$('.progress .progress-bar-success').text(

@@ -4,6 +4,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="fns" uri="/static/fun/fns.tld"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,6 +28,9 @@
 				<div class="portlet-body">
 				<form id="searchForm" action="${ctx}/guideAdmin/guideOrder" method="post">
 	<div class="row">
+	
+	
+	
 		<div class="col-md-6">
 		<select name="pageSize" class="form-control input-sm input-xsmall input-inline">
 		<%-- <option value="5" <c:if test="${pageSize == 5}">selected</c:if> >5</option> --%>
@@ -58,8 +62,8 @@
 			<span class="input-group-addon"> to </span> 
 			<input type="text" class="form-control" name="endDate" value="${orderModel.endDate}" style="height:30px;">
 		</div>	
-		</div>
-		<div class="col-md-3 pull-right" >
+		</div> 
+		<div class="col-md-3 text-right" >
 		<input type="text" class="form-filter input-sm" placeholder="订单号" name="orderId" value="${orderModel.orderId}">
 		<%-- <input type="text" class="form-filter input-sm" placeholder="用户名" name="userName" value="${userName}">
 		<input type="text" class="form-filter input-sm" placeholder="手机号码" name="mobile" value="${mobile}"> --%>	
@@ -73,54 +77,94 @@
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th scope="col">订单编号</th>
+									<!-- <th scope="col">订单编号</th>
 									<th scope="col">用户编号</th>
 									<th scope="col">用户名</th>
 									<th scope="col">订单类型</th>
-<!-- 									<th scope="col">订单流水日期</th>
+									<th scope="col">订单流水日期</th>
 									<th scope="col">订单流水时间</th>
 									<th scope="col">订单流水状态</th>
 									<th scope="col">订单市场总额</th>
-									<th scope="col">订单总销售额</th> -->
+									<th scope="col">订单总销售额</th>
 									<th scope="col">应付金额</th>
-									<!-- <th scope="col">退款标识</th> -->
+									<th scope="col">退款标识</th>
 									<th scope="col">退款金额</th>
-									<!-- <th scope="col">币种</th> -->
+									<th scope="col">币种</th>
 									<th scope="col">失效时间</th>
 									<th scope="col">下单终端渠道</th>
 									<th scope="col">创建时间</th>
 									<th scope="col">修改时间</th>
-									<th scope="col">操作</th>
+									<th scope="col">操作</th> -->
+									
+									<th>订单编号</th>
+									<th>商品名称</th>
+									<th>订单类型</th>
+									<th>订单支付总额</th>
+									<th>购买人</th>
+									<th>下单时间</th>
+									<th>支付时间</th>
+									<th>支付状态</th>
+									<th>操作</th>
 									
 								</tr>
 							</thead>
 							<tbody>
+							<c:forEach items="${list}" var="item">
+									<tr>
+										<td>${item.orderId }</td>
+										<td>
+										<c:forEach var="goods" items="${item.orderGoods }">
+										   ${goods.goodsName }
+										</c:forEach>
+										</td>
+										<td>${EGoodsType[item.orderType]}</td>
+										<td>${item.payFee}</td>
+										<td>${item.orderDescribe.contactsName }</td>
+										<td>
+										
+										<fmt:parseDate value="${item.orderDate }" var="orderDate" pattern="yyyyMMdd"></fmt:parseDate>
+										<fmt:formatDate value="${orderDate }" pattern="yyyy-MM-dd " />  </td>
+										<td>
+										
+										<fmt:parseDate value="${item.payDate}" pattern="yyyyMMdd" var="payDate"/>
+										<fmt:parseDate value="${item.payTime}"  pattern="HHmmss" var="payTime"/>
+										<fmt:formatDate value="${payDate}" pattern="yyyy-MM-dd"/>&nbsp;
+										<fmt:formatDate value="${payTime}" pattern="HH:mm:ss"/>
+										</td>
+										<td>${OrderPayType[item.orderStatus]}</td>
+										<td>
+											<a  href="${ctx}/guideAdmin/guideOrder/detail?orderId=${item.orderId}&userId=${item.userId}" class="btn btn-sm yellow btn-outline" >详情</a>																								
+										</td>
+									</tr>
+								</c:forEach>
 							
-								<c:forEach items="${list}" var="item">
+							
+							
+							<%-- 	<c:forEach items="${list}" var="item">
 									<tr>
 										<td>${item.orderId}</td>
 										<td>${item.userId}</td>
 										<td>${item.userName}</td>
-										<td>${EOrderType}</td>
-										<%-- <td>${item.orderDate}</td>
+										<td>${item.orderType}</td>
+										<td>${item.orderDate}</td>
 										<td>${item.orderTime}</td>
 										<td>${item.orderStatus}</td>
 										<td>${item.totalMarketPrice}</td>
-										<td>${item.totalSellPrice}</td> --%>
+										<td>${item.totalSellPrice}</td>
 										<td>${item.payFee}</td>
-										<%-- <td>${item.refundFlag}</td> --%>
+										<td>${item.refundFlag}</td>
 										<td>${item.refundFee}</td>
-										<%-- <td>${item.currency}</td> --%>
+										<td>${item.currency}</td>
 										<td>${item.expTime}</td>
 										<td>${item.sysCnl}</td>
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td>
-											<a class="btn yellow btn-outline" href="${ctx}/guideAdmin/guideOrder/details/${item.orderId}">详情</a>
+											<a class="btn yellow btn-outline" href="${ctx}/guideAdmin/guideOrder/detail?orderId=${item.orderId}&userId=${item.userId}">详情</a>
 										</td>
 										
 									</tr>
-								</c:forEach>
+								</c:forEach> --%>
 							</tbody>
 						</table>
 					</div>

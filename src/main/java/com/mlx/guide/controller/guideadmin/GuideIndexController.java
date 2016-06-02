@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
@@ -139,7 +140,7 @@ public class GuideIndexController {
 			String orderList = guideOrderService.getMemberList(l_maps);
 			List<OrderModel> list=JSONArray.parseArray(JSON.parseObject(orderList).get("result").toString(), OrderModel.class);
 			model.addAttribute("list", list);
-			
+			model.addAttribute("EGoodsType", EGoodsType.getMap());
 			//系统通知列表
 		
 			
