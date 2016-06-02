@@ -23,34 +23,47 @@
 
 		</div>
 		<div class="portlet-body">
-			<form action="${ctx}/admin/virtualGoods/saveOrUpdate" id="inputForm"	method="post" class="form-horizontal">
-				 <input type="hidden" id="id" name="id" value="${item.id}" />
+			<form action="${ctx}/admin/virtualGoods/saveOrUpdate" id="inputForm"
+				method="post" class="form-horizontal">
+				<input type="hidden" id="id" name="id" value="${item.id}" />
 
 				<div class="form-group form-md-line-input">
 					<label class="col-lg-4 control-label">名称: <span
 						class="required"> * </span></label>
 					<div class="col-lg-5">
-						<input type="text" class="form-control" name="name" value="${item.name }"
-							placeholder="这里输入标题" />
+						<input type="text" class="form-control" name="name"
+							value="${item.name }" placeholder="这里输入标题" />
 						<div class="form-control-focus"></div>
 					</div>
-				</div> 
+				</div>
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-4 control-label">类别: <span
+						class="required"> * </span></label>
+					<div class="col-lg-5">
+						<select class="bs-select form-control bs-select-hidden" name="goodsType">
+						<option value="1">美丽卡</option>
+						<option value="2">课程 </option>
+						</select>
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
 				<div class="form-group form-md-line-input">
 					<label class="col-lg-4 control-label">描述: <span
 						class="required"> * </span></label>
 					<div class="col-lg-5">
-						<input type="text" class="form-control" name="description" value="${item.description }"
-							placeholder="这里输入描述" />
+						<input type="text" class="form-control" name="description"
+							value="${item.description }" placeholder="这里输入描述" />
 						<div class="form-control-focus"></div>
 					</div>
 
-				</div> 
-			 <div class="form-group form-md-line-input">
+				</div>
+				<div class="form-group form-md-line-input">
 					<label class="col-lg-4 control-label">图片: <span
 						class="required"> * </span></label>
 					<div class="col-lg-5">
 						<div class="col-lg-7" id="supprogress">
-							<input type="hidden" name="imgUrl" value="${item.imgUrl }" /> <span id="imageName"></span>
+							<input type="hidden" name="imgUrl" value="${item.imgUrl }" /> <span
+								id="imageName"></span>
 							<div class="progress">
 								<div class="progress-bar progress-bar-success"
 									role="progressbar" aria-valuenow="40" aria-valuemin="0"
@@ -67,16 +80,16 @@
 							</span>
 						</div>
 					</div>
-				</div> 
+				</div>
 
 				<div class="form-group form-md-line-input">
 					<label class="col-lg-4 control-label">价格: <span
 						class="required"> * </span></label>
 					<div class="col-lg-5">
-<div class="input-icon right">
-						<input type="text" class="form-control" name="price" value="${item.price }"
-							placeholder="这里输入价格" />
-						<div class="form-control-focus"></div>
+						<div class="input-icon right">
+							<input type="text" class="form-control" name="price"
+								value="${item.price }" placeholder="这里输入价格" />
+							<div class="form-control-focus"></div>
 						</div>
 					</div>
 				</div>
@@ -84,8 +97,8 @@
 					<label class="col-lg-4 control-label">库存: <span
 						class="required"> * </span></label>
 					<div class="col-lg-5">
-						<input type="text" class="form-control" name="num" value="${item.num }"
-							placeholder="这里输入库存" />
+						<input type="text" class="form-control" name="num"
+							value="${item.num }" placeholder="这里输入库存" />
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
@@ -94,25 +107,25 @@
 					<label class="col-lg-4 control-label">排序号： <span
 						class="required"> * </span></label>
 					<div class="col-lg-5">
-						<input type="text" class="form-control" name="sort" value="${item.sort }"
-							placeholder="这里输入排序号" />
+						<input type="text" class="form-control" name="sort"
+							value="${item.sort }" placeholder="这里输入排序号" />
 						<div class="form-control-focus"></div>
 					</div>
-				</div> 
- 				<div class="modal-footer">
+				</div>
+				<div class="modal-footer">
 
 					<div class="form-group form-md-line-input">
 						<div class="col-lg-5 ">
 							<input id="cancel_btn" class="btn btn-primary " type="button"
 								value="返回" onclick="history.back()" />
-						
+
 						</div>
 						<div class="col-lg-1 ">
-                      	<input type="submit" class="btn btn-primary " vlue="提交">
-                      	</div>
+							<input type="submit" class="btn btn-primary " vlue="提交">
+						</div>
 					</div>
 				</div>
-				
+
 
 			</form>
 		</div>
@@ -197,18 +210,18 @@
 			var form3 = $('#inputForm');
 			var error3 = $('.alert-danger', form3);
 			var success3 = $('.alert-success', form3);
-			form3.submit(function(e){
-			    e.preventDefault();
-			  });
+			form3.submit(function(e) {
+				e.preventDefault();
+			});
 
-          // console.log(form3.validate());
+			// console.log(form3.validate());
 			form3.validate({
 				errorElement : 'span', //default input error message container
 				errorClass : 'help-block help-block-error', // default input error message class
 				focusInvalid : false, // do not focus the last invalid input
 				ignore : "", // validate all fields including form hidden input
 				rules : {
-					 name : {
+					name : {
 						required : true
 					},
 					imgUrl : {
@@ -216,23 +229,23 @@
 					},
 					price : {
 						required : true,
-						number:true
+						number : true
 					},
 					num : {
 						required : true,
 						digits : true
-					}, 
+					},
 					description : {
 						required : true
-					} ,
+					},
 					sort : {
 						required : true,
-						number:true
-					} 
-				} ,
+						number : true
+					}
+				},
 
 				messages : { // custom messages for radio buttons and checkboxes
-					 name : {
+					name : {
 						required : "必填。"
 					},
 					price : {
@@ -242,18 +255,18 @@
 					num : {
 						required : "必填。",
 						digits : "只能输入数字"
-					}, 
+					},
 					description : {
 						required : "必填。"
-					} ,
+					},
 					sort : {
 						required : "必填。",
 						digits : "只能输入数字"
-					} ,
-					imgUrl:{
-						required:"请上传图片"
+					},
+					imgUrl : {
+						required : "请上传图片"
 					}
-				}, 
+				},
 
 				errorPlacement : function(error, element) { // render error placement for each input type
 					if (element.parent(".input-group").size() > 0) {

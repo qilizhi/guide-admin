@@ -103,15 +103,17 @@
 								<tr>
 								<!-- 	<th scope="col"><input type="checkbox" class="icheck" /></th> -->
 									<th scope="col">名称</th>
-									<th scope="col">描述</th>
+									<!-- <th scope="col">描述</th> -->
 									<th scope="col">图片</th>
 									<th scope="col">价格</th>
 									<th scope="col">数量</th>
 									<th scope="col">状态</th>
 									<th scope="col">审核状态</th>
-									 <th scope="col">排序号</th> 
+									<th scope="col">类别</th>
+									
 									<th scope="col">发布时间</th>
-									<th scope="col">创建时间</th>
+									 <th scope="col">排序号</th> 
+								<!-- 	<th scope="col">创建时间</th> -->
 									<th scope="col">操作</th>
 								</tr>
 							</thead>
@@ -120,18 +122,20 @@
 									<tr>
 									<%-- 	<td><input type="checkbox" id="${item.id}" class="icheck" /></td> --%>
 										<td>${item.name}</td>
-										<td>${item.description}</td>
+										<%-- <td>${item.description}</td> --%>
 										<td><img src="${item.imgUrl}" title="${item.name}"
 											height="50px" width="50px" /></td>
 										<td>${item.price}</td>
 										<td>${item.num}</td>
 										<td>${Status[item.status]}</td>
 										<td>${AuditStatus[item.auditStatus]}</td>
-										 <td >${item.sort}</td> 
+										<td>${goodsType[item.goodsType]}</td>
+										
 										<td><fmt:formatDate value="${item.pubTime}"
 												pattern="yyyy-MM-dd HH:mm:ss" /></td>
-										<td><fmt:formatDate value="${item.createTime}"
-												pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							<%-- 			<td><fmt:formatDate value="${item.createTime}"
+												pattern="yyyy-MM-dd HH:mm:ss" /></td> --%>
+												 <td >${item.sort}</td> 
 										<td id="${item.id}">
 										<c:if test="${item.status !=2}">
 										
@@ -314,7 +318,7 @@ $(document).ready(function() {
                         null,
                         { "orderable": true},
                         { "orderable": true},
-                        { "orderable": true},
+                        /*  { "orderable": true}, */
                         { "orderable": false }
                       ]
             }
