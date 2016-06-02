@@ -73,16 +73,7 @@
                     <div class="alert alert-success display-hide">
                         <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                         
-                    <div class="form-group">
-                    <label class="control-label col-md-3">关联的线路
-                        <span class="required"> * </span>
-                    </label>
-                    <div class="col-md-4">  
-                       <select class="selectpicker form-control" name="relatLineNo" data-live-search="true">
-                       </select>
-                    </div>
-                    
-                    </div>
+                  
                     <div class="form-group">
                         <label class="control-label col-md-3">攻略标题
                             <span class="required"> * </span>
@@ -188,7 +179,6 @@
 			initImgUpload();
 			initUEeditor();
 			handleValidation3();
-			initSelect();
 			//初始化fancyBox
 			$("a.grouped_elements").fancybox();
 		
@@ -236,33 +226,7 @@
 					});
 		};
 		
-		/**下拉框的初始化**/
-		var initSelect = function() {
-			//用户数据
-			$.ajax({
-				url:"${ctx}/guideAdmin/strategy/search",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					var options="";
-					if(data.code=="200"){
-					var line=data.result;
-					console.log(line);
-					$.each(line,function(index,obj){
-						options+="<option value='"+obj.lineNo+"'>"+obj.title+"</option>";
-					});
-					}
-					$("select[name='relatLineNo']").empty(); 
-					$("select[name='relatLineNo']").append(options);
-					$("select[name='relatLineNo']").selectpicker('refresh');
-					
-				},error:function(e){
-					comm.errorMsg("请求出错！");
-				}
-				
-			});
-		}
-		
+	
 		//验证框架
 	 var handleValidation3 = function() {
 	            var form3 = $('#form_sample_3');
@@ -291,9 +255,6 @@
 	                    recommendInfo: {
 	                        required: true,
 	                        maxlength:100
-	                    },
-	                    relatLineNo: {
-	                    	required: true
 	                    }
 	                },
 
@@ -314,9 +275,6 @@
 	                    recommendInfo: {
 	                    	required: "不能为空",
 	                    	maxlength:"最多输入100个汉字"
-	                    },
-	                    relatLineNo: {
-	                    	required: "不能为空"
 	                    }
 	                },
 
@@ -355,8 +313,7 @@
 	                },
 
 	                success: function (label) {
-	                    label
-	                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+	                    label.closest('.form-group').removeClass('has-error'); // set success class to the control group
 	                },
 
 	                submitHandler: function (form) {

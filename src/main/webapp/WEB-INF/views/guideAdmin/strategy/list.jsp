@@ -10,6 +10,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <style>
+  .add:before{
+	content: '+';
+    background-color: #b0c1d2;
+    box-shadow: none!important;
+    font-weight: 300;
+    vertical-align: middle;
+    line-height: 16px;
+    border: 0;
+    top: 8px;
+    left: 4px;
+    height: 16px;
+    width: 16px;
+    display: block;
+    position: absolute;
+    color: white;
+    border: 2px solid white;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 0 3px #444;
+    box-sizing: content-box;
+}
+  
+  </style>
 <title>攻略</title>
 </head>
 <body>
@@ -42,8 +66,7 @@
 		<input type="hidden" name="pageNo" value="1">
 		<div class="col-md-4"></div>
 		<div class="col-md-4" style="text-align: right;">
-		<input type="text" class="form-filter input-sm" placeholder="标题" name="title" value="${title}">	
-		<input type="text" class="form-filter input-sm" placeholder="关联的线路编号" name="relatLineNo" value="${relatLineNo}">		
+		<input type="text" class="form-filter input-sm" placeholder="标题" name="title" value="${guideStrategy.title}">	
 		<button type="submit" class="btn btn-sm green btn-outline  filter-submit margin-bottom">
 		<i class="fa fa-search"></i> 查询</button>		
 		</div>		
@@ -53,7 +76,8 @@
 						<table class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-								  <!--   <th scope="col" colspan="2"><input type="checkbox" class=" group-checkable check-all"></th> -->
+								   <!--  <th scope="col" colspan="2"><input type="checkbox" class=" group-checkable check-all"></th>  -->
+								    <th></th>
 									<th scope="col">编号</th>
 									<th scope="col">作者</th>
 									<th scope="col">标题</th>
@@ -61,6 +85,7 @@
 									<th scope="col">排序号</th>
 									<th scope="col">创建时间</th>
 									<th scope="col">更新时间</th>
+									<th scope="col">审核状态</th>
 									<th scope="col">状态</th>
 									<th scope="col">操作</th>
 								</tr>
@@ -68,7 +93,8 @@
 							<tbody>
 								<c:forEach items="${list}" var="item">
 									<tr class="odd">
-									   <%--  <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td> --%>
+									  <%--  <td><input type="checkbox" class="group-checkable check-all-item" value="${item.id}"></td>  --%>
+									    <td class="add" onclick="toggleDetail(this)"></td>
 										<td>${item.id}</td>
 										<td>${item.userName}</td>
 										<td>${item.title}</td>
@@ -76,9 +102,11 @@
 										<td class="ext-sort" data-href="${ctx}/admin/guideStrategy/updateSort/${item.id}">${item.sort}</td>
 										<td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 										<td><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+										<td>${EAuditStatus[item.auditStatus]}</td>
 										<td>${EStatus[item.status]}</td>
 										<td>	
 											<a href="${ctx}/guideAdmin/strategy/edit/${item.id}" class="btn yellow btn-outline" >编辑</a>
+											<a href="${ctx}/guideAdmin/strategy/detail/${item.id}" class="btn red btn-outline" >详情</a>
 											<a class="btn blue btn-outline" href="javascript:upShow(${item.id})">上线</a>									
 										<%-- 	<a href="${ctx}/guideAdmin/strategy/delete/${item.id}" target="delete" class="btn btn-sm red btn-outline" >删除</a>	 --%>
 										</td>
@@ -92,6 +120,15 @@
 												<li><span class="dtr-title">推荐理由:</span>
 													<span class="dtr-data">${item.recommendInfo}</span>
 												</li>
+												<li><span class="dtr-title">审核说明:</span>
+													<span class="dtr-data">${item.auditTime}</span>
+												</li>
+												<li><span class="dtr-title">审核时间:</span>
+													<span class="dtr-data">${item.auditRemark}</span>
+												</li>
+												<%-- <li><span class="dtr-title">攻略内容:</span>
+													<span class="dtr-data">${item.content}</span>
+												</li> --%>
 										</ul>
 										</td>
 									</tr>							
@@ -112,7 +149,7 @@
 		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="${ctx}/guideAdmin/strategy/upAndDown" id="modalForm" class="form-horizontal">
+				<form action="${ctx}/guideAdmin/strategy/onOFF" id="modalForm" class="form-horizontal">
 				<input type="hidden" name="id" value=""/>
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal"
@@ -161,6 +198,7 @@
 	
 <tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
 
+
 <script type="text/javascript">
 	window.mlx = {
 			ctx : "${ctx}"
@@ -180,10 +218,10 @@
 	    		console.log(data);  
 	    		
 	    		//判断是否已通过审核
-	    		if(data.result.status==1){
-	    			comm.showMsg('warning', '消息提示', '该攻略未通过审核，暂不能上线！');
-	    		}else{
+	    		if(data.result.auditStatus==2){
 	    			$("#detailResponsive").modal('show');
+	    		}else{
+	    			comm.showMsg('warning', '消息提示', '该攻略未通过审核，暂不能上线！');
 	    		}
 	    	},error:function(){
 	    		comm.showMsg('warning', '消息提示', '请求出错！');
@@ -191,7 +229,10 @@
 	    });
 	    
 	}
-
+	//展开详情事件
+	function toggleDetail(dom){
+		  $(dom).toggleClass("active").parent("tr").next("tr").toggle();
+	  }
 </script>
 </body>
 </html>

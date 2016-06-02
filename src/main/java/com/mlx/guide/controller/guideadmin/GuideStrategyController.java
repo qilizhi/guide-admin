@@ -86,10 +86,9 @@ public class GuideStrategyController {
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("guideStrategy", guideStrategy);
-			model.addAttribute("title", guideStrategy.getTitle());
-			model.addAttribute("relatLineNo", guideStrategy.getRelatLineNo());
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("EStatus", EStatus.getMap());
+			model.addAttribute("EAuditStatus", EAuditStatus.getMap());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -143,6 +142,18 @@ public class GuideStrategyController {
 		model.addAttribute("guideStrategy", guideStrategy);
 		return "guideAdmin/strategy/edit";
 	}
+	
+	/**
+	 * 详情
+	 */
+	@RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
+	public String detail(@PathVariable("id") Integer id, Model model) {
+		GuideStrategy gs = guideStrategyService.getGuideStrategyByPrimaryKey(id);
+		model.addAttribute("item", gs);
+		model.addAttribute("EStatus", EStatus.getMap());
+		return "/guideAdmin/strategy/detail";
+	}
+	
 
 	/**
 	 * 新增,更新
@@ -179,6 +190,29 @@ public class GuideStrategyController {
 		}
 	}
 	
+	/**
+	 * 序号修改
+	 * 
+	 * @param id
+	 * @param sort
+	 * @return
+	 */
+	@RequestMapping(value = "updateSort/{id}")
+	@ResponseBody
+	public JsonResult updateSort(@PathVariable(value = "id") Integer id, @RequestParam Integer sort) {
+		JsonResult ajaxResult = null;
+		GuideStrategy guideStrategy = new GuideStrategy();
+		guideStrategy.setId(id);
+		guideStrategy.setSort(sort);
+		try {
+			guideStrategyService.updateGuideStrategySelective(guideStrategy);
+			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			ajaxResult = new JsonResult(ExceptionCode.FAIL, "内部出现错误");
+		}
+		return ajaxResult;
+	}
 
 	/**
 	 * 根据id获取线路信息
@@ -202,8 +236,8 @@ public class GuideStrategyController {
 	 * @param guideLine
 	 * @return
 	 */
-	@RequestMapping(value="upAndDown")
-	public String upAndDown(GuideStrategy guideStrategy){
+	@RequestMapping(value="onOFF")
+	public String onOFF(GuideStrategy guideStrategy){
 		try {
 			guideStrategyService.updateGuideStrategySelective(guideStrategy);
 		} catch (Exception e) {
