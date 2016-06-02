@@ -21,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -51,6 +53,67 @@ public class EasemobClientUtil {
 	private String app_client_secret;
 	//private  String APP_IMP_LIB ;
 	
+   public 	EasemobClientUtil(){
+	   System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+   }
+	public String getApi_protocal() {
+		return api_protocal;
+	}
+
+	public EasemobClientUtil(String api_protocal, String api_host, String api_org_name, String api_app_name,
+			String app_client_id, String app_client_secret) {
+		super();
+		this.api_protocal = api_protocal;
+		this.api_host = api_host;
+		this.api_org_name = api_org_name;
+		this.api_app_name = api_app_name;
+		this.app_client_id = app_client_id;
+		this.app_client_secret = app_client_secret;
+	}
+
+	public void setApi_protocal(String api_protocal) {
+		this.api_protocal = api_protocal;
+	}
+
+	public String getApi_host() {
+		return api_host;
+	}
+
+	public void setApi_host(String api_host) {
+		this.api_host = api_host;
+	}
+
+	public String getApi_org_name() {
+		return api_org_name;
+	}
+
+	public void setApi_org_name(String api_org_name) {
+		this.api_org_name = api_org_name;
+	}
+
+	public String getApi_app_name() {
+		return api_app_name;
+	}
+
+	public void setApi_app_name(String api_app_name) {
+		this.api_app_name = api_app_name;
+	}
+
+	public String getApp_client_id() {
+		return app_client_id;
+	}
+
+	public void setApp_client_id(String app_client_id) {
+		this.app_client_id = app_client_id;
+	}
+
+	public String getApp_client_secret() {
+		return app_client_secret;
+	}
+
+	public void setApp_client_secret(String app_client_secret) {
+		this.app_client_secret = app_client_secret;
+	}
 
 	/**
 	 * 基本url

@@ -31,8 +31,7 @@
 		<property name="messageConverters"> <list> <ref bean="mappingJackson2HttpMessageConverter" 
 		/> </list> </property> </bean> -->
 			<!-- 扫描文件（自动将servicec层注入） -->
-	 <context:component-scan base-package="com.mlx.guide.service" /> 
-	 <context:component-scan base-package="com.mlx.guide.util" /> 
+<!-- 	 <context:component-scan base-package="com.mlx.guide.util,com.mlx.guide.service" /> -->
 		<!-- 自动扫描且只扫描@Controller -->
 	<context:component-scan base-package="com.mlx.guide.controller"
 		use-default-filters="false">

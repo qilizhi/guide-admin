@@ -4,6 +4,7 @@ package com.mlx.guide.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,17 +28,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EGoodsType;
+import com.mlx.guide.constant.EGuestStatus;
 import com.mlx.guide.constant.ELineType;
 import com.mlx.guide.constant.ESignInStatus;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.constant.OrderPayType;
+import com.mlx.guide.entity.EmGroup;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.entity.GuideTuan;
@@ -46,6 +51,8 @@ import com.mlx.guide.model.OrderGoodsModel;
 import com.mlx.guide.model.OrderGoodsModel.GoodsTourists;
 import com.mlx.guide.model.OrderModel;
 import com.mlx.guide.model.PreTuanModel;
+import com.mlx.guide.service.EasemobClientService;
+import com.mlx.guide.service.EmGroupService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideOrderService;
 import com.mlx.guide.service.GuideServiceService;
@@ -75,6 +82,10 @@ public class GuideTuanAdminController {
 	private GuideServiceService guideservice;
 	@Autowired
 	private GuideOrderService guideOrderService;
+	@Autowired
+	private EasemobClientService easemobClientService;
+	@Autowired
+	private EmGroupService groupService;
 
 	@ModelAttribute
 	public void comm(Model model) {
@@ -121,125 +132,9 @@ public class GuideTuanAdminController {
 	@ResponseBody
 	public JsonResult groupOut(GuideTuan gt, Model model) {
 
-		String userNo = "";
-		String userName = "";
-		// 1.查询线路及地陪信息
-		if (gt.getGoodsType().equals(EGoodsType.LOCAL.getId())) {
-			GuideService gss = guideservice.getGuideServiceByServiceNo(gt.getGoodsNo());
-			if (gss == null) {
-				logger.info("查到的地陪为空！");
-				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
-			} else {
-
-				userNo = gss.getUserNo();
-				userName = gss.getUserName();
-			}
-		} else if (gt.getGoodsType().equals(EGoodsType.LINE.getId())) {
-			GuideLine gl = guideLineService.getGuideLineByLineNo(gt.getGoodsNo());
-			if (gl == null) {
-				logger.info("查到的线路为空！");
-				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
-			} else {
-				userNo = gl.getUserNo();
-				userName = gl.getUserName();
-			}
-		}
-		// 2.插入一条出团记录到出团表里，并修改状态为已取消出团；
-		gt.setUserName(userName);
-		gt.setUserNo(userNo);
-		gt.setTuanStatus(ETuanStatus.CANCEL.getId().byteValue());
 	
-		int id;
-		try {
-			id = guideTuanService.insertSelective(gt);
-		} catch (Exception e) {
-			logger.info("数据库更新出错！");
-			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
-		}
-		
+
 		// 3.1 查询该团下的订单
-				Map<String, Object> params = new HashMap<String, Object>();
-				params.put("orderStatus", "W");
-				params.put("groupNo", gt.getTuanNo());
-				params.put("pageSize", Integer.MAX_VALUE);
-				params.put("startDate", getPreMonthStartDate(6));// 暂定前后6个月
-				params.put("endDate", getNextMonthEndDate(6));
-				String result = guideOrderService.getMangeList(params);
-				if ("".equals(result) || result == null) {
-					logger.error("调用订单接口出错。返回数结果为空！请检查网络！");
-				}
-				List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
-						OrderModel.class);
-		// 3.2 将用户插入到tuanGuest
-				List<GuideTuanGuest> guideTuanGuests = new ArrayList<GuideTuanGuest>();
-				for (OrderModel order : orders) {
-					for (OrderGoodsModel orderGoods : order.getOrderGoods()) {
-						for (GoodsTourists goodsT : orderGoods.getGoodsTourists()) {
-							GuideTuanGuest gtg = new GuideTuanGuest();
-							gtg.setGuestName(goodsT.getTouristName());
-							gtg.setMobile(goodsT.getTouristMobile());
-							gtg.setOrderNo(order.getOrderId());
-							gtg.setTuanNo(orderGoods.getGroupNo());
-							guideTuanGuests.add(gtg);
-						}
-					}
-				}
-				if (guideTuanGuests.size() > 0) {
-					guideTuanGuestService.batInsertSelective(guideTuanGuests);
-				} else {
-					logger.info("客户信息为空！");
-				}
-
-
-		// 4.从环信创建一个群。
-				
-
-		// 5.把报团人员拉入群里。
-
-		return new JsonResult(ExceptionCode.SUCCESSFUL);
-	}
-
-	@RequestMapping(value = "/submit/cancel", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResult groupCancel(GuideTuan gt, Model model) {
-
-		String userNo = "";
-		String userName = "";
-		// 1.查询线路及地陪信息
-		if (gt.getGoodsType().equals(EGoodsType.LOCAL.getId())) {
-			GuideService gss = guideservice.getGuideServiceByServiceNo(gt.getGoodsNo());
-			if (gss == null) {
-				logger.info("查到的地陪为空！");
-				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
-			} else {
-
-				userNo = gss.getUserNo();
-				userName = gss.getUserName();
-			}
-		} else if (gt.getGoodsType().equals(EGoodsType.LINE.getId())) {
-			GuideLine gl = guideLineService.getGuideLineByLineNo(gt.getGoodsNo());
-			if (gl == null) {
-				logger.info("查到的线路为空！");
-				// return new JsonResult(ExceptionCode.FAIL,"查到的地陪为空!");
-			} else {
-				userNo = gl.getUserNo();
-				userName = gl.getUserName();
-			}
-		}
-		// 2.插入一条出团记录到出团表里，并修改状态为已取消出团；
-		gt.setUserName(userName);
-		gt.setUserNo(userNo);
-		gt.setTuanStatus(ETuanStatus.CANCEL.getId().byteValue());
-	
-		int id;
-		try {
-			id = guideTuanService.insertSelective(gt);
-		} catch (Exception e) {
-			logger.info("数据库更新出错！");
-			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
-		}
-		// 4.申请退款
-		// 4.1 查询该团下的订单
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("orderStatus", "W");
 		params.put("groupNo", gt.getTuanNo());
@@ -252,7 +147,7 @@ public class GuideTuanAdminController {
 		}
 		List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
 				OrderModel.class);
-		// 4.2 将用户插入到tuanGuest
+		// 3.2 将用户插入到tuanGuest
 		List<GuideTuanGuest> guideTuanGuests = new ArrayList<GuideTuanGuest>();
 		for (OrderModel order : orders) {
 			for (OrderGoodsModel orderGoods : order.getOrderGoods()) {
@@ -271,24 +166,90 @@ public class GuideTuanAdminController {
 		} else {
 			logger.info("客户信息为空！");
 		}
+		// 3.3.并修改状态为已出团,订单人数及实际人数
+		List<GuideTuan> guideTuans=guideTuanService.getGuideTuanPageList(gt);
+		GuideTuan opTuan=guideTuans.size()>0?guideTuans.get(0):null;
+		opTuan.setTuanStatus(ETuanStatus.TOURED.getId().byteValue());
+		opTuan.setPersonNum(guideTuanGuests.size());
+		opTuan.setOrderNum(orders.size());
+		try {
+			
+			guideTuanService.updateByPrimaryKeySelective(opTuan);
+			logger.info("更新数据成功。data:"+opTuan.toString());
+		} catch (Exception e) {
+			logger.info("数据库更新出错！");
+			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
+		}
+		
+		
+		// 4.从环信创建一个群。
+		EmGroup group = new EmGroup();
+		String o = easemobClientService.createGroup(gt.getName(), gt.getName() + "groupNo:"+gt.getTuanNo(), true,
+				gt.getFullNum(), true, gt.getUserNo());
+		JSONObject resultMap = JSON.parseObject(o);
+		JSONObject data = resultMap.getJSONObject("data");
+		Long groupId = data.getLong("groupid");
+		if (groupId == null) {
+			return new JsonResult(ExceptionCode.FAIL, "调用环信接口失败！");
+		}
+		group.setEmGname(gt.getName());
+		group.setEmGdesc(gt.getName() + "groupNo:" + gt.getTuanNo());
+		group.setEmGid(groupId);
+		group.setCreateTime(new Date());
+		// 应是当前登录的用户。 从shiroUser 里获取
+		group.setUserNo("qilizhi_linlin");
+		logger.info("环信群创建成功:" + data.toJSONString());
+		groupService.insertSelective(group);// 插入到本地群里。
 
+		// 5.把订单人员拉入群里。
+		// 5.1 查找该用户是否已生成过环信用户，
+		// 若有，在 emGroupUser存在。则取出 gid。
+		// 否则 ，调环信接口生成相应用户并插入到 emGroupUser 里并取出gid;
+		// 5.2调接口，将用户插入拉到群里 并 在本地生成应 群与用户的表关系。
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
+	}
+
+	@RequestMapping(value = "/submit/cancel", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult groupCancel(GuideTuan gt, Model model) {
+		
+		List<GuideTuan> guideTuans=guideTuanService.getGuideTuanPageList(gt);
+		GuideTuan opTuan=guideTuans.size()>0?guideTuans.get(0):null;
+		// 2.插入一条出团记录到出团表里，并修改状态为已取消出团；
+		opTuan.setTuanStatus(ETuanStatus.CANCEL.getId().byteValue());
+         guideTuanService.updateByPrimaryKeySelective(opTuan);
+		// 4.申请退款
+		// 4.1 查询该团下的订单
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("orderStatus", "W");
+		params.put("groupNo", gt.getTuanNo());
+		params.put("pageSize", Integer.MAX_VALUE);
+		String result = guideOrderService.getMangeList(params);
+		logger.info("订单查询返回的结果："+result);
+		if ("".equals(result) || result == null) {
+			logger.error("调用订单接口出错。返回数结果为空！请检查网络！");
+		}
+		List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
+				OrderModel.class);
 		// 4.3 调用退款接口退款
 		for (OrderModel o : orders) {
 			Map<String, Object> p = new HashMap<String, Object>();
 			p.put("userId", o.getUserId());
 			p.put("orderId", o.getOrderId());
-			guideOrderService.refundApply(p);
-			String resultCode = JSON.parseObject(result).get("code").toString();
+			String applyResult=guideOrderService.refundApply(p);
+			logger.info("申请退款返回的结果："+applyResult);
+			String resultCode = JSON.parseObject(applyResult).get("code").toString();
 			if (!resultCode.equals("0000")) {
 				logger.info("订单：" + o.getOrderId() + "申请退款失败！");
 			}
 		}
 
-		return new JsonResult(ExceptionCode.SUCCESSFUL, id);
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
 	/**
-	 * 出团详情 查看出才人员。
+	 * 出团详情 查看订单列表。
 	 * 
 	 * @param groupNo
 	 * @param pageNo
@@ -298,53 +259,62 @@ public class GuideTuanAdminController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/detail/{groupNo}")
+	@RequestMapping("/order/detail/{groupNo}")
 	public String detail(@PathVariable("groupNo") String groupNo,
 			@RequestParam(defaultValue = Const.PAGE_NO, value = "pageNo") Integer pageNo,
 			@RequestParam(defaultValue = Const.PAGE_SIZE, value = "pageSize") Integer pageSize, String startDate,
-			String endDate, Model model) {
+			String endDate, String mobile, String orderId, String orderStatus, String userName, Model model,
+			HttpServletRequest request) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("orderStatus", "W");
+		// params.put("orderStatus", "W");
 		params.put("groupNo", groupNo);
 		params.put("pageSize", Integer.MAX_VALUE);
-		params.put("startDate", getPreMonthStartDate(6));
-		params.put("endDate", getNextMonthEndDate(6));
-		params.put("startTripDate", startDate == null ? getPreMonthStartDate(1) : startDate);
-		params.put("endTripDate", endDate == null ? getNextMonthEndDate(1) : endDate);
+		params.put("mobile", mobile);
+		params.put("orderId", orderId);
+		params.put("orderStatus", orderStatus);
+		params.put("userName", userName);
+		// params.put("startTripDate", startDate == null ?
+		// getPreMonthStartDate(1) : startDate);
+		// params.put("endTripDate", endDate == null ? getNextMonthEndDate(1) :
+		// endDate);
 		String result = guideOrderService.getMangeList(params);
 		if ("".equals(result) || result == null) {
 			logger.error("调用订单接口出错。返回数结果为空！请检查网络！");
 		}
 		List<OrderModel> orders = JSONArray.parseArray(JSON.parseObject(result).get("result").toString(),
 				OrderModel.class);
-		List<GuideTuanGuest> gtguests = new ArrayList<GuideTuanGuest>();
-		// 取出参团成员信息
-		for (OrderModel o : orders) {
-			if (o.getOrderGoods() != null && o.getOrderGoods().size() > 0) {
-				for (OrderGoodsModel og : o.getOrderGoods()) {
-					for (GoodsTourists gts : og.getGoodsTourists()) {
-						GuideTuanGuest guideTuanGuest = new GuideTuanGuest();
-						guideTuanGuest.setGuestName(gts.getTouristName());
-						guideTuanGuest.setMobile(gts.getTouristMobile());
-						guideTuanGuest.setTuanNo(og.getGroupNo());
-						guideTuanGuest.setOrderNo(gts.getOrderGoodsId());
-						gtguests.add(guideTuanGuest);
-					}
-				}
-			} else {
-				logger.info("订单id:" + o.getOrderId() + "的商品信息为空！");
-			}
-		}
-		Paginator p = new Paginator(pageNo, pageSize, gtguests.size());
+		/*
+		 * List<GuideTuanGuest> gtguests = new ArrayList<GuideTuanGuest>(); //
+		 * 取出参团成员信息 for (OrderModel o : orders) { if (o.getOrderGoods() != null
+		 * && o.getOrderGoods().size() > 0) { for (OrderGoodsModel og :
+		 * o.getOrderGoods()) { for (GoodsTourists gts : og.getGoodsTourists())
+		 * { GuideTuanGuest guideTuanGuest = new GuideTuanGuest();
+		 * guideTuanGuest.setGuestName(gts.getTouristName());
+		 * guideTuanGuest.setMobile(gts.getTouristMobile());
+		 * guideTuanGuest.setTuanNo(og.getGroupNo());
+		 * guideTuanGuest.setOrderNo(gts.getOrderGoodsId());
+		 * gtguests.add(guideTuanGuest); } } } else { logger.info("订单id:" +
+		 * o.getOrderId() + "的商品信息为空！"); } }
+		 */
+		Paginator p = new Paginator(pageNo, pageSize, orders.size());
 		Integer pageEnd = pageNo * pageSize > p.getTotalCount() ? p.getTotalCount() : pageNo * pageSize;
 		Integer pageStart = p.getOffset();
-		model.addAttribute("list", gtguests.subList(pageStart, pageEnd));
-		// model.addAttribute("list", gtguests);
+		model.addAttribute("list", orders.subList(pageStart, pageEnd));
+		model.addAttribute("countlist", orders);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("groupNo", groupNo);
+		GuideTuan t = new GuideTuan();
+		t.setTuanNo(groupNo);
+		List<GuideTuan> ts = guideTuanService.getGuideTuanPageList(t);
+		model.addAttribute("tuan", ts.size() > 0 ? ts.get(0) : null);
+		model.addAttribute("mobile", mobile);
+		model.addAttribute("orderId", orderId);
+		model.addAttribute("orderStatus", orderStatus);
+		model.addAttribute("userName", userName);
 		model.addAttribute("paginator", p);
-		return "/admin/guideTuan/guest_list";
+		model.addAttribute("payStatus", OrderPayType.getMap());
+		return "/admin/guideTuan/order_list";
 	}
 
 	/**
@@ -366,8 +336,8 @@ public class GuideTuanAdminController {
 		params.put("orderStatus", "W");
 		params.put("groupNo", groupNo);
 		params.put("pageSize", Integer.MAX_VALUE);
-		params.put("startDate", getPreMonthStartDate(6));
-		params.put("endDate", getNextMonthEndDate(6));
+		// params.put("startDate", getPreMonthStartDate(6));
+		// params.put("endDate", getNextMonthEndDate(6));
 		params.put("startTripDate", startDate == null ? getPreMonthStartDate(1) : startDate);
 		params.put("endTripDate", endDate == null ? getNextMonthEndDate(1) : endDate);
 		String result = guideOrderService.getMangeList(params);
@@ -398,7 +368,7 @@ public class GuideTuanAdminController {
 		List<PreTuanModel> preTuanModels = new ArrayList<PreTuanModel>();
 		// 根据分组来统做统计
 		for (String g : groupNoMaps.keySet()) {
-			//logger.info("正在统计团编号:" + g);
+			// logger.info("正在统计团编号:" + g);
 			Integer touristNum = 0;
 			List<OrderGoodsModel> oms = groupNoMaps.get(g);
 			PreTuanModel p = new PreTuanModel();
@@ -577,14 +547,50 @@ public class GuideTuanAdminController {
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, Model model) {
 		GuideTuanGuest guest = new GuideTuanGuest();
 		guest.setTuanNo(tuanNo);
+		
 		PageList<GuideTuanGuest> lsGuests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
 				new PageBounds(pageNo, pageSize));
+		
+		guest.setStatus(ESignInStatus.SIGNED.getId().byteValue());
+		PageList<GuideTuanGuest> guests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
+				new PageBounds(1, Integer.MAX_VALUE));
 		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
 		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("signNum", guests.size());
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("list", lsGuests);
+		
+		GuideTuan t = new GuideTuan();
+		t.setTuanNo(tuanNo);
+		List<GuideTuan> ts = guideTuanService.getGuideTuanPageList(t);
+		model.addAttribute("tuan", ts.size() > 0 ? ts.get(0) : null);
 		model.addAttribute("ESignInStatus", ESignInStatus.getByteMap());
 		return "admin/guideTuan/guest_list";
+	}
+
+	/**
+	 * 签到
+	 * 
+	 * @param tuanNo
+	 * @param pageNo
+	 * @param pageSize
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/tuanGuest/sign/{id}")
+	@ResponseBody
+	public JsonResult tuanGuest(@PathVariable("id") Long id) {
+		GuideTuanGuest gtg = new GuideTuanGuest();
+		gtg.setId(id);
+		gtg.setStatus(ESignInStatus.SIGNED.getId().byteValue());
+		int r = 0;
+		try {
+			r = guideTuanGuestService.updateByPrimaryKeySelective(gtg);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return new JsonResult(ExceptionCode.FAIL, "更新出错！");
+		}
+		return new JsonResult(ExceptionCode.SUCCESSFUL, r);
 	}
 
 	/**

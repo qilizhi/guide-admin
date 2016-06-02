@@ -33,7 +33,7 @@
 	<!-- 扫描文件（自动将shiro部分） -->
 	<context:component-scan base-package="com.mlx.guide.shiro" />
 	<!-- 因为shiro 里用到userService等服务层故（自动将servicec层注入） -->
-	<context:component-scan base-package="com.mlx.guide.service" />
+	<context:component-scan base-package="com.mlx.guide" />
 	<import resource="classpath*:/spring-mybatis.xml" />
 	<import resource="classpath*:/spring-redis.xml" />
 

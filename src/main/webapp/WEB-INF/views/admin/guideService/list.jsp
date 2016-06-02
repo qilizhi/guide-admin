@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>地陪列表</title>
+<title>导服列表</title>
 </head>
 <body>
 	<div class="note note-success">
@@ -28,7 +28,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="fa fa-cogs"></i><span
-							class="caption-subject font-dark bold uppercase">地陪列表</span>
+							class="caption-subject font-dark bold uppercase">导服列表</span>
 					</div>
 					<div class="actions">
 					 <a href="${ctx}/admin/guideService/create"

@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -19,12 +21,12 @@ import com.mlx.guide.util.EasemobClientUtil;
 @Service
 public class EasemobClientService {
 
-
 	@Value("${uri.easemob.groupUri}")
 	private String groupUri;
 	@Autowired
-	private EasemobClientUtil eClient;
- 
+	private EasemobClientUtil easemobClientUtil;
+
+
 	/**
 	 * 创建环信群
 	 * 
@@ -44,6 +46,7 @@ public class EasemobClientService {
 	 */
 	public String createGroup(String groupname, String desc, boolean isPublic, Integer maxusers, boolean isApproval,
 			String owner) {
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (groupname != null)
 			params.put("groupname", groupname);
@@ -55,7 +58,7 @@ public class EasemobClientService {
 		params.put("approval", isApproval);
 		if (owner != null)
 			params.put("owner", owner);
-		return eClient.post(groupUri, JSON.toJSONString(params));
+		return easemobClientUtil.post(groupUri, JSON.toJSONString(params));
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class EasemobClientService {
 	 */
 	public String editGroup(Long groupId, String groupname, String desc, Integer maxusers, boolean isApproval,
 			String owner) {
-
+	
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (groupname != null)
 			params.put("groupname", groupname);
@@ -83,7 +86,7 @@ public class EasemobClientService {
 		params.put("approval", isApproval);
 		if (owner != null)
 			params.put("owner", owner);
-		return eClient.put(groupUri + "/" + groupId, JSON.toJSONString(params));
+		return easemobClientUtil.put(groupUri + "/" + groupId, JSON.toJSONString(params));
 	}
 
 	/**
@@ -93,6 +96,7 @@ public class EasemobClientService {
 	 * @return
 	 */
 	public String deleteGroup(Long groupId) {
-		return eClient.delete(groupUri + "/" + groupId);
+
+		return easemobClientUtil.delete(groupUri + "/" + groupId);
 	}
 }

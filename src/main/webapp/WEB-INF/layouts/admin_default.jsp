@@ -208,7 +208,7 @@
 										href="${ctx}/admin/review"> <i class="icon-eye"></i> 预览
 									</a></li> --%>
 									<li class="${home_tuanclass}"><a
-										href="${ctx}/admin/guideTuan/pre"> <i class="icon-eye"></i> 出团列表
+										href="${ctx}/admin/guideTuan"> <i class="icon-eye"></i> 出团列表
 									</a></li>
 
 								</ul></li>
@@ -223,7 +223,7 @@
 											线路列表
 									</a></li>
 									<li class="${product_guideServiceclass}"><a
-										href="${ctx}/admin/guideService"> <i class="icon-basket"></i>地陪列表
+										href="${ctx}/admin/guideService"> <i class="icon-basket"></i>导服列表
 									</a></li>
 									<li class="${product_virtualGoodsclass}"><a
 										href="${ctx}/admin/virtualGoods"> <i class="icon-basket"></i>
