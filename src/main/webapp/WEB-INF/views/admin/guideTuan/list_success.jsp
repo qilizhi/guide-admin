@@ -85,7 +85,7 @@
 										<div class="col-md-8" style="text-align: right;">
 
 											<input type="text" class="form-filter input-sm"
-												placeholder="线路编号" name="lineNo" value="${lineNo}">
+												placeholder="商品编号" name="goodsNo" value="${goodsNo}">
 											<input type="text" class="form-filter input-sm"
 												placeholder="出团名称" name="name" value="${name}">
 											<button type="submit"
@@ -107,8 +107,8 @@
 												<th scope="col">出团名称</th>
 												<th scope="col">团编号</th>
 												<th scope="col">出团日期</th>
-												<th scope="col">线路类型</th>
-												<th scope="col">线路编号</th>
+												<th scope="col">商品类型</th>
+												<th scope="col">商品编号</th>
 												<th scope="col">导游名称</th>
 												<th scope="col">创建时间</th>
 												<th scope="col">满员人数</th>
@@ -127,8 +127,8 @@
 													<td>${item.tuanNo}</td>
 													<td><fmt:formatDate value="${item.tuanDate}"
 															pattern="yyyy-MM-dd HH:mm:ss" /></td>
-													<td>${ELineType[item.lineType]}</td>
-													<td>${item.lineNo}</td>
+													<td>${EGoodsType[item.goodsType]}</td>
+													<td>${item.goodsNo}</td>
 													<td>${item.userName}</td>
 													<td><fmt:formatDate value="${item.createTime}"
 															pattern="yyyy-MM-dd HH:mm:ss" /></td>

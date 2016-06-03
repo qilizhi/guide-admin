@@ -69,4 +69,9 @@ public class GuideServiceService {
 		
 		return guideServiceMapper.getGuideServiceByUserNo(userNo);
 	};
+	
+	public GuideService getGuideServiceByServiceNo(String serviceNo){
+		
+		return guideServiceMapper.getGuideServiceByServiceNo(serviceNo);
+	};
 }

@@ -125,6 +125,28 @@
       </if>
     </trim>
   </insert>
+  <insert id="batTnsertSelective"  >
+    insert into guide_tuan_guest
+     	(
+        tuan_no,
+        guest_name,
+        mobile,
+        order_no
+     
+		) values 
+  
+    <foreach collection="list" item="item" index="index" separator="," >
+   (
+        #{item.tuanNo,jdbcType=VARCHAR},
+        #{item.guestName,jdbcType=VARCHAR},
+        #{item.mobile,jdbcType=VARCHAR},
+        #{item.orderNo,jdbcType=VARCHAR}
+ 
+  
+    )
+    </foreach>
+   
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideTuanGuest" >
     update guide_tuan_guest
     <set >

@@ -20,6 +20,7 @@ import com.mlx.guide.constant.EFlag;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.constant.VirtualGoodsType;
 import com.mlx.guide.entity.AdvInfo;
 import com.mlx.guide.entity.VirtualGoods;
 import com.mlx.guide.service.VirtualGoodsService;
@@ -38,6 +39,7 @@ public class VirtualGoodsAdminController {
 		model.addAttribute("product_virtualGoodsclass", Const.MENU_SUB);
 		model.addAttribute("AuditStatus", EAuditStatus.getByteMap());
 		model.addAttribute("Status", EStatus.getMap());
+		model.addAttribute("goodsType", VirtualGoodsType.getMap());
 		
 	}
 	
@@ -50,6 +52,7 @@ public class VirtualGoodsAdminController {
 		model.addAttribute("page", page);
 		model.addAttribute("auditStatus", vGoods.getAuditStatus());
 		model.addAttribute("status", vGoods.getStatus());
+		
 		model.addAttribute("paginator", virtualGoods.getPaginator());
 		model.addAttribute("list",virtualGoods);
 		return "/admin/virtualGoods/list";

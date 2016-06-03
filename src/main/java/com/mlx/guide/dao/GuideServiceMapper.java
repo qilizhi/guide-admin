@@ -31,6 +31,8 @@ public interface GuideServiceMapper {
 
 	Long countByDate(Integer month);
 
-	
 	List<GuideService> getGuideServiceByUserNo(String userNo);
+
+	GuideService getGuideServiceByServiceNo(String serviceNo);
+
 }

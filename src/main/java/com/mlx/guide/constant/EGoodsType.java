@@ -1,5 +1,6 @@
 package com.mlx.guide.constant;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,5 +55,5 @@ public enum EGoodsType {
 		}
 		return map;	
 	}
-	
+
 }

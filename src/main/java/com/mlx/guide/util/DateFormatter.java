@@ -21,8 +21,13 @@ public class DateFormatter implements Formatter<Date> {
 		try {
 			date = format.parse(text);
 		} catch (Exception e) {
-			format = new SimpleDateFormat("yyyy-MM-dd");
-			date = format.parse(text);
+			try {
+				format = new SimpleDateFormat("yyyy-MM-dd");
+				date = format.parse(text);
+			} catch (Exception e1) {
+				format = new SimpleDateFormat("yyyyMMdd");
+				date = format.parse(text);
+			}
 		}
 		return date;
 	}

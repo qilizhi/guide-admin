@@ -29,6 +29,7 @@ import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.EmGroup;
 import com.mlx.guide.entity.UserInfo;
+import com.mlx.guide.service.EasemobClientService;
 import com.mlx.guide.service.EmGroupService;
 import com.mlx.guide.service.UserInfoService;
 import com.mlx.guide.util.EasemobClientUtil;
@@ -43,6 +44,18 @@ import com.mlx.guide.util.EasemobClientUtil;
 @RequestMapping("/admin/group")
 public class EmGroupController {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	private EmGroupService groupService;
+
+	@Autowired
+	private UserInfoService userInfoService;
+
+	@Value("${imagePrefix}")
+	private String aliyunPrefix;
+	@Autowired
+	private EasemobClientService easemobClientService;
+
 	/**
 	 * 是否公开
 	 * 
@@ -54,23 +67,14 @@ public class EmGroupController {
 	}
 
 	/**
-	 *  是否需要验证
+	 * 是否需要验证
+	 * 
 	 * @param isAp
 	 * @return
 	 */
 	public boolean isApproval(Byte isAp) {
 		return isAp.intValue() == 1 ? true : false;
 	}
-
-	Logger logger = LoggerFactory.getLogger(this.getClass());
-	@Autowired
-	private EmGroupService groupService;
-
-	@Autowired
-	private UserInfoService userInfoService;
-
-	@Value("${imagePrefix}")
-	private String aliyunPrefix;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -89,7 +93,7 @@ public class EmGroupController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "create",method=RequestMethod.GET)
+	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String create() {
 		return "admin/group/create";
 
@@ -101,7 +105,7 @@ public class EmGroupController {
 	 * @return
 	 */
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
-	public String edit(Model model,@PathVariable("id")Long id) {
+	public String edit(Model model, @PathVariable("id") Long id) {
 		EmGroup eg = groupService.selectByPrimaryKey(id);
 		model.addAttribute("group", eg);
 		return "admin/group/edit";
@@ -158,20 +162,16 @@ public class EmGroupController {
 	 * @param group
 	 * @return
 	 */
-	@RequestMapping(value="/create",method=RequestMethod.POST)
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResult add(EmGroup group) {
 		int result = -1;
 		try {
 			// 请求环信接口创建群
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("groupname", group.getEmGname());
-			params.put("desc", group.getEmGdesc());
-			params.put("public", isPublic(group.getEmPublic()));
-			params.put("maxusers", group.getEmMaxusers());
-			params.put("approval", isApproval(group.getEmAllowinvites()));
-			params.put("owner", group.getEmGuser());
-			String o = EasemobClientUtil.post("chatgroups", JSON.toJSONString(params));
+
+			String o = easemobClientService.createGroup(group.getEmGname(), group.getEmGdesc(),
+					isPublic(group.getEmPublic()), group.getEmMaxusers(), isApproval(group.getEmAllowinvites()),
+					group.getEmGuser());
 			JSONObject resultMap = JSON.parseObject(o);
 			JSONObject data = resultMap.getJSONObject("data");
 			Long groupId = data.getLong("groupid");
@@ -180,7 +180,7 @@ public class EmGroupController {
 			}
 			group.setEmGid(groupId);
 			group.setCreateTime(new Date());
-			//应是当前登录的用户。 从shiroUser 里获取
+			// 应是当前登录的用户。 从shiroUser 里获取
 			group.setUserNo("qilizhi_linlin");
 			logger.info("环信群创建成功:" + data.toJSONString());
 			result = groupService.insertSelective(group);
@@ -208,13 +208,8 @@ public class EmGroupController {
 			if (group.getEmGid() == null) {
 				return new JsonResult(ExceptionCode.FAIL, "环信群ID为空");
 			}
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("groupname", group.getEmGname());
-			params.put("description", group.getEmGdesc());
-			params.put("maxusers", group.getEmMaxusers());
-			params.put("approval", isApproval(group.getEmAllowinvites()));
-			params.put("owner", group.getEmGuser());
-			String o = EasemobClientUtil.put("chatgroups/" + group.getEmGid(), JSON.toJSONString(params));
+			String o=easemobClientService.editGroup(group.getEmGid(),group.getEmGname(), group.getEmGdesc(),
+					 group.getEmMaxusers(),isApproval(group.getEmAllowinvites()),group.getEmGuser());
 			JSONObject resultMap = JSON.parseObject(o);
 			JSONObject data = resultMap.getJSONObject("data");
 			if (data == null) {
@@ -252,7 +247,7 @@ public class EmGroupController {
 					logger.info("环信群ID为空");
 					return new JsonResult(ExceptionCode.FAIL, "环信群ID为空");
 				}
-				String o = EasemobClientUtil.delete("chatgroups/" + eg.getEmGid());
+				String o = easemobClientService.deleteGroup(eg.getEmGid());
 				JSONObject resultMap = JSON.parseObject(o);
 				JSONObject data = resultMap.getJSONObject("data");
 				boolean isSuccess = data.getBoolean("success");

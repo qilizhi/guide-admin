@@ -34,6 +34,13 @@
 			</div>
 		</div>
 		<div class="form-group form-md-line-input">
+			<label class="col-lg-3 control-label">类别：</label>
+			<div class="col-lg-5">
+				<label class="control-label"><span id="title">${goodsType[item.goodsType]}</span></label>
+			</div>
+		</div>
+		
+		<div class="form-group form-md-line-input">
 			<label class="col-lg-3 control-label">描述：</label>
 			<div class="col-lg-5">
 			<label class="control-label">	<span>${item.description}</span></label>

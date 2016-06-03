@@ -14,7 +14,7 @@ public class PreTuanModel implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String groupNo;
-	private String goodIds;
+	private String goodsId;
 	private String goodsType;
 	private String goodsName;
 	private Integer orderNum;
@@ -28,12 +28,7 @@ public class PreTuanModel implements Serializable{
 		this.orderNum = orderNum;
 	}
 
-	public String getGoodIds() {
-		return goodIds;
-	}
-	public void setGoodIds(String goodIds) {
-		this.goodIds = goodIds;
-	}
+	
 	public String getGroupNo() {
 		return groupNo;
 	}
@@ -64,7 +59,12 @@ public class PreTuanModel implements Serializable{
 	public void setGoodsName(String goodsName) {
 		this.goodsName = goodsName;
 	}
+	public String getGoodsId() {
+		return goodsId;
+	}
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
+	}
 
-	
 	
 }

@@ -32,7 +32,8 @@ public class GuideOrderService {
 	private String orderDetail;
 	@Value("${uri.order.list}")
 	private String orderMemberList;
-	
+	@Value("${uri.order.refundAply}")
+	private String refundApply;
 	//接口主域 
 	@Value("${order_api_host}")
 	private  String ORDER_API_HOST;
@@ -168,6 +169,31 @@ public class GuideOrderService {
 		return result;
 	}
 	
+	/**
+	 *基础调用接口
+	 * @param maps
+	 * @param uri
+	 * @return
+	 */
+	public String apiBaseQuery(Map<String, Object> maps,String  uri){
+		String url=ORDER_API_HOST+uri;
+		
+		TreeMap<String, Object> treeMapParams=new TreeMap<String,Object>();
+		for(String key:maps.keySet()){
+			treeMapParams.put(key, maps.get(key));			
+		}
+		String result=OrderUtil.post(url, treeMapParams);
+		return result;
+	}
+	/**
+	 * 退款申请
+	 * @param maps
+	 * @return
+	 */
+	public String refundApply(Map<String,Object> maps){
+		maps.put("methodType", "orderRefundApply");
+		return apiBaseQuery(maps, refundApply);
+	}
 
 
 }

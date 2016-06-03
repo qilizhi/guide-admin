@@ -169,14 +169,20 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">审核 <span
 										class="required"> * </span></label>
-									<div class="col-md-9">
-										<div class="radio-list">
-											<label class="radio-inline"> <input type="radio"
-												name="auditStatus" value="2" checked> 通过
-											</label> <label class="radio-inline"> <input type="radio"
-												name="auditStatus" value="3"> 不通过
+									<div class="col-md-2">
+										
+											<label class="input-inline"> <input type="radio"
+												name="auditStatus" value="2" checked>
+											</label> 
+											<label class="label-inline">
+											 通过
 											</label>
-										</div>
+											</div>
+												<div class="col-md-2">
+											<label class="input-inline"> <input type="radio"
+												name="auditStatus" value="3">
+											</label>
+											<label class="label-inline"> 不通过</label>
 									</div>
 								</div>
 								<div class="form-group form-md-line-input">
