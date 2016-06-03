@@ -426,10 +426,10 @@
 			small_img_url = #{smallImgUrl},
 			</if>
 			<if test="totalDay != null" >
-			total_day = #{totalDay}
+			total_day = #{totalDay},
 			</if>
 			<if test="recommendInfo != null" >
-			recommend_info = #{recommendInfo}
+			recommend_info = #{recommendInfo},
 			</if>
 			
 		</set>

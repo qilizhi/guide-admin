@@ -9,6 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <style type="text/css">
 .imgUpload {
 	right: 0;
@@ -28,13 +29,10 @@
 .pading {
 	padding: 0;
 }
-
 </style>
 <!-- fancybox -->
 <link href="${ctx}/static/css/fancybox.css" rel="stylesheet" type="text/css" />
 <title>创建线路</title>
-
-
 
 </head>
 
@@ -137,10 +135,26 @@
 									class="required"> * </span>
 								</label>
 								<div class="col-md-4">
-									<input type="text"
-										name="price" data-required="1" class="form-control"
+									<input type="text" name="price" data-required="1" class="form-control"
 										value="${guideLine.price }"/>
 										<input type="hidden" name="oldPrice" value="${guideLine.price }" /><!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3">线路天数<span
+									class="required"> * </span>
+								</label>
+								<div class="col-md-4">
+									<input type="text" name="totalDay" data-required="1" class="form-control" value="${guideLine.totalDay }"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3">推荐理由 <span
+									class="required"> * </span>
+								</label>
+								<div class="col-md-4">
+									<input type="text" name="recommendInfo" data-required="1"
+										class="form-control" value="${guideLine.recommendInfo }"/>
 								</div>
 							</div>
 							<div class="form-group">
@@ -182,8 +196,8 @@
 									<a class="grouped_elements" rel="group" href="${guideLine.imgUrl }">
 									<img id="image" alt="" src="${guideLine.imgUrl }" class="img-thumbnail"/></a><span
 										class="btn green fileinput-button pading"> <i
-										class="fa fa-plus"></i> <span id="load">上传 </span> <input
-										class="imgUpload" type="file" name="files[]" multiple />
+										class="fa fa-plus"></i> <span id="load">上传 </span> 
+										<input class="imgUpload" type="file" name="files"  />
 									</span>
 
 									<div class="col-lg-7" id="supprogress">
@@ -195,12 +209,51 @@
 												<span class="sr-only">40% Complete (success)</span>
 											</div>
 										</div>
-
 									</div>
-
 								</div>
 							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-md-3">小图 <span
+									class="required"> * </span>
+								</label>
+								<div class="col-xs-2">
+									<input type="hidden" name="smallImgUrl" value="${guideLine.smallImgUrl }"/>
+									
+									<a class="grouped_elements" rel="group" href="${guideLine.smallImgUrl }">
+									<img id="image" alt="" src="${guideLine.smallImgUrl }" class="img-thumbnail"/></a><span
+										class="btn green fileinput-button pading"> <i
+										class="fa fa-plus"></i> <span id="load">上传 </span> 
+										<input class="imgUpload" type="file" name="files"  />
+									</span>
 
+									<div class="col-lg-7" id="supprogress">
+										<span id="imageName"></span>
+										<div class="progress">
+											<div class="progress-bar progress-bar-success"
+												role="progressbar" aria-valuenow="40" aria-valuemin="0"
+												aria-valuemax="100">
+												<span class="sr-only">40% Complete (success)</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							
+							
+							<%-- <div class="form-group">
+								<label class="control-label col-md-3">小图 <span
+									class="required"> * </span>
+								</label>
+								<div class="col-xs-2">
+									<label class="control-label">Select File</label>
+									<input  type="hidden" name="smallImgUrl" value="${guideLine.smallImgUrl}">
+									<input id="input-1" type="file" class="file">
+								</div>
+							</div> 
+ --%>
 
 							<div class="form-group">
 								<label class="control-label col-md-3">体验说明 <span
@@ -293,50 +346,63 @@
 		
 	});
 	
-		//上传图片
-		var initImgUpload = function() {
+	
+	
+	//上传图片
+	var initImgUpload = function() {
 
-			$("#supprogress").css('display', "none");
-			$('.imgUpload').on('change',function(e) {
-						var files = this.files;
-						var fullname = $(this).val();
-						$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
-						$("#supprogress").css('display', "block");
-						$("#image").attr("src", "");
+		$("#supprogress").css('display', "none");
+		$('.imgUpload').on('change',function(e) {
+					var files = this.files;
+					var fullname = $(this).val();
+					$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
+					$("#supprogress").css('display', "block");
+					$("#image").attr("src", "");
+					
+				})
+		$('.imgUpload').fileupload({
+
+					dataType : 'json',
+					url : '${ctx}/upload',
+					progressall : function(e, data) {
+						console.log(e);
+						console.log(data);
+						var progress = parseInt(data.loaded / data.total * 100, 10);
 						
-					})
-			$('.imgUpload').fileupload({
-
-						dataType : 'json',
-						url : '${ctx}/upload',
-						progressall : function(e, data) {
-							var progress = parseInt(data.loaded / data.total * 100, 10);
-							var $progressBar=$('#supprogress .progress .progress-bar-success');
-							if(progress==100){
-								$progressBar.css('width',(progress-1) + '%');
-								$progressBar.text((progress-1) + '%');
-							}else{
-								$progressBar.css('width',progress + '%');
-								$progressBar.text(progress + '%');
-							}
-						},
-
-						done : function(e, data) {
-							if (data.result.code == "200") {
-								$("#supprogress").css('display', "none");
-								var imgUrl = data.result.result[0].filePath;
-								//console.log(imgUrl)
-								$("input[name='imgUrl']").val(imgUrl);
-								$("#image").attr("src", imgUrl);
-								$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
-								$("#load").html("重传");
-							} else {
-								$('#supprogress .progress .progress-bar-success').text(data.result.msg);
-							}
-							$('#supprogress .progress .progress-bar-success').text("done");
+						var $progressBar=$(e.target).parent().next().find(".progress-bar-success");
+						//$('#supprogress .progress .progress-bar-success');
+						if(progress==100){
+							$progressBar.css('width',(progress-1) + '%');
+							$progressBar.text((progress-1) + '%');
+						}else{
+							$progressBar.css('width',progress + '%');
+							$progressBar.text(progress + '%');
 						}
-					});
-		}
+					},
+
+					done : function(e, data) {
+						console.log(e);
+						console.log(data);
+						var $supprogress = $(e.target).parent().next();
+						if (data.result.code == "200") {
+							$supprogress.css('display', "none");
+							var imgUrl = data.result.result[0].filePath;
+							//console.log(imgUrl)
+							$supprogress.siblings("input[name='imgUrl']").val(imgUrl);
+							//$("input[name='imgUrl']").val(imgUrl);
+							//$("#image").attr("src", imgUrl);
+							$supprogress.siblings("a").attr("href",imgUrl).find("img").attr("src", imgUrl);
+							//$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
+							$(e.target).prev().html("重传");
+						} else {
+							//$('#supprogress .progress .progress-bar-success').text(data.result.msg);
+							$supprogress.find(".progress-bar-success").text(data.result.msg);
+						}
+						//$('#supprogress .progress .progress-bar-success').text("done");
+					}
+				});
+	}
+	
 
 		
 		
@@ -361,6 +427,15 @@
                        required: true,
                        number:true,
                        maxlength:10
+                   },
+                   totalDay: {
+                	   required: true,
+                	   digits:true,
+                       maxlength:3
+                   },
+                   recommendInfo: {
+                       required: true,
+                       maxlength:255
                    },
                    description: {
                        required: true,
@@ -391,6 +466,15 @@
                        required: "不能为空",
                        number:"请输入合法数字",
                        maxlength:"最多输入10位数"
+                   },
+                   totalDay: {
+                	   required: "不能为空",
+                	   digits:"请输入整数",
+                       maxlength:"最多输入3位数"
+                   },
+                   recommendInfo: {
+                       required: "不能为空",
+                       maxlength:"最多输入255个汉字"
                    },
                    description: {
                        required: "不能为空",

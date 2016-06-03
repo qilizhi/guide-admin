@@ -1,13 +1,13 @@
 package com.mlx.guide.controller.guideadmin;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
@@ -30,15 +28,19 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.EStatus;
+import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
+import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideLineTripService;
+import com.mlx.guide.service.GuideTuanService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 import com.mlx.guide.util.StringUtil;
@@ -62,6 +64,8 @@ public class GuideLineController {
 	private GuideLineDatePriceService guideLineDatePriceService;
 	@Autowired
 	private GuideLineTripService guideLineTripService;
+	@Autowired
+	private GuideTuanService guideTuanService;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -98,9 +102,6 @@ public class GuideLineController {
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("guideLine", guideLine);
-			model.addAttribute("title", guideLine.getTitle());
-			model.addAttribute("lineNo", guideLine.getLineNo());
-			model.addAttribute("pageNo", pageNo);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("EStatus", EStatus.getMap());
 			model.addAttribute("EAuditStatus", EAuditStatus.getMap());
@@ -121,8 +122,7 @@ public class GuideLineController {
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String saveOrUpdate(@RequestParam(value = "file", required = false) MultipartFile file,
-			HttpServletRequest request, Model model, GuideLine guideLine,
+	public String saveOrUpdate(Model model, GuideLine guideLine,
 			@RequestParam(value = "oldPrice") BigDecimal oldPrice) {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
@@ -203,9 +203,29 @@ public class GuideLineController {
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo) {
 		try {
+			// 获取当前用户
+			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+			//先删除旧价格，再保存新价格
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
-			// guideLineDatePriceService.saveGuideLineDatePriceBitch(lsGuideLineDatePrices);
+			//获取当前线路
+			GuideLine line = guideLineService.getGuideLineByLineNo(lineNo);
+			//插入团信息
+			GuideTuan tuan=new GuideTuan();
+			for (GuideLineDatePrice g : lsGuideLineDatePrices) {
+				tuan.setName(line.getTitle());
+				int num=(int)(Math.random()*(9999-1000+1))+1000;
+				tuan.setTuanNo("T"+System.currentTimeMillis()+num);
+				tuan.setTuanDate(g.getLineDate());
+				tuan.setGoodsType(EGoodsType.B.getCode());
+				tuan.setGoodsNo(lineNo);
+				tuan.setCreateTime(new Date());
+				tuan.setFullNum(line.getNum());
+				tuan.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
+				tuan.setUserNo(shiroUser.getUserNo());
+				tuan.setUserName(shiroUser.getName());
+				guideTuanService.insertSelective(tuan);
+			}
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -227,11 +247,10 @@ public class GuideLineController {
 		try {
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
 			model.addAttribute("guideLine", guideLine);
-			return "guideAdmin/line/create";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "guideAdmin/line/create";
 		}
+		return "guideAdmin/line/create";
 	}
 
 	/**
@@ -257,11 +276,10 @@ public class GuideLineController {
 			model.addAttribute("guideLine", guideLine);
 			model.addAttribute("startDate", startDate);
 			model.addAttribute("endDate", endDate);
-			return "guideAdmin/line/price";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "guideAdmin/line/price";
 		}
+		return "guideAdmin/line/price";
 	}
 
 	/**
@@ -281,11 +299,10 @@ public class GuideLineController {
 			model.addAttribute("lineNo", lineNo);
 			model.addAttribute("startDate", startDate);
 			model.addAttribute("endDate", endDate);
-			return "guideAdmin/line/lineTrip";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "guideAdmin/line/lineTrip";
 		}
+		return "guideAdmin/line/lineTrip";
 	}
 
 	/**

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.dao.GuideLineDatePriceMapper;
+import com.mlx.guide.dao.GuideTuanMapper;
 import com.mlx.guide.entity.GuideLineDatePrice;
 
 @Service
@@ -19,6 +20,8 @@ public class GuideLineDatePriceService {
 
 	@Autowired
 	private GuideLineDatePriceMapper guideLineDatePriceMapper;
+	@Autowired
+	private GuideTuanMapper guideTuanMapper;
 
 	public List<GuideLineDatePrice> getGuideLineDatePriceList() {
 		return guideLineDatePriceMapper.getGuideLineDatePriceList();
@@ -117,6 +120,7 @@ public class GuideLineDatePriceService {
 	public void saveGuideLineDatePriceByLineNo(List<GuideLineDatePrice> guideLineDatePriceList,String lineNo){
 		//delete 
 		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
+		guideTuanMapper.deleteGuideTuanByLineNo(lineNo);
 		//save
 		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
 			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);

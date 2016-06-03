@@ -193,7 +193,6 @@
 											<th scope="col">线路编号</th>
 											<th scope="col">成人价</th>
 											<th scope="col">儿童价</th>
-											<th scope="col">美丽价</th>
 											<th scope="col">房差</th>
 											<th scope="col">保险价</th>
 											<th scope="col">签证费</th>
@@ -208,7 +207,6 @@
 												<td>${item.lineNo}</td>
 												<td>${item.adultPrice}</td>
 												<td>${item.childPrice}</td>
-												<td>${item.mlxPrice}</td>
 												<td>${item.roomDiffPrice}</td>
 												<td>${item.safePrice}</td>
 												<td>${item.visaPrice}</td>

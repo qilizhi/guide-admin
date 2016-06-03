@@ -59,4 +59,8 @@ public class GuideTuanService {
 		return guideTuanMapper.countByDate(month);
 	}
 	
+	public void deleteGuideTuanByLineNo(String goodsNo){
+		guideTuanMapper.deleteGuideTuanByLineNo(goodsNo);
+	}
+	
 }
