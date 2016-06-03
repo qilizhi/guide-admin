@@ -27,5 +27,7 @@ public interface GuideTuanMapper {
 	PageList<GuideTuan> getGuideTuanPageList(GuideTuan guideTuan, PageBounds pageBounds);
 
 	long countByDate(Integer month);
+	
+	void deleteGuideTuanByLineNo(String goodsNo);
 
 }

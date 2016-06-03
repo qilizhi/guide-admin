@@ -73,7 +73,7 @@
         	   if(jsonDict[s.json[i].lineDate]==null){//默认解析方式
         		   jsonDict[s.json[i].lineDate] = {
         				"dayNo": s.json[i].lineDate,
-        				"minPrice": s.json[i].mlxPrice,
+        				"minPrice": s.json[i].adultPrice==null?"":s.json[i].adultPrice,//s.json[i].mlxPrice, 日历显示成人价
         				"cPrice":s.json[i].adultPrice==null?"":s.json[i].adultPrice ,
         				"ePrice":s.json[i].childPrice==null?"":s.json[i].childPrice,
         				"id":s.json[i].id==null?"0":s.json[i].id,

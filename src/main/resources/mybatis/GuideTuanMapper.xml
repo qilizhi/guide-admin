@@ -96,6 +96,13 @@ select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
     delete from guide_tuan
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+    <delete id="deleteGuideTuanByLineNo" parameterType="java.lang.String" >
+    delete from guide_tuan
+    where goods_no = #{goodsNo,jdbcType=VARCHAR}
+  </delete>
+  
+  
   <insert id="insert" parameterType="com.mlx.guide.entity.GuideTuan" >
     insert into guide_tuan (id, name, tuan_no, 
       tuan_date, goods_type, goods_no, 
