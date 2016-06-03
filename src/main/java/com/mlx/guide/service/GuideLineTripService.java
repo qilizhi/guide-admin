@@ -1,5 +1,6 @@
 package com.mlx.guide.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class GuideLineTripService {
 	public void updateBitchSelective(List<GuideLineTrip> ls) {
 		for (GuideLineTrip guideLineTrip : ls) {
 			if(guideLineTrip.getId() != null && guideLineTrip.getId() > 0){
+				guideLineTrip.setUpdateTime(new Date());
 				guideLineTripMapper.updateByPrimaryKeySelective(guideLineTrip);
 			}else{
 				guideLineTripMapper.insertSelective(guideLineTrip);
@@ -60,4 +62,7 @@ public class GuideLineTripService {
 		}
 	}
 
+	public void deleteGuideLineTripByLineNo(String lineNo){
+		guideLineTripMapper.deleteGuideLineTripByLineNo(lineNo);
+	}
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.miemiedev.mybatis.paginator.domain.Order;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
@@ -73,10 +75,10 @@ public class GuideLineTripController {
 		try {
 			// 获取当前用户
 			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-			
+			PageBounds pageBounds = new PageBounds(1, 20, Order.formString("day.asc"));
 			guideLineTrip.setLineNo(lineNo);
 			guideLineTrip.setFlag(EFlag.VALID.getId().byteValue());
-			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
+			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
 			model.addAttribute("startDate", startDate);
@@ -99,8 +101,9 @@ public class GuideLineTripController {
 	@RequestMapping(value = "edit/{lineNo}")
 	public String edit(@PathVariable String lineNo, GuideLineTrip guideLineTrip, Model model) {
 		try {
-			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
-			model.addAttribute("list", list);
+			PageBounds pageBounds = new PageBounds(1, 20, Order.formString("day.asc"));
+			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
+			model.addAttribute("list", trips);
 			model.addAttribute("lineNo", lineNo);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -131,12 +134,13 @@ public class GuideLineTripController {
 			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
 					.getGuideLineDatePriceByLineNo(lineNo);
 			model.addAttribute("lsPrices", lsGuideLineDatePrices);
-			// 新增或更新行程
+			// 更新行程
 			guideLineTripService.updateBitchSelective(guideLineTripModel.getGuideLineTrips());
 			// 行程
 			GuideLineTrip guideLineTrip = new GuideLineTrip();
 			guideLineTrip.setLineNo(lineNo);
-			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
+			PageBounds pageBounds = new PageBounds(1, 20, Order.formString("day.asc"));
+			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
 			model.addAttribute("trips", trips);
 			model.addAttribute("startDate", startDate);
 			model.addAttribute("endDate", endDate);

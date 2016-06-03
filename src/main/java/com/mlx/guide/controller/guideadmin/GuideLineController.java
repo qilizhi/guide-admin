@@ -201,21 +201,21 @@ public class GuideLineController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
-	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo) {
+	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,Model model) {
 		try {
 			// 获取当前用户
 			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-			//先删除旧价格，再保存新价格
+			// 先删除旧价格、行程，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
-			//获取当前线路
+			// 获取当前线路
 			GuideLine line = guideLineService.getGuideLineByLineNo(lineNo);
-			//插入团信息
-			GuideTuan tuan=new GuideTuan();
+			GuideTuan tuan = new GuideTuan();
+			// 插入团信息
 			for (GuideLineDatePrice g : lsGuideLineDatePrices) {
 				tuan.setName(line.getTitle());
-				int num=(int)(Math.random()*(9999-1000+1))+1000;
-				tuan.setTuanNo("T"+System.currentTimeMillis()+num);
+				int num = (int) (Math.random() * (9999 - 1000 + 1)) + 1000;
+				tuan.setTuanNo("T" + System.currentTimeMillis() + num);
 				tuan.setTuanDate(g.getLineDate());
 				tuan.setGoodsType(EGoodsType.B.getCode());
 				tuan.setGoodsNo(lineNo);
@@ -263,11 +263,12 @@ public class GuideLineController {
 	 */
 	@RequestMapping(value = "backToPrice/{lineNo}")
 	public String backToPrice(@PathVariable String lineNo, GuideLineDatePrice guideLineDatePrice,
-			@RequestParam String startDate, @RequestParam String endDate, Model model) {
+			@RequestParam String startDate, @RequestParam String endDate, GuideLineTrip guideLineTrip, Model model) {
 		try {
 
 			// 根据线路no获取对应的线路
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
+
 			// 根据线路no获取对应的价格表
 			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
 					.getGuideLineDatePriceByLineNo(lineNo);
