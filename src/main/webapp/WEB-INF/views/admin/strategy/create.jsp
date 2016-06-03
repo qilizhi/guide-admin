@@ -182,7 +182,7 @@
 					<div class="col-lg-5">
 						<input type="hidden" name="userName"
 							value="${guideStrategy.userName}" /> <select
-							class="selectpicker" name="userNo" title="根据名字及导游证号搜索" data-live-search="true"
+							class="selectpicker form-control" name="userNo" title="根据名字及导游证号搜索" data-live-search="true"
 							data-value="${guideStrategy.userNo}">
 							<option value="">请选择</option>
 						</select>
