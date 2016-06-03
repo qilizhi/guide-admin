@@ -45,7 +45,7 @@
 
 </head>
 <body>
-		<div class="portlet light portlet-fit portlet-form ">
+	<div class="portlet light portlet-fit portlet-form ">
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="icon-settings font-dark"></i> <span
@@ -54,109 +54,168 @@
 
 		</div>
 		<div class="portlet-body">
-	<form  id="inputForm" action="${ctx}/admin/guideStrategy/saveOrUpdate" method="post"
-		 class="form-horizontal mlx-form">
-		<input type="hidden" id="id" name="id" value="${guideStrategy.id}" />
-		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">标题：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control" name="title" id="title"
-					value="${guideStrategy.title}" placeholder="这里输入标题" />
-				<div class="form-control-focus"></div>
-			</div>
-		</div>
-		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">描述：</label>
-			<div class="col-lg-5">
-				<textarea class="form-control" name="description" id="description"
-					rows="3" placeholder="这里添加描述">${guideStrategy.description}</textarea>
-				<label for="form_control_1"></label>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">背景图片：</label>
-
-			<div class="col-lg-5">
-				<div class="col-lg-7" id="supprogress">
-					<input type="hidden" name="imgUrl" value="${guideStrategy.imgUrl }"/> <span id="imageName"></span>
-					<div class="progress">
-						<div class="progress-bar progress-bar-success" role="progressbar"
-							aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-							<span class="sr-only">40% Complete (success)</span>
-						</div>
+			<form id="inputForm" action="${ctx}/admin/guideStrategy/saveOrUpdate"
+				method="post" class="form-horizontal mlx-form">
+				<input type="hidden" id="id" name="id" value="${guideStrategy.id}" />
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">标题：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" name="title" id="title"
+							value="${guideStrategy.title}" placeholder="这里输入标题" />
+						<div class="form-control-focus"></div>
 					</div>
 				</div>
-				<div class="col-lg-2">
-					<img id="image" name="imgUrl" alt="" src="${guideStrategy.imgUrl }"> <span
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">描述：</label>
+					<div class="col-lg-5">
+						<textarea class="form-control" name="description" id="description"
+							rows="3" placeholder="这里添加描述">${guideStrategy.description}</textarea>
+						<label for="form_control_1"></label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">背景图片：</label>
+					<div class="col-lg-5">
+						<div id="imgUrl">
+							<div id="supprogress">
+								<input type="hidden" name="imgUrl"
+									value="${guideStrategy.imgUrl }" /> <span class="imageName"></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success"
+										role="progressbar" aria-valuenow="40" aria-valuemin="0"
+										aria-valuemax="100">
+										<span class="sr-only">40% Complete (success)</span>
+									</div>
+								</div>
+							</div>
+							<div class="list">
+								<img class="img-list" name="imgUrl" alt=""
+									src="${guideStrategy.imgUrl }">
+							</div>
+							<span class="btn green fileinput-button pading list"> <i
+								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
+								class="imgUpload" type="file" name="files[]" multiple>
+							</span>
+						</div>
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">头像图片：</label>
+					<div class="col-lg-5">
+						<div id="smallImgUrl">
+							<div id="supprogress">
+								<input type="hidden" name="smallImgUrl"
+									value="${guideStrategy.smallImgUrl }" /> <span class="imageName"></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success"
+										role="progressbar" aria-valuenow="40" aria-valuemin="0"
+										aria-valuemax="100">
+										<span class="sr-only">40% Complete (success)</span>
+									</div>
+								</div>
+							</div>
+							<div class="list">
+								<img class="img-list" alt=""
+									src="${guideStrategy.smallImgUrl }">
+							</div>
+							<span class="btn green fileinput-button pading list"> <i
+								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
+								class="imgUpload" type="file" name="files[]" multiple>
+							</span>
+						</div>
+
+					</div>
+				</div>
+				<%-- 		<div class="form-group">
+			<label class="col-lg-3 control-label">头像小图片：</label>
+
+			<div class="col-lg-5">
+				<div class="col-lg-7">
+							<div id="supprogress">
+								<input type="hidden" name="smallImgUrl"
+									value="${guideStrategy.smallImgUrl }" /> <span id="imageName"></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success"
+										role="progressbar" aria-valuenow="40" aria-valuemin="0"
+										aria-valuemax="100">
+										<span class="sr-only">40% Complete (success)</span>
+									</div>
+								</div>
+							</div>
+
+							<img id="image" name="imgUrl" alt="" src="${guideStrategy.smallImgUrl }"> <span
 						class="btn green fileinput-button pading"> <i
 						class="fa fa-plus"></i> <span id="load">上传 </span> <input
 						class="imgUpload" type="file" name="files[]" multiple>
 					</span>
 				</div>
 			</div>
-		</div>
-		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">推荐理由：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control " name="recommendInfo"
-					id="recommendInfo" value="${guideStrategy.recommendInfo}" />
-				<div class="form-control-focus"></div>
-			</div>
-		</div>
-		<div class="form-group">
+		</div> --%>
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">推荐理由：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="recommendInfo"
+							id="recommendInfo" value="${guideStrategy.recommendInfo}" />
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				<%-- 	<div class="form-group">
 			<label class="col-lg-3 control-label">关联的线路：</label>
 			<div class="col-lg-5">
-				<%-- <input type="text" class="form-control " name="relatLineNo"
-					id="relatLineNo" value="${guideStrategy.relatLineNo}" /> --%>
+				<input type="text" class="form-control " name="relatLineNo"
+					id="relatLineNo" value="${guideStrategy.relatLineNo}" />
 					<select class="selectpicker" name="relatLineNo" data-live-search="true" data-value="${guideStrategy.relatLineNo}">
 					<option value="">请选择</option>
 				</select>
 			</div>
-		</div>
-		<%-- 	<div class="form-group">
+		</div> --%>
+				<%-- 	<div class="form-group">
 			<label class="col-lg-3 control-label">用户编号：</label>
 			<div class="col-lg-5">
 				<input type="text" class="form-control " name="userNo" id="userNo"
 					value="${guideStrategy.userNo}" />
 			</div>
 		</div> --%>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">用户名称：</label>
-			<div class="col-lg-5">
-					<input type="hidden" name="userName" value="${guideStrategy.userName}" /> 
-				<select class="selectpicker" name="userNo" data-live-search="true" data-value="${guideStrategy.userNo}">
-				<option value="" >请选择</option>
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">攻略内容文本：</label>
-			<div class="col-lg-5">
-				<%-- 	<input type="text" class="form-control " name="content" id="content"
+				<div class="form-group">
+					<label class="col-lg-3 control-label">选择导游：</label>
+					<div class="col-lg-5">
+						<input type="hidden" name="userName"
+							value="${guideStrategy.userName}" /> <select
+							class="selectpicker" name="userNo" title="根据名字及导游证号搜索" data-live-search="true"
+							data-value="${guideStrategy.userNo}">
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">攻略内容文本：</label>
+					<div class="col-lg-5">
+						<%-- 	<input type="text" class="form-control " name="content" id="content"
 					value="${guideStrategy.content}" /> --%>
-				<script id="editor" type="text/plain" name="content"
-					style="width:600px;height:500px;">${guideStrategy.content}</script>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-lg-3 control-label">排序号：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control" name="sort" id="sort"
-					value="${guideStrategy.sort}" />
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-lg-9 col-lg-offset-3">
-				<button id="submit_btn" type="submit" data-loading-text="提交中..."
-					autocomplete="off" class="btn btn-primary" >提交</button>  <input
-					id="cancel_btn" class="btn btn-primary " type="button" value="返回"
-					onclick="history.back()" />
-			</div>
+						<script id="editor" type="text/plain" name="content"
+							style="width: 600px; height: 500px;">${guideStrategy.content}</script>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label">排序号：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" name="sort" id="sort"
+							value="${guideStrategy.sort}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-9 col-lg-offset-3">
+						<button id="submit_btn" type="submit" data-loading-text="提交中..."
+							autocomplete="off" class="btn btn-primary">提交</button>
+						<input id="cancel_btn" class="btn btn-primary " type="button"
+							value="返回" onclick="history.back()" />
+					</div>
 
-		</div>
+				</div>
 
-	</form>
-	</div>
+			</form>
+		</div>
 	</div>
 	<script type="text/javascript" charset="utf-8"
 		src="${ctx }/static/assets/global/plugins/UEeditor/ueditor.config.js"></script>
@@ -180,79 +239,86 @@
 	<script type="text/javascript">
 		$(function() {
 			//加载用户数据并放到页面上去
-			initImgUpload();
+			initImgUpload("#imgUrl");
+			initImgUpload("#smallImgUrl");
 			initUEeditor();
-			initLineSelect("relatLineNo");
+			//initLineSelect("relatLineNo");
 			initGuideSelect("userNo");
 			handleValidation3();
 		})
 		/**下拉框的初始化**/
 		var initGuideSelect = function(selectName) {
-			var $selectObject=$("select[name='"+selectName+"']");
+			var $selectObject = $("select[name='" + selectName + "']");
 			//导游 用户数据
 			$.ajax({
-				url:mlx.ctx+"/admin/guideStrategy/guide/list",
-				type:"get",
-				dataType:"json",
-				success:function(data){
-					var options="";
-					if(data.code=="200"){
-					var users=data.result;
-					//console.log(users);
-					$.each(users,function(index,obj){
-						options+="<option value='"+obj.userNo+"'>"+obj.realName+"</option>";
-					});
+				url : mlx.ctx + "/admin/guideStrategy/guide/list",
+				type : "get",
+				dataType : "json",
+				success : function(data) {
+					var options = "";
+					if (data.code == "200") {
+						var users = data.result;
+						console.log(users);
+						$.each(users, function(index, obj) {
+							options += "<option value='"+obj.userNo+"'>"
+									+ obj.realName +" "+obj.guideCardNo+ "</option>";
+						});
 					}
-					
-				
+
 					//$selectObject.empty();
 					$selectObject.append(options);
-				//	$('.selectpicker').selectpicker('render');
+					//	$('.selectpicker').selectpicker('render');
 					$selectObject.selectpicker('refresh');
 					//加载初始化值 
-					$selectObject.selectpicker('val',$selectObject.attr("data-value"))
-					$selectObject.on("changed.bs.select",function(e){
-						var userName=$(e.currentTarget).find('option:selected').text();
+					$selectObject.selectpicker('val', $selectObject
+							.attr("data-value"))
+					$selectObject.on("changed.bs.select", function(e) {
+						var userName = $(e.currentTarget).find(
+								'option:selected').text();
 						$("input[name='userName']").val(userName);
 					})
 					//console.log(options);
-				},error:function(e){
+				},
+				error : function(e) {
 					//console.log(e);
 					comm.errorMsg("请求出错！");
 				}
-				
-			});}
-			var initLineSelect = function(selectName) {
+
+			});
+		}
+	/* 	var initLineSelect = function(selectName) {
 			//线路数据
-			var $selectObject= 	$("select[name='"+selectName+"']");
+			var $selectObject = $("select[name='" + selectName + "']");
 			$.ajax({
-				url:mlx.ctx+"/admin/guideLine/listAll",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					var options="";
-					if(data.code=="200"){
-					var users=data.result;
-					//console.log(users);
-					$.each(users,function(index,obj){
-						options+="<option value='"+obj.lineNo+"'>"+obj.title+"</option>";
-					});
+				url : mlx.ctx + "/admin/guideLine/listAll",
+				type : "post",
+				dataType : "json",
+				success : function(data) {
+					var options = "";
+					if (data.code == "200") {
+						var users = data.result;
+						//console.log(users);
+						$.each(users, function(index, obj) {
+							options += "<option value='"+obj.lineNo+"'>"
+									+ obj.title + "</option>";
+						});
 					}
 					//$selectObject.empty();
 					$selectObject.append(options);
 					$selectObject.selectpicker('refresh');
-					$selectObject.selectpicker('val',$selectObject.attr("data-value"))
+					$selectObject.selectpicker('val', $selectObject
+							.attr("data-value"))
 					//console.log(options);
-				},error:function(e){
+				},
+				error : function(e) {
 					//console.log(e);
 					comm.errorMsg("请求出错！");
 				}
-				
-			});
-			
-			
-		}
 
+			});
+
+		}
+ */
 		/** UEeditor 的初始化**/
 		var initUEeditor = function() {
 			window.UEDITOR_HOME_URL = "${ctx}";
@@ -260,66 +326,68 @@
 		}
 
 		/** 图片上传的控件 **/
-		var initImgUpload = function() {
+		var initImgUpload = function(obj) {
 			//图上传
-			$("#supprogress").css('display', "none");
-			$('.imgUpload').on(
-					'change',
-					function(e) {
-						var files = this.files;
-						var fullname = $(this).val();
-						$("#imageName")
-								.html(
-										fullname.substring(fullname
-												.lastIndexOf("\\") + 1));
-						$("#supprogress").css('display', "block");
-						$("#image").attr("src", "");
-						$("input[name='imgUrl']").val("");
-					})
-			$('.imgUpload').fileupload(
-					{
+			var $supprogress = $(obj + " #supprogress");
+			var $dispalyName = $(obj + " #supprogress>span");
+			var $hiddenName = $(obj + " #supprogress>input");
+			var $imgSrc = $(obj + " .list img");
+			var $barsuccess = $(obj + ' .progress .progress-bar-success');
+			var $imgUpload = $(obj + ' .imgUpload');
+			var $loadName = $(obj + ' #load');
+			//console.log($hiddenName)
+			//console.log($dispalyName)
+			//console.log($supprogress);
+			$supprogress.css('display', "none");
+			$imgUpload.on('change', function(e) {
+				var files = this.files;
+				var fullname = $(this).val();
+				$dispalyName.html(fullname
+						.substring(fullname.lastIndexOf("\\") + 1));
+				$supprogress.css('display', "block");
+				$imgSrc.attr("src", "");
+				$hiddenName.val("");
+			})
+			$imgUpload
+					.fileupload({
 
 						dataType : 'json',
 						url : '${ctx}/upload',
 						progressall : function(e, data) {
 							var progress = parseInt(data.loaded / data.total
 									* 100, 10);
-							$('.progress .progress-bar-success').css('width',
-									progress + '%');
-							$('.progress .progress-bar-success').text(
-									progress + '%');
+							$barsuccess.css('width', progress + '%');
+							$barsuccess.text(progress + '%');
 							//console.log(data);
 						},
 
 						done : function(e, data) {
 							if (data.result.code == "200") {
-								$("#supprogress").css('display', "none");
-								$("#image").attr("src",
+								$supprogress.css('display', "none");
+								//$("#image").attr("src",	data.result.result[0].filePath);
+								$imgSrc.attr("src",
 										data.result.result[0].filePath);
-								$("input[name='imgUrl']").val(
-										data.result.result[0].filePath);
-								$("#load").html("重传");
+								$hiddenName.val(data.result.result[0].filePath);
+								$loadName.html("重传");
 							} else {
-								$('.progress .progress-bar-success').text(
-										data.result.msg);
+								$supprogress.text(data.result.msg);
 							}
 							//console.log(data);
-							$('.progress .progress-bar-success').text("done");
+							//$supprogress.text("done");
 						}
 					});
 		}
-		
-	//表单校验。
-	
-	
+
+		//表单校验。
+
 		var handleValidation3 = function() {
 			var form3 = $('#inputForm');
 			var error3 = $('.alert-danger', form3);
 			var success3 = $('.alert-success', form3);
-            form3.submit(function(e){            	
-            	e.preventDefault();
-            });
-            
+			form3.submit(function(e) {
+				e.preventDefault();
+			});
+
 			form3.validate({
 				errorElement : 'span', //default input error message container
 				errorClass : 'help-block help-block-error', // default input error message class
@@ -329,7 +397,7 @@
 					title : {
 						required : true
 					},
-			
+
 					imgUrl : {
 						required : true
 					},
@@ -359,7 +427,7 @@
 					title : {
 						required : "不能为空",
 					},
-				
+
 					imgUrl : {
 						required : "不能为空",
 					},
@@ -439,8 +507,6 @@
 			});
 
 		};
-	
-		
 	</script>
 </body>
 </html>

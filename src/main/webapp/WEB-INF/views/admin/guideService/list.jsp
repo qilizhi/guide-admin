@@ -97,6 +97,7 @@
 									<th scope="col">编号</th>
 									<th scope="col">标题</th>
 									<th scope="col">背景图</th>
+									<th scope="col">头像图</th>
 									<th scope="col">服务者No</th>
 									<th scope="col">价格</th>
 									<th scope="col">状态</th>
@@ -113,6 +114,8 @@
 										<td>${item.serviceNo}</td>
 										<td>${item.title}</td>
 										<td><img src="${item.imgUrl}" title="${item.title}"
+											height="60px" width="60px" /></td>
+										<td><img src="${item.smallImgUrl}" title="${item.title}"
 											height="50px" width="50px" /></td>
 										<td>${item.userNo}</td>
 										<td>${item.price}</td>
@@ -292,9 +295,14 @@
 					"orderable" : true
 				}, {
 					"orderable" : true
-				}, null, {
+				}, null, 
+				{
 					"orderable" : false
-				}, null, null, null, {
+				},
+				{
+					"orderable" : false
+				},
+				null, null, null, {
 					"orderable" : true
 				}, {
 					"orderable" : true

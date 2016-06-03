@@ -100,6 +100,7 @@
 									<th scope="col">作者</th>
 									<th scope="col">标题</th>
 									<th scope="col">图片</th>
+									<th scope="col">详情头像图</th>
 									<th scope="col">排序号</th>
 									<th scope="col">创建时间</th>
 									<th scope="col">状态</th>
@@ -117,6 +118,8 @@
 										<td>${item.userName}</td>
 										<td>${item.title}</td>
 										<td><img src="${item.imgUrl}" title="${item.title}"
+											height="50px" width="50px" /></td>
+										<td><img src="${item.smallImgUrl}" title="${item.title}"
 											height="50px" width="50px" /></td>
 										<td
 											data-href="${ctx}/admin/guideStrategy/updateSort/${item.id}">${item.sort}</td>
@@ -303,9 +306,14 @@
 					"orderable" : true
 				}, {
 					"orderable" : true
-				}, null, {
+				}, null, 
+				{
 					"orderable" : false
-				}, null, null, null, null, {
+				},
+				{
+					"orderable" : false
+				},
+				null, null, null, null, {
 					"orderable" : false
 				} ]
 

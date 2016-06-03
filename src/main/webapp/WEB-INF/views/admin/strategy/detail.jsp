@@ -112,7 +112,8 @@
 					<label class="col-lg-2 control-label"></label>
 					<div class="col-lg-8">
 
-						<div class="portlet light bordered">
+						<!-- <div class="portlet light bordered"> -->
+						<div class="portlet box yellow">
 							<div class="portlet-title">
 								<div class="caption font-red-intense">
 									<i class="icon-speech font-red-intense"></i> <span
@@ -120,8 +121,7 @@
 										class="caption-helper"></span>
 								</div>
 								<div class="tools">
-									<a href="" class="expand" title="展开/关闭">
-									</a>
+									<a href="" class="expand" title="展开/关闭"> </a>
 									<!--  <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a> -->
 									<!--  <a href="" class="reload" data-original-title="" title=""> </a>
                                         <a href="" class="fullscreen" data-original-title="" title=""> </a>
@@ -130,12 +130,24 @@
 							</div>
 							<div class="portlet-body" style="display: none;">
 								<div id="context2" data-toggle="context"
-									data-target="#context-menu">
-									${item.content}
-								</div>
+									data-target="#context-menu">${item.content}</div>
 
 							</div>
-														
+						<!-- 	<div class="portlet-title">
+								<div class="caption font-red-intense">
+									<i class="icon-speech font-red-intense"></i> <span
+										class="caption-subject bold uppercase">内容</span> <span
+										class="caption-helper"></span>
+								</div>
+								<div class="tools">
+									<a href="" class="close" title="展开/关闭"> </a>
+									 <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+									 <a href="" class="reload" data-original-title="" title=""> </a>
+                                        <a href="" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="" class="remove" data-original-title="" title=""> </a>
+								</div>
+							</div>
+ -->
 						</div>
 					</div>
 

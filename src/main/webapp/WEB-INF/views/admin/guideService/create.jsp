@@ -73,7 +73,7 @@
 						<label for="form_control_1"></label>
 					</div>
 				</div>
-				<div class="form-group">
+<%-- 				<div class="form-group">
 					<label class="col-lg-3 control-label">背景图片：</label>
 
 					<div class="col-lg-5">
@@ -96,6 +96,60 @@
 								class="imgUpload" type="file" name="files[]" multiple>
 							</span>
 						</div>
+					</div>
+				</div> --%>
+								<div class="form-group">
+					<label class="col-lg-3 control-label">背景图片：</label>
+					<div class="col-lg-5">
+						<div id="imgUrl">
+							<div id="supprogress">
+								<input type="hidden" name="imgUrl"
+									value="${guideS.imgUrl }" /> <span class="imageName"></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success"
+										role="progressbar" aria-valuenow="40" aria-valuemin="0"
+										aria-valuemax="100">
+										<span class="sr-only">40% Complete (success)</span>
+									</div>
+								</div>
+							</div>
+							<div class="list">
+								<img class="img-list" alt=""
+									src="${guideS.imgUrl }">
+							</div>
+							<span class="btn green fileinput-button pading list"> <i
+								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
+								class="imgUpload" type="file" name="files[]" multiple>
+							</span>
+						</div>
+
+					</div>
+				</div>
+								<div class="form-group">
+					<label class="col-lg-3 control-label">头像图片：</label>
+					<div class="col-lg-5">
+						<div id="smallImgUrl">
+							<div id="supprogress">
+								<input type="hidden" name="smallImgUrl"
+									value="${guideStrategy.imgUrl }" /> <span class="imageName"></span>
+								<div class="progress">
+									<div class="progress-bar progress-bar-success"
+										role="progressbar" aria-valuenow="40" aria-valuemin="0"
+										aria-valuemax="100">
+										<span class="sr-only">40% Complete (success)</span>
+									</div>
+								</div>
+							</div>
+							<div class="list">
+								<img class="img-list" alt=""
+									src="${guideStrategy.imgUrl }">
+							</div>
+							<span class="btn green fileinput-button pading list"> <i
+								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
+								class="imgUpload" type="file" name="files[]" multiple>
+							</span>
+						</div>
+
 					</div>
 				</div>
 			
@@ -137,7 +191,7 @@
 					<label class="col-lg-3 control-label">选择导游：</label>
 					<div class="col-lg-5">
 						<input type="hidden" name="userName"
-							value="${guideS.userName}" /> <select
+							value="${guideS.userName}" /> <select title="根据名字及导游证号搜索" 
 							class="selectpicker" name="userNo" data-live-search="true"
 							data-value="${guideS.userNo}">
 							<option value="">请选择</option>
@@ -145,20 +199,22 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-3 control-label">攻略内容文本：</label>
+					<label class="col-lg-3 control-label">内容文本：</label>
 					<div class="col-lg-5">
 						<%-- 	<input type="text" class="form-control " name="content" id="content"
 					value="${guideS.content}" /> --%>
-						<script id="editor" type="text/plain" name="content"
+						<script id="content" type="text/plain" name="content"
 							style="width: 600px; height: 500px;">${guideS.content}</script>
 					</div>
 				</div>
 					<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">备注：</label>
+					<label class="col-lg-3 control-label">体验说明：</label>
 					<div class="col-lg-5">
-						<input type="text" class="form-control " name="remark"
+					<script id="remark" type="text/plain" name="remark"
+							style="width: 600px; height: 500px;">${guideS.remark}</script>
+						<%-- <input type="text" class="form-control " name="remark"
 							id="recommendInfo" value="${guideS.remark}" />
-						<div class="form-control-focus"></div>
+						<div class="form-control-focus"></div> --%>
 					</div>
 				</div>
 				<div class="form-group">
@@ -203,7 +259,8 @@
 	<script type="text/javascript">
 		$(function() {
 			//加载用户数据并放到页面上去
-			initImgUpload();
+			initImgUpload("#imgUrl");
+			initImgUpload("#smallImgUrl");
 			initUEeditor();
 			//initLineSelect("relatLineNo");
 			initGuideSelect("userNo");
@@ -224,7 +281,7 @@
 						//console.log(users);
 						$.each(users, function(index, obj) {
 							options += "<option value='"+obj.userNo+"'>"
-									+ obj.realName + "</option>";
+									+ obj.realName +" "+obj.guideCardNo+"</option>";
 						});
 					}
 
@@ -285,11 +342,66 @@
 		/** UEeditor 的初始化**/
 		var initUEeditor = function() {
 			window.UEDITOR_HOME_URL = "${ctx}";
-			UE.getEditor('editor');
+			UE.getEditor('content');
+			UE.getEditor('remark');
 		}
 
+		
 		/** 图片上传的控件 **/
-		var initImgUpload = function() {
+		var initImgUpload = function(obj) {
+			//图上传
+			var $supprogress = $(obj + " #supprogress");
+			var $dispalyName = $(obj + " #supprogress>span");
+			var $hiddenName = $(obj + " #supprogress>input");
+			var $imgSrc = $(obj + " .list img");
+			var $barsuccess = $(obj + ' .progress .progress-bar-success');
+			var $imgUpload = $(obj + ' .imgUpload');
+			var $loadName = $(obj + ' #load');
+			//console.log($hiddenName)
+			//console.log($dispalyName)
+			//console.log($supprogress);
+			$supprogress.css('display', "none");
+			$imgUpload.on('change', function(e) {
+				var files = this.files;
+				var fullname = $(this).val();
+				$dispalyName.html(fullname
+						.substring(fullname.lastIndexOf("\\") + 1));
+				$supprogress.css('display', "block");
+				$imgSrc.attr("src", "");
+				$hiddenName.val("");
+			})
+			$imgUpload
+					.fileupload({
+
+						dataType : 'json',
+						url : '${ctx}/upload',
+						progressall : function(e, data) {
+							var progress = parseInt(data.loaded / data.total
+									* 100, 10);
+							$barsuccess.css('width', progress + '%');
+							$barsuccess.text(progress + '%');
+							//console.log(data);
+						},
+
+						done : function(e, data) {
+							if (data.result.code == "200") {
+								$supprogress.css('display', "none");
+								//$("#image").attr("src",	data.result.result[0].filePath);
+								$imgSrc.attr("src",
+										data.result.result[0].filePath);
+								$hiddenName.val(data.result.result[0].filePath);
+								$loadName.html("重传");
+							} else {
+								$supprogress.text(data.result.msg);
+							}
+							//console.log(data);
+							//$supprogress.text("done");
+						}
+					});
+		}
+
+	 	/** 图片上传的控件 **/
+	/*	var initImgUpload = function() {
 			//图上传
 			$("#supprogress").css('display', "none");
 			$('.imgUpload').on(
@@ -337,7 +449,7 @@
 						}
 					});
 		}
-
+ */
 		//表单校验。
 
 		var handleValidation3 = function() {
@@ -359,6 +471,9 @@
 					},
 
 					imgUrl : {
+						required : true
+					},
+					smallImgUrl : {
 						required : true
 					},
 					description : {
@@ -399,6 +514,9 @@
 					},
 
 					imgUrl : {
+						required : "不能为空",
+					},
+					smallImgUrl : {
 						required : "不能为空",
 					},
 					description : {
@@ -476,8 +594,13 @@
 				submitHandler : function(form) {
 					error3.hide();
 					//验证UE编辑器是否为空
-					if (UE.getEditor('editor').hasContents() == false) {
-						comm.infoMsg("内容不能为空", null, 150);
+					if (UE.getEditor('content').hasContents() == false) {
+						comm.infoMsg("content 内容不能为空", null, 150);
+						return;
+					}
+					//验证UE编辑器是否为空
+					if (UE.getEditor('remark').hasContents() == false) {
+						comm.infoMsg("remark 内容不能为空", null, 150);
 						return;
 					}
 					success3.show();

@@ -15,7 +15,6 @@ public class GuideStrategy{
 	private String userName;
 	private Integer flag;
 	private String auditRemark;
-	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date auditTime;
 	private Integer auditStatus;
@@ -27,6 +26,7 @@ public class GuideStrategy{
 	private Date updateTime;
 	private Integer status;
 	private Integer sort;
+	private String smallImgUrl;
 
 	public Integer getId() {
 		return id;
@@ -124,5 +124,11 @@ public class GuideStrategy{
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getSmallImgUrl() {
+		return smallImgUrl;
+	}
+	public void setSmallImgUrl(String smallImgUrl) {
+		this.smallImgUrl = smallImgUrl;
 	}
 }

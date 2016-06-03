@@ -18,6 +18,7 @@
 		<result property="updateTime" column="update_time"/>
 		<result property="status" column="status"/>
 		<result property="sort" column="sort"/>
+		<result property="smallImgUrl" column="small_img_url"/>
 
     </resultMap>
     
@@ -71,11 +72,14 @@
 			<if test="sort != null and sort != ''" >
 			and sort = #{sort}
 			</if>
+			<if test="smallImgUrl != null and smallImgUrl != ''" >
+			and small_img_url = #{smallImgUrl}
+			</if>
 
     </trim>
   </sql>
   <sql id="Base_Column_List" >
-    id,title,description,content,img_url,recommend_info,user_no,user_name,flag,audit_remark,audit_time,audit_status,create_time,update_time,status,sort
+    id,title,description,content,img_url,recommend_info,user_no,user_name,flag,audit_remark,audit_time,audit_status,create_time,update_time,status,sort,small_img_url
   </sql>
     
     <select id="getGuideStrategyRankingList"  resultMap="guideStrategyMap"> 
@@ -129,7 +133,8 @@
 			create_time,
 			update_time,
 			status,
-			sort
+			sort,
+			small_img_url
 		)VALUES(
 			#{id},
 			#{title},
@@ -146,7 +151,8 @@
 			now(),
 			now(),
 			#{status},
-			#{sort}
+			#{sort},
+			#{smallImgUrl}
 		)
     </insert>
      <insert id="createGuideStrategySelective" parameterType="com.mlx.guide.entity.GuideStrategy" keyProperty="id" useGeneratedKeys="true">
@@ -198,7 +204,10 @@
 			status,
 			</if>
 			<if test="sort != null" >
-			sort
+			sort,
+			</if>
+			<if test="smallImgUrl != null" >
+			small_img_url
 			</if>
 			</trim>
 			<trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -248,7 +257,10 @@
 			#{status},
 			</if>
 			<if test="sort != null" >
-			#{sort}
+			#{sort},
+			</if>
+			<if test="smallImgUrl != null" >
+			#{smallImgUrl}
 			</if>
 			</trim>
     </insert>  
@@ -267,7 +279,8 @@
 			audit_status = #{auditStatus},
 			update_time = now(),
 			status = #{status},
-			sort = #{sort}
+			sort = #{sort},
+			small_img_url = #{smallImgUrl},
 		WHERE id = #{id}
 
     </update>
@@ -315,7 +328,10 @@
 			status = #{status},
 			</if>
 			<if test="sort != null" >
-			sort = #{sort}
+			sort = #{sort},
+			</if>
+			<if test="smallImgUrl != null" >
+			small_img_url = #{smallImgUrl}
 			</if>
 		</set>
 		WHERE id = #{id}
