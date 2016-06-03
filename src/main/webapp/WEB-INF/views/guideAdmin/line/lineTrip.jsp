@@ -101,7 +101,7 @@
                        
                        <div class="tab-pane active" id="tab3">
                            <h3 class="block">请填写行程详情</h3>
-                           <a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
+                       <!--     <a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a> -->
 					</div>
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
@@ -133,40 +133,20 @@
 												<th class="text-center">交通</th>
 												<th class="text-center">住宿</th>
 												<th class="text-center">主要行程</th>
-												<th class="text-center">操作</th>
 												
 											</tr>
 										</thead>
-										<%-- <c:if test="${empty list}">
-										<tr style="border-bottom: 1px solid #ccc;">
-											 <td>${lineNo}<input type="hidden" name="guideLineTrips[0].lineNo" value="${lineNo}"/></td>
-											 <td align="center" class="js-num" width="80">
-											 <input type="text" name="guideLineTrips[0].day" id="day" value='1' readonly="readonly" ></td>
-											 <td><input type="text" name="guideLineTrips[0].address" id="address" value='陈家祠' ></td>
-											 <td><input type="text" name="guideLineTrips[0].traffic" id="traffic" value='公交车' ></td>
-											 <td><input type="text" name="guideLineTrips[0].hotel" id="hotel" value='民宿' ></td>
-											 <td><input type="text" name="guideLineTrips[0].tripDetail" id="tripDetail" value='自由活动' ></td>
-											 <td>
-											 <a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
-											 </td>
-										</tr>
-										</c:if> --%>
+										
 										<tbody>
 									 <c:forEach var="item" items="${list}" varStatus="st">
-										<tr style="border-bottom: 1px solid #ccc;">
-											 <td>${item.lineNo}<input type="hidden" name="guideLineTrips[${st.index}].id" value="${item.id}"/>
-											 <input type="hidden" name="guideLineTrips[${st.index}].lineNo" value="${lineNo}"/>
-											 </td>
-											 <td align="center" class="js-num" width="80">
-											 <input type="text" class="js-day" name="guideLineTrips[${st.index}].day" id="day" value='${item.day}' readonly required  ></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].address" id="address" value='${item.address}' required maxlength="100"></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].traffic" id="traffic" value='${item.traffic}' required maxlength="200"></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].hotel" id="hotel" value='${item.hotel}' required maxlength="50"></td>
-											 <td><input type="text" name="guideLineTrips[${st.index}].tripDetail" id="tripDetail" value='${item.tripDetail}' required maxlength="255"></td>
-											 <td>
-											 <a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
-											 <a class="btn blue btn-outline" name="addBtn" onClick="delRow(this,${item.id});">删除</a>
-											 </td>
+										<tr>
+											<input type="hidden" name="guideLineTrips[${st.index}].id" value="${item.id}"/>
+											<td>${item.lineNo}<input type="hidden" name="guideLineTrips[${st.index}].lineNo" value="${lineNo}"/></td>
+											<td>${item.day}<input type="hidden" name="guideLineTrips[${st.index}].day" value="${day}"/></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address" >${item.address} </textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic" >${item.traffic}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel" >${item.hotel}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail" >${item.tripDetail}</textarea></td>
 										</tr>
 									</c:forEach>  
 										</tbody>
@@ -219,8 +199,8 @@
 	//动态添加行程
 	
 	 function addRow(){
-	 var _html = template("table_tr",{id:($("input[type=text][id=day]").length + 1)});
-	 $("#test").append(_html);
+		 var _html = template("table_tr",{id:($("input[type=text][id=day]").length + 1)});
+		 $("#test").append(_html);
 	 }
 	 
 	 //删除行程

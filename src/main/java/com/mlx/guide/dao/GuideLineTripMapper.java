@@ -22,4 +22,6 @@ public interface GuideLineTripMapper {
 	List<GuideLineTrip> getGuideLineTripPageList(GuideLineTrip record);
 
 	PageList<GuideLineTrip> getGuideLineTripPageList(GuideLineTrip record, PageBounds pageBounds);
+	
+	void deleteGuideLineTripByLineNo(String lineNo);
 }
