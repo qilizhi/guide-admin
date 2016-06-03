@@ -15,9 +15,8 @@
 <body>
 	<div class="note note-success">
 		<p>
-			温馨提示<br />1.查询导游用户请点击<a
-				class="btn red btn-outline" href="${ctx}/admin/guideUserInfo/list"
-				target="_blank">导游用户</a>
+			温馨提示<br />1.查询导游用户请点击<a class="btn red btn-outline"
+				href="${ctx}/admin/guideUserInfo/list" target="_blank">导游用户</a>
 		</p>
 	</div>
 
@@ -31,7 +30,7 @@
 							class="caption-subject font-dark bold uppercase">导服列表</span>
 					</div>
 					<div class="actions">
-					 <a href="${ctx}/admin/guideService/create"
+						<a href="${ctx}/admin/guideService/create"
 							class="btn btn-sm green btn-outline">新增</a>
 						<!--  <a class="btn btn-sm dark btn-outline batAudit">审核</a>
 						  <a
@@ -53,32 +52,27 @@
 										<c:if test="${pageSize == 50}">selected</c:if>>50</option>
 									<option value="100"
 										<c:if test="${pageSize == 100}">selected</c:if>>100</option>
-								</select>
-						
-								<select name="auditStatus"
+								</select> <select name="auditStatus"
 									class="form-control input-sm input-xsmall input-inline">
 									<!-- 0未提交审核1待审核2审核通过3审核未通过 -->
-									 <option value="" >全部</option> 
-									 <option value="0" <c:if test="${auditStatus == 0}">selected</c:if>>未提交审核</option> 
+									<option value="">全部</option>
+									<option value="0"
+										<c:if test="${auditStatus == 0}">selected</c:if>>未提交审核</option>
 									<option value="1"
 										<c:if test="${auditStatus == 1}">selected</c:if>>待审核</option>
 									<option value="2"
 										<c:if test="${auditStatus == 2}">selected</c:if>>审核通过</option>
 									<option value="3"
 										<c:if test="${auditStatus == 3}">selected</c:if>>审核不通过</option>
-								
-								</select>
-						
-								<select name="status"
+
+								</select> <select name="status"
 									class="form-control input-sm input-xsmall input-inline">
-								<!-- 	1编辑中2上线3下线 -->
-									<option value="" >全部</option>
+									<!-- 	1编辑中2上线3下线 -->
+									<option value="">全部</option>
 									<option value="1" <c:if test="${status == 1}">selected</c:if>>编辑中</option>
-									<option value="2"
-										<c:if test="${status == 2}">selected</c:if>>上线</option>
-									<option value="3"
-										<c:if test="${status == 3}">selected</c:if>>下线</option>
-								
+									<option value="2" <c:if test="${status == 2}">selected</c:if>>上线</option>
+									<option value="3" <c:if test="${status == 3}">selected</c:if>>下线</option>
+
 								</select>
 							</div>
 							<input type="hidden" name="pageNo" value="1">
@@ -95,10 +89,11 @@
 						</div>
 					</form>
 					<div class="table-scrollable">
-						<table  id="guideService"class="table table-striped table-bordered table-hover">
+						<table id="guideService"
+							class="table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-								<!-- 	<th scope="col"><input type="checkbox" class="icheck" /></th> -->
+									<!-- 	<th scope="col"><input type="checkbox" class="icheck" /></th> -->
 									<th scope="col">编号</th>
 									<th scope="col">标题</th>
 									<th scope="col">背景图</th>
@@ -114,7 +109,7 @@
 							<tbody>
 								<c:forEach items="${list}" var="item">
 									<tr>
-									<%-- 	<td><input type="checkbox" id="${item.id}" class="icheck" /></td> --%>
+										<%-- 	<td><input type="checkbox" id="${item.id}" class="icheck" /></td> --%>
 										<td>${item.serviceNo}</td>
 										<td>${item.title}</td>
 										<td><img src="${item.imgUrl}" title="${item.title}"
@@ -126,21 +121,18 @@
 										<td class="ext-sort">${item.sort}</td>
 										<td><fmt:formatDate value="${item.createTime}"
 												pattern="yyyy-MM-dd HH:mm:ss" /></td>
-										<td id="${item.id}">
-										
-										<a  href="${ctx}/admin/guideService/detail/${item.id}" class="btn btn-sm yellow btn-outline detail">详情</a>
-										<a  href="${ctx}/admin/guideService/edit/${item.id}" class="btn btn-sm red btn-outline detail">编辑</a>
-										<a class="btn btn-sm dark btn-outline audit">审核 </a>
-											<c:if test="${item.status== 3 || item.status==1}">
-											<a status="2" class="btn btn-sm green btn-outline onOff">上线</a>
-											</c:if>
-											<c:if test="${item.status==2}">
-											<a status="3" class="btn btn-sm green btn-outline onOff">下线</a>
-											</c:if> 
-											
-											 <a	class="btn btn-sm red btn-outline del">删除</a>
-											 <a class="btn btn-sm blue btn-outline preView">预览</a>
-											</td>
+										<td id="${item.id}"><a
+											href="${ctx}/admin/guideService/detail/${item.id}"
+											class="btn btn-sm yellow btn-outline detail">详情</a> <a
+											href="${ctx}/admin/guideService/edit/${item.id}"
+											class="btn btn-sm red btn-outline detail">编辑</a> <a
+											class="btn btn-sm dark btn-outline audit">审核 </a> <c:if
+												test="${item.status== 3 || item.status==1}">
+												<a status="2" class="btn btn-sm green btn-outline onOff">上线</a>
+											</c:if> <c:if test="${item.status==2}">
+												<a status="3" class="btn btn-sm green btn-outline onOff">下线</a>
+											</c:if> <a class="btn btn-sm red btn-outline del">删除</a> <a
+											class="btn btn-sm blue btn-outline preView">预览</a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -154,8 +146,9 @@
 	</div>
 
 	<!-- / 审核 .modal -->
-	<div id="auditResponsive" class="modal fade draggable-modal ui-draggable"
-		tabindex="-1" aria-hidden="true">
+	<div id="auditResponsive"
+		class="modal fade draggable-modal ui-draggable" tabindex="-1"
+		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form id="auditForm" class="form-horizontal">
@@ -169,28 +162,28 @@
 							<!-- BEGIN FORM-->
 
 							<div class="form-body">
-								
+
 								<div class="form-group">
-                                                <label class="col-md-3 control-label">审核 <span
+									<label class="col-md-3 control-label">审核 <span
 										class="required"> * </span></label>
-                                                <div class="col-md-9">
-                                                    <div class="radio-list">
-                                                        <label class="radio-inline">
-                                                    
-													<input type="radio"
-														name="auditStatus" value="2"
-														checked >
-												 通过 </label>
-                                                        <label class="radio-inline">
-                                                          <input type="radio" name="auditStatus"  value="3" > 不通过 </label>
-                                                    </div>
-                                                </div>
-                                            </div>
+										<div class="col-md-2">
+											<label class="input-inline"> <input type="radio"
+												name="auditStatus" value="2" checked> 
+											</label>
+											<label class="label-inline"> 通过</label>
+										</div>
+										<div class="col-md-2">
+											<label class="input-inline"> <input type="radio"
+												name="auditStatus" value="3">
+											</label>
+											<label class="label-inline"> 不通过</label>
+										</div>
+								</div>
 								<div class="form-group form-md-line-input">
 									<label class="col-lg-3 control-label">说明：</label>
 									<div class="col-lg-5">
-										<textarea class="form-control" name="auditRemark" id="description"
-											rows="3" placeholder="这里添加描述"></textarea>
+										<textarea class="form-control" name="auditRemark"
+											id="description" rows="3" placeholder="这里添加描述"></textarea>
 										<label for="form_control_1"></label>
 									</div>
 								</div>
@@ -208,9 +201,10 @@
 			</div>
 		</div>
 	</div>
-		<!-- / 上下线 .modal -->
-	<div id="onOffResponsive" class="modal fade draggable-modal ui-draggable"
-		tabindex="-1" aria-hidden="true">
+	<!-- / 上下线 .modal -->
+	<div id="onOffResponsive"
+		class="modal fade draggable-modal ui-draggable" tabindex="-1"
+		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form id="onOffForm" class="form-horizontal">
@@ -224,23 +218,20 @@
 							<!-- BEGIN FORM-->
 
 							<div class="form-body">
-								
+
 								<div class="form-group">
-                                                <label class="col-md-3 control-label">状态：<span
+									<label class="col-md-3 control-label">状态：<span
 										class="required"> * </span></label>
-                                                <div class="col-md-9">
-                                                    <div class="radio-list">
-                                                        <label class="radio-inline">
-                                                    
-													<input type="radio"
-														name="status" value="2"
-														checked >
-												 上线 </label>
-                                                        <label class="radio-inline">
-                                                          <input type="radio" name="status"  value="3" >下线 </label>
-                                                    </div>
-                                                </div>
-                                            </div>
+									<div class="col-md-9">
+										<div class="radio-list">
+											<label class="radio-inline"> <input type="radio"
+												name="status" value="2" checked> 上线
+											</label> <label class="radio-inline"> <input type="radio"
+												name="status" value="3">下线
+											</label>
+										</div>
+									</div>
+								</div>
 								<!-- <div class="form-group form-md-line-input">
 									<label class="col-lg-3 control-label">说明：</label>
 									<div class="col-lg-5">
@@ -263,7 +254,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 预览  modal-->
 	<div id="preViewResponsive"
 		class="modal fade draggable-modal ui-draggable" tabindex="-1"
@@ -277,44 +268,45 @@
 							style="height: 569px; width: 320px; border: 0px solid #000; margin: 0 auto; margin-top: 33px;"></iframe>
 					</div>
 					<div class="col-md-1 col-md-offset-3"
-						style="    margin-top: -52px; margin-left: 163px;">
-						<a class="close" style="background-position-x: 10px;
-    					background-position-y: 10px; width: 30px;height: 30px;" data-dismiss="modal" aria-hidden="true">
-							<!-- <button type="button" class="close"></button> -->
+						style="margin-top: -52px; margin-left: 163px;">
+						<a class="close"
+							style="background-position-x: 10px; background-position-y: 10px; width: 30px; height: 30px;"
+							data-dismiss="modal" aria-hidden="true"> <!-- <button type="button" class="close"></button> -->
 						</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-<script type="text/javascript" src="${ctx}/static/assets/global/plugins/datatables/datatables.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#guideService').DataTable({
-    
-    		"paging":   false,
-            "ordering": true,
-            "info":  false,
-            "searching":false,
-            "columns": [
-                        { "orderable": true },
-                        { "orderable": true },
-                        null,
-                        { "orderable": false },
-                        null,
-                        null,
-                        null,
-                        { "orderable": true},
-                        { "orderable": true },
-                        { "orderable": false }
-                      ]
-            }
-    );
-} );
-</script>
+	<script type="text/javascript"
+		src="${ctx}/static/assets/global/plugins/datatables/datatables.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#guideService').DataTable({
+
+				"paging" : false,
+				"ordering" : true,
+				"info" : false,
+				"searching" : false,
+				"columns" : [ {
+					"orderable" : true
+				}, {
+					"orderable" : true
+				}, null, {
+					"orderable" : false
+				}, null, null, null, {
+					"orderable" : true
+				}, {
+					"orderable" : true
+				}, {
+					"orderable" : false
+				} ]
+			});
+		});
+	</script>
 	<tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
 	<script type="text/javascript" src="${ctx}/static/js/guideService.js"></script>
-	
+
 
 </body>
 </html>
