@@ -255,7 +255,7 @@
 				flag = #{flag,jdbcType=TINYINT},
 			</if>
 			<if test="goodsType != null">
-				#{goods_type,jdbcType=INTEGER},
+				goods_type=#{goodsType,jdbcType=INTEGER}
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

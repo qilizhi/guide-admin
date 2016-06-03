@@ -41,8 +41,8 @@
 						class="required"> * </span></label>
 					<div class="col-lg-5">
 						<select class="bs-select form-control bs-select-hidden" name="goodsType">
-						<option value="1">美丽卡</option>
-						<option value="2">课程 </option>
+						<option <c:if test="${item.goodsType==1}"> selected </c:if> value="1">美丽卡</option>
+						<option <c:if test="${item.goodsType==2}"> selected </c:if> value="2">课程 </option>
 						</select>
 						<div class="form-control-focus"></div>
 					</div>
@@ -301,7 +301,7 @@
 				},
 
 				unhighlight : function(element) { // revert the change done by hightlight
-					console.log(element)
+					//console.log(element)
 					$(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
 				},
 
