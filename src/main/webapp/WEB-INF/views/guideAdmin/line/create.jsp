@@ -466,10 +466,6 @@
                        required: true,
                        maxlength:255
                    },
-                   description: {
-                       required: true,
-                       maxlength:50
-                   },
                    sort: {
                        required: true,
                        digits:true,
@@ -504,10 +500,6 @@
                    recommendInfo: {
                        required: "不能为空",
                        maxlength:"最多输入255个汉字"
-                   },
-                   description: {
-                       required: "不能为空",
-                       maxlength:"最多输入50个汉字"
                    },
                    sort: {
                        required: "不能为空",
