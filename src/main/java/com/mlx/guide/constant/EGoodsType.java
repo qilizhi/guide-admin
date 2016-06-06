@@ -6,12 +6,12 @@ import java.util.Map;
 
 public enum EGoodsType {
 
-	A("local","地陪"),
-	B("line","线路"),
-	C("prelocal","地陪预订"),
-	D("mall","商城"),
-	E("hotel","酒店"),
-	F("flight","机票");
+	LOCAL("local","地陪"),
+	LINE("line","线路"),
+	PRELOCAL("prelocal","地陪预订"),
+	MALL("mall","商城"),
+	HOTEL("hotel","酒店"),
+	FLIGHT("flight","机票");
 	
 	private String code;
 	

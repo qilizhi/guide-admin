@@ -14,6 +14,7 @@ public class GuideLineDatePrice{
 	private BigDecimal safePrice;
 	private BigDecimal visaPrice;
 	private Integer num;
+	private String tuanNo;//数据库暂不存
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date lineDate;
 
@@ -71,5 +72,11 @@ public class GuideLineDatePrice{
 	}
 	public void setNum(Integer num) {
 		this.num = num;
+	}
+	public String getTuanNo() {
+		return tuanNo;
+	}
+	public void setTuanNo(String tuanNo) {
+		this.tuanNo = tuanNo;
 	}
 }

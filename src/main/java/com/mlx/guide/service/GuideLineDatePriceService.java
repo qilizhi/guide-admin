@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.mlx.guide.constant.EGoodsType;
+import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.dao.GuideLineDatePriceMapper;
 import com.mlx.guide.dao.GuideLineTripMapper;
 import com.mlx.guide.dao.GuideTuanMapper;
@@ -22,6 +26,8 @@ import com.mlx.guide.entity.GuideTuan;
 @Service
 @Transactional
 public class GuideLineDatePriceService {
+
+	Logger logger = LoggerFactory.getLogger(GuideLineDatePriceService.class);
 
 	@Autowired
 	private GuideLineDatePriceMapper guideLineDatePriceMapper;
@@ -127,42 +133,38 @@ public class GuideLineDatePriceService {
 			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
 		}
 	}
+
 	@Transactional
-	public void saveGuideLineDatePriceByLineNo(List<GuideLineDatePrice> guideLineDatePriceList,String lineNo){
-		//delete 
+	public void saveGuideLineDatePriceByLineNo(List<GuideLineDatePrice> guideLineDatePriceList, String lineNo) {
+		// delete
 		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
-		
-		List<GuideTuan> tuanList = guideTuanMapper.getGuideTuanPageList(new GuideTuan());
-		if(tuanList.size()<=0){
-			guideTuanMapper.deleteGuideTuanByLineNo(lineNo);
-		}
-		guideLineTripMapper.deleteGuideLineTripByLineNo(lineNo);
-		//save
-		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
-			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
-		}
-		GuideLineTrip trip=new GuideLineTrip();
-		//按照线路天数添加行程
+		// 查询线路
 		GuideLine line = guideLineService.getGuideLineByLineNo(lineNo);
-		int day=line.getTotalDay();
-		for(int i=1;i<=day;i++){
-			trip.setLineNo(lineNo);
-			trip.setDay(i);
-			trip.setCreateTime(new Date());
-			guideLineTripService.insertSelective(trip);
-		}
-		
-	}
-	
-	@Transactional
-	public void saveGuideLineDatePrice(List<GuideLineDatePrice> guideLineDatePriceList,String lineNo){
-		//delete 
-		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
-		//save
+		// save
 		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
+			GuideTuan gt = new GuideTuan();
+			// 根据时间及产品编号查询。是否这天有团
+			gt.setTuanDate(guideLineDatePrice.getLineDate());
+			gt.setGoodsNo(guideLineDatePrice.getLineNo());
+			List<GuideTuan> gts = guideTuanMapper.getGuideTuanPageList(gt);
+			if (gts.size() <= 0) {// 没有则插入
+				gt.setCreateTime(new Date());
+				gt.setGoodsType(EGoodsType.LINE.getName());
+				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
+				gt.setName(line.getTitle());
+				gt.setFullNum(line.getNum());
+				gt.setUserNo(line.getUserNo());
+				gt.setUserName(line.getUserName());
+				guideTuanMapper.insertSelective(gt);
+
+			} else {
+				for (GuideTuan g : gts) {
+					logger.info("已有这个团：" + g.getTuanNo() + "产品编号：" + g.getGoodsNo() + "类型：" + g.getGoodsType());
+				}
+			}
 			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
 		}
 	
-		
+
 	}
 }
