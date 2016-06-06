@@ -11,6 +11,7 @@
 		<result property="safePrice" column="safe_price"/>
 		<result property="visaPrice" column="visa_price"/>
 		<result property="num" column="num"/>
+		<result property="tuanNo" column="tuan_no"/>
 
     </resultMap>
     
@@ -43,11 +44,14 @@
 			<if test="num != null and num != ''" >
 			and num = #{num}
 			</if>
+			<if test="tuanNo != null and tuanNo != ''" >
+			and tuan_no = #{tuanNo}
+			</if>
 
     </trim>
   </sql>
   <sql id="Base_Column_List" >
-    id,line_no,adult_price,child_price,line_date,room_diff_price,safe_price,visa_price,num
+    id,line_no,adult_price,child_price,line_date,room_diff_price,safe_price,visa_price,num,tuan_no
   </sql>
     
     
@@ -94,7 +98,8 @@
 			room_diff_price,
 			safe_price,
 			visa_price,
-			num
+			num,
+			tuan_no
 		)VALUES(
 			#{id},
 			#{lineNo},
@@ -104,7 +109,8 @@
 			#{roomDiffPrice},
 			#{safePrice},
 			#{visaPrice},
-			#{num}
+			#{num},
+			#{tuanNo}
 		)
     </insert>
     <insert id="createGuideLineDatePriceSelective" parameterType="com.mlx.guide.entity.GuideLineDatePrice" keyProperty="id" useGeneratedKeys="true">
@@ -135,7 +141,10 @@
 			num,
 			</if>
 			<if test="lineDate != null" >
-			line_date
+			line_date,
+			</if>
+			<if test="tuanNo != null" >
+			tuan_no
 			</if>
 			</trim>
 			<trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -164,7 +173,10 @@
 			#{num},
 			</if>
 			<if test="lineDate != null" >
-			#{lineDate}
+			#{lineDate},
+			</if>
+			<if test="tuanNo != null" >
+			#{tuan_no}
 			</if>
 			</trim>
     </insert>
@@ -177,7 +189,8 @@
 			safe_price = #{safePrice},
 			visa_price = #{visaPrice},
 			num = #{num},
-			line_date = #{lineDate}
+			line_date = #{lineDate},
+			tuan_no=#{tuanNo}
 		WHERE id = #{id}
 
     </update>
@@ -207,7 +220,10 @@
 			num = #{num},
 			</if>
 			<if test="lineDate != null" >
-			line_date = #{lineDate}
+			line_date = #{lineDate},
+			</if>
+			<if test="tuanNo != null" >
+			tuan_no = #{tuanNo}
 			</if>
 		</set>
 		WHERE id = #{id}
