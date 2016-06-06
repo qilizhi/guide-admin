@@ -171,7 +171,7 @@
                                  </div>
                              </div>
                              <div class="form-group">
-                                 <label class="control-label col-md-3">攻略内容:</label>
+                                 <label class="control-label col-md-3">内容:</label>
                                  <div class="col-md-4">
                                      <p class="form-control-static" >${line.content}</p>
                                  </div>
