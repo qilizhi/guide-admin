@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.EGoodsType;
+import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.dao.GuideLineDatePriceMapper;
 import com.mlx.guide.dao.GuideLineTripMapper;
@@ -22,6 +23,7 @@ import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.entity.GuideTuan;
+import com.mlx.guide.util.StringUtil;
 
 @Service
 @Transactional
@@ -142,6 +144,7 @@ public class GuideLineDatePriceService {
 		GuideLine line = guideLineService.getGuideLineByLineNo(lineNo);
 		// save
 		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
+			guideLineDatePrice.setNum(line.getNum());
 			GuideTuan gt = new GuideTuan();
 			// 根据时间及产品编号查询。是否这天有团
 			gt.setTuanDate(guideLineDatePrice.getLineDate());
@@ -151,6 +154,7 @@ public class GuideLineDatePriceService {
 				gt.setCreateTime(new Date());
 				gt.setGoodsType(EGoodsType.LINE.getCode());
 				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
+				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
 				gt.setName(line.getTitle());
 				gt.setFullNum(line.getNum());
 				gt.setUserNo(line.getUserNo());
@@ -159,12 +163,26 @@ public class GuideLineDatePriceService {
 
 			} else {
 				for (GuideTuan g : gts) {
-					logger.info("已有这个团：" + g.getTuanNo() + "产品编号：" + g.getGoodsNo() + "类型：" + g.getGoodsType());
+					if (!g.getTuanStatus().equals(ETuanStatus.TOURED.getId().byteValue())) {
+						gt.setId(g.getId());
+						gt.setCreateTime(new Date());
+						gt.setGoodsType(EGoodsType.LINE.getCode());
+						gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
+						gt.setName(line.getTitle());
+						gt.setFullNum(line.getNum());
+						gt.setUserNo(line.getUserNo());
+						gt.setUserName(line.getUserName());
+						guideTuanMapper.updateByPrimaryKeySelective(gt);
+					} else {
+
+						logger.info(
+								"这个团已出团不能修改：" + g.getTuanNo() + "产品编号：" + g.getGoodsNo() + "类型：" + g.getGoodsType());
+					}
+
 				}
 			}
 			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
 		}
-	
 
 	}
 }

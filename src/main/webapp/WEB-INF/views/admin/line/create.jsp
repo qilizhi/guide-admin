@@ -149,7 +149,8 @@
 														onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"
 														name="totalDay" data-required="1" class="form-control"
 														value="${guideLine.totalDay }" /> 
-													<!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
+													<input type="hidden" name="oldTotalDay" value="${guideLine.totalDay }" >
+													<!-- 修改前先把旧的天数存起来，天数有改动就删除以前的行程  -->
 												</div>
 											</div>
 											<div class="form-group">

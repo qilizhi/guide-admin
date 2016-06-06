@@ -1120,7 +1120,7 @@ public class StringUtil {
 	public static String generateProductSerialNumber(String prefix) {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		String str = sdf.format(cal.getTime()) + RandomUtils.nextInt(9999);
+		String str = sdf.format(cal.getTime()) + randomNumber();
 		return prefix + str;
 	}
 

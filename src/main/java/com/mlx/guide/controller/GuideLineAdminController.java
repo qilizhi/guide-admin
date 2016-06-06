@@ -61,6 +61,7 @@ public class GuideLineAdminController {
 	private GuideInfoService guideInfoService;
 	@Autowired
 	private GuideLineTripService guideLineTripService;
+
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
@@ -92,6 +93,7 @@ public class GuideLineAdminController {
 		}
 		return new JsonResult(ExceptionCode.SUCCESSFUL, lines);
 	}
+
 	/**
 	 * 查询导游用户列表下拉树。
 	 * 
@@ -111,6 +113,7 @@ public class GuideLineAdminController {
 		}
 		return new JsonResult(ExceptionCode.SUCCESSFUL, guides);
 	}
+
 	/**
 	 * 列表
 	 * 
@@ -126,10 +129,10 @@ public class GuideLineAdminController {
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, GuideLine guideLine,
 			HttpServletRequest request, Model model) {
 		// 获取当前用户
-		//ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		// ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 			guideLine.setFlag(EFlag.VALID.getId());
-			//guideLine.setUserNo(shiroUser.getUserNo());
+			// guideLine.setUserNo(shiroUser.getUserNo());
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 			PageList<GuideLine> list = guideLineService.getGuideLinePageList(guideLine, pageBounds);
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
@@ -140,15 +143,13 @@ public class GuideLineAdminController {
 			model.addAttribute("status", guideLine.getStatus());
 			model.addAttribute("auditStatus", guideLine.getAuditStatus());
 			model.addAttribute("pageSize", pageSize);
-		
+
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
 		return "admin/line/list";
 	}
 
-	
-	
 	/**
 	 * 编辑页面跳转
 	 */
@@ -163,14 +164,12 @@ public class GuideLineAdminController {
 		guideLineTrip.setLineNo(gs.getLineNo());
 		List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
 		model.addAttribute("guideService", gs);
-		
-		
+
 		model.addAttribute("lsPrices", lsGuideLineDatePrices);
 		model.addAttribute("trips", trips);
 		return "/admin/line/detail";
 	}
-	
-	
+
 	/**
 	 * 保存价格
 	 * 
@@ -191,8 +190,7 @@ public class GuideLineAdminController {
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
-	
-	
+
 	/**
 	 * 上一步,返回线路页面
 	 * 
@@ -208,10 +206,11 @@ public class GuideLineAdminController {
 			model.addAttribute("guideLine", guideLine);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			//return "admin/line/create";
+			// return "admin/line/create";
 		}
 		return "admin/line/create";
 	}
+
 	/**
 	 * 上一步，返回到行程页面
 	 * 
@@ -233,6 +232,7 @@ public class GuideLineAdminController {
 			return "guideAdmin/line/lineTrip";
 		}
 	}
+
 	/**
 	 * 上一步,返回价格页面
 	 * 
@@ -276,9 +276,9 @@ public class GuideLineAdminController {
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
-		
-		//检查是否审核通过
-		if(guideLineService.getGuideLineByPrimaryKey(id).getAuditStatus()!=EAuditStatus.AUDIT_OK.getId()){
+
+		// 检查是否审核通过
+		if (guideLineService.getGuideLineByPrimaryKey(id).getAuditStatus() != EAuditStatus.AUDIT_OK.getId()) {
 			return new JsonResult(ExceptionCode.FAIL, "审核不通过不能上线！");
 		}
 		GuideLine gs = new GuideLine();
@@ -309,8 +309,8 @@ public class GuideLineAdminController {
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
-		
-		if(EAuditStatus.AUDIT_NOSUBMIT.getId()==guideLineService.getGuideLineByPrimaryKey(id).getAuditStatus()){
+
+		if (EAuditStatus.AUDIT_NOSUBMIT.getId() == guideLineService.getGuideLineByPrimaryKey(id).getAuditStatus()) {
 			return new JsonResult(ExceptionCode.FAIL, "未提交审核，不能审核");
 		}
 		GuideLine gs = new GuideLine();
@@ -345,15 +345,15 @@ public class GuideLineAdminController {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
 		String[] idsArray = ids.split(",");
-		List<Integer> idsInteger=new ArrayList<Integer>();
-		for(String id:idsArray){
-			if(id!=null&&!id.equals(""))
-			idsInteger.add(Integer.parseInt(id));
+		List<Integer> idsInteger = new ArrayList<Integer>();
+		for (String id : idsArray) {
+			if (id != null && !id.equals(""))
+				idsInteger.add(Integer.parseInt(id));
 		}
 		// 标志删除
-		
+
 		try {
-			 guideLineService.deleteGuideLineBitch(idsInteger);
+			guideLineService.deleteGuideLineBitch(idsInteger);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,8 +362,7 @@ public class GuideLineAdminController {
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
-	
-	
+
 	/**
 	 * 新增或更新
 	 * 
@@ -377,32 +376,50 @@ public class GuideLineAdminController {
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String saveOrUpdate(@RequestParam(value = "file", required = false) MultipartFile file,
 			HttpServletRequest request, Model model, GuideLine guideLine,
-			@RequestParam(value = "oldPrice") BigDecimal oldPrice) {
+			@RequestParam(value = "oldPrice") BigDecimal oldPrice,
+			@RequestParam(value = "oldTotalDay") Integer oldTotalDay) {
 		// 获取当前用户
-		//ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		// ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 			if (guideLine.getId() != null) {
 				// 比较价格
 				if (oldPrice.compareTo(guideLine.getPrice()) != 0) {
 					guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
 				}
+				// 比较行程 天数。如有修改，重新定义行程 。
+				if (oldTotalDay!=null&&oldTotalDay.compareTo(guideLine.getTotalDay()) != 0) {
+					// 删除以前的插入新的行程
+					guideLineTripService.deleteGuideLineTripByLineNo(guideLine.getLineNo());
+					int day = guideLine.getTotalDay();
+					for (int i = 1; i <= day; i++) {
+						GuideLineTrip trip = new GuideLineTrip();
+						trip.setLineNo(guideLine.getLineNo());
+						trip.setDay(i);
+						trip.setCreateTime(new Date());
+						guideLineTripService.insertSelective(trip);
+					}
+				}
+
 				// 更新
 				guideLineService.updateGuideLineSelective(guideLine);
 				return "redirect:/admin/guideLine/editPrice/" + guideLine.getLineNo();
 			} else {
 				// 新增
 				// 随机生成线路编号
-				//int num = (int) (Math.random() * 10000);
 				guideLine.setLineNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
-				// guideLine.setUserNo(shiroUser.getUserNo());
-				// guideLine.setUserName(shiroUser.getName());
-				//guideLine.setUserNo("weixin4");
-				//guideLine.setUserName("全志安");
 				guideLine.setCreateTime(new Date());
 				guideLine.setStatus(EStatus.EDIT.getId());
 				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideLineService.createGuideLineSelective(guideLine);
-				model.addAttribute("guideLine", guideLine);
+				// 创建行程表
+				int day = guideLine.getTotalDay();
+				for (int i = 1; i <= day; i++) {
+					GuideLineTrip trip = new GuideLineTrip();
+					trip.setLineNo(guideLine.getLineNo());
+					trip.setDay(i);
+					trip.setCreateTime(new Date());
+					guideLineTripService.insertSelective(trip);
+				}
 				return "redirect:/admin/guideLine/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
 			}
 		} catch (Exception e) {
@@ -501,6 +518,7 @@ public class GuideLineAdminController {
 
 	/**
 	 * 根据id获取线路信息
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -509,25 +527,24 @@ public class GuideLineAdminController {
 	public JsonResult up(@PathVariable Integer id) {
 		try {
 			GuideLine guideLine = guideLineService.getGuideLineByPrimaryKey(id);
-			return new JsonResult(ExceptionCode.SUCCESSFUL,guideLine);
+			return new JsonResult(ExceptionCode.SUCCESSFUL, guideLine);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);
 		}
 	}
-	
+
 	/**
 	 * 修改上线，下线状态
+	 * 
 	 * @param guideLine
 	 * @return
 	 */
-	@RequestMapping(value="upAndDown")
-	public String upAndDown(GuideLine guideLine){
+	@RequestMapping(value = "upAndDown")
+	public String upAndDown(GuideLine guideLine) {
 		guideLineService.updateGuideLineSelective(guideLine);
 		return "redirect:/guideAdmin/line/list";
 	}
-	
-	
 
 	/**
 	 * 跳转到线路新增页面
@@ -545,34 +562,29 @@ public class GuideLineAdminController {
 	 * @param id
 	 * @return
 	 */
-	/*@RequestMapping(value = "delete/{id}")
-	public String delete(@PathVariable("id") Integer id) {
-		try {
-			GuideLine guideLine = guideLineService.getGuideLineByPrimaryKey(id);
-			guideLine.setFlag(EFlag.INVALID.getId());
-			guideLineService.updateGuideLineSelective(guideLine);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-		return "redirect:/guideAdmin/line/list";
-	}*/
+	/*
+	 * @RequestMapping(value = "delete/{id}") public String
+	 * delete(@PathVariable("id") Integer id) { try { GuideLine guideLine =
+	 * guideLineService.getGuideLineByPrimaryKey(id);
+	 * guideLine.setFlag(EFlag.INVALID.getId());
+	 * guideLineService.updateGuideLineSelective(guideLine); } catch (Exception
+	 * e) { logger.error(e.getMessage(), e); } return
+	 * "redirect:/guideAdmin/line/list"; }
+	 */
 	/**
 	 * 删除
 	 * 
 	 * @param id
 	 * @return
 	 */
-/*	@RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
-	public String delete(Model model, @PathVariable(value = "id") Integer id) {
-		if (id == null || id.intValue() < 1) {
-			model.addAttribute("message", "数据异常");
-		}
-		int result = guideLineService.deleteGuideLine(id);
-		;
-		String msg = result > 0 ? "删除成功" : "删除失败";
-		model.addAttribute("message", msg);
-		return "redirect:/admin/guideLine";
-	}*/
+	/*
+	 * @RequestMapping(value = "delete/{id}", method = RequestMethod.GET) public
+	 * String delete(Model model, @PathVariable(value = "id") Integer id) { if
+	 * (id == null || id.intValue() < 1) { model.addAttribute("message",
+	 * "数据异常"); } int result = guideLineService.deleteGuideLine(id); ; String
+	 * msg = result > 0 ? "删除成功" : "删除失败"; model.addAttribute("message", msg);
+	 * return "redirect:/admin/guideLine"; }
+	 */
 
 	/**
 	 * 批量删除
