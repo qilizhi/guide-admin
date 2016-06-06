@@ -143,10 +143,10 @@
 											<input type="hidden" name="guideLineTrips[${st.index}].id" value="${item.id}"/>
 											<td>${item.lineNo}<input type="hidden" name="guideLineTrips[${st.index}].lineNo" value="${lineNo}"/></td>
 											<td>${item.day}<input type="hidden" name="guideLineTrips[${st.index}].day" value="${day}"/></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address" >${item.address} </textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic" >${item.traffic}</textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel" >${item.hotel}</textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail" >${item.tripDetail}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address" required maxlength="100">${item.address} </textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic" required maxlength="200">${item.traffic}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel" required maxlength="50">${item.hotel}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail" required maxlength="255">${item.tripDetail}</textarea></td>
 										</tr>
 									</c:forEach>  
 										</tbody>
@@ -180,61 +180,6 @@
 			</div>
 		</div>
 	</div>
-
-	<script type="text/template" id="table_tr">
-			<tr style="border-bottom: 1px solid #ccc;">
-				<td>${lineNo}<input type="hidden" name="guideLineTrips[{{id-1}}].lineNo" value="${lineNo}"/>
-							<input type="hidden" name="guideLineTrips[{{id-1}}].id" value=""/></td>
-				<td align="center" class="js-num" width="80"><input type="text" name="guideLineTrips[{{id-1}}].day" id="day" value='{{id}}' readonly="readonly"></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].address" id="address" value='' required maxlength="100"></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].traffic" id="traffic" value='' required maxlength="200"></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].hotel" id="hotel" value='' required maxlength="50"></td>
-				<td><input type="text" name="guideLineTrips[{{id-1}}].tripDetail" id="tripDetail" value='' required maxlength="255"></td>
-				<td><a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
-					<a class="btn blue btn-outline" name="addBtn" onClick="delRow(this);">删除</a>
-				</td>
-			</tr>
-	</script>
-	<script type="text/javascript">
-	//动态添加行程
-	
-	 function addRow(){
-		 var _html = template("table_tr",{id:($("input[type=text][id=day]").length + 1)});
-		 $("#test").append(_html);
-	 }
-	 
-	 //删除行程
-	 function delRow(el,id){
-		  	$(el).parent().parent().remove();
-		  	//动态改变day的值
-		  	$("input[type=text][id=day]").each(function(i,el){
-		  		$(el).val(i+1);
-		  	});
-		  	if(id!=undefined){
-			  	$.post("${ctx}/guideAdmin/trip/delete/"+id,function(data){
-			  		//console.log(data);
-			  		comm.infoMsg(data.msg);
-			  	});
-		  	}
-		 }
-	 
-	 //表单提交验证
-	 $("#form_sample_3").submit(function(){
-		//至少要添加一个行程才能提交
-		var $len=$("#test tbody tr").length;
-	   	if($len<=0){
- 			comm.infoMsg("至少添加一个行程",null,150);
-			 return false;
-		 }else{
-			 return true;
-		 } 
-	 });
-	 
-	 
-	 
-	 
-	</script>
-
 
 
 </body>

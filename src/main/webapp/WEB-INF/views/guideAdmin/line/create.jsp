@@ -158,12 +158,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3">线路简介 <span
+								<label class="control-label col-md-3">线路亮点 <span
 									class="required"> * </span>
 								</label>
 								<div class="col-md-4">
-									<input type="text" name="description" data-required="1"
-										class="form-control" value="${guideLine.description }"/>
+									<%-- 	<input type="text" name="description" data-required="1"
+										class="form-control" value="${guideLine.description }" /> --%>
+									<script id="description" type="text/plain"
+										name="description" style="width:600px;height:500px;">${guideLine.description }</script>
+									<div id="editor2_error"></div>
 								</div>
 							</div>
 							<div class="form-group">
@@ -186,7 +189,7 @@
 										value="${guideLine.num }"/>
 								</div>
 							</div>
-							<div class="form-group">
+							<%-- <div class="form-group">
 								<label class="control-label col-md-3">线路背景图 <span
 									class="required"> * </span>
 								</label>
@@ -211,32 +214,60 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							
+							</div> --%>
 							<div class="form-group">
-								<label class="control-label col-md-3">小图 <span
-									class="required"> * </span>
-								</label>
-								<div class="col-xs-2">
-									<input type="hidden" name="smallImgUrl" value="${guideLine.smallImgUrl }"/>
-									
-									<a class="grouped_elements" rel="group" href="${guideLine.smallImgUrl }">
-									<img id="image" alt="" src="${guideLine.smallImgUrl }" class="img-thumbnail"/></a><span
-										class="btn green fileinput-button pading"> <i
-										class="fa fa-plus"></i> <span id="load">上传 </span> 
-										<input class="imgUpload" type="file" name="files"  />
-									</span>
-
-									<div class="col-lg-7" id="supprogress">
-										<span id="imageName"></span>
-										<div class="progress">
-											<div class="progress-bar progress-bar-success"
-												role="progressbar" aria-valuenow="40" aria-valuemin="0"
-												aria-valuemax="100">
-												<span class="sr-only">40% Complete (success)</span>
+								<label class="col-lg-3 control-label">线路背景图：</label>
+								<div class="col-lg-5">
+									<div id="imgUrl">
+										<div id="supprogress">
+											<input type="hidden" name="imgUrl"
+												value="${guideLine.imgUrl }" /> <span class="imageName"></span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success"
+													role="progressbar" aria-valuenow="40" aria-valuemin="0"
+													aria-valuemax="100">
+													<span class="sr-only">40% Complete (success)</span>
+												</div>
 											</div>
 										</div>
+										<div class="list">
+											<img class="img-list" alt="" src="${guideLine.imgUrl }">
+										</div>
+										<span class="btn green fileinput-button pading list">
+											<i class="fa fa-plus  i-list"></i> <span id="load">上传
+										</span> <input class="imgUpload" type="file" name="files[]" multiple>
+										</span>
 									</div>
+
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-3 control-label">头像图片：</label>
+								<div class="col-lg-5">
+									<div id="smallImgUrl">
+										<div id="supprogress">
+											<input type="hidden" name="smallImgUrl"
+												value="${guideLine.smallImgUrl }" /> <span
+												class="imageName"></span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success"
+													role="progressbar" aria-valuenow="40" aria-valuemin="0"
+													aria-valuemax="100">
+													<span class="sr-only">40% Complete (success)</span>
+												</div>
+											</div>
+										</div>
+										<div class="list">
+											<img class="img-list" alt=""
+												src="${guideLine.smallImgUrl }">
+										</div>
+										<span class="btn green fileinput-button pading list">
+											<i class="fa fa-plus  i-list"></i> <span id="load">上传
+										</span> <input class="imgUpload" type="file" name="files[]"
+											multiple>
+										</span>
+									</div>
+
 								</div>
 							</div>
 							
@@ -281,7 +312,7 @@
 		                            <span class="required"> * </span>
 		                        </label>
 		                        <div class="col-md-9">
-		                            <script id="editor" type="text/plain" name="content"
+		                            <script id="content" type="text/plain" name="content"
 										style="width:600px;height:500px;">${guideLine.content }</script>
 		                            <div id="editor2_error"> </div>
 		                        </div>
@@ -338,7 +369,8 @@
 	
 	$(function() {
 		
-		initImgUpload();
+		initImgUpload("#imgUrl");
+		initImgUpload("#smallImgUrl");
 		initUEeditor();
 		handleValidation3();
 		//初始化fancyBox
@@ -348,61 +380,58 @@
 	
 	
 	
-	//上传图片
-	var initImgUpload = function() {
-
-		$("#supprogress").css('display', "none");
-		$('.imgUpload').on('change',function(e) {
-					var files = this.files;
-					var fullname = $(this).val();
-					$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
-					$("#supprogress").css('display', "block");
-					$("#image").attr("src", "");
-					
-				})
-		$('.imgUpload').fileupload({
+	/** 图片上传的控件 **/
+	var initImgUpload = function(obj) {
+		//图上传
+		var $supprogress = $(obj + " #supprogress");
+		var $dispalyName = $(obj + " #supprogress>span");
+		var $hiddenName = $(obj + " #supprogress>input");
+		var $imgSrc = $(obj + " .list img");
+		var $barsuccess = $(obj + ' .progress .progress-bar-success');
+		var $imgUpload = $(obj + ' .imgUpload');
+		var $loadName = $(obj + ' #load');
+		//console.log($hiddenName)
+		//console.log($dispalyName)
+		//console.log($supprogress);
+		$supprogress.css('display', "none");
+		$imgUpload.on('change', function(e) {
+			var files = this.files;
+			var fullname = $(this).val();
+			$dispalyName.html(fullname
+					.substring(fullname.lastIndexOf("\\") + 1));
+			$supprogress.css('display', "block");
+			$imgSrc.attr("src", "");
+			$hiddenName.val("");
+		})
+		$imgUpload
+				.fileupload({
 
 					dataType : 'json',
 					url : '${ctx}/upload',
 					progressall : function(e, data) {
-						console.log(e);
-						console.log(data);
-						var progress = parseInt(data.loaded / data.total * 100, 10);
-						
-						var $progressBar=$(e.target).parent().next().find(".progress-bar-success");
-						//$('#supprogress .progress .progress-bar-success');
-						if(progress==100){
-							$progressBar.css('width',(progress-1) + '%');
-							$progressBar.text((progress-1) + '%');
-						}else{
-							$progressBar.css('width',progress + '%');
-							$progressBar.text(progress + '%');
-						}
+						var progress = parseInt(data.loaded / data.total
+								* 100, 10);
+						$barsuccess.css('width', progress + '%');
+						$barsuccess.text(progress + '%');
+						//console.log(data);
 					},
 
 					done : function(e, data) {
-						console.log(e);
-						console.log(data);
-						var $supprogress = $(e.target).parent().next();
 						if (data.result.code == "200") {
 							$supprogress.css('display', "none");
-							var imgUrl = data.result.result[0].filePath;
-							//console.log(imgUrl)
-							$supprogress.siblings("input[name='imgUrl']").val(imgUrl);
-							//$("input[name='imgUrl']").val(imgUrl);
-							//$("#image").attr("src", imgUrl);
-							$supprogress.siblings("a").attr("href",imgUrl).find("img").attr("src", imgUrl);
-							//$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
-							$(e.target).prev().html("重传");
+							//$("#image").attr("src",	data.result.result[0].filePath);
+							$imgSrc.attr("src",
+									data.result.result[0].filePath);
+							$hiddenName.val(data.result.result[0].filePath);
+							$loadName.html("重传");
 						} else {
-							//$('#supprogress .progress .progress-bar-success').text(data.result.msg);
-							$supprogress.find(".progress-bar-success").text(data.result.msg);
+							$supprogress.text(data.result.msg);
 						}
-						//$('#supprogress .progress .progress-bar-success').text("done");
+						//console.log(data);
+						//$supprogress.text("done");
 					}
 				});
 	}
-	
 
 		
 		
@@ -436,10 +465,6 @@
                    recommendInfo: {
                        required: true,
                        maxlength:255
-                   },
-                   description: {
-                       required: true,
-                       maxlength:50
                    },
                    sort: {
                        required: true,
@@ -475,10 +500,6 @@
                    recommendInfo: {
                        required: "不能为空",
                        maxlength:"最多输入255个汉字"
-                   },
-                   description: {
-                       required: "不能为空",
-                       maxlength:"最多输入50个汉字"
                    },
                    sort: {
                        required: "不能为空",
@@ -538,7 +559,11 @@
                submitHandler: function (form) {
                    error3.hide();
                    //验证UE编辑器是否为空
-                   if(UE.getEditor('editor').hasContents()==false){
+                   if(UE.getEditor('content').hasContents()==false){
+    	    		   comm.infoMsg("内容不能为空",null,150);
+    	    		   return ;
+    	    	   }
+                   if(UE.getEditor('description').hasContents()==false){
     	    		   comm.infoMsg("内容不能为空",null,150);
     	    		   return ;
     	    	   }
@@ -549,11 +574,14 @@
            });
 
    }; 
-			
+		
+		
 		/** UEeditor 的初始化**/
 		var initUEeditor = function() {
 			window.UEDITOR_HOME_URL = "${ctx}";
-			UE.getEditor('editor');
+			UE.getEditor('content');
+			UE.getEditor('description');
+			//UE.getEditor('remark');
 		}
 	
 	</script>
