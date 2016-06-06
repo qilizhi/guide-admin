@@ -30,6 +30,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
@@ -154,7 +155,18 @@ public class GuideLineAdminController {
 	@RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
 	public String detail(@PathVariable("id") Integer id, Model model) {
 		GuideLine gs = guideLineService.getGuideLineByPrimaryKey(id);
+		// 价格
+		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+				.getGuideLineDatePriceByLineNo(gs.getLineNo());
+		// 行程
+		GuideLineTrip guideLineTrip = new GuideLineTrip();
+		guideLineTrip.setLineNo(gs.getLineNo());
+		List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
 		model.addAttribute("guideService", gs);
+		
+		
+		model.addAttribute("lsPrices", lsGuideLineDatePrices);
+		model.addAttribute("trips", trips);
 		return "/admin/line/detail";
 	}
 	
@@ -380,8 +392,8 @@ public class GuideLineAdminController {
 			} else {
 				// 新增
 				// 随机生成线路编号
-				int num = (int) (Math.random() * 10000);
-				guideLine.setLineNo("MLXLINE_" + num + System.currentTimeMillis());
+				//int num = (int) (Math.random() * 10000);
+				guideLine.setLineNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
 				// guideLine.setUserNo(shiroUser.getUserNo());
 				// guideLine.setUserName(shiroUser.getName());
 				//guideLine.setUserNo("weixin4");

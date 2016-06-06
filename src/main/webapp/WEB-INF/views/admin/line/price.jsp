@@ -113,32 +113,32 @@
 									<div class="price-condition">
 										<label class="price-condition-label">成人价：</label> <input
 											type="text" id="adultPrice" name="adultPrice"
-											value="" placeholder="请输入成人价" />
+											value="" placeholder="请输入成人价" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">儿童价：</label> <input
 											type="text" id="childPrice" name="childPrice"
-											value="" placeholder="请输入儿童价" />
+											value="" placeholder="请输入儿童价"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">房&nbsp;差：</label> <input
 											type="text" id="roomDiffPrice" name="roomDiffPrice"
-											value="" placeholder="请输入房差" />
+											value="" placeholder="请输入房差" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">保险价：</label> <input
 											type="text" id="safePrice" name="safePrice"
-											value="" placeholder="请输入保险价" />
+											value="" placeholder="请输入保险价" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">签证费：</label> <input
 											type="text" id="visaPrice" name="visaPrice"
-											value="" placeholder="请输入签证费" />
+											value="" placeholder="请输入签证费"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">人&nbsp;数：</label> <input
 											type="text" id="num" name="num"
-											value="" placeholder="请输入人数" />
+											value="" placeholder="请输入人数" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									
 									<!-- 

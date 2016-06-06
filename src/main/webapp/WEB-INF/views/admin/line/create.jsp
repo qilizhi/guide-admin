@@ -135,9 +135,21 @@
 													class="required"> * </span>
 												</label>
 												<div class="col-md-4">
-													<input type="text" name="recommendInfo" data-required="1"
-														class="form-control" value="${guideLine.recommendInfo }" />
+													<textarea  name="recommendInfo" data-required="1"
+														class="form-control" >${guideLine.recommendInfo }</textarea>
 
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-3">线路天数 <span
+													class="required"> * </span>
+												</label>
+												<div class="col-md-4">
+													<input type="text"
+														onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"
+														name="totalDay" data-required="1" class="form-control"
+														value="${guideLine.totalDay }" /> 
+													<!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
 												</div>
 											</div>
 											<div class="form-group">
@@ -153,18 +165,7 @@
 													<!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
 												</div>
 											</div>
-											<div class="form-group">
-												<label class="control-label col-md-3">线路亮点<span
-													class="required"> * </span>
-												</label>
-												<div class="col-md-4">
-													<%-- 	<input type="text" name="description" data-required="1"
-														class="form-control" value="${guideLine.description }" /> --%>
-													<script id="description" type="text/plain"
-														name="description" style="width:600px;height:500px;">${guideLine.description }</script>
-													<div id="editor2_error"></div>
-												</div>
-											</div>
+									
 											<div class="form-group">
 												<label class="control-label col-md-3">排序号 <span
 													class="required"> * </span>
@@ -265,6 +266,18 @@
 														<option value="1">国内</option>
 														<option value="2">出境</option>
 													</select>
+												</div>
+											</div>
+													<div class="form-group">
+												<label class="control-label col-md-3">线路亮点<span
+													class="required"> * </span>
+												</label>
+												<div class="col-md-4">
+													<%-- 	<input type="text" name="description" data-required="1"
+														class="form-control" value="${guideLine.description }" /> --%>
+													<script id="description" type="text/plain"
+														name="description" style="width:600px;height:500px;">${guideLine.description }</script>
+													<div id="editor2_error"></div>
 												</div>
 											</div>
 											<div class="form-group last">

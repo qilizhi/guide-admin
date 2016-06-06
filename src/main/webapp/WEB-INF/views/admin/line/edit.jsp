@@ -93,6 +93,15 @@
 								</div>
 							</div>
 							<div class="form-group">
+								<label class="control-label col-md-3">线路天数 <span
+									class="required" aria-required="true"> * </span>
+								</label>
+								<div class="col-md-4">
+									<input type="text" name="totalDay" data-required="1"
+										class="form-control" value="${guideLine.totalDay }" />
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="control-label col-md-3">线路价格 <span
 									class="required"> * </span>
 								</label>
