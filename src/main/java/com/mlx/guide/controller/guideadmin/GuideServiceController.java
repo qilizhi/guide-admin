@@ -2,8 +2,10 @@ package com.mlx.guide.controller.guideadmin;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,26 +20,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.EStatus;
+import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.entity.GuideLine;
+import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideService;
+import com.mlx.guide.entity.GuideTuan;
+import com.mlx.guide.service.GuideLineDatePriceService;
+import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 import com.mlx.guide.util.StringUtil;
 
 /**
- * 地陪控制器
+ * 导服控制器
  * 
  * @author cyz
- * @category 地陪
+ * @category 导服
  *
  */
 @RequestMapping(value = "/guideAdmin/guideService")
@@ -48,6 +58,10 @@ public class GuideServiceController {
 
 	@Autowired
 	private GuideServiceService guideServiceService;
+	@Autowired
+	private GuideLineService guideLineService;
+	@Autowired
+	private GuideLineDatePriceService guideLineDatePriceService;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -70,7 +84,7 @@ public class GuideServiceController {
 			guideService.setUserNo(shiroUser.getUserNo());
 			guideService.setFlag(EFlag.VALID.getId());
 			PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
-			PageList<GuideService> list = guideServiceService.getGuideServicePageList(guideService,pageBounds);
+			PageList<GuideService> list = guideServiceService.getGuideServicePageList(guideService, pageBounds);
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("guideService", guideService);
@@ -86,6 +100,7 @@ public class GuideServiceController {
 
 	/**
 	 * 新增或更新
+	 * 
 	 * @param file
 	 * @param request
 	 * @param model
@@ -123,6 +138,52 @@ public class GuideServiceController {
 			logger.error(e.getMessage(), e);
 		}
 		return "redirect:/guideAdmin/guideService";
+	}
+
+	/**
+	 * 编辑价格，根据线路编号获取价格表
+	 * @param guideLineDatePrice
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/editPrice/{lineNo}", method = RequestMethod.GET)
+	public String editPrice(GuideLineDatePrice guideLineDatePrice, Model model) {
+
+		String lineNo = guideLineDatePrice.getLineNo();
+		// 根据导服no获取对应的导服
+		GuideService service = guideServiceService.getGuideServiceByServiceNo(lineNo);
+		// 根据导服no获取对应的价格表
+		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+				.getGuideLineDatePriceByLineNo(lineNo);
+		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+		model.addAttribute("service", service);
+		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+		return "guideAdmin/guideService/price";
+	}
+
+	/**
+	 * 保存导服价格
+	 * 
+	 * @param linePrices
+	 *            价格集合
+	 * @param serviceNo
+	 *            导服编号
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
+	public JsonResult savePrice(@RequestParam("params") String linePrices,
+			@PathVariable(value = "lineNo") String serviceNo, Model model) {
+		try {
+			// 先删除所有旧价格，再保存新价格
+			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
+			guideLineDatePriceService.saveGuideLineDatePrice(lsGuideLineDatePrices, serviceNo);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
 	/**

@@ -97,7 +97,8 @@
 											<a class="btn yellow btn-outline" href="${ctx}/guideAdmin/guideService/edit/${item.id}">编辑</a>
 											<a class="btn blue btn-outline" href="javascript:upShow(${item.id})">上线</a>
 											<a class="btn yellow btn-outline" href="${ctx}/guideAdmin/guideService/detail/${item.id}">预览</a>
-											<input type="hidden" name="serviceNo" value="${item.serviceNo}"/>
+											<a class="btn red btn-outline" href="${ctx}/guideAdmin/guideService/editPrice/${item.serviceNo}">价格编辑</a>
+											<input type="hidden" name="lineNo" value="${item.serviceNo}"/>
 											
 										</td>
 									</tr>

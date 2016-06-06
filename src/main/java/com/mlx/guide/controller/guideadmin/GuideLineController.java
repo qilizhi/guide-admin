@@ -146,12 +146,11 @@ public class GuideLineController {
 				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideLineService.createGuideLineSelective(guideLine);
 				model.addAttribute("guideLine", guideLine);
-				return "redirect:/guideAdmin/line/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "guideAdmin/line/create";
 		}
+		return "redirect:/guideAdmin/line/editPrice/" + guideLine.getLineNo(); // 重定向到线路价格页面
 	}
 
 	/**
