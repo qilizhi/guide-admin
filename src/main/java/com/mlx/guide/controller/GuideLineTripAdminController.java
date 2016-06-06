@@ -126,6 +126,8 @@ public class GuideLineTripAdminController {
 				model.addAttribute("lsPrices", lsGuideLineDatePrices);
 				// 新增或更新行程
 				guideLineTripService.updateBitchSelective(guideLineTripModel.getGuideLineTrips());
+				
+				
 				// 行程
 				GuideLineTrip guideLineTrip = new GuideLineTrip();
 				guideLineTrip.setLineNo(lineNo);
