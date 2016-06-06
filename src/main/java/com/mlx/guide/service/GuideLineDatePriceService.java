@@ -158,7 +158,7 @@ public class GuideLineDatePriceService {
 				gt.setCreateTime(new Date());
 				gt.setGoodsType(EGoodsType.LINE.getCode());
 				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
-				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
+				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Tuan.getPrefix()));
 				gt.setName(line.getTitle());
 				gt.setFullNum(line.getNum());
 				gt.setUserNo(line.getUserNo());
@@ -207,7 +207,7 @@ public class GuideLineDatePriceService {
 				gt.setCreateTime(new Date());
 				gt.setGoodsType(EGoodsType.LOCAL.getCode());
 				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
-				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
+				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Tuan.getPrefix()));
 				gt.setName(guideSevice.getTitle());
 				gt.setFullNum(guideSevice.getNum());
 				gt.setUserNo(guideSevice.getUserNo());
