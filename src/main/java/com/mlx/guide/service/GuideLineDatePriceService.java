@@ -17,6 +17,7 @@ import com.mlx.guide.dao.GuideTuanMapper;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
+import com.mlx.guide.entity.GuideTuan;
 
 @Service
 @Transactional
@@ -130,7 +131,11 @@ public class GuideLineDatePriceService {
 	public void saveGuideLineDatePriceByLineNo(List<GuideLineDatePrice> guideLineDatePriceList,String lineNo){
 		//delete 
 		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
-		guideTuanMapper.deleteGuideTuanByLineNo(lineNo);
+		
+		List<GuideTuan> tuanList = guideTuanMapper.getGuideTuanPageList(new GuideTuan());
+		if(tuanList.size()<=0){
+			guideTuanMapper.deleteGuideTuanByLineNo(lineNo);
+		}
 		guideLineTripMapper.deleteGuideLineTripByLineNo(lineNo);
 		//save
 		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
@@ -146,6 +151,18 @@ public class GuideLineDatePriceService {
 			trip.setCreateTime(new Date());
 			guideLineTripService.insertSelective(trip);
 		}
+		
+	}
+	
+	@Transactional
+	public void saveGuideLineDatePrice(List<GuideLineDatePrice> guideLineDatePriceList,String lineNo){
+		//delete 
+		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
+		//save
+		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
+			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
+		}
+	
 		
 	}
 }
