@@ -39,6 +39,12 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">行程天数：</label>
+					<div class="col-lg-5">
+						<label class="control-label"><span id="title">${guideService.totalDay}</span></label>
+					</div>
+				</div>
+				<div class="form-group form-md-line-input">
 					<label class="col-lg-3 control-label">描述：</label>
 					<div class="col-lg-5">
 						<label class="control-label"> <span>${guideService.description}</span></label>

@@ -39,18 +39,100 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">描述：</label>
+					<label class="col-lg-3 control-label">行程天数：</label>
 					<div class="col-lg-5">
-						<label class="control-label"> <span>${guideService.description}</span>
-						</label>
+						<label class="control-label"><span id="title">${guideService.totalDay}</span></label>
+					</div>
+				</div>
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">线路亮点：</label>
+					<div class="col-lg-5">
+					
+					
+					<div class="portlet box green">
+															<div class="portlet-title">
+																<div class="caption font-red-intense">
+																	<i class="icon-speech font-white-intense"></i> <span
+																		class="caption-subject bold uppercase"></span> <span
+																		class="caption-helper"></span>
+																</div>
+																<div class="tools">
+																	<a href="" class="collapse" title="展开/关闭"> </a>
+																	<!--  <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a> -->
+																	<!--  <a href="" class="reload" data-original-title="" title=""> </a>
+                                        <a href="" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="" class="remove" data-original-title="" title=""> </a> -->
+																</div>
+															</div>
+															<div class="portlet-body">
+																<div id="context2" data-toggle="context"
+																	data-target="#context-menu">${guideService.description}</div>
+
+															</div>
+															<!-- 	<div class="portlet-title">
+									<div class="caption font-red-intense">
+									<i class="icon-speech font-red-intense"></i> <span
+										class="caption-subject bold uppercase">内容</span> <span
+										class="caption-helper"></span>
+								</div>
+								<div class="tools">
+									<a href="" class="collapse" title="展开/关闭"> </a>
+									 <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+									 <a href="" class="reload" data-original-title="" title=""> </a>
+                                        <a href="" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="" class="remove" data-original-title="" title=""> </a>
+								</div>
+							</div> -->
+
+														</div>
+					
+						<%-- <label class="control-label"> <span>${guideService.description}</span>
+						</label> --%>
 					</div>
 
 				</div>
 				<div class="form-group form-md-line-input">
 					<label class="col-lg-3 control-label">内容：</label>
 					<div class="col-lg-5">
-						<label class="control-label"> <span>${guideService.content}</span>
-						</label>
+					
+					<div class="portlet box blue">
+															<div class="portlet-title">
+																<div class="caption font-red-intense">
+																	<i class="icon-speech font-white-intense"></i> <span
+																		class="caption-subject bold uppercase"></span> <span
+																		class="caption-helper"></span>
+																</div>
+																<div class="tools">
+																	<a href="" class="collapse" title="展开/关闭"> </a>
+																	<!--  <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a> -->
+																	<!--  <a href="" class="reload" data-original-title="" title=""> </a>
+                                        <a href="" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="" class="remove" data-original-title="" title=""> </a> -->
+																</div>
+															</div>
+															<div class="portlet-body">
+																<div id="context2" data-toggle="context"
+																	data-target="#context-menu">${guideService.content}</div>
+
+															</div>
+															<!-- 	<div class="portlet-title">
+									<div class="caption font-red-intense">
+									<i class="icon-speech font-red-intense"></i> <span
+										class="caption-subject bold uppercase">内容</span> <span
+										class="caption-helper"></span>
+								</div>
+								<div class="tools">
+									<a href="" class="collapse" title="展开/关闭"> </a>
+									 <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+									 <a href="" class="reload" data-original-title="" title=""> </a>
+                                        <a href="" class="fullscreen" data-original-title="" title=""> </a>
+                                        <a href="" class="remove" data-original-title="" title=""> </a>
+								</div>
+							</div> -->
+
+														</div>
+						<%-- <label class="control-label"> <span>${guideService.content}</span>
+						</label> --%>
 					</div>
 
 				</div>
@@ -131,6 +213,76 @@
 						<label class="control-label"> <span>${guideService.sort}</span></label>
 					</div>
 				</div> 
+				
+				<h4 class="form-section">价格</h4>
+
+												<div class="form-group">
+													<table class="table table-striped table-bordered">
+														<thead>
+															<tr>
+																<th scope="col">线路编号</th>
+																<th scope="col">成人价</th>
+																<th scope="col">儿童价</th>
+																<!-- <th scope="col">美丽价</th> -->
+																<th scope="col">房差</th>
+																<th scope="col">保险价</th>
+																<th scope="col">签证费</th>
+																<th scope="col">出行日期</th>
+
+															</tr>
+														</thead>
+														<tbody>
+
+															<c:forEach items="${lsPrices}" var="item">
+																<tr>
+																	<td>${item.lineNo}</td>
+																	<td>${item.adultPrice}</td>
+																	<td>${item.childPrice}</td>
+																	<%-- <td>${item.mlxPrice}</td> --%>
+																	<td>${item.roomDiffPrice}</td>
+																	<td>${item.safePrice}</td>
+																	<td>${item.visaPrice}</td>
+																	<td><fmt:formatDate value="${item.lineDate}"
+																			pattern="yyyy-MM-dd HH:mm:ss" /></td>
+
+																</tr>
+															</c:forEach>
+														</tbody>
+													</table>
+												</div>
+
+												<h4 class="form-section">行程</h4>
+
+
+												<div class="form-group">
+													<table class="table table-striped table-bordered">
+														<thead>
+															<tr>
+																<th scope="col">线路编号</th>
+																<th scope="col">第几天</th>
+																<th scope="col">地点</th>
+																<th scope="col">交通</th>
+																<th scope="col">住宿</th>
+																<th scope="col">主要行程</th>
+
+															</tr>
+														</thead>
+														<tbody>
+
+															<c:forEach items="${trips}" var="item">
+																<tr>
+																	<td>${item.lineNo}</td>
+																	<td>${item.day}</td>
+																	<td>${item.address}</td>
+																	<td>${item.traffic}</td>
+																	<td>${item.hotel}</td>
+																	<td>${item.tripDetail}</td>
+																</tr>
+															</c:forEach>
+														</tbody>
+													</table>
+												</div>
+												
 				<div class="form-group form-md-line-input">
 					<div class="col-lg-9 col-lg-offset-3">
 						<input id="cancel_btn" class="btn btn-primary " type="button"

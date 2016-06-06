@@ -24,6 +24,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
@@ -31,6 +32,7 @@ import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.GuideServiceService;
+import com.mlx.guide.util.StringUtil;
 
 @Controller
 @RequestMapping(value = "/admin/guideService")
@@ -156,7 +158,7 @@ public class GuideServiceAdminController {
 				guideService.updateByPrimaryKeySelective(guideS);
 			} else {
 				guideS.setStatus(EStatus.EDIT.getId());
-				String gServiceNo="MLX_GS_"+System.currentTimeMillis()+RandomUtils.nextInt(9999);
+				String gServiceNo=StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix());
 				guideS.setServiceNo(gServiceNo);
 				guideS.setCreateTime(new Date());
 				guideS.setUpdateTime(new Date());

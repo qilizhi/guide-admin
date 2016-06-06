@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.miemiedev.mybatis.paginator.domain.Order;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
@@ -68,7 +70,8 @@ public class GuideLineTripAdminController {
 			try {
 				guideLineTrip.setLineNo(lineNo);
 				guideLineTrip.setFlag(EFlag.VALID.getId().byteValue());
-				List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
+				PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
+				List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
 				model.addAttribute("list", list);
 				model.addAttribute("lineNo", lineNo);
 				model.addAttribute("startDate", startDate);
@@ -123,6 +126,8 @@ public class GuideLineTripAdminController {
 				model.addAttribute("lsPrices", lsGuideLineDatePrices);
 				// 新增或更新行程
 				guideLineTripService.updateBitchSelective(guideLineTripModel.getGuideLineTrips());
+				
+				
 				// 行程
 				GuideLineTrip guideLineTrip = new GuideLineTrip();
 				guideLineTrip.setLineNo(lineNo);
