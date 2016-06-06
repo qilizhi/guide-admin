@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.alibaba.fastjson.JSON;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
@@ -29,14 +30,18 @@ import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideInfo;
+import com.mlx.guide.entity.GuideLine;
+import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideService;
+import com.mlx.guide.entity.GuideServicePrice;
 import com.mlx.guide.service.GuideInfoService;
+import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.util.StringUtil;
 
 @Controller
 @RequestMapping(value = "/admin/guideService")
-@SessionAttributes(value="test")
+@SessionAttributes(value = "test")
 public class GuideServiceAdminController {
 
 	private Logger logger = LoggerFactory.getLogger(GuideServiceAdminController.class);
@@ -44,6 +49,10 @@ public class GuideServiceAdminController {
 	private GuideServiceService guideService;
 	@Autowired
 	private GuideInfoService guideInfoService;
+	@Autowired
+	private GuideLineDatePriceService guideDPService;
+	@Autowired
+	private GuideLineDatePriceService guideLineDatePriceService;
 
 	@ModelAttribute
 	public void commod(Model model) {
@@ -60,9 +69,10 @@ public class GuideServiceAdminController {
 	public String detail(@PathVariable("id") Long id, Model model) {
 		GuideService gs = guideService.selectByPrimaryKey(id);
 		model.addAttribute("guideService", gs);
-	
+
 		return "/admin/guideService/detail";
 	}
+
 	/**
 	 * 创建跳转
 	 * 
@@ -74,7 +84,6 @@ public class GuideServiceAdminController {
 		model.addAttribute("operaTitle", "新增");
 		return "admin/guideService/create";
 	}
-
 
 	/**
 	 * 查询导游用户列表下拉树。
@@ -121,7 +130,7 @@ public class GuideServiceAdminController {
 		model.addAttribute("serviceNo", gs.getServiceNo());
 		return "admin/guideService/list";
 	}
-	
+
 	/**
 	 * 编辑跳转
 	 * 
@@ -149,30 +158,68 @@ public class GuideServiceAdminController {
 	 */
 	@RequestMapping(value = "/saveOrUpdate", method = RequestMethod.POST)
 	public String save(GuideService guideS) {
-		if (guideS == null) {
-			return null;
-		}
+
 		try {
-			if (guideS.getId() != null ) {
+			if (guideS.getId() != null) {
 				guideS.setUpdateTime(new Date());
 				guideService.updateByPrimaryKeySelective(guideS);
+				return "redirect:/admin/guideService/price/"+guideS.getServiceNo();
+				
 			} else {
+				String gServiceNo = StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix());
 				guideS.setStatus(EStatus.EDIT.getId());
-				String gServiceNo=StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix());
 				guideS.setServiceNo(gServiceNo);
 				guideS.setCreateTime(new Date());
 				guideS.setUpdateTime(new Date());
 				guideS.setFlag(EFlag.VALID.getId());
 				guideS.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideService.insertSelective(guideS);
+				return "redirect:/admin/guideService/price/"+guideS.getServiceNo();
 			}
-			return "redirect:/admin/guideService";
+			//guideS=guideService.selectByPrimaryKey(id.longValue());
+
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return null;
 		}
 	}
 
+	
+	/**
+	 * 保存价格
+	 * 
+	 * @param linePrices
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/price/save/{serviceNo}", method = RequestMethod.POST)
+	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("serviceNo") String serviceNo) {
+		try {
+			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
+			guideLineDatePriceService.saveGuideLineDatePriceByServiceNo(lsGuideLineDatePrices, serviceNo);
+			// guideLineDatePriceService.saveGuideLineDatePriceBitch(lsGuideLineDatePrices);
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
+	}
+	/**
+	 * 更新信息
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/price/{guideServiceNo}", method = RequestMethod.GET)
+	public String editPrice(@PathVariable("guideServiceNo") String guideServiceNo ,Model model) {
+		GuideService guideS = guideService.getGuideServiceByServiceNo(guideServiceNo);
+		// 根据线路no获取对应的价格表
+		List<GuideLineDatePrice> lsGuideLineDatePrices = guideDPService.getGuideLineDatePriceByLineNo(guideServiceNo);
+		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+		model.addAttribute("guideLine", guideS);
+		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+		return "/admin/guideService/price";
+	}
 
 	/**
 	 * 上下线功能。
@@ -187,9 +234,9 @@ public class GuideServiceAdminController {
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
-		
-		//检查是否审核通过
-		if(guideService.selectByPrimaryKey(id).getAuditStatus()!=EAuditStatus.AUDIT_OK.getId()){
+
+		// 检查是否审核通过
+		if (guideService.selectByPrimaryKey(id).getAuditStatus() != EAuditStatus.AUDIT_OK.getId()) {
 			return new JsonResult(ExceptionCode.FAIL, "审核不通过不能上线！");
 		}
 		GuideService gs = new GuideService();
@@ -220,8 +267,8 @@ public class GuideServiceAdminController {
 		if (id == null) {
 			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
 		}
-		
-		if(EAuditStatus.AUDIT_NOSUBMIT.getId()==guideService.selectByPrimaryKey(id).getAuditStatus()){
+
+		if (EAuditStatus.AUDIT_NOSUBMIT.getId() == guideService.selectByPrimaryKey(id).getAuditStatus()) {
 			return new JsonResult(ExceptionCode.FAIL, "未提交审核，不能审核");
 		}
 		GuideService gs = new GuideService();

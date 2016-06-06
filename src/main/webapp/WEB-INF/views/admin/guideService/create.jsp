@@ -57,6 +57,16 @@
 			<form id="inputForm" action="${ctx}/admin/guideService/saveOrUpdate"
 				method="post" class="form-horizontal mlx-form">
 				<input type="hidden" id="id" name="id" value="${guideS.id}" />
+				<c:if test="${guideS.id !=null }">
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">导服编号：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control" name="serviceNo" id="title"
+							value="${guideS.serviceNo}" placeholder="这里输入标题"  readonly="readonly"/>
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				</c:if>
 				<div class="form-group form-md-line-input">
 					<label class="col-lg-3 control-label">标题：</label>
 					<div class="col-lg-5">
@@ -131,7 +141,7 @@
 						<div id="smallImgUrl">
 							<div id="supprogress">
 								<input type="hidden" name="smallImgUrl"
-									value="${guideStrategy.imgUrl }" /> <span class="imageName"></span>
+									value="${guideS.smallImgUrl }" /> <span class="imageName"></span>
 								<div class="progress">
 									<div class="progress-bar progress-bar-success"
 										role="progressbar" aria-valuenow="40" aria-valuemin="0"
@@ -142,7 +152,7 @@
 							</div>
 							<div class="list">
 								<img class="img-list" alt=""
-									src="${guideStrategy.imgUrl }">
+									src="${guideS.smallImgUrl }">
 							</div>
 							<span class="btn green fileinput-button pading list"> <i
 								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
@@ -227,7 +237,7 @@
 				<div class="form-group">
 					<div class="col-lg-9 col-lg-offset-3">
 						<button id="submit_btn" type="submit" data-loading-text="提交中..."
-							autocomplete="off" class="btn btn-primary">提交</button>
+							autocomplete="off" class="btn btn-primary">保存并下一步</button>
 						<input id="cancel_btn" class="btn btn-primary " type="button"
 							value="返回" onclick="history.back()" />
 					</div>

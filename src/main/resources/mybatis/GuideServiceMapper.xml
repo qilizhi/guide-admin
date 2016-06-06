@@ -181,7 +181,7 @@
 		#{smallImgUrl,jdbcType=VARCHAR}),
 		#{totalDay,jdbcType=INTEGER})
 	</insert>
-	<insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideService">
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideService"  keyProperty="id" useGeneratedKeys="true">
 		insert into guide_service
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -314,7 +314,7 @@
 			</if>
 		</trim>
 	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideService">
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideService" >
 		update guide_service
 		<set>
 			<if test="userNo != null">

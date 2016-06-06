@@ -22,6 +22,7 @@ import com.mlx.guide.dao.GuideTuanMapper;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
+import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.util.StringUtil;
 
@@ -41,6 +42,9 @@ public class GuideLineDatePriceService {
 	private GuideLineService guideLineService;
 	@Autowired
 	private GuideLineTripService guideLineTripService;
+	
+	@Autowired
+	private GuideServiceService guideSService;
 
 	public List<GuideLineDatePrice> getGuideLineDatePriceList() {
 		return guideLineDatePriceMapper.getGuideLineDatePriceList();
@@ -184,5 +188,54 @@ public class GuideLineDatePriceService {
 			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
 		}
 
+	}
+	@Transactional
+	public void saveGuideLineDatePriceByServiceNo(List<GuideLineDatePrice> guideLineDatePriceList, String serviceNo) {
+		// delete
+		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(serviceNo);
+		// 查询线路
+		GuideService guideSevice = guideSService.getGuideServiceByServiceNo(serviceNo);
+		// save
+		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
+			guideLineDatePrice.setNum(guideSevice.getNum());
+			GuideTuan gt = new GuideTuan();
+			// 根据时间及产品编号查询。是否这天有团
+			gt.setTuanDate(guideLineDatePrice.getLineDate());
+			gt.setGoodsNo(guideLineDatePrice.getLineNo());
+			List<GuideTuan> gts = guideTuanMapper.getGuideTuanPageList(gt);
+			if (gts.size() <= 0) {// 没有则插入
+				gt.setCreateTime(new Date());
+				gt.setGoodsType(EGoodsType.LOCAL.getCode());
+				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
+				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
+				gt.setName(guideSevice.getTitle());
+				gt.setFullNum(guideSevice.getNum());
+				gt.setUserNo(guideSevice.getUserNo());
+				gt.setUserName(guideSevice.getUserName());
+				guideTuanMapper.insertSelective(gt);
+				
+			} else {
+				for (GuideTuan g : gts) {
+					if (!g.getTuanStatus().equals(ETuanStatus.TOURED.getId().byteValue())) {
+						gt.setId(g.getId());
+						gt.setCreateTime(new Date());
+						gt.setGoodsType(EGoodsType.LOCAL.getCode());
+						gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
+						gt.setName(guideSevice.getTitle());
+						gt.setFullNum(guideSevice.getNum());
+						gt.setUserNo(guideSevice.getUserNo());
+						gt.setUserName(guideSevice.getUserName());
+						guideTuanMapper.updateByPrimaryKeySelective(gt);
+					} else {
+						
+						logger.info(
+								"这个团已出团不能修改：" + g.getTuanNo() + "产品编号：" + g.getGoodsNo() + "类型：" + g.getGoodsType());
+					}
+					
+				}
+			}
+			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
+		}
+		
 	}
 }
