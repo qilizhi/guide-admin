@@ -122,8 +122,8 @@ public class GuideLineController {
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String saveOrUpdate(Model model, GuideLine guideLine,
-			@RequestParam(value = "oldPrice") BigDecimal oldPrice) {
+	public String saveOrUpdate(Model model, GuideLine guideLine, @RequestParam(value = "oldPrice") BigDecimal oldPrice,
+			@RequestParam(value = "oldTotalDay") Integer oldTotalDay) {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
@@ -131,6 +131,10 @@ public class GuideLineController {
 				// 比较价格
 				if (oldPrice.compareTo(guideLine.getPrice()) != 0) {
 					guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
+				}
+				// 比较天数
+				if (guideLine.getTotalDay()!=oldTotalDay.intValue()) {
+					guideLineTripService.deleteGuideLineTripByLineNo(guideLine.getLineNo());
 				}
 				// 更新
 				guideLineService.updateGuideLineSelective(guideLine);
@@ -200,32 +204,12 @@ public class GuideLineController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
-	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,Model model) {
+	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
+			Model model) {
 		try {
-			// 获取当前用户
-			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-			// 先删除旧价格、行程，再保存
+			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
-			// 获取当前线路
-			GuideLine line = guideLineService.getGuideLineByLineNo(lineNo);
-			GuideTuan tuan = new GuideTuan();
-			// 插入团信息
-			for (GuideLineDatePrice g : lsGuideLineDatePrices) {
-				tuan.setName(line.getTitle());
-				int num = (int) (Math.random() * (9999 - 1000 + 1)) + 1000;
-				tuan.setTuanNo("T" + System.currentTimeMillis() + num);
-				tuan.setTuanDate(g.getLineDate());
-				tuan.setGoodsType(EGoodsType.B.getCode());
-				tuan.setGoodsNo(lineNo);
-				tuan.setCreateTime(new Date());
-				tuan.setFullNum(line.getNum());
-				tuan.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
-				tuan.setUserNo(shiroUser.getUserNo());
-				tuan.setUserName(shiroUser.getName());
-				guideTuanService.insertSelective(tuan);
-			}
-
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

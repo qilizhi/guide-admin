@@ -145,7 +145,8 @@
 									class="required"> * </span>
 								</label>
 								<div class="col-md-4">
-									<input type="text" name="totalDay" data-required="1" class="form-control" value="${guideLine.totalDay }"/>
+									<input type="text" name="totalDay" data-required="1" class="form-control" value="${guideLine.totalDay }" />
+									<input type="hidden" name="oldTotalDay" value="${guideLine.totalDay }"/><!-- 修改前先把旧的天数存起来，修改天数时对应把旧的行程删掉 -->
 								</div>
 							</div>
 							<div class="form-group">
@@ -433,15 +434,18 @@
 				});
 	}
 
-		
+	  //自定义 表单验证规则
+	  	jQuery.validator.addMethod("totalDay", function (value, element) {
+	  		var totalDay = /^\+?[1-9]\d*$/;
+	  		return this.optional(element) || (totalDay.test(value));
+	  	}, "天数不能为0");
 		
 		//验证框架
 		  var handleValidation3 = function() {	
            var form3 = $('#form_sample_3');
            var error3 = $('.alert-danger', form3);
            var success3 = $('.alert-success', form3);
-
-         
+       	
            form3.validate({
                errorElement: 'span', //default input error message container
                errorClass: 'help-block help-block-error', // default input error message class
@@ -460,7 +464,9 @@
                    totalDay: {
                 	   required: true,
                 	   digits:true,
-                       maxlength:3
+                       maxlength:3,
+                       totalDay:true,  //调用自定义的验证规则
+                       range:[1,366] 
                    },
                    recommendInfo: {
                        required: true,
@@ -495,7 +501,8 @@
                    totalDay: {
                 	   required: "不能为空",
                 	   digits:"请输入整数",
-                       maxlength:"最多输入3位数"
+                       maxlength:"最多输入3位数",
+                       range: "请输入一个介于 {0} 和 {1} 之间的值"
                    },
                    recommendInfo: {
                        required: "不能为空",
@@ -567,8 +574,9 @@
     	    		   comm.infoMsg("内容不能为空",null,150);
     	    		   return ;
     	    	   }
+                
                    success3.show();
-                   form[0].submit(); // submit the form
+               	   form[0].submit(); // submit the form
                }
 
            });
