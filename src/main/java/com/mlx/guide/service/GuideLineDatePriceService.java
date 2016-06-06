@@ -149,7 +149,7 @@ public class GuideLineDatePriceService {
 			List<GuideTuan> gts = guideTuanMapper.getGuideTuanPageList(gt);
 			if (gts.size() <= 0) {// 没有则插入
 				gt.setCreateTime(new Date());
-				gt.setGoodsType(EGoodsType.LINE.getName());
+				gt.setGoodsType(EGoodsType.LINE.getCode());
 				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
 				gt.setName(line.getTitle());
 				gt.setFullNum(line.getNum());
