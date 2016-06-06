@@ -136,34 +136,11 @@
 											value="" placeholder="请输入签证费" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">人&nbsp;数：</label> <input
-											type="text" id="num" name="num"
-											value="" placeholder="请输入人数" />
+										<label class="price-condition-label">人数：</label>
+										 <input type="text" name="num" id="num" value="${guideLine.num}"/>
+											
 									</div>
 									
-									<!-- 
-									<div class="price-condition">
-										<label class="price-condition-label">指定时间段:</label>
-										</div>
-									<div class="price-condition">	
-										<div class="date date-picker col-md-3" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
-											<input type="text" class="WdatePicker " readonly
-												name="beginTime"> <span class="">
-												<button class="btn default cal" type="button">
-													<i class="fa fa-calendar"></i>
-												</button>
-											</span>
-										</div>
-										<label class="price-condition-label col-md-1">至</label>
-										<div class="date date-picker col-md-8" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
-											<input type="text" class="WdatePicker " readonly
-												name="endTime"> <span class="">
-												<button class="btn default cal" type="button">
-													<i class="fa fa-calendar"></i>
-												</button>
-											</span>
-										</div>
-									</div> -->
 									
 									<div class="price-condition">
 									<label class="price-condition-label">指定时间段:</label>
@@ -222,6 +199,7 @@
 							<!-- 价格日历 -->
 
 							<input type="hidden" name="routeid" value="${guideLine.lineNo}" />
+							<input type="hidden" name="num" id="num" value="${guideLine.num}"/><!-- 从线路中获取满员人数 -->
 							<div class="price-condition red">温馨提示:生成价格、清除价格、保存价格都是根据条件设置范围来操作数据的变化的;单击日历单元格可进行编辑.</div>
 
 							<div id="priceCalendar" style="width: 930px;"></div>
@@ -263,8 +241,8 @@
 					safePrice:$.isNumeric($("#safePrice").val()) ? $("#safePrice").val() : 0,
 					visaPrice:$.isNumeric($("#visaPrice").val()) ? $("#visaPrice").val() : 0,
 					num:$.isNumeric($("#num").val()) ? $("#num").val() : 0,
-							
-							
+						
+									
 					beginTime:$("input[type='text'][name='beginTime']").val(),
 					endTime:$("input[type='text'][name='endTime']").val(),
 					weekDays:$weekDays,
@@ -314,6 +292,7 @@
 			getRoutePriceData:function(){
 				var $routePrices = [];
 				var $BasePrices = this.getBasePrice();
+				console.log($BasePrices)
 				$("#priceCalendar td.td").each(function(i,obj){
 					var adultPrice = $(obj).attr("data-cprice");
 					var childPrice = $(obj).attr("data-eprice");
@@ -379,7 +358,7 @@
 	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
-	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""> </div>'; 
+	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""></div>'; 
 	        
 	   
 	      
@@ -390,7 +369,7 @@
 			    json: result, //传递过来的json ${lineDataPrices}
 			    startTime:new Date(),
 			    tdAttrs: function(jsonObj){
-			    	//console.log(jsonObj)
+			    	console.log(jsonObj)
 			    	if(!jsonObj){
 			    		return "";
 			    	}
@@ -412,10 +391,12 @@
 			    	if($("#visaPrice").val().length <= 0){
 			    		$("#visaPrice").val(jsonObj.visaPrice);
 			    	}
+			    	//拿页面num值
+			    	var $lineNum=$("input[type='hidden'][name=num]").val();
 			    	if($("#num").val().length <= 0){
-			    		$("#num").val(jsonObj.num);
+			    		//$("#num").val(jsonObj.num);
+			    		$("#num").val($lineNum);
 			    	}
-			    	
 			    	var $value = $("#select-routeOrderType option:selected").val();
 			    	var $attr = " @attrName = '@attrValue' ";
 			    	var $attrString = "";
@@ -429,7 +410,8 @@
 			    	$attrString += $attr.replace("@attrName", "data-roomDiffPrice").replace("@attrValue", jsonObj.roomDiffPrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-safePrice").replace("@attrValue", jsonObj.safePrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-visaPrice").replace("@attrValue", jsonObj.visaPrice || "");
-			    	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || "");
+			    	//$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || "");
+			    	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", $lineNum || "");
 			    	return $attrString;
 			    },
 			    //td点击事件
@@ -495,11 +477,9 @@
 					comm.infoMsg("请输入成人价",null,150);
 					return;
 				}
-				//请输入保险价,人数
+				//请输入保险价
 				if($.trim($BasePrices.safePrice).length <= 0 
-						|| parseInt($BasePrices.safePrice,0) <= 0
-						|| $.trim($BasePrices.num).length <= 0 
-						|| parseInt($BasePrices.num,0) <= 0){
+						|| parseInt($BasePrices.safePrice,0) <= 0){
 					comm.infoMsg("请输入保险价和人数",null,150);
 					return;
 				} 
@@ -523,13 +503,13 @@
 				
 				//json生成
 				var $data = $mPriceEdit.getRoutePriceData();
-				console.log($data.length);
+				//console.log($data.length);
 				if($data.length <= 0){
 					comm.infoMsg("请生成日期价格数据",null,150);
 					return;
 				}
 				$data = JSON.stringify($data);
-				console.log($data);
+				//console.log($data);
 				var $url = $(this).attr("href");
 				var $lineNo = $("input[name='lineNo']").val();
 				comm.confirm("提示","确定现在提交吗?",function(){
@@ -599,7 +579,7 @@
 					$("input[type='text'][name='data-roomDiffPrice']",$(obj)).val($BasePrices.roomDiffPrice);
 					$("input[type='text'][name='data-safePrice']",$(obj)).val($BasePrices.safePrice);
 					$("input[type='text'][name='data-visaPrice']",$(obj)).val($BasePrices.visaPrice);
-					$("input[type='text'][name='data-num']",$(obj)).val($BasePrices.num);
+					$("input[type='text'][name='num']",$(obj)).val($BasePrices.num);
 				});
 			});
 			
@@ -629,7 +609,6 @@
 						$(obj).removeAttr("data-roomDiffPrice","");
 						$(obj).removeAttr("data-safePrice","");
 						$(obj).removeAttr("data-visaPrice","");
-						$(obj).removeAttr("data-num","");
 						
 						$("span.price",$(obj)).html("<dfn>¥</dfn>--");
 						//$("input[type='text'][name='minprice']",$(obj)).val("");
@@ -637,7 +616,6 @@
 						$("input[type='text'][name='roomDiffPrice']",$(obj)).val("");
 						$("input[type='text'][name='safePrice']",$(obj)).val("");
 						$("input[type='text'][name='visaPrice']",$(obj)).val("");
-						$("input[type='text'][name='num']",$(obj)).val("");		
 						
 						//清空input里的价格
 						$("#adultPrice").val("");
@@ -646,12 +624,9 @@
 				    	$("#roomDiffPrice").val("");
 				    	$("#safePrice").val("");
 				    	$("#visaPrice").val("");
-				    	$("#num").val("");
 				    	//清空日期插件input
 				    	$("input[name=beginTime]").val("");
 				    	$("input[name=endTime]").val("");
-				    	//初始化日历插件 datepicker
-				        //$('.date-picker').datepicker();
 				    	
 					});
 				});

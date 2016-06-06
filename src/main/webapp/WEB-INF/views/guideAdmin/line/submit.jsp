@@ -196,6 +196,7 @@
 											<th scope="col">房差</th>
 											<th scope="col">保险价</th>
 											<th scope="col">签证费</th>
+											<th scope="col">满员人数</th>
 											<th scope="col">出行日期</th>
 											
 										</tr>
@@ -210,6 +211,7 @@
 												<td>${item.roomDiffPrice}</td>
 												<td>${item.safePrice}</td>
 												<td>${item.visaPrice}</td>
+												<td>${item.num}</td>
 												<td><fmt:formatDate value="${item.lineDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 												
 											</tr>

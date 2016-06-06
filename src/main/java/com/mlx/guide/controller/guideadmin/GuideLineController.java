@@ -149,8 +149,8 @@ public class GuideLineController {
 				guideLine.setStatus(EStatus.EDIT.getId());
 				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideLineService.createGuideLineSelective(guideLine);
-				model.addAttribute("guideLine", guideLine);
 			}
+			model.addAttribute("guideLine", guideLine);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -205,7 +205,7 @@ public class GuideLineController {
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
-			Model model) {
+			GuideLineDatePrice guideLineDatePrice,Model model) {
 		try {
 			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
