@@ -75,7 +75,7 @@ public class GuideLineTripController {
 		try {
 			// 获取当前用户
 			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-			PageBounds pageBounds = new PageBounds(1, 20, Order.formString("day.asc"));
+			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
 			guideLineTrip.setLineNo(lineNo);
 			guideLineTrip.setFlag(EFlag.VALID.getId().byteValue());
 			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
