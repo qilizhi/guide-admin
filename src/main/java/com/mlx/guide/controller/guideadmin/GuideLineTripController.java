@@ -101,7 +101,7 @@ public class GuideLineTripController {
 	@RequestMapping(value = "edit/{lineNo}")
 	public String edit(@PathVariable String lineNo, GuideLineTrip guideLineTrip, Model model) {
 		try {
-			PageBounds pageBounds = new PageBounds(1, 20, Order.formString("day.asc"));
+			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
 			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
 			model.addAttribute("list", trips);
 			model.addAttribute("lineNo", lineNo);
