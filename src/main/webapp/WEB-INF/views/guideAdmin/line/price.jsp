@@ -112,32 +112,32 @@
 									</div> -->
 									<div class="price-condition">
 										<label class="price-condition-label">成人价：</label> <input
-											type="text" id="adultPrice" name="adultPrice"
+											type="text" id="adultPrice" name="adultPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入成人价" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">儿童价：</label> <input
-											type="text" id="childPrice" name="childPrice"
+											type="text" id="childPrice" name="childPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入儿童价" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">房&nbsp;差：</label> <input
-											type="text" id="roomDiffPrice" name="roomDiffPrice"
+											type="text" id="roomDiffPrice" name="roomDiffPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入房差" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">保险价：</label> <input
-											type="text" id="safePrice" name="safePrice"
+											type="text" id="safePrice" name="safePrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入保险价" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">签证费：</label> <input
-											type="text" id="visaPrice" name="visaPrice"
+											type="text" id="visaPrice" name="visaPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入签证费" />
 									</div>
-									<div class="price-condition">
-										<label class="price-condition-label">人数：</label>
-										 <input type="text" name="num" id="num" value="${guideLine.num}"/>
+									<div class="price-condition" >
+										<label class="price-condition-label">人&nbsp;数：</label>
+										 <input type="text" name="num" id="num" value="${guideLine.num}" readonly="readonly"/>
 											
 									</div>
 									
@@ -358,7 +358,7 @@
 	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
-	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""></div>'; 
+	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""  readonly="readonly"></div>'; 
 	        
 	   
 	      
@@ -411,7 +411,7 @@
 			    	$attrString += $attr.replace("@attrName", "data-safePrice").replace("@attrValue", jsonObj.safePrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-visaPrice").replace("@attrValue", jsonObj.visaPrice || "");
 			    	//$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || "");
-			    	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", $lineNum || "");
+			    	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", $lineNum || ""); //$lineNum页面隐藏域num值
 			    	return $attrString;
 			    },
 			    //td点击事件
