@@ -12,8 +12,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.authz.annotation.RequiresUser;
-import org.junit.internal.runners.statements.Fail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,19 +32,14 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EGoodsType;
-import com.mlx.guide.constant.EGuestStatus;
 import com.mlx.guide.constant.ELineType;
 import com.mlx.guide.constant.ESignInStatus;
-import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.constant.OrderPayType;
 import com.mlx.guide.entity.EmGroup;
-import com.mlx.guide.entity.EmGroupUser;
 import com.mlx.guide.entity.EmUser;
-import com.mlx.guide.entity.GuideLine;
-import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.entity.GuideTuanGuest;
 import com.mlx.guide.entity.UserInfo;
@@ -59,9 +52,7 @@ import com.mlx.guide.service.EasemobClientService;
 import com.mlx.guide.service.EmGroupService;
 import com.mlx.guide.service.EmGroupUserService;
 import com.mlx.guide.service.EmUserService;
-import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideOrderService;
-import com.mlx.guide.service.GuideServiceService;
 import com.mlx.guide.service.GuideTuanGuestService;
 import com.mlx.guide.service.GuideTuanService;
 import com.mlx.guide.service.UserInfoService;
@@ -190,26 +181,27 @@ public class GuideTuanAdminController {
 		opTuan.setPersonNum(guideTuanGuests.size());
 		opTuan.setOrderNum(orders.size());
 		//查询该 用户的环信账号如果没有则创建一个并插入到emGroup
-		EmUser 	guideemUser=emUserService.selectByUserNo(opTuan.getUserNo());
+/*		EmUser 	guideemUser=emUserService.selectByUserNo(opTuan.getUserNo());
 		if(guideemUser==null){		
 			//创建环信用户
 			String userResult=easemobClientService.createUser(opTuan.getUserNo(), "123456",opTuan.getUserName());
 		    if(userResult!=null){
 		    	JSONArray userObject=(JSONArray) JSON.parseObject(userResult).get("entities");
-		    	List<EmUserModel> emUser = JSONArray.parseArray(JSON.parseObject(result).get("entities").toString(),EmUserModel.class);
+		    	List<EmUserModel> emUser = JSONArray.parseArray(userObject.toString(),EmUserModel.class);
 				// 插入表里
 		    	EmUser temUser=new EmUser();
 		    	temUser.setEmUuid(emUser.get(0).getUuid());
 		    	temUser.setEmUser(emUser.get(0).getUsername());
 		    	temUser.setUserNo(opTuan.getUserNo());
 		    	guideemUser=temUser;
-		    	emUserService.insert(guideemUser);		    	
+		    	emUserService.insertSelective(guideemUser);		    	
 		    }
-		    
-			
-			
-		}
-		
+		}*/
+		//从user表里查找
+		UserInfo userinfo = new UserInfo();
+		userinfo.setUserNo(opTuan.getUserNo());
+		List<UserInfo> userInfos = userInfoService.getUserInfoPageList(userinfo);
+		userinfo=userInfos.size()>0?userInfos.get(0):null;
 		
 		// 3.从环信创建一个群。
 		EmGroup group = new EmGroup();
@@ -219,7 +211,7 @@ public class GuideTuanAdminController {
 			try {
 				createResult = easemobClientService.createGroup(opTuan.getTuanNo(),
 						opTuan.getName() + "groupNo:" + opTuan.getTuanNo(), true, opTuan.getFullNum(), true,
-						guideemUser.getEmUuid());
+						userinfo.getHuanxinAccount());
 			} catch (Exception e) {
 				logger.info("环信群创建失败：" + e.getMessage());
 				return new JsonResult(ExceptionCode.FAIL);
@@ -250,10 +242,9 @@ public class GuideTuanAdminController {
 		// 5.1查找用户的环信用户帐号集合
 		List<String> emuserNos = new ArrayList<String>();
 		for (OrderModel order : orders) {
-			UserInfo userinfo = new UserInfo();
-			userinfo.setUserNo(order.getUserId());
+			UserInfo userinfo1 = new UserInfo();
+			userinfo1.setUserNo(order.getUserId());
 			List<UserInfo> userInfo = userInfoService.getUserInfoPageList(userinfo);
-
 			if (userInfo.size() > 0) {
 				String account = userInfo.get(0).getHuanxinAccount();
 				if (!account.equals("") && account != null) {

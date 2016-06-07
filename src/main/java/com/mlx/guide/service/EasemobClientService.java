@@ -112,10 +112,17 @@ public class EasemobClientService {
 	 * @return
 	 */
 	public String addUsersGroup(List<String> userList, String groupId) {
-		Map<String, Object> maps = new HashMap<String, Object>();
-		maps.put("usernames", userList);
-		logger.info("插群的id为:" + groupId + "用户数据：" + JSON.toJSONString(maps));
-		return easemobClientUtil.post(groupUri + "/" + groupId + "/users", JSON.toJSONString(maps));
+		if (userList.size() > 0) {
+			Map<String, Object> maps = new HashMap<String, Object>();
+			maps.put("usernames", userList);
+			logger.info("插群的id为:" + groupId + "用户数据：" + JSON.toJSONString(maps));
+
+			return easemobClientUtil.post(groupUri + "/" + groupId + "/users", JSON.toJSONString(maps));
+		} else {
+			logger.error("插入的用户为空！");
+			return "";
+		}
+		
 	}
 
 	/**
@@ -125,13 +132,13 @@ public class EasemobClientService {
 	 * @param password
 	 * @return
 	 */
-	public String createUser(String userName, String password,String nickname) {
+	public String createUser(String userName, String password, String nickname) {
 		Map<String, String> maps = new HashMap<String, String>();
-		
+
 		maps.put("username", userName);
 		maps.put("password", password);
-		if(nickname!=null)
-		maps.put("nickname", nickname );
+		if (nickname != null)
+			maps.put("nickname", nickname);
 		return easemobClientUtil.post("users", JSON.toJSONString(maps));
 	}
 }
