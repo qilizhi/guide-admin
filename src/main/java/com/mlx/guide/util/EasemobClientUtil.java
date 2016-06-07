@@ -54,7 +54,7 @@ public class EasemobClientUtil {
 	//private  String APP_IMP_LIB ;
 	
    public 	EasemobClientUtil(){
-	   System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+	
    }
 	public String getApi_protocal() {
 		return api_protocal;

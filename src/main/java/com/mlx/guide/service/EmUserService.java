@@ -56,4 +56,9 @@ public class EmUserService  {
     	
     	
     }
+    
+   public EmUser selectByUserNo(String userNo){
+	   
+	   return emUserMapper.selectByUserNo(userNo);
+   }
 }

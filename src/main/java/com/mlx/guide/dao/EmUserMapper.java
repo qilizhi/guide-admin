@@ -18,4 +18,6 @@ public interface EmUserMapper {
     int updateByPrimaryKey(EmUser record);
 
 	List<EmUser> listByExample(EmUser record);
+
+	EmUser selectByUserNo(String userNo);
 }
