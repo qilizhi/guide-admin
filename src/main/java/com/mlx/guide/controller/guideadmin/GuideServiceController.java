@@ -178,7 +178,7 @@ public class GuideServiceController {
 		try {
 			// 先删除所有旧价格，再保存新价格
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
-			guideLineDatePriceService.saveGuideLineDatePrice(lsGuideLineDatePrices, serviceNo);
+			guideLineDatePriceService.saveGuideLineDatePriceByServiceNo(lsGuideLineDatePrices, serviceNo);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
