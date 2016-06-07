@@ -58,12 +58,48 @@
 					</div>
 
 				</div>
+				<div class="form-wizard">
+                    <div class="form-body">
+						<ul class="nav nav-pills nav-justified steps">
+	                         <li class="active">
+	                             <a href="#tab1" data-toggle="tab" class="step" aria-expanded="true">
+	                                 <span class="number"> 1 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 导服</span>
+	                             </a>
+	                         </li>
+	                         <li>
+	                             <a href="#tab2" data-toggle="tab" class="step">
+	                                 <span class="number"> 2 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 价格 </span>
+	                             </a>
+	                         </li>
+	                         <!-- <li>
+	                             <a href="#tab3" data-toggle="tab" class="step active">
+	                                 <span class="number"> 3 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 行程 </span>
+	                             </a>
+	                         </li> -->
+	                         <li>
+	                             <a href="#tab4" data-toggle="tab" class="step">
+	                                 <span class="number"> 4 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 发布 </span>
+	                             </a>
+	                         </li>
+	                     </ul>
+                     <div id="bar" class="progress progress-striped" role="progressbar">
+                         <div class="progress-bar progress-bar-success" style="width: 35%;"> </div>
+                     </div>
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
 					<form action="${ctx }/guideAdmin/guideService/add" id=form_sample_3
 						class="form-horizontal" method="post"
 						enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${guideService.id }" />
+						<input type="hidden" name="serviceNo" value="${guideService.serviceNo }" />
 						<div class="form-body">
 							<div class="alert alert-danger display-hide">
 								<button class="close" data-close="alert"></button>
@@ -105,6 +141,15 @@
 										name="price" data-required="1" class="form-control"
 										value="${guideService.price }" />
 										<input type="hidden" name="oldPrice" value="${guideService.price }" /><!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3">导服天数<span
+									class="required"> * </span>
+								</label>
+								<div class="col-md-4">
+									<input type="text" name="totalDay" data-required="1" class="form-control" value="${guideService.totalDay }" />
+									<input type="hidden" name="oldTotalDay" value="${guideService.totalDay }"/><!-- 修改前先把旧的天数存起来，修改天数时对应把旧的行程删掉 -->
 								</div>
 							</div>
 							<div class="form-group">
@@ -267,9 +312,9 @@
 						<div class="form-actions">
 							<div class="row">
 								<div class="col-md-offset-3 col-md-9">
-									<button type="submit" class="btn green">保存</button>
-									<a href="javascript:;" onClick="javascript:history.back(-1);"
-										class="btn default">取消</a>
+									<button type="submit" class="btn green">保存并下一步</button>
+									<!-- <a href="javascript:;" onClick="javascript:history.back(-1);"
+										class="btn default">取消</a> -->
 								</div>
 							</div>
 						</div>
@@ -282,13 +327,13 @@
 
 
 
-
+				</div>
 				</div>
 				<!-- END VALIDATION STATES-->
 			</div>
 		</div>
 	</div>
-
+</div>
 	<script type="text/javascript"
 		src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
 	<script type="text/javascript"
@@ -356,6 +401,13 @@
 				});
 	}
 
+	 //自定义 表单验证规则
+  	jQuery.validator.addMethod("totalDay", function (value, element) {
+  		var totalDay = /^\+?[1-9]\d*$/;
+  		return this.optional(element) || (totalDay.test(value));
+  	}, "天数不能为0");
+	
+	
 			//验证框架
 			 var handleValidation3 = function() {	
 	            var form3 = $('#form_sample_3');
@@ -377,6 +429,13 @@
 	                        number:true,
 	                        maxlength:10
 	                    }, 
+	                    totalDay: {
+	                 	   required: true,
+	                 	   digits:true,
+	                        maxlength:3,
+	                        totalDay:true,  //调用自定义的验证规则
+	                        range:[1,366] 
+	                    },
 	                    num: {
 	                        required: true,
 	                        digits:true,
@@ -411,6 +470,12 @@
 	                        required: "不能为空",
 	                        number:"请输入合法数字",
 	                        maxlength:"最多输入10位数"
+	                    },
+	                    totalDay: {
+	                 	   required: "不能为空",
+	                 	   digits:"请输入整数",
+	                        maxlength:"最多输入3位数",
+	                        range: "请输入一个介于 {0} 和 {1} 之间的值"
 	                    },
 	                    num: {
 	                        required: "不能为空",

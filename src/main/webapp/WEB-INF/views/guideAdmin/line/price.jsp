@@ -36,7 +36,7 @@
 			width:50%	
 		}
 	}	
-	
+	/* 控制进度条滑动效果 */
 	.scoller{
 		-webkit-animation: scoller 1.2s ease forwards;
 		animation: scoller 1.2s ease forwards;

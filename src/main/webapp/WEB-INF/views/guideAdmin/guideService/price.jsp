@@ -22,22 +22,22 @@
 /* css3 控制tab2进度条 */
 @-webkit-keyframes scoller{
 		0%{
-			width:25%
+			width:35%
 		}
 		100%{
-			width:50%	
+			width:65%	
 		}
 	}
 @keyframes scoller{
 		0%{
-			width:25%
+			width:35%
 		}
 		100%{
-			width:50%	
+			width:65%	
 		}
 	}	
-	
-	.scoller{
+	/* 控制进度条滑动效果 */
+	.scoller{ 
 		-webkit-animation: scoller 1.2s ease forwards;
 		animation: scoller 1.2s ease forwards;
 		
@@ -69,6 +69,41 @@
 										<!-- <a class="btn btn-primary btn-xs panel-title-right" href="javascript:history.go(-1);">返回</a> -->
 									</h3>
 								</div>
+								<div class="form-wizard">
+                    <div class="form-body">
+						<ul class="nav nav-pills nav-justified steps">
+	                         <li class="active">
+	                             <a href="#tab1" data-toggle="tab" class="step" aria-expanded="true">
+	                                 <span class="number"> 1 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 线路 </span>
+	                             </a>
+	                         </li>
+	                         <li>
+	                             <a href="#tab2" data-toggle="tab" class="step">
+	                                 <span class="number"> 2 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 价格 </span>
+	                             </a>
+	                         </li>
+	                         <!-- <li>
+	                             <a href="#tab3" data-toggle="tab" class="step active">
+	                                 <span class="number"> 3 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 行程 </span>
+	                             </a>
+	                         </li> -->
+	                         <li>
+	                             <a href="#tab4" data-toggle="tab" class="step">
+	                                 <span class="number"> 4 </span>
+	                                 <span class="desc">
+	                                     <i class="fa fa-check"></i> 发布 </span>
+	                             </a>
+	                         </li>
+	                     </ul>
+                     <div id="bar" class="progress progress-striped" role="progressbar">
+                         <div class="progress-bar progress-bar-success scoller" style="width: 65%;"> </div>
+                     </div>
 								<div class="panel-body">
 									<div class="price-condition">
 										<input type="hidden" id="routeOrderType" value="" /> <label
@@ -181,11 +216,11 @@
 											data-url="/travelAgent/routeDatePrice/deleteOrderType"
 											id="btn-clear">清除价格</a> <a
 											class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/guideService/save/${service.serviceNo}" id="btn-save">保存</a>
+											href="${ctx}/guideAdmin/guideService/save/${service.serviceNo}" id="btn-save">保存并下一步</a>
 											<input type="hidden" name="serviceNo" value="${service.serviceNo}"/> 
 											
-											<%-- <a class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/backToLine/${guideLine.lineNo}" id="btn-save">上一步</a> --%>
+											<a class="btn btn-primary btn-sm btn-success"
+											href="${ctx}/guideAdmin/guideService/backToSercice/${service.serviceNo}" id="btn-save">上一步</a>
 									</div>
 
 								</div>
@@ -199,7 +234,7 @@
 							<div id="priceCalendar" style="width: 930px;"></div>
 
 
-
+						</div>
 						</div>
 					</div>
 				</div>
@@ -508,7 +543,7 @@
 						comm.infoMsg(result.msg);
 						if(result.code === '200'){
 							setTimeout(function(){
-								window.location.href = "${ctx}/guideAdmin/guideService"
+								window.location.href = "${ctx}/guideAdmin/guideService/submit"
 							},1000);
 						}
 					},"json");
