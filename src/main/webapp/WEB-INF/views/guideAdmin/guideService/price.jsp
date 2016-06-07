@@ -49,34 +49,6 @@
 
 <body>
 	<div class="row">
-		<div class="form-wizard">
-			<div class="form-body">
-				<ul class="nav nav-pills nav-justified steps">
-					<li class="active"><a href="#tab1" data-toggle="tab"
-						class="step" aria-expanded="true"> <span class="number">
-								1 </span> <span class="desc"> <i class="fa fa-check"></i> 线路
-						</span>
-					</a></li>
-					<li><a href="#tab2" data-toggle="tab" class="step"> <span
-							class="number" style="background-color: #36c6d3; color: #fff;">
-								2 </span> <span class="desc"> <i class="fa fa-check"></i> 价格
-						</span>
-					</a></li>
-					<li><a href="#tab3" data-toggle="tab" class="step active">
-							<span class="number"> 3 </span> <span class="desc"> <i
-								class="fa fa-check"></i> 行程
-						</span>
-					</a></li>
-					<li><a href="#tab4" data-toggle="tab" class="step"> <span
-							class="number"> 4 </span> <span class="desc"> <i
-								class="fa fa-check"></i> 发布
-						</span>
-					</a></li>
-				</ul>
-				<div id="bar" class="progress progress-striped" role="progressbar">
-					<div class="progress-bar progress-bar-success scoller"
-						style="width: 25%;"></div>
-				</div>
 				<div class="tab-content">
 					<div class="alert alert-danger display-none">
 						<button class="close" data-dismiss="alert"></button>
@@ -93,16 +65,15 @@
 							<div class="panel panel-primary">
 								<div class="panel-heading">
 									<h3 class="panel-title">
-										线路价格编辑
+										价格编辑
 										<!-- <a class="btn btn-primary btn-xs panel-title-right" href="javascript:history.go(-1);">返回</a> -->
 									</h3>
 								</div>
 								<div class="panel-body">
 									<div class="price-condition">
 										<input type="hidden" id="routeOrderType" value="" /> <label
-											class="price-condition-label">线路名称:</label>
-										${guideLine.title} <input type="hidden" name="lineNo"
-											value="${guideLine.lineNo}" />
+											class="price-condition-label">标题:</label>
+										${service.title}  <input type="hidden" name="lineNo" value="${service.serviceNo}" /> 
 									</div>
 									
 									<!-- <div class="price-condition">
@@ -112,35 +83,58 @@
 									</div> -->
 									<div class="price-condition">
 										<label class="price-condition-label">成人价：</label> <input
-											type="text" id="adultPrice" name="adultPrice"
+											type="text" id="adultPrice" name="adultPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入成人价" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">儿童价：</label> <input
-											type="text" id="childPrice" name="childPrice"
+											type="text" id="childPrice" name="childPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入儿童价" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">房&nbsp;差：</label> <input
-											type="text" id="roomDiffPrice" name="roomDiffPrice"
+											type="text" id="roomDiffPrice" name="roomDiffPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入房差" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">保险价：</label> <input
-											type="text" id="safePrice" name="safePrice"
+											type="text" id="safePrice" name="safePrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入保险价" />
 									</div>
 									<div class="price-condition">
 										<label class="price-condition-label">签证费：</label> <input
-											type="text" id="visaPrice" name="visaPrice"
+											type="text" id="visaPrice" name="visaPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入签证费" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">人数：</label>
-										 <input type="text" name="num" id="num" value="${guideLine.num}"/>
-											
+										<label class="price-condition-label">人&nbsp;数：</label> <input
+											type="text" id="num" name="num" onkeyup="value=value.replace(/[^\d]/g,'') "
+											value="" placeholder="请输入人数" />
 									</div>
 									
+									<!-- 
+									<div class="price-condition">
+										<label class="price-condition-label">指定时间段:</label>
+										</div>
+									<div class="price-condition">	
+										<div class="date date-picker col-md-3" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
+											<input type="text" class="WdatePicker " readonly
+												name="beginTime"> <span class="">
+												<button class="btn default cal" type="button">
+													<i class="fa fa-calendar"></i>
+												</button>
+											</span>
+										</div>
+										<label class="price-condition-label col-md-1">至</label>
+										<div class="date date-picker col-md-8" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
+											<input type="text" class="WdatePicker " readonly
+												name="endTime"> <span class="">
+												<button class="btn default cal" type="button">
+													<i class="fa fa-calendar"></i>
+												</button>
+											</span>
+										</div>
+									</div> -->
 									
 									<div class="price-condition">
 									<label class="price-condition-label">指定时间段:</label>
@@ -187,10 +181,11 @@
 											data-url="/travelAgent/routeDatePrice/deleteOrderType"
 											id="btn-clear">清除价格</a> <a
 											class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/save/${guideLine.lineNo}" id="btn-save">保存并下一步</a>
+											href="${ctx}/guideAdmin/guideService/save/${service.serviceNo}" id="btn-save">保存</a>
+											<input type="hidden" name="serviceNo" value="${service.serviceNo}"/> 
 											
-											<a class="btn btn-primary btn-sm btn-success"
-											href="${ctx}/guideAdmin/line/backToLine/${guideLine.lineNo}" id="btn-save">上一步</a>
+											<%-- <a class="btn btn-primary btn-sm btn-success"
+											href="${ctx}/guideAdmin/line/backToLine/${guideLine.lineNo}" id="btn-save">上一步</a> --%>
 									</div>
 
 								</div>
@@ -198,8 +193,7 @@
 
 							<!-- 价格日历 -->
 
-							<input type="hidden" name="routeid" value="${guideLine.lineNo}" />
-							<input type="hidden" name="num" id="num" value="${guideLine.num}"/><!-- 从线路中获取满员人数 -->
+							<input type="hidden" name="routeid" value="${service.serviceNo}" />
 							<div class="price-condition red">温馨提示:生成价格、清除价格、保存价格都是根据条件设置范围来操作数据的变化的;单击日历单元格可进行编辑.</div>
 
 							<div id="priceCalendar" style="width: 930px;"></div>
@@ -210,7 +204,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 	<br/>
 <script type="text/javascript" src="${ctx}/static/js/json2.js"></script>
@@ -241,8 +234,8 @@
 					safePrice:$.isNumeric($("#safePrice").val()) ? $("#safePrice").val() : 0,
 					visaPrice:$.isNumeric($("#visaPrice").val()) ? $("#visaPrice").val() : 0,
 					num:$.isNumeric($("#num").val()) ? $("#num").val() : 0,
-						
-									
+							
+							
 					beginTime:$("input[type='text'][name='beginTime']").val(),
 					endTime:$("input[type='text'][name='endTime']").val(),
 					weekDays:$weekDays,
@@ -292,7 +285,6 @@
 			getRoutePriceData:function(){
 				var $routePrices = [];
 				var $BasePrices = this.getBasePrice();
-				console.log($BasePrices)
 				$("#priceCalendar td.td").each(function(i,obj){
 					var adultPrice = $(obj).attr("data-cprice");
 					var childPrice = $(obj).attr("data-eprice");
@@ -358,7 +350,7 @@
 	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
-	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""></div>'; 
+	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""> </div>'; 
 	        
 	   
 	      
@@ -369,7 +361,7 @@
 			    json: result, //传递过来的json ${lineDataPrices}
 			    startTime:new Date(),
 			    tdAttrs: function(jsonObj){
-			    	console.log(jsonObj)
+			    	//console.log(jsonObj)
 			    	if(!jsonObj){
 			    		return "";
 			    	}
@@ -391,12 +383,10 @@
 			    	if($("#visaPrice").val().length <= 0){
 			    		$("#visaPrice").val(jsonObj.visaPrice);
 			    	}
-			    	//拿页面num值
-			    	var $lineNum=$("input[type='hidden'][name=num]").val();
 			    	if($("#num").val().length <= 0){
-			    		//$("#num").val(jsonObj.num);
-			    		$("#num").val($lineNum);
+			    		$("#num").val(jsonObj.num);
 			    	}
+			    	
 			    	var $value = $("#select-routeOrderType option:selected").val();
 			    	var $attr = " @attrName = '@attrValue' ";
 			    	var $attrString = "";
@@ -410,8 +400,7 @@
 			    	$attrString += $attr.replace("@attrName", "data-roomDiffPrice").replace("@attrValue", jsonObj.roomDiffPrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-safePrice").replace("@attrValue", jsonObj.safePrice || "");
 			    	$attrString += $attr.replace("@attrName", "data-visaPrice").replace("@attrValue", jsonObj.visaPrice || "");
-			    	//$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || "");
-			    	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", $lineNum || "");
+			    	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || "");
 			    	return $attrString;
 			    },
 			    //td点击事件
@@ -477,9 +466,11 @@
 					comm.infoMsg("请输入成人价",null,150);
 					return;
 				}
-				//请输入保险价
+				//请输入保险价,人数
 				if($.trim($BasePrices.safePrice).length <= 0 
-						|| parseInt($BasePrices.safePrice,0) <= 0){
+						|| parseInt($BasePrices.safePrice,0) <= 0
+						|| $.trim($BasePrices.num).length <= 0 
+						|| parseInt($BasePrices.num,0) <= 0){
 					comm.infoMsg("请输入保险价和人数",null,150);
 					return;
 				} 
@@ -509,17 +500,15 @@
 					return;
 				}
 				$data = JSON.stringify($data);
-				//console.log($data);
+				console.log($data);
 				var $url = $(this).attr("href");
-				var $lineNo = $("input[name='lineNo']").val();
 				comm.confirm("提示","确定现在提交吗?",function(){
-					
 					$.post($url,{"params":$data},function(result){ 
+						console.log(result)
 						comm.infoMsg(result.msg);
 						if(result.code === '200'){
 							setTimeout(function(){
-								window.location.href = "${ctx}/guideAdmin/trip?lineNo="+$lineNo+"&startDate="
-										+$("input[name=beginTime]").val()+"&endDate="+$("input[name=endTime]").val();
+								window.location.href = "${ctx}/guideAdmin/guideService"
 							},1000);
 						}
 					},"json");
@@ -579,7 +568,7 @@
 					$("input[type='text'][name='data-roomDiffPrice']",$(obj)).val($BasePrices.roomDiffPrice);
 					$("input[type='text'][name='data-safePrice']",$(obj)).val($BasePrices.safePrice);
 					$("input[type='text'][name='data-visaPrice']",$(obj)).val($BasePrices.visaPrice);
-					$("input[type='text'][name='num']",$(obj)).val($BasePrices.num);
+					$("input[type='text'][name='data-num']",$(obj)).val($BasePrices.num);
 				});
 			});
 			
@@ -609,6 +598,7 @@
 						$(obj).removeAttr("data-roomDiffPrice","");
 						$(obj).removeAttr("data-safePrice","");
 						$(obj).removeAttr("data-visaPrice","");
+						$(obj).removeAttr("data-num","");
 						
 						$("span.price",$(obj)).html("<dfn>¥</dfn>--");
 						//$("input[type='text'][name='minprice']",$(obj)).val("");
@@ -616,6 +606,7 @@
 						$("input[type='text'][name='roomDiffPrice']",$(obj)).val("");
 						$("input[type='text'][name='safePrice']",$(obj)).val("");
 						$("input[type='text'][name='visaPrice']",$(obj)).val("");
+						$("input[type='text'][name='num']",$(obj)).val("");		
 						
 						//清空input里的价格
 						$("#adultPrice").val("");
@@ -624,9 +615,12 @@
 				    	$("#roomDiffPrice").val("");
 				    	$("#safePrice").val("");
 				    	$("#visaPrice").val("");
+				    	$("#num").val("");
 				    	//清空日期插件input
 				    	$("input[name=beginTime]").val("");
 				    	$("input[name=endTime]").val("");
+				    	//初始化日历插件 datepicker
+				        //$('.date-picker').datepicker();
 				    	
 					});
 				});
