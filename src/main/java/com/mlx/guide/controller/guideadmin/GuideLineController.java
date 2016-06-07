@@ -132,7 +132,7 @@ public class GuideLineController {
 				if (oldPrice.compareTo(guideLine.getPrice()) != 0) {
 					guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
 				}
-				// 比较天数
+				// 比较天数，如果天数有改变就删除旧行程
 				if (guideLine.getTotalDay()!=oldTotalDay.intValue()) {
 					guideLineTripService.deleteGuideLineTripByLineNo(guideLine.getLineNo());
 				}
