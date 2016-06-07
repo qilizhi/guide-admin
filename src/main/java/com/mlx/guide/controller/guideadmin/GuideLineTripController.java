@@ -139,7 +139,7 @@ public class GuideLineTripController {
 			// 行程
 			GuideLineTrip guideLineTrip = new GuideLineTrip();
 			guideLineTrip.setLineNo(lineNo);
-			PageBounds pageBounds = new PageBounds(1, 20, Order.formString("day.asc"));
+			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
 			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
 			model.addAttribute("trips", trips);
 			model.addAttribute("startDate", startDate);
