@@ -14,4 +14,6 @@ public interface EmGroupUserMapper {
     int updateByPrimaryKeySelective(EmGroupUser record);
 
     int updateByPrimaryKey(EmGroupUser record);
+
+	EmGroupUser selectByUserNo(String userNo);
 }

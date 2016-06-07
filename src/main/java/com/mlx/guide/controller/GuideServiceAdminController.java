@@ -32,6 +32,7 @@ import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
+import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.entity.GuideServicePrice;
 import com.mlx.guide.service.GuideInfoService;
@@ -41,7 +42,6 @@ import com.mlx.guide.util.StringUtil;
 
 @Controller
 @RequestMapping(value = "/admin/guideService")
-@SessionAttributes(value = "test")
 public class GuideServiceAdminController {
 
 	private Logger logger = LoggerFactory.getLogger(GuideServiceAdminController.class);
@@ -115,13 +115,13 @@ public class GuideServiceAdminController {
 	 * @return
 	 */
 	@RequestMapping
-	public String list(GuideService gs, @RequestParam(defaultValue = Const.PAGE_NO) Integer page,
+	public String list(GuideService gs, @RequestParam(defaultValue = Const.PAGE_NO) Integer pageNo,
 			@RequestParam(defaultValue = Const.PAGE_SIZE) Integer pageSize, Model model) {
 		gs.setFlag(EFlag.VALID.getId());
-		PageList<GuideService> list = guideService.listByExample(gs, new PageBounds(page, pageSize));
+		PageList<GuideService> list = guideService.listByExample(gs, new PageBounds(pageNo, pageSize));
 		model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 		model.addAttribute("list", list);
-		model.addAttribute("page", page);
+		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("EStatus", EStatus.getMap());
 		model.addAttribute("EAuditStatus", EAuditStatus.getMap());
@@ -163,8 +163,8 @@ public class GuideServiceAdminController {
 			if (guideS.getId() != null) {
 				guideS.setUpdateTime(new Date());
 				guideService.updateByPrimaryKeySelective(guideS);
-				return "redirect:/admin/guideService/price/"+guideS.getServiceNo();
-				
+				return "redirect:/admin/guideService/price/" + guideS.getServiceNo();
+
 			} else {
 				String gServiceNo = StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix());
 				guideS.setStatus(EStatus.EDIT.getId());
@@ -174,9 +174,9 @@ public class GuideServiceAdminController {
 				guideS.setFlag(EFlag.VALID.getId());
 				guideS.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideService.insertSelective(guideS);
-				return "redirect:/admin/guideService/price/"+guideS.getServiceNo();
+				return "redirect:/admin/guideService/price/" + guideS.getServiceNo();
 			}
-			//guideS=guideService.selectByPrimaryKey(id.longValue());
+			// guideS=guideService.selectByPrimaryKey(id.longValue());
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -184,7 +184,6 @@ public class GuideServiceAdminController {
 		}
 	}
 
-	
 	/**
 	 * 保存价格
 	 * 
@@ -193,7 +192,8 @@ public class GuideServiceAdminController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/price/save/{serviceNo}", method = RequestMethod.POST)
-	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("serviceNo") String serviceNo) {
+	public JsonResult savePrice(@RequestParam("params") String linePrices,
+			@PathVariable("serviceNo") String serviceNo) {
 		try {
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByServiceNo(lsGuideLineDatePrices, serviceNo);
@@ -205,13 +205,14 @@ public class GuideServiceAdminController {
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
+
 	/**
 	 * 更新信息
 	 * 
 	 * @return
 	 */
 	@RequestMapping(value = "/price/{guideServiceNo}", method = RequestMethod.GET)
-	public String editPrice(@PathVariable("guideServiceNo") String guideServiceNo ,Model model) {
+	public String editPrice(@PathVariable("guideServiceNo") String guideServiceNo, Model model) {
 		GuideService guideS = guideService.getGuideServiceByServiceNo(guideServiceNo);
 		// 根据线路no获取对应的价格表
 		List<GuideLineDatePrice> lsGuideLineDatePrices = guideDPService.getGuideLineDatePriceByLineNo(guideServiceNo);
@@ -219,6 +220,33 @@ public class GuideServiceAdminController {
 		model.addAttribute("guideLine", guideS);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
 		return "/admin/guideService/price";
+	}
+
+	/**
+	 * 跳转
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/submit/{id}")
+	public String submit(@PathVariable("id") Long id, Model model) {
+		GuideService gs = guideService.selectByPrimaryKey(id);
+		// 价格
+		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+				.getGuideLineDatePriceByLineNo(gs.getServiceNo());
+		model.addAttribute("line", gs);
+		model.addAttribute("lsPrices", lsGuideLineDatePrices);
+		return "/admin/guideService/submit";
+
+	}
+
+	@RequestMapping("/submitOn/{id}")
+	public String submit(@PathVariable("id") Long id, GuideService gs) {
+		gs.setId(id);
+		gs.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
+		// 价格
+		guideService.updateByPrimaryKeySelective(gs);
+		return "redirect:/admin/guideService";
+
 	}
 
 	/**

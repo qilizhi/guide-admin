@@ -18,6 +18,12 @@
     from em_group_user
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByUserNo" resultMap="BaseResultMap" parameterType="String" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from em_group_user
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="Long" >
     delete from em_group_user
     where id = #{id,jdbcType=BIGINT}

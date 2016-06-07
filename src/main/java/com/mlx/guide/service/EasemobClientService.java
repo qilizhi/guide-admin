@@ -1,8 +1,11 @@
 package com.mlx.guide.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +24,12 @@ import com.mlx.guide.util.EasemobClientUtil;
 @Service
 public class EasemobClientService {
 
+	Logger logger = LoggerFactory.getLogger(EasemobClientService.class);
+
 	@Value("${uri.easemob.groupUri}")
 	private String groupUri;
 	@Autowired
 	private EasemobClientUtil easemobClientUtil;
-
 
 	/**
 	 * 创建环信群
@@ -46,7 +50,7 @@ public class EasemobClientService {
 	 */
 	public String createGroup(String groupname, String desc, boolean isPublic, Integer maxusers, boolean isApproval,
 			String owner) {
-		
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (groupname != null)
 			params.put("groupname", groupname);
@@ -74,7 +78,7 @@ public class EasemobClientService {
 	 */
 	public String editGroup(Long groupId, String groupname, String desc, Integer maxusers, boolean isApproval,
 			String owner) {
-	
+
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (groupname != null)
 			params.put("groupname", groupname);
@@ -98,5 +102,51 @@ public class EasemobClientService {
 	public String deleteGroup(Long groupId) {
 
 		return easemobClientUtil.delete(groupUri + "/" + groupId);
+	}
+
+	/**
+	 * 批量将环信用户加入群。
+	 * 
+	 * @param userList
+	 * @param groupId
+	 * @return
+	 */
+	public String addUsersGroup(List<String> userList, String groupId) {
+		if (userList.size() > 0) {
+			Map<String, Object> maps = new HashMap<String, Object>();
+			maps.put("usernames", userList);
+			logger.info("插群的id为:" + groupId + "用户数据：" + JSON.toJSONString(maps));
+
+			return easemobClientUtil.post(groupUri + "/" + groupId + "/users", JSON.toJSONString(maps));
+		} else {
+			logger.error("插入的用户为空！");
+			return "";
+		}
+		
+	}
+
+	/**
+	 * 创建 用户
+	 * 
+	 * @param userName
+	 * @param password
+	 * @return
+	 */
+	public String createUser(String userName, String password, String nickname) {
+		Map<String, String> maps = new HashMap<String, String>();
+
+		maps.put("username", userName);
+		maps.put("password", password);
+		if (nickname != null)
+			maps.put("nickname", nickname);
+		return easemobClientUtil.post("users", JSON.toJSONString(maps));
+	}
+	/**
+	 * 获取该 用户
+	 * @param username
+	 * @return
+	 */
+	public String getsUser(String username){
+		return easemobClientUtil.get("users/"+username);
 	}
 }

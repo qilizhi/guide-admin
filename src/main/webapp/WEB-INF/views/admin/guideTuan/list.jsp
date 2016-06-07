@@ -122,7 +122,7 @@
 													class="btn btn-sm dark btn-outline cancel">取消 </a>
 											</c:if> <c:if test="${item.tuanStatus==2}">
 												<a href="${ctx}/admin/guideTuan/tuanGuest/${item.tuanNo}"
-													class="btn btn-sm green btn-outline cancel">签到详情</a>
+													class="btn btn-sm green btn-outline">签到详情</a>
 											</c:if></td>
 									</tr>
 								</c:forEach>
@@ -171,6 +171,7 @@
 
 			//初始化
 			OCsubmit(".cancel");
+			OCsubmit(".out");
 		});
 
 		//数据提交。
@@ -190,7 +191,7 @@
 						}, 500)
 					} else {
 
-						comm.showMsg("error", "提示", "更新错误 ！");
+						comm.showMsg("error", "提示",e.msg);
 					}
 				}, "json")
 				//console.log(data);
