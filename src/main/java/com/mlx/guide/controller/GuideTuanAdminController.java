@@ -235,7 +235,7 @@ public class GuideTuanAdminController {
 		group.setEmGid(groupId);
 		group.setCreateTime(new Date());
 		// 应是当前登录的用户。 从shiroUser 里获取
-		group.setUserNo(shiroUser.getUserNo());
+		group.setUserNo(userinfo.getUserNo());
 		logger.info("环信群创建成功:" + data.toJSONString());
 
 		// 5.把订单人员拉入群里。

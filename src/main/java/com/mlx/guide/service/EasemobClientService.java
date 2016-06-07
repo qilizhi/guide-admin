@@ -141,4 +141,12 @@ public class EasemobClientService {
 			maps.put("nickname", nickname);
 		return easemobClientUtil.post("users", JSON.toJSONString(maps));
 	}
+	/**
+	 * 获取该 用户
+	 * @param username
+	 * @return
+	 */
+	public String getsUser(String username){
+		return easemobClientUtil.get("users/"+username);
+	}
 }
