@@ -30,8 +30,6 @@
 	padding: 0;
 }
 </style>
-<!-- fancybox -->
-<link href="${ctx}/static/css/fancybox.css" rel="stylesheet" type="text/css" />
 <title>创建线路</title>
 
 </head>
@@ -232,7 +230,7 @@
 											</div>
 										</div>
 										<div class="list">
-											<img class="img-list" alt="" src="${guideLine.imgUrl }">
+											<img class="img-list" alt="" src="${guideLine.imgUrl }" />
 										</div>
 										<span class="btn green fileinput-button pading list">
 											<i class="fa fa-plus  i-list"></i> <span id="load">上传
@@ -259,8 +257,7 @@
 											</div>
 										</div>
 										<div class="list">
-											<img class="img-list" alt=""
-												src="${guideLine.smallImgUrl }">
+											<img class="img-list" alt="" src="${guideLine.smallImgUrl }" />
 										</div>
 										<span class="btn green fileinput-button pading list">
 											<i class="fa fa-plus  i-list"></i> <span id="load">上传
@@ -272,21 +269,6 @@
 								</div>
 							</div>
 							
-							
-							
-							
-							<%-- <div class="form-group">
-								<label class="control-label col-md-3">小图 <span
-									class="required"> * </span>
-								</label>
-								<div class="col-xs-2">
-									<label class="control-label">Select File</label>
-									<input  type="hidden" name="smallImgUrl" value="${guideLine.smallImgUrl}">
-									<input id="input-1" type="file" class="file">
-								</div>
-							</div> 
- --%>
-
 							<div class="form-group">
 								<label class="control-label col-md-3">体验说明 <span
 									class="required"> * </span>
@@ -364,8 +346,7 @@
 	<!-- 验证框架 -->
 	<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
     <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-	<!-- fancybox -->
-	<script type="text/javascript" src="${ctx}/static/js/jquery.fancybox-1.3.1.pack.js"></script>
+
 	<script>
 	
 	$(function() {
@@ -374,8 +355,6 @@
 		initImgUpload("#smallImgUrl");
 		initUEeditor();
 		handleValidation3();
-		//初始化fancyBox
-		$("a.grouped_elements").fancybox();
 		
 	});
 	

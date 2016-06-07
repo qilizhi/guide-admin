@@ -82,13 +82,18 @@
                             <input type="text" name="title"  class="form-control" value="${guideStrategy.title }"/> </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-3">攻略描述
-                            <span class="required"> * </span>
-                        </label>
-                        <div class="col-md-4">
-                        	<textarea class="form-control textarea" id="buyNotice" name="description" maxlength="1800" rows="8" cols="20" data-name="buyNotice" >${guideStrategy.description }</textarea></div>
-                    </div>
-                    <div class="form-group">
+						<label class="control-label col-md-3">描述 <span
+							class="required"> * </span>
+						</label>
+						<div class="col-md-4">
+							<script id="description" type="text/plain"
+								name="description" style="width:600px;height:500px;">${guideStrategy.description }</script>
+							<div id="editor2_error"></div>
+						</div>
+					</div>
+                    
+                    
+                    <%-- <div class="form-group">
 						<label class="control-label col-md-3">攻略背景图
 						 <span class="required"> * </span>
 						</label>
@@ -113,7 +118,61 @@
 
 							</div>
 						</div>
-					</div>
+					</div> --%>
+					<div class="form-group">
+								<label class="col-lg-3 control-label">线路背景图：</label>
+								<div class="col-lg-5">
+									<div id="imgUrl">
+										<div id="supprogress">
+											<input type="hidden" name="imgUrl"
+												value="${guideStrategy.imgUrl }" /> <span class="imageName"></span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success"
+													role="progressbar" aria-valuenow="40" aria-valuemin="0"
+													aria-valuemax="100">
+													<span class="sr-only">40% Complete (success)</span>
+												</div>
+											</div>
+										</div>
+										<div class="list">
+											<img class="img-list" alt="" src="${guideStrategy.imgUrl }" />
+										</div>
+										<span class="btn green fileinput-button pading list">
+											<i class="fa fa-plus  i-list"></i> <span id="load">上传
+										</span> <input class="imgUpload" type="file" name="files[]" multiple>
+										</span>
+									</div>
+
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-lg-3 control-label">头像图片：</label>
+								<div class="col-lg-5">
+									<div id="smallImgUrl">
+										<div id="supprogress">
+											<input type="hidden" name="smallImgUrl"
+												value="${guideStrategy.smallImgUrl }" /> <span
+												class="imageName"></span>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success"
+													role="progressbar" aria-valuenow="40" aria-valuemin="0"
+													aria-valuemax="100">
+													<span class="sr-only">40% Complete (success)</span>
+												</div>
+											</div>
+										</div>
+										<div class="list">
+											<img class="img-list" alt="" src="${guideStrategy.smallImgUrl }" />
+										</div>
+										<span class="btn green fileinput-button pading list">
+											<i class="fa fa-plus  i-list"></i> <span id="load">上传
+										</span> <input class="imgUpload" type="file" name="files[]"
+											multiple>
+										</span>
+									</div>
+
+								</div>
+							</div>
                     <div class="form-group">
                         <label class="control-label col-md-3">攻略推荐理由
                             <span class="required"> * </span>
@@ -144,15 +203,15 @@
                             <input type="text" name="sort" data-required="1" class="form-control" value="${guideStrategy.sort }"/></div>
                     </div>
                     <div class="form-group last">
-                        <label class="control-label col-md-3">攻略内容
-                            <span class="required"> * </span>
-                        </label>
-                        <div class="col-md-9">
-                            <script id="editor" type="text/plain" name="content"
-								style="width:600px;height:500px;">${guideStrategy.content }</script>
-                            <div id="editor2_error"> </div>
-                        </div>
-                    </div>
+		                        <label class="control-label col-md-3">内容
+		                            <span class="required"> * </span>
+		                        </label>
+		                        <div class="col-md-9">
+		                            <script id="content" type="text/plain" name="content"
+										style="width:600px;height:500px;">${guideStrategy.content }</script>
+		                            <div id="editor2_error"> </div>
+		                        </div>
+		                    </div>
                     
                 </div>
                  
@@ -176,55 +235,65 @@
 <script>
 		$(function() {
 		
-			initImgUpload();
+			initImgUpload("#imgUrl");
+			initImgUpload("#smallImgUrl");
 			initUEeditor();
 			handleValidation3();
 			//初始化fancyBox
 			$("a.grouped_elements").fancybox();
 		
 		})
-		//上传图片
-		var initImgUpload = function() {
 
-			$("#supprogress").css('display', "none");
-			$('.imgUpload').on('change',function(e) {
-						var files = this.files;
-						var fullname = $(this).val();
-						$("#imageName").html(fullname.substring(fullname.lastIndexOf("\\") + 1));
-						$("#supprogress").css('display', "block");
-						$("#image").attr("src", "");
-					})
-			$('.imgUpload').fileupload({
+	/** 图片上传的控件 **/
+	var initImgUpload = function(obj) {
+		//图上传
+		var $supprogress = $(obj + " #supprogress");
+		var $dispalyName = $(obj + " #supprogress>span");
+		var $hiddenName = $(obj + " #supprogress>input");
+		var $imgSrc = $(obj + " .list img");
+		var $barsuccess = $(obj + ' .progress .progress-bar-success');
+		var $imgUpload = $(obj + ' .imgUpload');
+		var $loadName = $(obj + ' #load');
+		//console.log($hiddenName)
+		//console.log($dispalyName)
+		//console.log($supprogress);
+		$supprogress.css('display', "none");
+		$imgUpload.on('change', function(e) {
+			var files = this.files;
+			var fullname = $(this).val();
+			$dispalyName.html(fullname
+					.substring(fullname.lastIndexOf("\\") + 1));
+			$supprogress.css('display', "block");
+			$imgSrc.attr("src", "");
+			$hiddenName.val("");
+		})
+		$imgUpload.fileupload({
 
-						dataType : 'json',
-						url : '${ctx}/upload',
-						progressall : function(e, data) {
-							var progress = parseInt(data.loaded / data.total * 100, 10);
-							var $progressBar=$('#supprogress .progress .progress-bar-success');
-							if(progress==100){$progressBar.css('width',(progress-1) + '%');
-							$progressBar.text((progress-1) + '%');
-							}else{
-								$progressBar.css('width',progress + '%');
-								$progressBar.text(progress + '%');
-							}
-						},
+					dataType : 'json',
+					url : '${ctx}/upload',
+					progressall : function(e, data) {
+						var progress = parseInt(data.loaded / data.total
+								* 100, 10);
+						$barsuccess.css('width', progress + '%');
+						$barsuccess.text(progress + '%');
+						//console.log(data);
+					},
 
-						done : function(e, data) {
-							if (data.result.code == "200") {
-								$("#supprogress").css('display', "none");
-								var imgUrl=data.result.result[0].filePath;
-								$("input[name='imgUrl']").val(imgUrl);
-								$("#image").attr("src",imgUrl);
-								$("a.grouped_elements").attr("href",imgUrl);//fancyBox取值
-								$("#load").html("重传");
-							} else {
-								$('.progress .progress-bar-success').text(data.result.msg);
-							}
-							//console.log(data);
-							$('.progress .progress-bar-success').text("done");
+					done : function(e, data) {
+						if (data.result.code == "200") {
+							$supprogress.css('display', "none");
+							//$("#image").attr("src",	data.result.result[0].filePath);
+							$imgSrc.attr("src",data.result.result[0].filePath);
+							$hiddenName.val(data.result.result[0].filePath);
+							$loadName.html("重传");
+						} else {
+							$supprogress.text(data.result.msg);
 						}
-					});
-		};
+						//console.log(data);
+						//$supprogress.text("done");
+					}
+				});
+	}
 		
 	
 		//验证框架
@@ -318,8 +387,12 @@
 
 	                submitHandler: function (form) {
 	                    error3.hide();
-	                  //验证UE编辑器是否为空
-	                    if(UE.getEditor('editor').hasContents()==false){
+	                    //验证UE编辑器是否为空
+	                    if(UE.getEditor('content').hasContents()==false){
+	     	    		   comm.infoMsg("内容不能为空",null,150);
+	     	    		   return ;
+	     	    	   }
+	                    if(UE.getEditor('description').hasContents()==false){
 	     	    		   comm.infoMsg("内容不能为空",null,150);
 	     	    		   return ;
 	     	    	   }
@@ -336,8 +409,12 @@
 		/** UEeditor 的初始化**/
 		var initUEeditor = function() {
 			window.UEDITOR_HOME_URL = "${ctx}";
-			UE.getEditor('editor');
+			UE.getEditor('content');
+			UE.getEditor('description');
+			//UE.getEditor('remark');
 		}
+		
+		
 	</script>
 	
 </body>
