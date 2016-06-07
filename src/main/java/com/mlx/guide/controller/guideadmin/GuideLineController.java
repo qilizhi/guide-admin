@@ -27,6 +27,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.EFlag;
+import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
@@ -131,6 +132,14 @@ public class GuideLineController {
 				// 比较天数，如果天数有改变就删除旧行程
 				if (guideLine.getTotalDay()!=oldTotalDay.intValue()) {
 					guideLineTripService.deleteGuideLineTripByLineNo(guideLine.getLineNo());
+					//按照线路天数重新添加行程
+					GuideLineTrip trip=new GuideLineTrip();
+					for(int i=1;i<=guideLine.getTotalDay();i++){
+						trip.setLineNo(guideLine.getLineNo());
+						trip.setDay(i);
+						trip.setCreateTime(new Date());
+						guideLineTripService.insertSelective(trip);
+					}
 				}
 				// 更新
 				guideLineService.updateGuideLineSelective(guideLine);
@@ -138,14 +147,23 @@ public class GuideLineController {
 			} else {
 				// 新增
 				// 随机生成线路编号
-				guideLine.setLineNo(StringUtil.generateSerialNumber("L"));
+				guideLine.setLineNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Line.getPrefix()));
 				guideLine.setUserNo(shiroUser.getUserNo());
 				guideLine.setUserName(shiroUser.getName());
 				guideLine.setCreateTime(new Date());
 				guideLine.setStatus(EStatus.EDIT.getId());
 				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideLineService.createGuideLineSelective(guideLine);
+				//按照线路天数添加行程
+				GuideLineTrip trip=new GuideLineTrip();
+				for(int i=1;i<=guideLine.getTotalDay();i++){
+					trip.setLineNo(guideLine.getLineNo());
+					trip.setDay(i);
+					trip.setCreateTime(new Date());
+					guideLineTripService.insertSelective(trip);
+				}
 			}
+			
 			model.addAttribute("guideLine", guideLine);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -203,7 +221,11 @@ public class GuideLineController {
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
 			GuideLineDatePrice guideLineDatePrice,Model model) {
 		try {
-			
+			//保留对应行程
+//			GuideLineTrip t=new GuideLineTrip();
+//			t.setLineNo(lineNo);
+//			List<GuideLineTrip> tripList = guideLineTripService.getGuideLineTripPageList(t);
+//			model.addAttribute("list", tripList);
 			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
@@ -248,6 +270,7 @@ public class GuideLineController {
 
 			// 根据线路no获取对应的线路
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
+			
 
 			// 根据线路no获取对应的价格表
 			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
