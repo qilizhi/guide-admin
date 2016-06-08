@@ -82,12 +82,12 @@
 	font-weight: normal;
 }
 .ok {
-	background-image: url(/guide-admin/static/img/icenter-delay.png);
+	background-image: url(${ctx}/static/img/icenter-delay.png);
 	background-position: -86px 1px;
 }
 
 .add {
-	background-image: url(/guide-admin/static/img/icon.png);
+	background-image: url(${ctx}/static/img/icon.png);
 	background-position: -302px -52px;
 }
 
@@ -163,7 +163,7 @@
 	height: 24px;
 	overflow: hidden;
 	line-height: 99px;
-	background-image: url(/guide-admin/static/img/icenter-delay.png);
+	background-image: url(${ctx}/static/img/icenter-delay.png);
 	background-position: -36px -54px;
 	font-style: normal;
 	font-weight: normal;
@@ -178,7 +178,7 @@
 	height: 16px;
 	font-style: oblique;
 	margin: -8px 0 0 -8px;
-	background: url(/guide-admin/static/img/load.gif) 0 0 no-repeat;
+	background: url(${ctx}/static/img/load.gif) 0 0 no-repeat;
 }
 
 .loading{
@@ -416,10 +416,10 @@ margin-left: 190px;
 								oBox.appendChild(oImg);
 								// 	'<a href="+'data.result[i].imgUrl'+">'
 							}
-							console.log(data);
+							//console.log(data);
 							if (data.result.length > 0) {
 								g_page_no++;
-								console.log(g_page_no);
+								//console.log(g_page_no);
 							}
 							waterfall('main', 'box');
 						},

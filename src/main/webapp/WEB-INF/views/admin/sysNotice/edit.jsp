@@ -55,7 +55,7 @@
 	</form:form>
    <script type="text/javascript">
     function text(dom){
-       console.log(dom.value=="http://");
+      // console.log(dom.value=="http://");
     }
    </script>
 </body>

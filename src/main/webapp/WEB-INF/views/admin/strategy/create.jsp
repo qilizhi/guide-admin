@@ -258,7 +258,7 @@
 					var options = "";
 					if (data.code == "200") {
 						var users = data.result;
-						console.log(users);
+						//console.log(users);
 						$.each(users, function(index, obj) {
 							options += "<option value='"+obj.userNo+"'>"
 									+ obj.realName +" "+obj.guideCardNo+ "</option>";

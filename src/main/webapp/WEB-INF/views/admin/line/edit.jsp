@@ -274,7 +274,7 @@
 									progress + '%');
 							$('.progress .progress-bar-success').text(
 									progress + '%');
-							console.log(data);
+							//console.log(data);
 						},
 
 						done : function(e, data) {
@@ -288,7 +288,7 @@
 								$('.progress .progress-bar-success').text(
 										data.result.msg);
 							}
-							console.log(data);
+							//console.log(data);
 							$('.progress .progress-bar-success').text("done");
 						}
 					});

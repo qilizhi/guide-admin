@@ -361,7 +361,7 @@
 		
 		var result = ${lineDataPrices};
 		
-		console.log(result);
+		//console.log(result);
 		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);
