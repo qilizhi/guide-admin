@@ -97,8 +97,8 @@
 					<!-- BEGIN FORM -->
 					<form action="${ctx }/guideAdmin/guideService/add" id=form_sample_3
 						class="form-horizontal" method="post">
-						<input type="hidden" name="id" value="${guideService.id }" />
-						<input type="hidden" name="serviceNo" value="${guideService.serviceNo }" />
+						<input type="hidden" name="id" value="${service.id }" />
+						<input type="hidden" name="serviceNo" value="${service.serviceNo }" />
 						<div class="form-body">
 							<div class="alert alert-danger display-hide">
 								<button class="close" data-close="alert"></button>
@@ -110,14 +110,14 @@
 							</div>
 							<div class="form-group">
 								<!-- 编辑页面显示start 地陪编号不可修改-->
-								<c:if test="${not empty guideService.id}">
+								<c:if test="${not empty service.id}">
 									<label class="control-label col-md-3">地陪编号 <span
 										class="required"> * </span>
 									</label>
 									<div class="col-md-4">
 										<input type="text" name="lineNo" data-required="1"
 											class="form-control" readonly="readonly"
-											value="${guideService.serviceNo }" />
+											value="${service.serviceNo }" />
 									</div>
 								</c:if>
 							</div>
@@ -128,7 +128,7 @@
 								</label>
 								<div class="col-md-4">
 									<input type="text" name="title" data-required="1"
-										class="form-control" value="${guideService.title }" />
+										class="form-control" value="${service.title }" />
 								</div>
 							</div>
 							<div class="form-group">
@@ -138,8 +138,8 @@
 								<div class="col-md-4">
 									<input type="text"
 										name="price" data-required="1" class="form-control"
-										value="${guideService.price }" />
-										<input type="hidden" name="oldPrice" value="${guideService.price }" /><!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
+										value="${service.price }" />
+										<input type="hidden" name="oldPrice" value="${service.price }" /><!-- 修改前先把旧的价格存起来，价格有改动就需要财务审核 -->
 								</div>
 							</div>
 							<div class="form-group">
@@ -147,8 +147,8 @@
 									class="required"> * </span>
 								</label>
 								<div class="col-md-4">
-									<input type="text" name="totalDay" data-required="1" class="form-control" value="${guideService.totalDay }" />
-									<input type="hidden" name="oldTotalDay" value="${guideService.totalDay }"/><!-- 修改前先把旧的天数存起来，修改天数时对应把旧的行程删掉 -->
+									<input type="text" name="totalDay" data-required="1" class="form-control" value="${service.totalDay }" />
+									<input type="hidden" name="oldTotalDay" value="${service.totalDay }"/><!-- 修改前先把旧的天数存起来，修改天数时对应把旧的行程删掉 -->
 								</div>
 							</div>
 							<div class="form-group">
@@ -158,7 +158,7 @@
 								<div class="col-md-4">
 									<input type="text"
 										name="num" data-required="1" class="form-control"
-										value="${guideService.num }" />
+										value="${service.num }" />
 								</div>
 							</div>
 							
@@ -168,7 +168,7 @@
 								</label>
 								<div class="col-md-4">
 									<script id="description" type="text/plain"
-										name="description" style="width:600px;height:500px;">${guideService.description }</script>
+										name="description" style="width:600px;height:500px;">${service.description }</script>
 									<div id="editor2_error"></div>
 								</div>
 							</div>
@@ -180,7 +180,7 @@
 								<div class="col-md-4">
 									<input type="text"
 										name="sort" data-required="1" class="form-control"
-										value="${guideService.sort }" />
+										value="${service.sort }" />
 								</div>
 							</div>
 							<%-- <div class="form-group">
@@ -218,7 +218,7 @@
 									<div id="imgUrl">
 										<div id="supprogress">
 											<input type="hidden" name="imgUrl"
-												value="${guideService.imgUrl }" /> <span class="imageName"></span>
+												value="${service.imgUrl }" /> <span class="imageName"></span>
 											<div class="progress">
 												<div class="progress-bar progress-bar-success"
 													role="progressbar" aria-valuenow="40" aria-valuemin="0"
@@ -228,7 +228,7 @@
 											</div>
 										</div>
 										<div class="list">
-											<img class="img-list" alt="" src="${guideService.imgUrl }" />
+											<img class="img-list" alt="" src="${service.imgUrl }" />
 										</div>
 										<span class="btn green fileinput-button pading list">
 											<i class="fa fa-plus  i-list"></i> <span id="load">上传
@@ -244,7 +244,7 @@
 									<div id="smallImgUrl">
 										<div id="supprogress">
 											<input type="hidden" name="smallImgUrl"
-												value="${guideService.smallImgUrl }" /> <span
+												value="${service.smallImgUrl }" /> <span
 												class="imageName"></span>
 											<div class="progress">
 												<div class="progress-bar progress-bar-success"
@@ -255,7 +255,7 @@
 											</div>
 										</div>
 										<div class="list">
-											<img class="img-list" alt="" src="${guideService.smallImgUrl }" />
+											<img class="img-list" alt="" src="${service.smallImgUrl }" />
 										</div>
 										<span class="btn green fileinput-button pading list">
 											<i class="fa fa-plus  i-list"></i> <span id="load">上传
@@ -276,7 +276,7 @@
 								<div class="col-md-4">
 									<textarea class="form-control textarea" id="buyNotice"
 										name="remark" maxlength="1800" rows="8" cols="20"
-										data-name="buyNotice">${guideService.remark }</textarea>
+										data-name="buyNotice">${service.remark }</textarea>
 								</div>
 							</div>
 
@@ -299,7 +299,7 @@
 		                        </label>
 		                        <div class="col-md-9">
 		                            <script id="content" type="text/plain" name="content"
-										style="width:600px;height:500px;">${guideService.content }</script>
+										style="width:600px;height:500px;">${service.content }</script>
 		                            <div id="editor2_error"> </div>
 		                        </div>
 		                    </div>
@@ -440,10 +440,6 @@
 	                        digits:true,
 	                        maxlength:10
 	                    },
-	                    description1: {
-	                        required: true,
-	                        maxlength:50
-	                    },
 	                    sort: {
 	                        required: true,
 	                        digits:true,
@@ -480,10 +476,6 @@
 	                        required: "不能为空",
 	                        digits:"请输入整数",
 	                        maxlength:"最多输入10位数"
-	                    },
-	                    description1: {
-	                        required: "不能为空",
-	                        maxlength:"最多输入50个汉字"
 	                    },
 	                    sort: {
 	                        required: "不能为空",

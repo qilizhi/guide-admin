@@ -43,8 +43,8 @@
 		<input type="hidden" name="pageNo" value="1">
 		<div class="col-md-4"></div>
 		<div class="col-md-4" style="text-align: right;">
-		<input type="text" class="form-filter input-sm" placeholder="地陪标题" name="title" value="${guideService.title}">	
-		<input type="text" class="form-filter input-sm" placeholder="地陪编号" name="serviceNo" value="${guideService.serviceNo}">		
+		<input type="text" class="form-filter input-sm" placeholder="导服标题" name="title" value="${guideService.title}">	
+		<input type="text" class="form-filter input-sm" placeholder="导服编号" name="serviceNo" value="${guideService.serviceNo}">		
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom">
 		<i class="fa fa-search"></i> 查询</button>
 			
