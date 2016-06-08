@@ -446,18 +446,22 @@
 		id = #{id,jdbcType=INTEGER}
 	</update>
 	
-	<select id="getGuideServiceByUserNo" resultMap="BaseResultMap">
+	<select id="getGuideServiceByUserNo" resultMap="ResultMapWithBLOBs">
 	  select 
 	  <include refid="Base_Column_List"/>
+	   ,
+	  <include refid="Blob_Column_List" />
 	   from guide_service 
 	  <where>
 	   user_no=#{userNo}
 	  </where>
 	
 	</select>
-	<select id="getGuideServiceByServiceNo" resultMap="BaseResultMap">
+	<select id="getGuideServiceByServiceNo" resultMap="ResultMapWithBLOBs">
 	  select 
 	  <include refid="Base_Column_List"/>
+	  ,
+	  <include refid="Blob_Column_List" />
 	   from guide_service 
 	  <where>
 	   service_no=#{serviceNo}
