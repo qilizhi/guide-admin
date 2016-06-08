@@ -183,6 +183,13 @@
 										src="${line.imgUrl }" width="200px;" height="auto;"></p>
                                  </div>
                              </div>
+                             <div class="form-group">
+                                 <label class="control-label col-md-3">小图:</label>
+                                 <div class="col-md-4">
+                                     <p class="form-control-static" ><img id="image" alt=""
+										src="${line.smallImgUrl }" width="200px;" height="auto;"></p>
+                                 </div>
+                             </div>
                              
                              <h4 class="form-section">价格</h4>
                              
