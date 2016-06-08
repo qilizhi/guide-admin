@@ -229,6 +229,8 @@
 							<!-- 价格日历 -->
 
 							<input type="hidden" name="routeid" value="${service.serviceNo}" />
+							<input type="hidden" name="startDate" value="${startDate}"/>
+							<input type="hidden" name="endDate" value="${endDate}"/>
 							<div class="price-condition red">温馨提示:生成价格、清除价格、保存价格都是根据条件设置范围来操作数据的变化的;单击日历单元格可进行编辑.</div>
 
 							<div id="priceCalendar" style="width: 930px;"></div>
@@ -537,13 +539,15 @@
 				$data = JSON.stringify($data);
 				console.log($data);
 				var $url = $(this).attr("href");
+				var $routeId = $("[name='routeid']").val();
 				comm.confirm("提示","确定现在提交吗?",function(){
 					$.post($url,{"params":$data},function(result){ 
 						console.log(result)
 						comm.infoMsg(result.msg);
 						if(result.code === '200'){
 							setTimeout(function(){
-								window.location.href = "${ctx}/guideAdmin/guideService/submit"
+								window.location.href = "${ctx}/guideAdmin/guideService/submit?serviceNo="+$routeId+"&startDate="
+								+$("input[name=beginTime]").val()+"&endDate="+$("input[name=endTime]").val();
 							},1000);
 						}
 					},"json");

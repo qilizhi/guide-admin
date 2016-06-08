@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
@@ -33,6 +31,7 @@ import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
+import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
@@ -74,7 +73,8 @@ public class GuideServiceController {
 	@RequestMapping
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize,
-			GuideService guideService, HttpServletRequest request, Model model) {
+			//@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate,
+			GuideService guideService, Model model) {
 
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
@@ -88,6 +88,8 @@ public class GuideServiceController {
 			model.addAttribute("guideService", guideService);
 			model.addAttribute("EStatus", EStatus.getMap());
 			model.addAttribute("EAuditStatus", EAuditStatus.getMap());
+			//model.addAttribute("startDate", startDate);
+			//model.addAttribute("endDate", endDate);
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -110,25 +112,25 @@ public class GuideServiceController {
 	public String add(Model model, GuideService guideService, @RequestParam(value = "oldPrice") BigDecimal oldPrice) {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-	
-			// 更新
-			if (guideService.getId() != null) {
-				// 获取修改前的价格，如果价格有改动就通知财务审核
-				if (oldPrice.compareTo(guideService.getPrice()) != 0) {
-					guideService.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
-				}
-				guideService.setUpdateTime(new Date());
-				guideServiceService.updateByPrimaryKeySelective(guideService);
-			} else {
-				// 新增
-				// 随机生成编号
-				guideService.setServiceNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix()));
-				guideService.setUserNo(shiroUser.getUserNo());
-				guideService.setUserName(shiroUser.getName());
-				guideService.setCreateTime(new Date());
-				guideService.setStatus(EStatus.EDIT.getId());
-				guideServiceService.insertSelective(guideService);
+
+		// 更新
+		if (guideService.getId() != null) {
+			// 获取修改前的价格，如果价格有改动就通知财务审核
+			if (oldPrice.compareTo(guideService.getPrice()) != 0) {
+				guideService.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
 			}
+			guideService.setUpdateTime(new Date());
+			guideServiceService.updateByPrimaryKeySelective(guideService);
+		} else {
+			// 新增
+			// 随机生成编号
+			guideService.setServiceNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix()));
+			guideService.setUserNo(shiroUser.getUserNo());
+			guideService.setUserName(shiroUser.getName());
+			guideService.setCreateTime(new Date());
+			guideService.setStatus(EStatus.EDIT.getId());
+			guideServiceService.insertSelective(guideService);
+		}
 		return "redirect:/guideAdmin/guideService/editPrice/" + guideService.getServiceNo();
 	}
 
@@ -136,15 +138,19 @@ public class GuideServiceController {
 	 * saveAndNext
 	 */
 	@RequestMapping(value = "/submit")
-	public String submit(Model model) {
+	public String submit(@RequestParam("serviceNo") String serviceNo, @RequestParam String startDate,
+			@RequestParam String endDate, Model model) {
 		try {
+			model.addAttribute("serviceNo", serviceNo);
 			// 导服
-//			GuideService service = guideServiceService.getGuideServiceByServiceNo(serviceNo);
-//			model.addAttribute("service", service);
+			GuideService service = guideServiceService.getGuideServiceByServiceNo(serviceNo);
+			model.addAttribute("service", service);
 			// 价格
-//			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-//					.getGuideLineDatePriceByLineNo(serviceNo);
-//			model.addAttribute("lsPrices", lsGuideLineDatePrices);
+			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+					.getGuideLineDatePriceByLineNo(serviceNo);
+			model.addAttribute("lsPrices", lsGuideLineDatePrices);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -159,7 +165,7 @@ public class GuideServiceController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "backToSercice/{lineNo}")
+	@RequestMapping(value = "backToSercice/{serviceNo}")
 	public String backToSercice(@PathVariable String serviceNo, Model model) {
 		try {
 			GuideService service = guideServiceService.getGuideServiceByServiceNo(serviceNo);
@@ -169,6 +175,55 @@ public class GuideServiceController {
 		}
 		return "guideAdmin/guideService/create";
 	}
+
+	/**
+	 * 上一步,返回价格页面
+	 * 
+	 * @param lineNo
+	 * @param guideLineDatePrice
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "backToPrice/{serviceNo}")
+	public String backToPrice(@PathVariable String serviceNo, GuideLineDatePrice guideLineDatePrice,
+			@RequestParam String startDate, @RequestParam String endDate, GuideLineTrip guideLineTrip, Model model) {
+		try {
+			// 获取导服
+			GuideService service = guideServiceService.getGuideServiceByServiceNo(serviceNo);
+			// 获取对应的价格表
+			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+					.getGuideLineDatePriceByLineNo(serviceNo);
+			String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+			model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+			model.addAttribute("service", service);
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return "guideAdmin/guideService/price";
+	}
+	
+	/**
+	 * 发布
+	 * 
+	 * @param lineNo
+	 * @param guideLine
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/preView/{serviceNo}")
+	public String submit(@PathVariable(value = "serviceNo") String serviceNo, GuideService guideService, Model model) {
+		try {
+			guideService.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
+			guideServiceService.updateByPrimaryKeySelective(guideService);
+			model.addAttribute("serviceNo", serviceNo);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return "redirect:/guideAdmin/guideService";
+	}
+
 
 	/**
 	 * 编辑价格，根据线路编号获取价格表
@@ -261,8 +316,8 @@ public class GuideServiceController {
 	@RequestMapping(value = "/edit/{id}")
 	public String edit(@PathVariable Long id, Model model) {
 		try {
-			GuideService guideService = guideServiceService.selectByPrimaryKey(id);
-			model.addAttribute("guideService", guideService);
+			GuideService service = guideServiceService.selectByPrimaryKey(id);
+			model.addAttribute("service", service);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}

@@ -60,10 +60,10 @@ window.g_basePath = "${ctx}";
                 <div class="form-group">
                     <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                     <label class="control-label visible-ie8 visible-ie9">账号</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="账号" name="username" /> </div>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="账号" name="username" value="13533337663"/> </div>
                 <div class="form-group">
                     <label class="control-label visible-ie8 visible-ie9">密码</label>
-                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" /> </div>
+                    <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" value="123456" /> </div>
                 <div class="form-actions">
                     <button type="submit" class="btn green uppercase">登录</button>
                     <label class="rememberme check">
