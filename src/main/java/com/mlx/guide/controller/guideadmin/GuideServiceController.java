@@ -213,10 +213,11 @@ public class GuideServiceController {
 	 * @return
 	 */
 	@RequestMapping(value = "/preView/{serviceNo}")
-	public String submit(@PathVariable(value = "serviceNo") String serviceNo, GuideService guideService, Model model) {
+	public String submit(@PathVariable(value = "serviceNo") String serviceNo, Model model) {
 		try {
-			guideService.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
-			guideServiceService.updateByPrimaryKeySelective(guideService);
+			GuideService gs = guideServiceService.getGuideServiceByServiceNo(serviceNo);
+			gs.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
+			guideServiceService.updateByPrimaryKeySelective(gs);
 			model.addAttribute("serviceNo", serviceNo);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
