@@ -107,10 +107,10 @@ public class GuideServiceController {
 	 * @return
 	 */
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public ModelAndView add(Model model, GuideService guideService, @RequestParam(value = "oldPrice") BigDecimal oldPrice) {
+	public String add(Model model, GuideService guideService, @RequestParam(value = "oldPrice") BigDecimal oldPrice) {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-		try {
+	
 			// 更新
 			if (guideService.getId() != null) {
 				// 获取修改前的价格，如果价格有改动就通知财务审核
@@ -129,14 +129,7 @@ public class GuideServiceController {
 				guideService.setStatus(EStatus.EDIT.getId());
 				guideServiceService.insertSelective(guideService);
 			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-		String viewName = "redirect:guideAdmin/guideService/editPrice/".concat(guideService.getServiceNo());
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(viewName);
-		return modelAndView;
-		//return "redirect:guideAdmin/guideService/editPrice/" + guideService.getServiceNo();
+		return "redirect:/guideAdmin/guideService/editPrice/" + guideService.getServiceNo();
 	}
 
 	/**

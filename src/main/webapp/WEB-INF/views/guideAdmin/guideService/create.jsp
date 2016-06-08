@@ -96,8 +96,7 @@
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
 					<form action="${ctx }/guideAdmin/guideService/add" id=form_sample_3
-						class="form-horizontal" method="post"
-						enctype="multipart/form-data">
+						class="form-horizontal" method="post">
 						<input type="hidden" name="id" value="${guideService.id }" />
 						<input type="hidden" name="serviceNo" value="${guideService.serviceNo }" />
 						<div class="form-body">
@@ -553,7 +552,7 @@
 	     	    		   return ;
 	     	    	   }
 	                    success3.show();
-	                    form[0].submit(); // submit the form
+	                    form.submit(); // submit the form
 	                }
 
 	            });
