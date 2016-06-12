@@ -85,7 +85,7 @@ public class GuideIndexController {
 			String timeEnd = simpledateformat.format(calendar.getTime());
 			
 			Map<String,Object> m_maps=new HashMap<String,Object>();
-			m_maps.put("userId", "12345678");
+			m_maps.put("userId", shiroUser.getUserNo());
 			m_maps.put("startDate", timeStart);
 			m_maps.put("endDate", timeEnd);
     	    String result = guideOrderService.getMemberList(m_maps);
@@ -111,7 +111,7 @@ public class GuideIndexController {
 			long monthSales = 0;
 			/* 已支付 算销售额*/
 			Map<String,Object> s_maps=new HashMap<String,Object>();
-			s_maps.put("userId", "12345678");
+			s_maps.put("userId", shiroUser.getUserNo());
 			s_maps.put("orderStatus", "S");
 			s_maps.put("startDate", timeStart);
 			s_maps.put("endDate", timeEnd);
@@ -134,7 +134,7 @@ public class GuideIndexController {
 			
 			//最新订单列表
 			Map<String,Object> l_maps=new HashMap<String,Object>();
-			l_maps.put("userId", "12345678");
+			l_maps.put("userId", shiroUser.getUserNo());
 			l_maps.put("startDate", timeStart);
 			l_maps.put("endDate", timeEnd);
 			String orderList = guideOrderService.getMemberList(l_maps);
