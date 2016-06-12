@@ -54,12 +54,12 @@
 						</a>
 						<!-- END LOGO -->
 						<!-- BEGIN SEARCH -->
-						<form class="search" action="extra_search.html" method="GET">
+						<!-- <form class="search" action="extra_search.html" method="GET">
 							<input type="name" class="form-control" name="query"
 								placeholder="搜索..."> <a href="javascript:;"
 								class="btn submit"> <i class="fa fa-search"></i>
 							</a>
-						</form>
+						</form> -->
 						<!-- END SEARCH -->
 						<!-- BEGIN TOPBAR ACTIONS -->
 						<div class="topbar-actions">

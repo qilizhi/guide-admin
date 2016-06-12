@@ -219,7 +219,7 @@
 												<td>${item.safePrice}</td>
 												<td>${item.visaPrice}</td>
 												<td>${item.num}</td>
-												<td><fmt:formatDate value="${item.lineDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+												<td><fmt:formatDate value="${item.lineDate}" pattern="yyyy-MM-dd"/></td>
 												
 											</tr>
 										</c:forEach>
