@@ -166,7 +166,7 @@
 
 								<div class="scroller-footer">
 									<div class="btn-arrow-link pull-right">
-										<a href="javascript:;" onClick="javascript:history.back(-1);">返回</a>
+										<!-- <a href="javascript:;" onClick="javascript:history.back(-1);">返回</a> -->
 									</div>
 								</div>
 
