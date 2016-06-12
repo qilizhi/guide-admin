@@ -17,7 +17,6 @@ import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import com.mlx.guide.util.StringUtil;
 
@@ -77,7 +76,8 @@ public class RoleAuthorizationFilter extends AuthorizationFilter {
 					break;
 				}
             }
-		}		
+		}
+		logger.info( "Redirect : " + loginUrl );
 		// 重定向
 		WebUtils.issueRedirect( request, response, loginUrl );
 	}

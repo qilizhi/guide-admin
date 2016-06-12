@@ -39,6 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springside.modules.security.utils.Digests;
+import org.springside.modules.utils.Encodes;
 
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EUserType;
@@ -101,10 +103,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
 					platformUser = MlxingAPIUtil.getAPIDataT( PLATFORM_USERINFO_LOGIN, paramUtil, PlatformUser.class );
 				}
 				if (platformUser != null) {
-					ShiroUser user1 = new ShiroUser(token.getUsername(), platformUser.getName(),
-							platformUser.getUserNo(), null, token.getUserType());
-					HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,
-							user1.getName());
+					ShiroUser user1 = new ShiroUser(token.getUsername(), platformUser.getName(),platformUser.getUserNo(), null, token.getUserType());
+					HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,user1.getName());
 					return ai;
 				}
 				return null;
@@ -123,12 +123,11 @@ public class ShiroDbRealm extends AuthorizingRealm {
 				logger.error("验证登录错误: 非导游账号");
 				return null;
 			}
-			
+			if(!checkPwd( userInfo.getSalt(), password, userInfo.getPassword() )){
+				return null;
+			}
 			// TODO:需要进行密码加密处理进行验证
-/*			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), userInfo.getRealName(), userInfo.getUserNo(),
-					userInfo.getOpenId(), token.getUserType());*/
-					ShiroUser user1 = new ShiroUser(userInfo.getMobile(), guideInfo.getRealName(), userInfo.getUserNo(),
-					userInfo.getOpenId(), token.getUserType());
+			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), guideInfo.getRealName(), userInfo.getUserNo(),userInfo.getOpenId(), token.getUserType());
 			HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true, user1.getName());
 			return ai;
 		} catch (AuthenticationException e) {
@@ -187,6 +186,23 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			return info;
 		}
 		return null;
+	}
+	
+	/**
+	 * 检查密码是否匹配
+	 * 
+	 * @param cmlSalt
+	 * @param inputPwd
+	 * @param cmlPwd
+	 * @return
+	 */
+	private boolean checkPwd( String cmlSalt, String inputPwd, String cmlPwd ) {
+		if( StringUtil.empty( cmlSalt ) || StringUtil.empty( inputPwd ) || StringUtil.empty( cmlPwd ) ) {
+			return false;
+		}
+		String salt = StringUtil.stringValue( cmlSalt, "" );
+		String hexPwd = Encodes.encodeHex( Digests.sha1( inputPwd.getBytes(), Encodes.decodeHex( salt ), Const.SALT_SIZE ) );
+		return (cmlPwd != null && !StringUtil.empty( hexPwd ) && cmlPwd.equals( hexPwd ));
 	}
 
 	/**
