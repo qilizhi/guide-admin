@@ -375,7 +375,7 @@
 		
 		
 		var result = ${lineDataPrices};
-		console.log(result);
+		//console.log(result);
 		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);
@@ -447,7 +447,7 @@
 			    },
 			    //td点击事件
 			    tdClick: function(obj,date,price,cprice,eprice,currTdObj) {
-			    	console.log(currTdObj);
+			    	//console.log(currTdObj);
 			    	if($("div.price-edit",currTdObj).length <= 0){
 			    		var temp = $($mTemp).appendTo(currTdObj);
 			    		var dataType = $(currTdObj).attr("data-routeordertype");
@@ -542,12 +542,12 @@
 					return;
 				}
 				$data = JSON.stringify($data);
-				console.log($data);
+				//console.log($data);
 				var $url = $(this).attr("href");
 				var $routeId = $("[name='routeid']").val();
 				comm.confirm("提示","确定现在提交吗?",function(){
 					$.post($url,{"params":$data},function(result){ 
-						console.log(result)
+						//console.log(result)
 						comm.infoMsg(result.msg);
 						if(result.code === '200'){
 							setTimeout(function(){

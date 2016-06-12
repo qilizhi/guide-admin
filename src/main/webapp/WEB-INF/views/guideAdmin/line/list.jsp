@@ -177,7 +177,7 @@
 		    	dataType:"json",
 		    	type:"get",
 		    	success:function(data){
-		    		console.log(data);  
+		    		//console.log(data);  
 		    		
 		    		//判断是否已通过审核
 		    		if(data.result.auditStatus==2){

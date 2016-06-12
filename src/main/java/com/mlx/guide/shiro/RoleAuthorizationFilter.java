@@ -2,6 +2,8 @@ package com.mlx.guide.shiro;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -63,15 +65,18 @@ public class RoleAuthorizationFilter extends AuthorizationFilter {
 		String saveReqUrl = savedRequest != null ? savedRequest.getRequestUrl() : null;
 		if( !StringUtil.empty( saveReqUrl ) ) {
 			// 判断如果链接中有/admin则表示访问的是平台页面
-			if( saveReqUrl.endsWith( "/admin" ) ) {
-				// 重新赋值登录链接
-				loginUrl = "/platformLogin?returnUrl=" + saveReqUrl;
-			}
-			else if( saveReqUrl.endsWith( "/guideAdmin" ) ) {
-				// 判断如果链接中有/guideAdmin则表示访问的是商家后台页面
-				// 重新赋值登录链接
-				loginUrl = "/guideLogin?returnUrl=" + saveReqUrl;
-			}
+			// 判断如果链接中有/guideAdmin则表示访问的是商家后台页面
+			String[] _strRegexs = new String[]{"\\/admin|\\/admin\\/","\\/guideAdmin|\\/guideAdmin\\/"};
+			String[] _strUrls = new String[]{"/platformLogin?returnUrl=" + saveReqUrl,"/guideLogin?returnUrl=" + saveReqUrl};
+			for( int i = 0; i < _strRegexs.length; i++ ) {
+				Pattern pattern = Pattern.compile( _strRegexs[i] );
+				Matcher matcher = pattern.matcher( saveReqUrl );
+				if(matcher.find()) {
+					// 重新赋值登录链接
+					loginUrl = _strUrls[i];
+					break;
+				}
+            }
 		}		
 		// 重定向
 		WebUtils.issueRedirect( request, response, loginUrl );

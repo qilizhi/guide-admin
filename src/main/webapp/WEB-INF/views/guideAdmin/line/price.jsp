@@ -292,7 +292,7 @@
 			getRoutePriceData:function(){
 				var $routePrices = [];
 				var $BasePrices = this.getBasePrice();
-				console.log($BasePrices)
+				//console.log($BasePrices)
 				$("#priceCalendar td.td").each(function(i,obj){
 					var adultPrice = $(obj).attr("data-cprice");
 					var childPrice = $(obj).attr("data-eprice");
@@ -345,7 +345,7 @@
 		
 		
 		var result = ${lineDataPrices};
-		console.log(result);
+		//console.log(result);
 		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);
@@ -369,7 +369,7 @@
 			    json: result, //传递过来的json ${lineDataPrices}
 			    startTime:new Date(),
 			    tdAttrs: function(jsonObj){
-			    	console.log(jsonObj)
+			    	//console.log(jsonObj)
 			    	if(!jsonObj){
 			    		return "";
 			    	}
@@ -416,7 +416,7 @@
 			    },
 			    //td点击事件
 			    tdClick: function(obj,date,price,cprice,eprice,currTdObj) {
-			    	console.log(currTdObj);
+			    	//console.log(currTdObj);
 			    	if($("div.price-edit",currTdObj).length <= 0){
 			    		var temp = $($mTemp).appendTo(currTdObj);
 			    		var dataType = $(currTdObj).attr("data-routeordertype");

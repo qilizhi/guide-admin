@@ -167,8 +167,8 @@
 									class="required"> * </span>
 								</label>
 								<div class="col-md-4">
-									<script id="description" type="text/plain"
-										name="description" style="width:600px;height:500px;">${service.description }</script>
+									<textarea class="form-control" name="description" id="description"
+											rows="3" placeholder="这里添加描述">${service.description}</textarea>
 									<div id="editor2_error"></div>
 								</div>
 							</div>
@@ -440,6 +440,10 @@
 	                        digits:true,
 	                        maxlength:10
 	                    },
+	                    description:{
+	                    	required: true,
+	                    	maxlength:50
+	                    },
 	                    sort: {
 	                        required: true,
 	                        digits:true,
@@ -476,6 +480,10 @@
 	                        required: "不能为空",
 	                        digits:"请输入整数",
 	                        maxlength:"最多输入10位数"
+	                    },
+	                    description:{
+	                    	required: "不能为空",
+	                    	maxlength:"最多输入50个汉字"
 	                    },
 	                    sort: {
 	                        required: "不能为空",
@@ -539,10 +547,6 @@
 	     	    		   comm.infoMsg("内容不能为空",null,150);
 	     	    		   return ;
 	     	    	   }
-	                    if(UE.getEditor('description').hasContents()==false){
-	     	    		   comm.infoMsg("内容不能为空",null,150);
-	     	    		   return ;
-	     	    	   }
 	                    success3.show();
 	                    form.submit(); // submit the form
 	                }
@@ -557,7 +561,6 @@
 		var initUEeditor = function() {
 			window.UEDITOR_HOME_URL = "${ctx}";
 			UE.getEditor('content');
-			UE.getEditor('description');
 			//UE.getEditor('remark');
 		}
 	</script>
