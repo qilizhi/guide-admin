@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>导游后台主页</title>
+<title>团列表</title>
 <%--  <link href="${ctx}/static/assets/global/plugins/datatables/datatables.css" rel="stylesheet" type="text/css" />  --%>
 <%-- <link href="${ctx}/static/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" /> --%>
 </head>
@@ -183,7 +183,7 @@
 				var data = new Object();
 				data.tuanNo = $a.attr("data-tuanNo");
 				$.post($hrefUrl, data, function(e) {
-					//console.log(e)
+					console.log(e)
 					if (e.code == '200') {
 						comm.showMsg("success", "提示", "操作成功")
 						setTimeout(function() {
@@ -191,7 +191,7 @@
 						}, 500)
 					} else {
 
-						comm.showMsg("error", "提示",e.msg);
+						comm.showMsg("error", "提示",e.result);
 					}
 				}, "json")
 				//console.log(data);
