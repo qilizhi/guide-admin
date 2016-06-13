@@ -119,7 +119,7 @@ public class GuideIndexController {
     	    String s_result = guideOrderService.getMemberList(s_maps);
     	    JSONObject parseObject = JSON.parseObject(s_result);
     	    if(parseObject.getString("code").equals("0000")){
-    	    	List<OrderModel> s_orders=JSONArray.parseArray(JSON.parseObject(s_result).get("result").toString(), OrderModel.class);
+    	    	List<OrderModel> s_orders=JSONArray.parseArray(parseObject.get("result").toString(), OrderModel.class);
     	    	for(OrderModel o:s_orders){
     	    		monthSales+=o.getTotalSellPrice().longValue();
     	    	}
