@@ -11,8 +11,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>订单</title>
-<link rel="stylesheet" href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+<link href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
 <script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -57,7 +58,7 @@
 		</div>
 		<input type="hidden" name="pageNo" value="1">
 		<div class="col-md-3">
-		<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd">
+		<div class="input-group input-large date-picker input-daterange" data-date="2012-11-10" data-date-format="yyyy-mm-dd" data-date-language="zh-CN">
 			<input type="text" class="form-control" name="startDate" value="${orderModel.startDate}" style="height:30px;"> 
 			<span class="input-group-addon"> to </span> 
 			<input type="text" class="form-control" name="endDate" value="${orderModel.endDate}" style="height:30px;">
@@ -181,10 +182,16 @@
 <script type="text/javascript">
 //初始化时间日历
 $(function(){
-	$(".date-picker input").datepicker({
+	/* $(".date-picker input").datepicker({
 		format: "yyyy-mm-dd"
-	});
+	}); */
+	 //初始化日历插件 datepicker
+    $('.date-picker').datepicker({
+        rtl: App.isRTL(),
+        autoclose: true
+    });
 })
+
 </script>
 
 </body>
