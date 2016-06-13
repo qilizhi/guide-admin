@@ -10,14 +10,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springside.modules.security.utils.Digests;
-import org.springside.modules.utils.Encodes;
 
-
-
-/*import org.springside.modules.security.utils.Digests;
-import org.springside.modules.utils.Encodes;
-*/
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.mlx.guide.constant.Const;
@@ -32,6 +25,8 @@ import com.mlx.guide.entity.UserInfo;
 import com.mlx.guide.model.Member;
 import com.mlx.guide.model.Statistics;
 import com.mlx.guide.model.UserInfoModel;
+import com.mlx.guide.util.Digests;
+import com.mlx.guide.util.Encodes;
 
 @Service
 @Transactional
