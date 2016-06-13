@@ -7,7 +7,6 @@
 	<packaging>war</packaging>
 	<name>guide-admin</name>
 	<description>美丽玩家平台管理</description>
-
 	<properties>
 		<!-- spring版本号 -->
 		<spring.version>4.1.1.RELEASE</spring.version>
@@ -46,7 +45,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>4.1.1.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -217,8 +216,6 @@
 		</dependency>
 		<!-- 测试用例相关 end -->
 
-
-
 		<!-- mybatis分页挺插件 -->
 		<dependency>
 			<groupId>com.github.miemiedev</groupId>
@@ -318,12 +315,13 @@
 			<artifactId>ehcache-core</artifactId>
 			<version>2.6.11</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+
+		<!-- <dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-servlet-api</artifactId>
+			<version>7.0.57</version>
 			<scope>compile</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springside</groupId>
 			<artifactId>springside-core</artifactId>
@@ -347,8 +345,17 @@
 			<artifactId>json</artifactId>
 			<version>20160212</version>
 		</dependency>
-		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId> 
-			<version>3.1.0</version> <scope>provided</scope> </dependency> -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
