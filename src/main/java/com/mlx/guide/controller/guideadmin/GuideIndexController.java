@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EFlag;
 import com.mlx.guide.constant.EGoodsType;
@@ -116,10 +117,13 @@ public class GuideIndexController {
 			s_maps.put("startDate", timeStart);
 			s_maps.put("endDate", timeEnd);
     	    String s_result = guideOrderService.getMemberList(s_maps);
-			List<OrderModel> s_orders=JSONArray.parseArray(JSON.parseObject(s_result).get("result").toString(), OrderModel.class);
-			for(OrderModel o:s_orders){
-				monthSales+=o.getTotalSellPrice().longValue();
-			}
+    	    JSONObject parseObject = JSON.parseObject(s_result);
+    	    if(parseObject.getString("code").equals("0000")){
+    	    	List<OrderModel> s_orders=JSONArray.parseArray(parseObject.get("result").toString(), OrderModel.class);
+    	    	for(OrderModel o:s_orders){
+    	    		monthSales+=o.getTotalSellPrice().longValue();
+    	    	}
+    	    }
 			model.addAttribute("monthSales", monthSales);
 			
 			//出团提醒列表(出团状态为1)

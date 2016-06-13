@@ -93,9 +93,10 @@
 										
 										
 										<td>
+											<c:if test="${item.tuanStatus!=3}">
 											<a class="btn blue btn-outline" href="javascript:tour(${item.id},2)">出团</a>
 											<a class="btn yellow btn-outline" href="javascript:tour(${item.id},3)">取消</a>
-											
+											</c:if>
 										</td>
 										
 									</tr>

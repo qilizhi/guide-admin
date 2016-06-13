@@ -39,8 +39,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springside.modules.security.utils.Digests;
-import org.springside.modules.utils.Encodes;
 
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EUserType;
@@ -53,6 +51,8 @@ import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.UserInfoService;
 import com.mlx.guide.shiro.http.HttpCredentialsMatcher;
 import com.mlx.guide.shiro.http.HttpOAuthAuthenticationInfo;
+import com.mlx.guide.util.Digests;
+import com.mlx.guide.util.Encodes;
 import com.mlx.guide.util.MlxingAPIUtil;
 import com.mlx.guide.util.ParamUtil;
 import com.mlx.guide.util.StringUtil;
@@ -135,16 +135,6 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			throw new AuthenticationException(e.getMessage());
 		}
 	}
-
-	/*
-	 * private void createCookie( String cookieName, String cookieValue, String
-	 * domain, String maxAge ) { int time = 6000; Cookie cookie = new
-	 * SimpleCookie( cookieName ); cookie.setHttpOnly( true ); cookie.setDomain(
-	 * domain ); cookie.setPath( "/" ); cookie.setValue( cookieValue );
-	 * cookie.setMaxAge( time ); cookie.saveTo( WebUtils.getHttpRequest(
-	 * SecurityUtils.getSubject() ), WebUtils.getHttpResponse(
-	 * SecurityUtils.getSubject() ) ); }
-	 */
 
 	/**
 	 * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用.在配有缓存的情况下，只加载一次.
