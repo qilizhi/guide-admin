@@ -291,7 +291,8 @@ public class GuideLineController {
 	public String backToTrip(@PathVariable String lineNo, GuideLineTrip guideLineTrip, @RequestParam String startDate,
 			@RequestParam String endDate, Model model) {
 		try {
-			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
+			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
+			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
 			model.addAttribute("startDate", startDate);
