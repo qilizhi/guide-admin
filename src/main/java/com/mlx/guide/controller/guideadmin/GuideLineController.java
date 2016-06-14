@@ -341,41 +341,24 @@ public class GuideLineController {
 	}
 
 	/**
-	 * 根据id获取线路信息
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/up/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public JsonResult up(@PathVariable Integer id) {
-		try {
-			GuideLine guideLine = guideLineService.getGuideLineByPrimaryKey(id);
-			return new JsonResult(ExceptionCode.SUCCESSFUL, guideLine);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new JsonResult(ExceptionCode.FAIL);
-		}
-	}
-
-	/**
 	 * 修改上线，下线状态
 	 * 
 	 * @param guideLine
 	 * @return
 	 */
-	@RequestMapping(value = "upAndDown")
-	public String upAndDown(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, GuideLine guideLine,
-			Model model) {
+	@RequestMapping(value="/on")
+	@ResponseBody
+	public String on(GuideLine guideLine){
 		try {
 			guideLineService.updateGuideLineSelective(guideLine);
-			model.addAttribute("pageSize", pageSize);
+			 return "操作成功！";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "redirect:/guideAdmin/line/list";
+		return "系统异常,请稍后再试";	
 	}
+	
+	
 
 	/**
 	 * 跳转到线路新增页面

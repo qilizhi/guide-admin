@@ -215,37 +215,22 @@ public class GuideStrategyController {
 	}
 
 	/**
-	 * 根据id获取线路信息
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/up/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public JsonResult up(@PathVariable Integer id) {
-		try {
-			 GuideStrategy guideStrategy = guideStrategyService.getGuideStrategyByPrimaryKey(id);
-			return new JsonResult(ExceptionCode.SUCCESSFUL,guideStrategy);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new JsonResult(ExceptionCode.FAIL);
-		}
-	}
-	
-	/**
 	 * 修改上线，下线状态
+	 * 
 	 * @param guideLine
 	 * @return
 	 */
-	@RequestMapping(value="onOFF")
-	public String onOFF(GuideStrategy guideStrategy){
+	@RequestMapping(value="/on")
+	@ResponseBody
+	public String on(GuideStrategy guideStrategy){
 		try {
 			guideStrategyService.updateGuideStrategySelective(guideStrategy);
+			 return "操作成功！";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "redirect:/guideAdmin/strategy/list";
+		return "系统异常,请稍后再试";	
 	}
-	
 	
 	/**
 	 * 删除

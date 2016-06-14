@@ -30,6 +30,7 @@ import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.entity.GuideService;
+import com.mlx.guide.entity.GuideStrategy;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideServiceService;
@@ -277,37 +278,21 @@ public class GuideServiceController {
 	}
 
 	/**
-	 * 根据id获取线路信息
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/up/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public JsonResult up(@PathVariable Integer id) {
-		try {
-			GuideService gService = guideServiceService.selectByPrimaryKey(new Long(id));
-			return new JsonResult(ExceptionCode.SUCCESSFUL, gService);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new JsonResult(ExceptionCode.FAIL);
-		}
-	}
-
-	/**
 	 * 修改上线，下线状态
 	 * 
-	 * @param guideService
+	 * @param guideLine
 	 * @return
 	 */
-	@RequestMapping(value = "/upAndDown")
-	public String upAndDown(GuideService guideService) {
+	@RequestMapping(value="/on")
+	@ResponseBody
+	public String on(GuideService guideService){
 		try {
 			guideServiceService.updateByPrimaryKeySelective(guideService);
+			 return "操作成功！";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "redirect:/guideAdmin/guideService";
+		return "系统异常,请稍后再试";	
 	}
 
 	/**
