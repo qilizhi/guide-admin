@@ -96,32 +96,6 @@ public class GuideStrategyController {
 	}
 
 	/**
-	 * 根据标题搜索线路，填充到下拉框
-	 * @param title
-	 * @return
-	 */
-	@RequestMapping(value = "search")
-	@ResponseBody
-	public JsonResult getLine(String title) {
-		JsonResult jsonResult = new JsonResult();
-		GuideLine guideLine = new GuideLine();
-		guideLine.setTitle(title);
-		try {
-			List<GuideLine> guideLineList = guideLineService.getGuideLinePageList(guideLine);
-			if (guideLineList.size() == 0) {
-				jsonResult = new JsonResult(ExceptionCode.FAIL, "没有该线路");
-			} else {
-				jsonResult = new JsonResult(ExceptionCode.SUCCESSFUL, guideLineList.subList(0, 10));//下拉框只显示10条信息
-			}
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			jsonResult = new JsonResult(ExceptionCode.FAIL, "内部出现错误");
-		}
-		return jsonResult;
-	}
-
-
-	/**
 	 * 跳转到新增页面
 	 * 
 	 * @return
@@ -164,8 +138,7 @@ public class GuideStrategyController {
 	 * @return
 	 */
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public String doAdd(GuideStrategy guideStrategy, HttpServletRequest request,
-			@RequestParam(value = "file", required = false) MultipartFile file, Model model) {
+	public String doAdd(GuideStrategy guideStrategy, Model model) {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 
@@ -232,21 +205,4 @@ public class GuideStrategyController {
 		return "系统异常,请稍后再试";	
 	}
 	
-	/**
-	 * 删除
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "delete/{id}")
-	public String delete(@PathVariable("id") Integer id) {
-		try {
-			GuideStrategy guideStrategy = guideStrategyService.getGuideStrategyByPrimaryKey(id);
-			guideStrategy.setFlag(EFlag.INVALID.getId());
-			guideStrategyService.updateGuideStrategySelective(guideStrategy);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-		return "redirect:/guideAdmin/strategy/list";
-	}
 }

@@ -32,12 +32,20 @@ public class GuideInfoController {
 	@Autowired
 	private GuideInfoService guideInfoService;
 
+	/**
+	 * 样式
+	 * @param model
+	 */
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("homeclass", Const.MENU_FIRST);
 		model.addAttribute("aboutMe_class", Const.MENU_SUB);
 	}
-	
+	/**
+	 * 列表
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping
 	public String list(Model model) {
 		// 获取当前用户

@@ -28,6 +28,10 @@ public class GuideIntroController {
 	@Autowired
 	private GuideIntroService guideIntroService;
 
+	/**
+	 * 样式
+	 * @param model
+	 */
 	@ModelAttribute
 	public void common(Model model) {
 		model.addAttribute("homeclass", Const.MENU_FIRST);

@@ -61,13 +61,10 @@ public class GuideLineController {
 	private GuideLineDatePriceService guideLineDatePriceService;
 	@Autowired
 	private GuideLineTripService guideLineTripService;
-	@Autowired
-	private GuideTuanService guideTuanService;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
-	 * @param menuBar
 	 * @param model
 	 */
 	@ModelAttribute
@@ -80,7 +77,7 @@ public class GuideLineController {
 	 * 
 	 * @param pageNo
 	 * @param pageSize
-	 * @param searchStr
+	 * @param guideLine
 	 * @param request
 	 * @param model
 	 * @return
@@ -111,11 +108,10 @@ public class GuideLineController {
 	/**
 	 * 新增或更新
 	 * 
-	 * @param file
-	 * @param request
 	 * @param model
 	 * @param guideLine
 	 * @param oldPrice
+	 * @param oldTotalDay
 	 * @return
 	 */
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -130,11 +126,11 @@ public class GuideLineController {
 					guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
 				}
 				// 比较天数，如果天数有改变就删除旧行程
-				if (guideLine.getTotalDay()!=oldTotalDay.intValue()) {
+				if (guideLine.getTotalDay() != oldTotalDay.intValue()) {
 					guideLineTripService.deleteGuideLineTripByLineNo(guideLine.getLineNo());
-					//按照线路天数重新添加行程
-					GuideLineTrip trip=new GuideLineTrip();
-					for(int i=1;i<=guideLine.getTotalDay();i++){
+					// 按照线路天数重新添加行程
+					GuideLineTrip trip = new GuideLineTrip();
+					for (int i = 1; i <= guideLine.getTotalDay(); i++) {
 						trip.setLineNo(guideLine.getLineNo());
 						trip.setDay(i);
 						trip.setCreateTime(new Date());
@@ -154,16 +150,16 @@ public class GuideLineController {
 				guideLine.setStatus(EStatus.EDIT.getId());
 				guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideLineService.createGuideLineSelective(guideLine);
-				//按照线路天数添加行程
-				GuideLineTrip trip=new GuideLineTrip();
-				for(int i=1;i<=guideLine.getTotalDay();i++){
+				// 按照线路天数添加行程
+				GuideLineTrip trip = new GuideLineTrip();
+				for (int i = 1; i <= guideLine.getTotalDay(); i++) {
 					trip.setLineNo(guideLine.getLineNo());
 					trip.setDay(i);
 					trip.setCreateTime(new Date());
 					guideLineTripService.insertSelective(trip);
 				}
 			}
-			
+
 			model.addAttribute("guideLine", guideLine);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -197,6 +193,8 @@ public class GuideLineController {
 	/**
 	 * 跳转到线路修改页面
 	 * 
+	 * @param id
+	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
@@ -214,18 +212,15 @@ public class GuideLineController {
 	 * 保存价格
 	 * 
 	 * @param linePrices
+	 * @param lineNo
+	 * @param model
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
-			GuideLineDatePrice guideLineDatePrice,Model model) {
+			Model model) {
 		try {
-			//保留对应行程
-//			GuideLineTrip t=new GuideLineTrip();
-//			t.setLineNo(lineNo);
-//			List<GuideLineTrip> tripList = guideLineTripService.getGuideLineTripPageList(t);
-//			model.addAttribute("list", tripList);
 			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
@@ -257,21 +252,18 @@ public class GuideLineController {
 
 	/**
 	 * 上一步,返回价格页面
-	 * 
 	 * @param lineNo
-	 * @param guideLineDatePrice
+	 * @param startDate
+	 * @param endDate
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "backToPrice/{lineNo}")
-	public String backToPrice(@PathVariable String lineNo, GuideLineDatePrice guideLineDatePrice,
-			@RequestParam String startDate, @RequestParam String endDate, GuideLineTrip guideLineTrip, Model model) {
+	public String backToPrice(@PathVariable String lineNo, @RequestParam String startDate, @RequestParam String endDate,
+			Model model) {
 		try {
-
 			// 根据线路no获取对应的线路
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
-			
-
 			// 根据线路no获取对应的价格表
 			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
 					.getGuideLineDatePriceByLineNo(lineNo);
@@ -288,9 +280,10 @@ public class GuideLineController {
 
 	/**
 	 * 上一步，返回到行程页面
-	 * 
 	 * @param lineNo
 	 * @param guideLineTrip
+	 * @param startDate
+	 * @param endDate
 	 * @param model
 	 * @return
 	 */
@@ -318,7 +311,7 @@ public class GuideLineController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/delLinePrcie/{lineNo}", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/delLinePrcie/{lineNo}", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResult delLinePrice(@PathVariable String lineNo, @RequestParam("beginTime") String beginTime,
 			@RequestParam("endTime") String endTime, HttpServletRequest request) {
@@ -339,26 +332,24 @@ public class GuideLineController {
 			return new JsonResult(ExceptionCode.FAIL);
 		}
 	}
-
+*/
 	/**
 	 * 修改上线，下线状态
 	 * 
 	 * @param guideLine
 	 * @return
 	 */
-	@RequestMapping(value="/on")
+	@RequestMapping(value = "/on")
 	@ResponseBody
-	public String on(GuideLine guideLine){
+	public String on(GuideLine guideLine) {
 		try {
 			guideLineService.updateGuideLineSelective(guideLine);
-			 return "操作成功！";
+			return "操作成功！";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
-		return "系统异常,请稍后再试";	
+		return "系统异常,请稍后再试";
 	}
-	
-	
 
 	/**
 	 * 跳转到线路新增页面
