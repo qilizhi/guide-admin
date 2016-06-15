@@ -663,6 +663,7 @@ public class GuideTuanAdminController {
 		GuideTuanGuest gtg = new GuideTuanGuest();
 		gtg.setId(id);
 		gtg.setStatus(ESignInStatus.SIGNED.getId().byteValue());
+		gtg.setUpdateTime(new Date());
 		int r = 0;
 		try {
 			r = guideTuanGuestService.updateByPrimaryKeySelective(gtg);
