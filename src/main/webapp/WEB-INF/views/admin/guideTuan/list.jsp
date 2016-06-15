@@ -54,9 +54,12 @@
 							<div class="col-md-8" style="text-align: right;">
 
 								<input type="text" class="form-filter input-sm"
-									placeholder="线路编号" name="lineNo" value="${lineNo}"> <input
-									type="text" class="form-filter input-sm" placeholder="出团名称"
-									name="name" value="${name}">
+									placeholder="出团名称" name="name" value="${guideTuan.name}">
+								<input type="text" class="form-filter input-sm"
+									placeholder="团编号" name="tuanNo" value="${guideTuan.tuanNo}">
+								<input type="text" class="form-filter input-sm"
+									placeholder="产品编号" name="goodsNo" value="${guideTuan.goodsNo}">
+
 								<button type="submit"
 									class="btn btn-sm green btn-outline filter-submit margin-bottom">
 									<i class="fa fa-search"></i> 查询
@@ -191,7 +194,7 @@
 						}, 500)
 					} else {
 
-						comm.showMsg("error", "提示",e.result);
+						comm.showMsg("error", "提示", e.result);
 					}
 				}, "json")
 				//console.log(data);

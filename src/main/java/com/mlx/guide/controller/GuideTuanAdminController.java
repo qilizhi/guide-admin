@@ -118,8 +118,7 @@ public class GuideTuanAdminController {
 			model.addAttribute("pageNo", pageNo);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("list", list);
-			model.addAttribute("name", guideTuan.getName());
-			model.addAttribute("goodsNo", guideTuan.getGoodsNo());
+			model.addAttribute("guideTuan",guideTuan);
 			model.addAttribute("ETuanStatus", ETuanStatus.getByteMap());
 			model.addAttribute("ELineType", ELineType.getByteMap());
 		} catch (Exception e) {
