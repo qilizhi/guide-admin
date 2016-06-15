@@ -13,7 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>线路订单列表</title>
-<link href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+<link href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
 <link href="${ctx}/static/css/overwrite.css" rel="stylesheet" type="text/css" />
 </head>
 <body>

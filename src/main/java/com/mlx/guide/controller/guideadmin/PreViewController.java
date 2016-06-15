@@ -10,7 +10,7 @@ import com.mlx.guide.constant.Const;
 /**
  * 预览
  * @author cyz
- * @category 主要预览
+ * @category 主页预览
  *
  */
 @Controller

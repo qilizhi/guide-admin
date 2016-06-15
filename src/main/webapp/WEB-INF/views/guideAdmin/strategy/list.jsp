@@ -107,7 +107,14 @@
 										<td>	
 											<a href="${ctx}/guideAdmin/strategy/edit/${item.id}" class="btn yellow btn-outline" >编辑</a>
 											<a href="${ctx}/guideAdmin/strategy/detail/${item.id}" class="btn red btn-outline" >详情</a>
-											<a class="btn blue btn-outline" href="javascript:upShow(${item.id})">上线</a>									
+											<c:choose>
+											<c:when test="${item.status==2}">
+											<a href="javascript:onLine(${item.id},${item.auditStatus},3)"  class="btn red btn-outline" >下线</a>
+											</c:when>
+											<c:otherwise>
+											<a href="javascript:onLine(${item.id},${item.auditStatus},2)"  class="btn green  btn-outline" >上线</a>
+											</c:otherwise>
+											</c:choose>				
 										<%-- 	<a href="${ctx}/guideAdmin/strategy/delete/${item.id}" target="delete" class="btn btn-sm red btn-outline" >删除</a>	 --%>
 										</td>
 									</tr>
@@ -143,92 +150,33 @@
 		</div>
 	</div>
 	
-<!-- 修改上线下线状态 -->
-	<div id="detailResponsive"
-		class="modal fade draggable-modal ui-draggable" tabindex="-1"
-		aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form action="${ctx}/guideAdmin/strategy/onOFF" id="modalForm" class="form-horizontal">
-				<input type="hidden" name="id" value=""/>
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true"></button>
-					</div>
 
-				<!-- 	<div class="modal-header"> -->
-						<div class="portlet-body">
-							<!-- BEGIN FORM-->
-
-							<div class="form-body  ">
-								<div class="alert alert-danger display-hide">
-									<button class="close" data-close="alert"></button>
-									You have some form errors. Please check below.
-								</div>
-								
-								<div class="form-group  margin-top-20">
-									<label class="control-label col-md-3">上线</label>
-									<div class="col-md-3">
-										<input type="radio" name="status" value="2" style="margin-left: -10px;" checked="checked">
-									</div>
-									
-									<label class="control-label col-md-3">下线</label>
-									<div class="col-md-3">
-										<input type="radio" name="status" value="3" style="margin-left: -10px;">
-									</div>
-								</div>
-								
-						
-						<!-- 	</div> -->
-							<!-- END FORM-->
-						</div>
-						<!-- END VALIDATION STATES-->
-					</div>
-					<div class="modal-footer">
-						<button type="button" data-dismiss="modal"
-							class="btn dark btn-outline">关闭</button>
-						<button type="submit" class="btn green">提交</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- end -->
 	
 	
 <tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
 
 
 <script type="text/javascript">
-	window.mlx = {
-			ctx : "${ctx}"
-		};
-		
-	//上线
-	function upShow(id) {
-		//将id存起传给后台
-		 var lineId=id;
-		$("input[name='id']").val(lineId); 
-		//上线前检查是否已通过审核
-		 $.ajax({
-	    	url:"${ctx}/guideAdmin/strategy/up/"+id,
-	    	dataType:"json",
-	    	type:"get",
-	    	success:function(data){
-	    		//console.log(data);  
-	    		
-	    		//判断是否已通过审核
-	    		if(data.result.auditStatus==2){
-	    			$("#detailResponsive").modal('show');
-	    		}else{
-	    			comm.showMsg('warning', '消息提示', '该攻略未通过审核，暂不能上线！');
-	    		}
-	    	},error:function(){
-	    		comm.showMsg('warning', '消息提示', '请求出错！');
-	    	}
-	    });
-	    
+//上线下线
+function onLine(id, auditStatu, status) {
+	if (auditStatu != 2) {
+		comm.warningMsg("审核通过后才能操作");
+		return;
 	}
+	comm.confirm("提示", "确定执行该操作吗?", function() {
+		$.post("${ctx}/guideAdmin/strategy/on", {
+			"id" : id,
+			"status" : status
+		}, function(data) {
+			comm.successMsg(data);
+			setTimeout(function() {
+				location.reload();
+			}, 1000)
+
+		})
+
+	})
+}
 	//展开详情事件
 	function toggleDetail(dom){
 		  $(dom).toggleClass("active").parent("tr").next("tr").toggle();
