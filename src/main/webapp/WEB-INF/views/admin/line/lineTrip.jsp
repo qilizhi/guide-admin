@@ -5,7 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -18,10 +18,12 @@
 
 100%{
 width
+
+
 :
+
+
 75%
-	
-		
 }
 }
 @
@@ -31,10 +33,12 @@ keyframes scoller { 0%{
 
 100%{
 width
+
+
 :
+
+
 75%
-	
-		
 }
 }
 .scoller {
@@ -104,7 +108,7 @@ width
 
 								<div class="tab-pane active" id="tab3">
 									<h3 class="block">请填写行程详情</h3>
-							<!-- 		<a class="btn blue btn-outline" name="addBtn"
+									<!-- 		<a class="btn blue btn-outline" name="addBtn"
 										onClick="addRow();">添加</a> -->
 								</div>
 								<div class="portlet-body">
@@ -136,7 +140,7 @@ width
 															<th class="text-center">交通</th>
 															<th class="text-center">住宿</th>
 															<th class="text-center">主要行程</th>
-														<!-- 	<th class="text-center">操作</th>
+															<!-- 	<th class="text-center">操作</th>
  -->
 														</tr>
 													</thead>
@@ -150,24 +154,27 @@ width
 																	value="${lineNo}" />
 																</td>
 																<td align="center" class="js-num" width="80"><input
-																	type="text" class="js-day"	name="guideLineTrips[${st.index}].day" id="day"	value='${item.day}' readonly="readonly" > </td>
+																	type="text" class="js-day"
+																	name="guideLineTrips[${st.index}].day" id="day"
+																	value='${item.day}' readonly="readonly"></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].address"
-																		id="address" required> ${item.address}  </textarea></td>
+																		id="address" required oninvalid="setCustomValidity('请填写地点')" oninput="setCustomValidity('')"> ${item.address}  </textarea></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].traffic"
-																		id="traffic" required> ${item.traffic} </textarea></td>
+																		id="traffic" required  oninvalid="setCustomValidity('请填写交通')" oninput="setCustomValidity('')" > ${item.traffic} </textarea></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].hotel" id="hotel"
-																		required> ${item.hotel}</textarea></td>
+																		required oninvalid="setCustomValidity('请填写住宿')"
+																		oninput="setCustomValidity('')"> ${item.hotel}</textarea></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].tripDetail"
-																		id="tripDetail" required>${item.tripDetail}</textarea></td>
+																		id="tripDetail" required  oninvalid="setCustomValidity('请填写主要行程')" oninput="setCustomValidity('')" >${item.tripDetail}</textarea></td>
 																<%-- <td><a class="btn blue btn-outline" name="addBtn"
 																	onClick="addRow();">添加</a> <a
 																	class="btn blue btn-outline" name="addBtn"
 																	onClick="delRow(this,${item.id});">删除</a></td> --%>
-															</tr> 
+															</tr>
 														</c:forEach>
 													</tbody>
 												</table>
@@ -203,54 +210,40 @@ width
 		</div>
 	</div>
 
-	<script type="text/template" id="table_tr">
-			<tr style="border-bottom: 1px solid #ccc;">
-				<td>${lineNo}<input type="hidden" name="guideLineTrips[{{id-1}}].lineNo" value="${lineNo}"/>
-							<input type="hidden" name="guideLineTrips[{{id-1}}].id" value=""/></td>
-				<td align="center" class="js-num" width="80"><input type="text" name="guideLineTrips[{{id-1}}].day" id="day" value='{{id}}' readonly="readonly"></td>
-				<td><textarea type="text" name="guideLineTrips[{{id-1}}].address" id="address"  required></textarea></td>
-				<td><textarea type="text" name="guideLineTrips[{{id-1}}].traffic" id="traffic"  required></textarea></td>
-				<td><textarea type="text" name="guideLineTrips[{{id-1}}].hotel" id="hotel"  required></textarea></td>
-				<td><textarea type="text" name="guideLineTrips[{{id-1}}].tripDetail" id="tripDetail"  required></textarea></td>
-				<td><a class="btn blue btn-outline" name="addBtn" onClick="addRow();">添加</a>
-					<a class="btn blue btn-outline" name="addBtn" onClick="delRow(this);">删除</a>
-				</td>
-			</tr>
-	</script>
 	<script type="text/javascript">
-	//动态添加行程
-	
-/* 	 function addRow(){
-	 var _html = template("table_tr",{id:($("input[type=text][id=day]").length + 1)});
-	 $("#test").append(_html);
-	 }
-	 
-	 //删除行程
-	 function delRow(el,id){
-		  	$(el).parent().parent().remove();
-		  	//动态改变day的值
-		  	$("input[type=text][id=day]").each(function(i,el){
-		  		$(el).val(i+1);
-		  	});
-		  	if(id!=undefined){
-			  	$.post("${ctx}/admin/trip/delete/"+id,function(data){
-			  		//console.log(data);
-			  		comm.infoMsg(data.msg);
-			  	});
-		  	}
+		//动态添加行程
+
+		/* 	 function addRow(){
+		 var _html = template("table_tr",{id:($("input[type=text][id=day]").length + 1)});
+		 $("#test").append(_html);
 		 }
-	  */
-	 //表单提交验证
-	 $("#form_sample_3").submit(function(){
-		//至少要添加一个行程才能提交
-		var $len=$("#test tbody tr").length;
-	   	if($len<=0){
- 			comm.infoMsg("至少添加一个行程",null,150);
-			 return false;
-		 }else{
-			 return true;
-		 } 
-	 });
+		
+		 //删除行程
+		 function delRow(el,id){
+		 $(el).parent().parent().remove();
+		 //动态改变day的值
+		 $("input[type=text][id=day]").each(function(i,el){
+		 $(el).val(i+1);
+		 });
+		 if(id!=undefined){
+		 $.post("${ctx}/admin/trip/delete/"+id,function(data){
+		 //console.log(data);
+		 comm.infoMsg(data.msg);
+		 });
+		 }
+		 }
+		 */
+		//表单提交验证
+		$("#form_sample_3").submit(function() {
+			//至少要添加一个行程才能提交
+			var $len = $("#test tbody tr").length;
+			if ($len <= 0) {
+				comm.infoMsg("至少添加一个行程", null, 150);
+				return false;
+			} else {
+				return true;
+			}
+		});
 	</script>
 
 
