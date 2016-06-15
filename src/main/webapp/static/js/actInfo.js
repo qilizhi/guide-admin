@@ -44,8 +44,7 @@ var _ActInfo=function(){
 		}
 		var url = batdelUrl + "/" + ids;
 		/* 设置按钮的语言 */
-		bootbox.setLocale("zh_CN");
-		bootbox.confirm("你确定要删除这条记录吗?", function(result) {
+		comm.confirm("警告","你确定要删除这条记录吗?", function() {
 			if (result) {
 
 				$.ajax({
@@ -67,8 +66,6 @@ var _ActInfo=function(){
 					}
 
 				});
-
-			}
 		});
 
 	}
@@ -216,8 +213,7 @@ var _ActInfo=function(){
 	var del=function(id) {
 		var url = delUrl + "/" + id;
 		/* 设置按钮的语言 */
-		bootbox.setLocale("zh_CN");
-		bootbox.confirm("你确定要删除这条记录吗?", function(result) {
+		comm.confirm("警告","你确定要删除这条记录吗?", function() {
 			if (result) {
 
 				$.ajax({
@@ -240,7 +236,7 @@ var _ActInfo=function(){
 
 				});
 
-			}
+			
 		});
 	}
 

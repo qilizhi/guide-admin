@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EAuditStatus;
 import com.mlx.guide.constant.ExceptionCode;
@@ -113,15 +114,14 @@ public class IndexController {
 		// 线路数量
 		Integer totalLines = guideLineService.getGuideLineList().size();
 		// 待处理导游
-		g.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
-		List<GuideInfo> guidesInfos = guideInfoService.getGuideInfoList(g);
+		List<GuideInfo> guidesInfos = guideInfoService.getPageListByAuthstr (null);
 		/** 待处理订单**/		
 		//未支付W
-		String w_result=guideOrderService.getManageList(null, null,"W", timeStart, timeEnd, null, null);
+		String w_result=guideOrderService.getManageList(null, null,"W", null, null, null, null);
 		//退款审核中RC
-		String rc_result=guideOrderService.getManageList(null, null,"RC", timeStart, timeEnd, null, null);
+		String rc_result=guideOrderService.getManageList(null, null,"RC", null, null, null, null);
 		//等待退款:RW 
-		String rw_result=guideOrderService.getManageList(null, null,"RW", timeStart, timeEnd, null, null);
+		String rw_result=guideOrderService.getManageList(null, null,"RW", null, null, null, null);
 		List<OrderModel> w_orders=JSONArray.parseArray(JSON.parseObject(w_result).get("result").toString(), OrderModel.class);
 		List<OrderModel> rc_orders=JSONArray.parseArray(JSON.parseObject(rc_result).get("result").toString(), OrderModel.class);
 		List<OrderModel> rw_orders=JSONArray.parseArray(JSON.parseObject(rw_result).get("result").toString(), OrderModel.class);

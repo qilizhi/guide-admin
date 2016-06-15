@@ -38,6 +38,7 @@ public interface GuideInfoMapper {
 	 */
 	PageList<GuideInfoModel> getPageListByAuthstr(
 			GuideInfoModel guideInfoModel, PageBounds pageBounds);
+	PageList<GuideInfo> getPageListByAuthstr(GuideInfoModel guideInfoModel);
 
 	PageList<GuideInfo> getGuideInfoList(GuideInfo guideInfo, PageBounds pb);
 }
