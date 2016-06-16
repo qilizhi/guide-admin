@@ -454,8 +454,8 @@
 			    			var routeOrderType = $("#select-routeOrderType option:selected").val();
 			    			$(currTdObj).attr("data-routeordertype",routeOrderType);
 			    		}
-			    		var $eprice = $(currTdObj).attr("data-eprice");
 			    		var $cprice = $(currTdObj).attr("data-cprice");
+			    		var $eprice = $(currTdObj).attr("data-eprice");
 			    		
 			    		var $roomDiffPrice = $(currTdObj).attr("data-roomDiffPrice");
 			    		var $safePrice = $(currTdObj).attr("data-safePrice");
@@ -463,8 +463,8 @@
 			    		var $num = $(currTdObj).attr("data-num");
 			    		
 			    	//	$("input[type='text'][name='minprice']",currTdObj).val(price);
-			    		$("input[type='text'][name='data-eprice']",currTdObj).val($eprice);
 			    		$("input[type='text'][name='data-cprice']",currTdObj).val($cprice);
+			    		$("input[type='text'][name='data-eprice']",currTdObj).val($eprice);
 
 			    		$("input[type='text'][name='data-roomDiffPrice']",currTdObj).val($roomDiffPrice);
 			    		$("input[type='text'][name='data-safePrice']",currTdObj).val($safePrice);
@@ -486,6 +486,15 @@
 			    		});
 			    		$("span.price",currTdObj).hide();
 			    	}
+			    	document.onclick=function(e){
+						  //隐藏日历中的价格
+			    		if(!(e.target.className=='td lowest'||e.target.name=='data-cprice'||e.target.name=='data-eprice'
+			    			||e.target.name=='data-roomDiffPrice'||e.target.name=='data-safePrice'
+			    				||e.target.name=='data-visaPrice'||e.target.name=='data-num'||e.target.className=='date')){
+			    			$("div.price-edit").remove();
+			    			$("span.price").show();	
+			    		}
+					}
 			    },
 			    prevMonthButtonClick:function(){},
 			    nextMonthButtonClick:function(){}
@@ -515,13 +524,13 @@
 					comm.infoMsg("请输入保险价和人数",null,150);
 					return;
 				} 
-				//成人价必须 > 美丽价
-			/* 	if($.trim($BasePrices.adultPrice).length <= 0 
-						|| $.trim($BasePrices.mlxPrice).length <= 0 
-						|| parseInt($BasePrices.mlxPrice,0) > parseInt($BasePrices.adultPrice,0)){
-					comm.infoMsg("成人价不能小于美丽价",null,150);
+				//成人价必须 > 儿童价
+			 	if($.trim($BasePrices.adultPrice).length <= 0 
+						|| $.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) > parseInt($BasePrices.adultPrice,0)){
+					comm.infoMsg("成人价不能小于儿童价",null,150);
 					return;
-				} */
+				} 
 				if($.trim($BasePrices.routeId).length <= 0
 						|| parseInt($BasePrices.routeId,0) <= 0){
 					comm.infoMsg("抱歉没有找到线路的编号,请重新进入",null,150);
@@ -569,13 +578,13 @@
 					comm.infoMsg("请输入成人价");
 					return;
 				}
-				//成人价必须 > 美丽价
-				/* if($.trim($BasePrices.adultPrice).length <= 0 
-						|| $.trim($BasePrices.mlxPrice).length <= 0 
-						|| parseInt($BasePrices.mlxPrice,0) > parseInt($BasePrices.adultPrice,0)){
-					comm.infoMsg("成人价不能小于美丽价");
+				//成人价必须 > 儿童价
+			 	if($.trim($BasePrices.adultPrice).length <= 0 
+						|| $.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) > parseInt($BasePrices.adultPrice,0)){
+					comm.infoMsg("成人价不能小于儿童价",null,150);
 					return;
-				} */
+				} 
 				if($.trim($BasePrices.routeId).length <= 0
 						|| parseInt($BasePrices.routeId,0) <= 0){
 					comm.infoMsg("抱歉没有找到线路的编号,请重新进入",null,150);
@@ -659,26 +668,13 @@
 				    	//清空日期插件input
 				    	$("input[name=beginTime]").val("");
 				    	$("input[name=endTime]").val("");
-				    	//初始化日历插件 datepicker
-				        //$('.date-picker').datepicker();
+				    	//clear时清除日历模板内容
+				    	$("div.price-edit").remove();
+		    			$("span.price").show();
 				    	
 					});
 				});
 				
-				//日期选择检查
-				
-				//if(!$mPriceEdit.checkDateValid())return;
-				//删除数据库中的价格数据
-				/* $.post('${ctx}/guideAdmin/line/delLinePrcie/' + $routeId,{"beginTime":$("input[name=beginTime]").val(),
-					"endTime":$("input[name=endTime]").val()},function(result){
-					if(result.code==200){
-						comm.infoMsg(result.msg);
-						setTimeout(function(){
-							window.location.href = "${ctx}/guideAdmin/line/editPrice/"+ $routeId;
-						},1000);
-					}	
-					return;
-				});	 */
 				
 			});		 
 		 

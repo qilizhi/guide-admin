@@ -143,10 +143,10 @@
 											<input type="hidden" name="guideLineTrips[${st.index}].id" value="${item.id}"/>
 											<td>${item.lineNo}<input type="hidden" name="guideLineTrips[${st.index}].lineNo" value="${lineNo}"/></td>
 											<td>${item.day}<input type="hidden" name="guideLineTrips[${st.index}].day" value="${day}"/></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address" required maxlength="100">${item.address} </textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic" required maxlength="200">${item.traffic}</textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel" required maxlength="50">${item.hotel}</textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail" required maxlength="255">${item.tripDetail}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address" required oninvalid="setCustomValidity('必须填写！')" maxlength="100">${item.address} </textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic" required oninvalid="setCustomValidity('必须填写！')" maxlength="200">${item.traffic}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel" required oninvalid="setCustomValidity('必须填写！')" maxlength="50">${item.hotel}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail" required oninvalid="setCustomValidity('必须填写！')" maxlength="255">${item.tripDetail}</textarea></td>
 										</tr>
 									</c:forEach>  
 										</tbody>
