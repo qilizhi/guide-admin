@@ -456,7 +456,7 @@
 			    		$("span.price",currTdObj).hide();
 			    	}
 			    	document.onclick=function(e){
-						  //当前点击对象不是td范围内就隐藏
+						  //隐藏日历中的价格
 			    		if(!(e.target.className=='td lowest'||e.target.name=='data-cprice'||e.target.name=='data-eprice'
 			    			||e.target.name=='data-roomDiffPrice'||e.target.name=='data-safePrice'
 			    				||e.target.name=='data-visaPrice'||e.target.name=='data-num'||e.target.className=='date')){
@@ -542,6 +542,10 @@
 				
 				var $BasePrices = $mPriceEdit.getBasePrice();
 				//console.log($BasePrices)
+				var $beginTime=$BasePrices.beginTime;
+				//console.log($beginTime);
+				//console.log(!$beginTime);
+				
 				if($.trim($BasePrices.adultPrice).length <= 0 
 						|| parseInt($BasePrices.adultPrice,0) <= 0){
 					comm.infoMsg("请输入成人价");
@@ -563,7 +567,9 @@
 				// data-cprice="0" data-eprice="0" data-id="0" 
 				// data-routeid="0" data-routeordertype="1" minprice="0" 
 				// data-full-date="2014-05-15" data-date="15" data-week="4"
+				
 				$("#tableCalendar td.td").each(function(i,obj){
+					
 					var $week = $(obj).attr("data-week");
 					var $date = $(obj).attr("data-full-date");
 					var $value = $("#select-routeOrderType option:selected").val();
@@ -591,6 +597,12 @@
 					$("input[type='text'][name='data-visaPrice']",$(obj)).val($BasePrices.visaPrice);
 					$("input[type='text'][name='num']",$(obj)).val($BasePrices.num);
 				});
+				
+				if(!$mPriceEdit.checkDateRange($date, $BasePrices.beginTime, $BasePrices.endTime)){
+					console.log($date)
+					console.log($BasePrices.beginTime)
+					console.log($BasePrices.endTime)
+				}
 				
 			});
 			
@@ -639,7 +651,7 @@
 				    	//清空日期插件input
 				    	$("input[name=beginTime]").val("");
 				    	$("input[name=endTime]").val("");
-				    	//clear时清除日历模板内容
+				    	//clear时清除日历模板
 				    	$("div.price-edit").remove();
 		    			$("span.price").show();
 					});
