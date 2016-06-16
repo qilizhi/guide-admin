@@ -78,9 +78,9 @@
 							<input type="hidden" name="pageNo" value="1">
 							<div class="col-md-6" style="text-align: right;">
 								<input type="text" class="form-filter input-sm"
-									placeholder="地陪编号" name="serviceNo" value="${serviceNo}">
+									placeholder="编号" name="serviceNo" value="${serviceNo}">
 								<input type="text" class="form-filter input-sm"
-									placeholder="地陪标题" name="title" value="${title}">
+									placeholder="标题" name="title" value="${title}">
 								<button type="submit"
 									class="btn btn-sm green btn-outline filter-submit margin-bottom">
 									<i class="fa fa-search"></i> 查询

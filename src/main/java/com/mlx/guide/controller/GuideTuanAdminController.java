@@ -118,8 +118,7 @@ public class GuideTuanAdminController {
 			model.addAttribute("pageNo", pageNo);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("list", list);
-			model.addAttribute("name", guideTuan.getName());
-			model.addAttribute("goodsNo", guideTuan.getGoodsNo());
+			model.addAttribute("guideTuan",guideTuan);
 			model.addAttribute("ETuanStatus", ETuanStatus.getByteMap());
 			model.addAttribute("ELineType", ELineType.getByteMap());
 		} catch (Exception e) {
@@ -664,6 +663,7 @@ public class GuideTuanAdminController {
 		GuideTuanGuest gtg = new GuideTuanGuest();
 		gtg.setId(id);
 		gtg.setStatus(ESignInStatus.SIGNED.getId().byteValue());
+		gtg.setUpdateTime(new Date());
 		int r = 0;
 		try {
 			r = guideTuanGuestService.updateByPrimaryKeySelective(gtg);

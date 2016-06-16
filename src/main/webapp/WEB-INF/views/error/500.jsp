@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>404错误页面</title>
+<title>500错误页面</title>
 <link href="${ctx}/static/css/error.min.css" rel="stylesheet"
 	type="text/css" />
 </head>
@@ -20,10 +20,10 @@
 				<p>
 					We are fixing it! Please come back in a while. <br>
 				</p>
-				<p>
+				<!-- <p>
 					<a href="index.html" class="btn red btn-outline"> Return home </a>
 					<br>
-				</p>
+				</p> -->
 			</div>
 		</div>
 	</div>

@@ -31,8 +31,8 @@
 							class="caption-subject font-dark bold uppercase">线路列表</span>
 					</div>
 					<div class="actions">
-						 <a href="${ctx}/admin/guideLine/create"
-							class="btn btn-sm green btn-outline">新增</a> 
+						<a href="${ctx}/admin/guideLine/create"
+							class="btn btn-sm green btn-outline">新增</a>
 						<!-- <a class="btn btn-sm dark btn-outline batAudit">审核</a> <a
 							class="btn btn-sm red btn-outline batDel">批量删除</a> -->
 					</div>
@@ -52,6 +52,14 @@
 										<c:if test="${pageSize == 50}">selected</c:if>>50</option>
 									<option value="100"
 										<c:if test="${pageSize == 100}">selected</c:if>>100</option>
+								</select> <select name="status"
+									class="form-control input-sm input-xsmall input-inline">
+									<!-- 	1编辑中2上线3下线 -->
+									<option value="">全部</option>
+									<option value="1" <c:if test="${status == 1}">selected</c:if>>编辑中</option>
+									<option value="2" <c:if test="${status == 2}">selected</c:if>>上线</option>
+									<option value="3" <c:if test="${status == 3}">selected</c:if>>下线</option>
+
 								</select> <select name="auditStatus"
 									class="form-control input-sm input-xsmall input-inline">
 									<!-- 0未提交审核1待审核2审核通过3审核未通过 -->
@@ -64,14 +72,6 @@
 										<c:if test="${auditStatus == 2}">selected</c:if>>审核通过</option>
 									<option value="3"
 										<c:if test="${auditStatus == 3}">selected</c:if>>审核不通过</option>
-
-								</select> <select name="status"
-									class="form-control input-sm input-xsmall input-inline">
-									<!-- 	1编辑中2上线3下线 -->
-									<option value="">全部</option>
-									<option value="1" <c:if test="${status == 1}">selected</c:if>>编辑中</option>
-									<option value="2" <c:if test="${status == 2}">selected</c:if>>上线</option>
-									<option value="3" <c:if test="${status == 3}">selected</c:if>>下线</option>
 
 								</select>
 							</div>
@@ -121,20 +121,17 @@
 										<td class="ext-sort">${item.sort}</td>
 										<td><fmt:formatDate value="${item.createTime}"
 												pattern="yyyy-MM-dd HH:mm:ss" /></td>
-										<td id="${item.id }">
-										<a href="${ctx}/admin/guideLine/detail/${item.id}"
-											class="btn btn-sm yellow btn-outline detail">详情</a> 
-										<a href="${ctx}/admin/guideLine/edit/${item.id}"
-											class="btn btn-sm yellow btn-outline detail">编辑</a> 
-											<a
-											class="btn btn-sm dark btn-outline audit">审核 </a> 
-											<c:if test="${item.status== 3 || item.status==1}">
-											<a status="2" class="btn btn-sm green btn-outline onOff">上线</a>
-											</c:if>
-											<c:if test="${item.status==2}">
-											<a status="3" class="btn btn-sm green btn-outline onOff">下线</a>
-											</c:if> 
-											<a	class="btn btn-sm red btn-outline del">删除</a> <a
+										<td id="${item.id }"><a
+											href="${ctx}/admin/guideLine/detail/${item.id}"
+											class="btn btn-sm yellow btn-outline detail">详情</a> <a
+											href="${ctx}/admin/guideLine/edit/${item.id}"
+											class="btn btn-sm yellow btn-outline detail">编辑</a> <a
+											class="btn btn-sm dark btn-outline audit">审核 </a> <c:if
+												test="${item.status== 3 || item.status==1}">
+												<a status="2" class="btn btn-sm green btn-outline onOff">上线</a>
+											</c:if> <c:if test="${item.status==2}">
+												<a status="3" class="btn btn-sm green btn-outline onOff">下线</a>
+											</c:if> <a class="btn btn-sm red btn-outline del">删除</a> <a
 											class="btn btn-sm blue btn-outline preView">预览</a></td>
 									</tr>
 								</c:forEach>
@@ -170,19 +167,15 @@
 									<label class="col-md-3 control-label">审核 <span
 										class="required"> * </span></label>
 									<div class="col-md-2">
-										
-											<label class="input-inline"> <input type="radio"
-												name="auditStatus" value="2" checked>
-											</label> 
-											<label class="label-inline">
-											 通过
-											</label>
-											</div>
-												<div class="col-md-2">
-											<label class="input-inline"> <input type="radio"
-												name="auditStatus" value="3">
-											</label>
-											<label class="label-inline"> 不通过</label>
+
+										<label class="input-inline"> <input type="radio"
+											name="auditStatus" value="2" checked>
+										</label> <label class="label-inline"> 通过 </label>
+									</div>
+									<div class="col-md-2">
+										<label class="input-inline"> <input type="radio"
+											name="auditStatus" value="3">
+										</label> <label class="label-inline"> 不通过</label>
 									</div>
 								</div>
 								<div class="form-group form-md-line-input">
@@ -273,10 +266,10 @@
 							style="height: 569px; width: 320px; border: 0px solid #000; margin: 0 auto; margin-top: 33px;"></iframe>
 					</div>
 					<div class="col-md-1 col-md-offset-3"
-						style="    margin-top: -52px; margin-left: 163px;">
-						<a class="close" style="background-position-x: 10px;
-    					background-position-y: 10px; width: 30px;height: 30px;" data-dismiss="modal" aria-hidden="true">
-							<!-- <button type="button" class="close"></button> -->
+						style="margin-top: -52px; margin-left: 163px;">
+						<a class="close"
+							style="background-position-x: 10px; background-position-y: 10px; width: 30px; height: 30px;"
+							data-dismiss="modal" aria-hidden="true"> <!-- <button type="button" class="close"></button> -->
 						</a>
 					</div>
 				</div>

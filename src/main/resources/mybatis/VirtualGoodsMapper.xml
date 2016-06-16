@@ -208,7 +208,7 @@
 				#{flag,jdbcType=TINYINT},
 			</if>
 			<if test="goodsType != null">
-				#{goods_type,jdbcType=INTEGER},
+				#{goodsType,jdbcType=INTEGER},
 			</if>
 		</trim>
 	</insert>
