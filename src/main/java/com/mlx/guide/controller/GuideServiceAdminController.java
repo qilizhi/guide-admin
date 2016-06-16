@@ -265,7 +265,10 @@ public class GuideServiceAdminController {
 
 		// 检查是否审核通过
 		if (guideService.selectByPrimaryKey(id).getAuditStatus() != EAuditStatus.AUDIT_OK.getId()) {
-			return new JsonResult(ExceptionCode.FAIL, "审核不通过不能上线！");
+			if (status == EStatus.ONLINE.getId())
+				return new JsonResult(ExceptionCode.FAIL, "审核不通过不能上线！");
+			if (status == EStatus.OFFLINE.getId())
+				return new JsonResult(ExceptionCode.FAIL, "审核不通过不能下线！");
 		}
 		GuideService gs = new GuideService();
 		gs.setId(id);

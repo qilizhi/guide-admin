@@ -43,17 +43,16 @@ public class VirtualGoodsAdminController {
 	}
 
 	@RequestMapping
-	public String list(VirtualGoods vGoods, @RequestParam(defaultValue = "1") Integer page,
+	public String list(VirtualGoods vGoods, @RequestParam(defaultValue = "1") Integer pageNo,
 			@RequestParam(defaultValue = "10") Integer pageSize, Model model) {
 
 		vGoods.setFlag(EFlag.VALID.getId().byteValue());
-		;
-		PageList<VirtualGoods> virtualGoods = virtualGoodsService.listByExample(vGoods, new PageBounds(page, pageSize));
+		PageList<VirtualGoods> virtualGoods = virtualGoodsService.listByExample(vGoods, new PageBounds(pageNo, pageSize));
 		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("page", page);
+		/*model.addAttribute("page", pageNo);*/
 		model.addAttribute("auditStatus", vGoods.getAuditStatus());
 		model.addAttribute("status", vGoods.getStatus());
-
+		model.addAttribute("vGoods", vGoods);
 		model.addAttribute("paginator", virtualGoods.getPaginator());
 		model.addAttribute("list", virtualGoods);
 		return "/admin/virtualGoods/list";
@@ -102,7 +101,7 @@ public class VirtualGoodsAdminController {
 		if (virtualGoods.getId() == null || virtualGoods.getId().equals("")) {
 			virtualGoods.setCreateTime(new Date());
 			virtualGoods.setStatus(EStatus.EDIT.getId());
-
+			virtualGoods.setAuditStatus(EAuditStatus.AUDIT_ON.getId().byteValue());
 			try {
 				virtualGoodsService.insertSelective(virtualGoods);
 			} catch (Exception e) {
@@ -111,6 +110,7 @@ public class VirtualGoodsAdminController {
 			}
 
 		} else {
+			virtualGoods.setAuditStatus(EAuditStatus.AUDIT_ON.getId().byteValue());
 			try {
 				virtualGoodsService.updateByPrimaryKeySelective(virtualGoods);
 			} catch (Exception e) {
