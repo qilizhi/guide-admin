@@ -113,9 +113,8 @@
 											</c:if> <c:if test="${item.status==2}">
 												<a href="${ctx}/admin/advInfo/OnOffLine/${item.id}/3"
 													class="btn btn-sm green btn-outline onOff">下线</a>
-											</c:if> <a href="${ctx}/admin/advInfo/delete/${item.id}"
-											class="btn btn-sm red btn-outline"
-											onclick="{if(confirm('确定要删除记录吗?')){return true;}return false;}">删除</a>
+											</c:if> <a data-href="${ctx}/admin/advInfo/delete/${item.id}"
+											class="btn btn-sm red btn-outline del"	>删除</a>
 										</td>
 									</tr>
 								</c:forEach>
@@ -249,7 +248,42 @@
 				e.preventDefault(); //取消时间的默认动作
 				$("#addForm").submit(); //
 			});
+			$(".del").on("click",function(e){
+				var url=$(e.currentTarget).attr("data-href");
+				del(url);
+			})
+			
 		});
+		
+		/* 删除 */
+		var del = function(url) {
+					/* 设置按钮的语言 */
+		//	bootbox.setLocale("zh_CN");
+			comm.confirm("提示","你确定要删除这条记录吗?", function() {
+
+					$.ajax({
+						url : url,
+						type : 'post',
+						dataType : "json",
+						success : function(result) {
+							if (result.code == "200") {
+								//addHide();
+								comm.showMsg('success', '消息提示', '删除成功！');
+								location.reload();
+							} else {
+								comm.showMsg('warning', '消息提示', '删除失败！'+result.result);
+
+							}
+						},
+						error : function(e) {
+							comm.showMsg('error', '消息提示', '删除出错，请求出问题了！');
+						}
+
+					});
+
+			});
+		}
+
 		function addShow() {
 			$("#responaddsive").modal('show');
 			$("#ajax").hide();

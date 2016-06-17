@@ -86,6 +86,12 @@ public class GuideLineService {
 		}
 	}
 
+	public int deleteGuideLineByFlag(Integer id) {
+		GuideLine gl=new GuideLine();
+		gl.setId(id);
+		gl.setFlag(EFlag.INVALID.getId());
+		return guideLineMapper.updateGuideLineSelective(gl);
+	}
 	public int deleteGuideLine(Integer id) {
 		return guideLineMapper.deleteGuideLine(id);
 	}

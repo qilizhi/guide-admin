@@ -48,7 +48,7 @@ var GuideLine = function() {
 
 			$.ajax({
 				url : url,
-				type : 'get',
+				type : 'post',
 				dataType : "json",
 				success : function(result) {
 					if (result.code == "200") {
@@ -57,8 +57,7 @@ var GuideLine = function() {
 						location.reload();
 					} else {
 						comm
-								.showMsg('warning', '消息提示', '删除失败！'
-										+ result.result);
+								.showMsg('warning', '消息提示',result.result);
 
 					}
 				},

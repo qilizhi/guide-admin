@@ -322,6 +322,10 @@ public class GuideStrategyAdminController {
 	@ResponseBody
 	public JsonResult delete(@PathVariable(value = "id") Integer id) {
 		JsonResult ajaxResult = null;
+		GuideStrategy gs = guideStrategyService.getGuideStrategyByPrimaryKey(id);
+		if (gs.getStatus() == EStatus.ONLINE.getId()) {
+			return new JsonResult(ExceptionCode.FAIL, "已上线不能删除！");
+		}
 		try {
 			guideStrategyService.deleteGuideStrategy(id);
 			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL);
@@ -339,7 +343,7 @@ public class GuideStrategyAdminController {
 	 *            id集合,例如:1,2,3,4
 	 * @return
 	 */
-	@RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+/*	@RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public JsonResult delete(@PathVariable String ids) {
 		JsonResult ajaxResult = null;
@@ -352,7 +356,7 @@ public class GuideStrategyAdminController {
 			ajaxResult = new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
 		return ajaxResult;
-	}
+	}*/
 
 	/**
 	 * 单个审核

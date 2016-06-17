@@ -81,6 +81,7 @@
 	font-style: normal;
 	font-weight: normal;
 }
+
 .ok {
 	background-image: url(${ctx}/static/img/icenter-delay.png);
 	background-position: -86px 1px;
@@ -169,7 +170,7 @@
 	font-weight: normal;
 }
 
- .img-load {
+.img-load {
 	font: initial;
 	position: absolute;
 	top: 50%;
@@ -181,9 +182,10 @@
 	background: url(${ctx}/static/img/load.gif) 0 0 no-repeat;
 }
 
-.loading{
-margin-left: 190px;
+.loading {
+	margin-left: 190px;
 }
+
 .none {
 	display: none
 }
@@ -233,7 +235,7 @@ margin-left: 190px;
 
 	<div id="main">
 
-		 <c:forEach var="item" items="${list}">
+		<c:forEach var="item" items="${list}">
 			<div class="box">
 				<div class="pic">
 					<a href="${item.imgUrl}"><img alt="${item.imgUrl}"
@@ -241,10 +243,10 @@ margin-left: 190px;
 				</div>
 			</div>
 
-		</c:forEach> 
+		</c:forEach>
 
 	</div>
-	<input class="_uploadFile none" type="file" style="opacity: 0;"
+	<input class="_uploadFile none" type="file" accept="image/*"  style="opacity: 0;"
 		name="files[]" multiple="multiple" />
 	<script type="text/javascript"
 		src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
@@ -256,10 +258,73 @@ margin-left: 190px;
 		var inputFileButton = $("._uploadFile");
 		var img_ul = $(".tpl-item ul");
 
+		$(function() {
+			inputFileButton
+					.fileupload({
+						type : "post",
+						dataType : 'json',
+						//singleFileUploads:false,//设置多文件上传
+						/* sequentialUploads: true, *///是否按顺序上传
+						//limitMultiFileUploads:10, //限制上传文件的个数。
+						loadImageFileTypes : "gif|jpeg|png",
+						url : mlx.ctx + '/upload',
+						//autoUpload:false, 
+						change : function(e, data) {
+							$
+									.each(
+											data.files,
+											function(index, file) {
+
+												var imageObject = '<li id="'+file.name+'"><div class="item"><img title="'+file.name+'" width="168"></div>'
+														+ ' <i class="img-load"><span id>0</span>%</i> <a class="img-remove" '
+														+ 'href="javascript:void(0)" title="删除图片"> <i class="hide_clip">移除</i> </a> </li>';
+												img_ul.append(imageObject);
+												//  console.log('Selected file: ' + file.name);
+											});
+							$('.quick-save-img').toggleClass("none",
+									$(".tpl-item ul li").length <= 0);
+						},
+						progress : function(e, data) {
+							//console.log(data);
+							var progress = parseInt(data.loaded / data.total
+									* 100, 10);
+							$.each(data.files, function(index, file) {
+								var progressbar = $("li[id='" + file.name
+										+ "'] i span");
+								if (progress == 100) {
+									progressbar.text(progress - 1);
+								} else {
+									progressbar.text(progress);
+								}
+							});
+
+						},
+						done : function(e, data) {
+							//上传完成。
+							/* alert("upload OK");*/
+							var objectRusult = data.result;
+							var progress = $(".img-load");
+							if (objectRusult.code == "200") {
+								progress.css('display', "none");
+								var img = $("li[id='"
+										+ objectRusult.result[0].fileName
+										+ "'] .item img");
+								img
+										.attr("src",
+												objectRusult.result[0].filePath);
+							} else {
+								$('.progress .progress-bar-success').text(
+										objectRusult.msg);
+							}
+						}
+					});
+
+		})
+
 		//确定提交
 		$(".c_tx3_ok").on("click", function(e, data) {
-              
-	       loading("show");
+
+			loading("show");
 			var imgSrcArray = new Array();
 			$("ul li img").each(function(index, data) {
 				//console.log(data);
@@ -276,112 +341,48 @@ margin-left: 190px;
 						loading("hide");
 						comm.successMsg("提交成功");
 						//提交成功。
-						setTimeout(function(){window.location.reload();},1000);
-						
+						setTimeout(function() {
+							window.location.reload();
+						}, 1000);
+
 					} else {
 						loading("hide");
 						//提交失败。
 						comm.errorMsg(data.result);
 					}
 				}
-			}); 
+			});
 
 		});
-		
-		
+
 		//加载中的modal
-		var loading=function(action){
+		var loading = function(action) {
 			var $modal = $("#basic-modals");
 			//func = func || function(e){$modal.modal("hide");};
 			$modal.find(".modal-header,.modal-footer").remove();
-			$modal.find(".modal-body").html("<i class='img-load'></i><span class='loading'>正在提交中...</span>");
+			$modal
+					.find(".modal-body")
+					.html(
+							"<i class='img-load'></i><span class='loading'>正在提交中...</span>");
 			$modal.modal(action);
 		}
 		//删除选择的图片
-		$("ul").on("click", '.img-remove', function(e, data) {
-			//获取上传图片的URL
-			$(e.currentTarget).parent().remove();
-			//隐藏 确定框
-			$('.quick-save-img').toggleClass("none",$(".tpl-item ul li").length<=0);
-		})
+		$("ul").on(
+				"click",
+				'.img-remove',
+				function(e, data) {
+					//获取上传图片的URL
+					$(e.currentTarget).parent().remove();
+					//隐藏 确定框
+					$('.quick-save-img').toggleClass("none",
+							$(".tpl-item ul li").length <= 0);
+				})
 		//点击上传
-		$(".c_tx3_add")
-				.on(
-						"click",
-						function() {
-							inputFileButton.click();
-							inputFileButton
-									.fileupload({
-										type : "post",
-										dataType : 'json',
-										//singleFileUploads:false,//设置多文件上传
-										/* sequentialUploads: true, *///是否按顺序上传
-										//limitMultiFileUploads:10, //限制上传文件的个数。
-										url : mlx.ctx + '/upload',
-										//autoUpload:false, 
-										change : function(e, data) {
-											$
-													.each(
-															data.files,
-															function(index,
-																	file) {
-
-																var imageObject = '<li id="'+file.name+'"><div class="item"><img title="'+file.name+'" width="168"></div>'
-																		+ ' <i class="img-load"><span id>0</span>%</i> <a class="img-remove" '
-																		+ 'href="javascript:void(0)" title="删除图片"> <i class="hide_clip">移除</i> </a> </li>';
-																img_ul
-																		.append(imageObject);
-																//  console.log('Selected file: ' + file.name);
-															});
-											$('.quick-save-img').toggleClass("none",$(".tpl-item ul li").length<=0);
-										},
-										progress : function(e, data) {
-											//console.log(data);
-											var progress = parseInt(data.loaded
-													/ data.total * 100, 10);
-											$
-													.each(
-															data.files,
-															function(index,
-																	file) {
-																var progressbar = $("li[id='"
-																		+ file.name
-																		+ "'] i span");
-																if (progress == 100) {
-																	progressbar
-																			.text(progress - 1);
-																} else {
-																	progressbar
-																			.text(progress);
-																}
-															});
-
-										},
-										done : function(e, data) {
-											//上传完成。
-											/* alert("upload OK");*/
-											var objectRusult = data.result;
-											var progress = $(".img-load");
-											if (objectRusult.code == "200") {
-												progress.css('display', "none");
-												var img = $("li[id='"
-														+ objectRusult.result[0].fileName
-														+ "'] .item img");
-												img
-														.attr(
-																"src",
-																objectRusult.result[0].filePath);
-											} else {
-												$(
-														'.progress .progress-bar-success')
-														.text(objectRusult.msg);
-											}
-										}
-									});
-
-						});
+		$(".c_tx3_add").on("click", function() {
+			inputFileButton.click();
+		});
 	</script>
-    <!-- 图片展示区 -->
+	<!-- 图片展示区 -->
 	<script>
 		var g_page_no = 2;
 
@@ -390,11 +391,11 @@ margin-left: 190px;
 			waterfall('main', 'box');
 
 			//var dataInt={'data':[{'src':'1.jpg'},{'src':'2.jpg'},{'src':'3.jpg'},{'src':'4.jpg'}]};
-			 window.onscroll = function() {
-				
+			window.onscroll = function() {
+
 				if (checkscrollside) {
 					$.ajax({
-						url : mlx.ctx+"/admin/imageInfo/getImgs",
+						url : mlx.ctx + "/admin/imageInfo/getImgs",
 						dataType : "json",
 						type : "get",
 						data : {
@@ -424,13 +425,14 @@ margin-left: 190px;
 							waterfall('main', 'box');
 						},
 						error : function(e) {
-                             //alert(e);
-                             //console.log(e);
+							//alert(e);
+							//console.log(e);
 						}
 					});
 
-				};
-			} 
+				}
+				;
+			}
 		}
 
 		/*
@@ -462,7 +464,7 @@ margin-left: 190px;
 				}
 			}
 			var maxH = Math.max.apply(null, pinHArr);//数组pinHArr中的最大值maxH
-			$("div.page-content").height(maxH+100);//改变页面高度 ,加100 是因为加了上传的控件
+			$("div.page-content").height(maxH + 100);//改变页面高度 ,加100 是因为加了上传的控件
 		}
 
 		/****

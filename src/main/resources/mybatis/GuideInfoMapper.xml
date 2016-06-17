@@ -42,7 +42,7 @@
 			<if test="status!=null and status!=''">
 			  and status = #{status}
 			</if>
-			<if test="auditStatus!=null and auditStatus!=''">
+			<if test="auditStatus!=null and auditStatus!=' '">
 			   and audit_status = #{auditStatus}
 			</if>
 			<if test="startTime != null and startTime!='' and endTime!='' and endTime !=null">
@@ -75,8 +75,8 @@
 			
 			<if test="status!=null and status!=''">
 			  and status = #{status}
-			</if>
-			<if test="auditStatus!=null and auditStatus!=''">
+			</if> 
+			<if test="auditStatus!=null and auditStatus!=' '">
 			   and audit_status = #{auditStatus}
 			</if>
 			<if test="guideCardNo!=null and guideCardNo!=''">
