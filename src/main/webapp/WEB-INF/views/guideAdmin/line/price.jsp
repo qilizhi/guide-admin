@@ -199,6 +199,7 @@
 
 							<input type="hidden" name="routeid" value="${guideLine.lineNo}" />
 							<input type="hidden" name="num" id="num" value="${guideLine.num}"/><!-- 从线路中获取满员人数 -->
+							
 							<div class="price-condition red">温馨提示:生成价格、清除价格、保存价格都是根据条件设置范围来操作数据的变化的;单击日历单元格可进行编辑.</div>
 
 							<div id="priceCalendar" style="width: 930px;"></div>
@@ -345,7 +346,7 @@
 		
 		
 		var result = ${lineDataPrices};
-		//console.log(result);
+	
 		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);
@@ -542,9 +543,6 @@
 				
 				var $BasePrices = $mPriceEdit.getBasePrice();
 				//console.log($BasePrices)
-				var $beginTime=$BasePrices.beginTime;
-				//console.log($beginTime);
-				//console.log(!$beginTime);
 				
 				if($.trim($BasePrices.adultPrice).length <= 0 
 						|| parseInt($BasePrices.adultPrice,0) <= 0){
@@ -579,6 +577,7 @@
 					if(!$mPriceEdit.checkWeekDays($BasePrices.weekDays, $week)){
 						return;
 					}
+					
 					$(obj).attr("data-cprice",$BasePrices.adultPrice);
 					$(obj).attr("data-eprice",$BasePrices.childPrice);
 					//$(obj).attr("minprice",$BasePrices.mlxPrice);
@@ -596,13 +595,10 @@
 					$("input[type='text'][name='data-safePrice']",$(obj)).val($BasePrices.safePrice);
 					$("input[type='text'][name='data-visaPrice']",$(obj)).val($BasePrices.visaPrice);
 					$("input[type='text'][name='num']",$(obj)).val($BasePrices.num);
+					
 				});
 				
-				if(!$mPriceEdit.checkDateRange($date, $BasePrices.beginTime, $BasePrices.endTime)){
-					console.log($date)
-					console.log($BasePrices.beginTime)
-					console.log($BasePrices.endTime)
-				}
+				
 				
 			});
 			
@@ -619,14 +615,14 @@
 					//清除日历中的价格
 					var $BasePrices = $mPriceEdit.getBasePrice();
 					$("#tableCalendar td.td").each(function(i,obj){
-						/* var $week = $(obj).attr("data-week");
+						var $week = $(obj).attr("data-week");
 						var $date = $(obj).attr("data-full-date");
 						if(!$mPriceEdit.checkDateRange($date, $BasePrices.beginTime, $BasePrices.endTime)){
 							return;
 						}
 						if(!$mPriceEdit.checkWeekDays($BasePrices.weekDays, $week)){
 							return;
-						} */
+						} 
 						$(obj).removeAttr("data-cprice","");
 						$(obj).removeAttr("data-eprice","");
 						//$(obj).removeAttr("minprice","");
@@ -642,15 +638,14 @@
 						$("input[type='text'][name='visaPrice']",$(obj)).val("");
 						
 						//清空input里的价格
-						$("#adultPrice").val("");
-				    	//$("#mlxPrice").val("");
+						/* $("#adultPrice").val("");
 				    	$("#childPrice").val("");
 				    	$("#roomDiffPrice").val("");
 				    	$("#safePrice").val("");
-				    	$("#visaPrice").val("");
+				    	$("#visaPrice").val(""); */
 				    	//清空日期插件input
-				    	$("input[name=beginTime]").val("");
-				    	$("input[name=endTime]").val("");
+				    	//$("input[name=beginTime]").val("");
+				    	//$("input[name=endTime]").val("");
 				    	//clear时清除日历模板
 				    	$("div.price-edit").remove();
 		    			$("span.price").show();

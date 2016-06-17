@@ -636,14 +636,14 @@
 					//清除日历中的价格
 					var $BasePrices = $mPriceEdit.getBasePrice();
 					$("#tableCalendar td.td").each(function(i,obj){
-						/* var $week = $(obj).attr("data-week");
+						var $week = $(obj).attr("data-week");
 						var $date = $(obj).attr("data-full-date");
 						if(!$mPriceEdit.checkDateRange($date, $BasePrices.beginTime, $BasePrices.endTime)){
 							return;
 						}
 						if(!$mPriceEdit.checkWeekDays($BasePrices.weekDays, $week)){
 							return;
-						} */
+						} 
 						$(obj).removeAttr("data-cprice","");
 						$(obj).removeAttr("data-eprice","");
 						//$(obj).removeAttr("minprice","");
@@ -659,15 +659,14 @@
 						$("input[type='text'][name='visaPrice']",$(obj)).val("");
 						
 						//清空input里的价格
-						$("#adultPrice").val("");
-				    	//$("#mlxPrice").val("");
+						/* $("#adultPrice").val("");
 				    	$("#childPrice").val("");
 				    	$("#roomDiffPrice").val("");
 				    	$("#safePrice").val("");
-				    	$("#visaPrice").val("");
+				    	$("#visaPrice").val(""); */
 				    	//清空日期插件input
-				    	$("input[name=beginTime]").val("");
-				    	$("input[name=endTime]").val("");
+				    	//$("input[name=beginTime]").val("");
+				    	//$("input[name=endTime]").val("");
 				    	//clear时清除日历模板内容
 				    	$("div.price-edit").remove();
 		    			$("span.price").show();
