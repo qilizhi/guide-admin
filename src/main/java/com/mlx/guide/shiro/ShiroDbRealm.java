@@ -73,7 +73,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	private static final String PLATFORM_USERINFO_LOGIN = "http://passport.mlxing.com/api/platformUser/getUserInfo";
 
 	private UserInfoService userInfoService;
-	
+
 	@Autowired
 	private GuideInfoService guideInfoService;
 
@@ -98,13 +98,15 @@ public class ShiroDbRealm extends AuthorizingRealm {
 				paramUtil.addParam(Const.API_PARAM_PASSWORD, password);
 				PlatformUser platformUser = null;
 				if (StringUtil.empty(token.getAccessToken())) {
-					platformUser = MlxingAPIUtil.getAPIDataT( PLATFORM_LOGIN, paramUtil, PlatformUser.class );
+					platformUser = MlxingAPIUtil.getAPIDataT(PLATFORM_LOGIN, paramUtil, PlatformUser.class);
 				} else {
-					platformUser = MlxingAPIUtil.getAPIDataT( PLATFORM_USERINFO_LOGIN, paramUtil, PlatformUser.class );
+					platformUser = MlxingAPIUtil.getAPIDataT(PLATFORM_USERINFO_LOGIN, paramUtil, PlatformUser.class);
 				}
 				if (platformUser != null) {
-					ShiroUser user1 = new ShiroUser(token.getUsername(), platformUser.getName(),platformUser.getUserNo(), null, token.getUserType());
-					HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,user1.getName());
+					ShiroUser user1 = new ShiroUser(token.getUsername(), platformUser.getName(),
+							platformUser.getUserNo(), null, token.getUserType());
+					HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,
+							user1.getName());
 					return ai;
 				}
 				return null;
@@ -118,17 +120,19 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			}
 			userInfo = lsUserInfos.get(0);
 			GuideInfo guideInfo = guideInfoService.getGuideInfoByUserNo(userInfo.getUserNo());
-			
-			if(guideInfo == null || guideInfo.getRealName() == null){
+
+			if (guideInfo == null || guideInfo.getRealName() == null) {
 				logger.error("验证登录错误: 非导游账号");
 				return null;
 			}
-			if(!checkPwd( userInfo.getSalt(), password, userInfo.getPassword() )){
+			if (!checkPwd(userInfo.getSalt(), password, userInfo.getPassword())) {
 				return null;
 			}
 			// TODO:需要进行密码加密处理进行验证
-			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), guideInfo.getRealName(), userInfo.getUserNo(),userInfo.getOpenId(), token.getUserType());
-			HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true, user1.getName());
+			ShiroUser user1 = new ShiroUser(userInfo.getMobile(), guideInfo.getRealName(), userInfo.getUserNo(),
+					userInfo.getOpenId(), token.getUserType());
+			HttpOAuthAuthenticationInfo ai = new HttpOAuthAuthenticationInfo(user1, token.getUsername(), true,
+					user1.getName());
 			return ai;
 		} catch (AuthenticationException e) {
 			logger.error("验证登录错误: " + e.getMessage());
@@ -151,33 +155,34 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			// 用户的角色集合
 			Set<String> roles = new HashSet<String>();
 			roles.add(shiroUser.role);
-			//查找系统给用户分配的角色。
-			List<Role> rolesList=userInfoService.getRolesByUserNo(shiroUser.getUserNo());
-			for(Role r:rolesList){
+			// 查找系统给用户分配的角色。
+			List<Role> rolesList = userInfoService.getRolesByUserNo(shiroUser.getUserNo());
+			for (Role r : rolesList) {
 				roles.add(r.getName());
 			}
-			
+
 			info.setRoles(roles);
 			// 用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要
 			List<String> perms = new ArrayList<String>();
-		    // perms.addAll(info.getStringPermissions());
+			if (info != null && info.getStringPermissions() != null)
+				perms.addAll(info.getStringPermissions());
 			if (perms != null && perms.size() <= 0) {
 				logger.info("perms is null");
 				perms.add("undefined:*");// 无权限时默认给个权限
 			}
 			perms.add("supplierAdmin:view");
-			List<Resource> resources=userInfoService.getResourcesByUserNo(shiroUser.getUserNo());
-			for(Resource r:resources){
-				perms.add(r.getPath());				
+			List<Resource> resources = userInfoService.getResourcesByUserNo(shiroUser.getUserNo());
+			for (Resource r : resources) {
+				perms.add(r.getPath());
 			}
 			info.addStringPermissions(perms);
-			logger.info(info.getStringPermissions().toString());
-			logger.info(info.getRoles().toString());
+			logger.info("用户权限："+info.getStringPermissions().toString());
+			logger.info("用户角色："+info.getRoles().toString());
 			return info;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 检查密码是否匹配
 	 * 
@@ -186,13 +191,13 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	 * @param cmlPwd
 	 * @return
 	 */
-	private boolean checkPwd( String cmlSalt, String inputPwd, String cmlPwd ) {
-		if( StringUtil.empty( cmlSalt ) || StringUtil.empty( inputPwd ) || StringUtil.empty( cmlPwd ) ) {
+	private boolean checkPwd(String cmlSalt, String inputPwd, String cmlPwd) {
+		if (StringUtil.empty(cmlSalt) || StringUtil.empty(inputPwd) || StringUtil.empty(cmlPwd)) {
 			return false;
 		}
-		String salt = StringUtil.stringValue( cmlSalt, "" );
-		String hexPwd = Encodes.encodeHex( Digests.sha1( inputPwd.getBytes(), Encodes.decodeHex( salt ), Const.SALT_SIZE ) );
-		return (cmlPwd != null && !StringUtil.empty( hexPwd ) && cmlPwd.equals( hexPwd ));
+		String salt = StringUtil.stringValue(cmlSalt, "");
+		String hexPwd = Encodes.encodeHex(Digests.sha1(inputPwd.getBytes(), Encodes.decodeHex(salt), Const.SALT_SIZE));
+		return (cmlPwd != null && !StringUtil.empty(hexPwd) && cmlPwd.equals(hexPwd));
 	}
 
 	/**
@@ -220,9 +225,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	 */
 	@PostConstruct
 	public void initCredentialsMatcher() {
-		//HashedCredentialsMatcher matcher = new
-		 //HashedCredentialsMatcher(Const.HASH_ALGORITHM);
-		//matcher.setHashIterations(Const.HASH_INTERATIONS);
+		// HashedCredentialsMatcher matcher = new
+		// HashedCredentialsMatcher(Const.HASH_ALGORITHM);
+		// matcher.setHashIterations(Const.HASH_INTERATIONS);
 
 		HttpCredentialsMatcher matcher = new HttpCredentialsMatcher();
 		setCredentialsMatcher(matcher);
