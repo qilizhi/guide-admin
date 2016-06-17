@@ -332,10 +332,10 @@
 					var date = $(obj).attr("data-full-date");
 					//var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
 				
-					var roomDiffPrice = $BasePrices.roomDiffPrice;	//$(obj).attr("data-roomDiffPrice");
-					var safePrice = $BasePrices.safePrice;	//$(obj).attr("data-safePrice");
-					var visaPrice = $BasePrices.visaPrice;	//$(obj).attr("data-visaPrice");
-					var num = $BasePrices.num;	//$(obj).attr("data-num");
+					var roomDiffPrice = $(obj).attr("data-roomDiffPrice");	
+					var safePrice = $(obj).attr("data-safePrice");	
+					var visaPrice = $(obj).attr("data-visaPrice");	
+					var num = $(obj).attr("data-num");	
 					
 					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
 						//if(mlxPrice!=null&&mlxPrice!=''&&mlxPrice!=undefined){
@@ -469,7 +469,9 @@
 			    		$("input[type='text'][name='data-roomDiffPrice']",currTdObj).val($roomDiffPrice);
 			    		$("input[type='text'][name='data-safePrice']",currTdObj).val($safePrice);
 			    		$("input[type='text'][name='data-visaPrice']",currTdObj).val($visaPrice);
-			    		$("input[type='text'][name='data-num']",currTdObj).val($num);
+			    		//拿页面num值
+				    	var $lineNum=$("input[type='hidden'][name=num]").val();
+			    		$("input[type='text'][name='data-num']",currTdObj).val($lineNum); //.val($num);
 			    		
 			    		$("input[type='text']",temp).on("blur",function(){
 			    			var $Atr = $(this).attr("name");

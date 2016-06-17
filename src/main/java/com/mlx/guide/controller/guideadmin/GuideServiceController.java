@@ -3,6 +3,7 @@ package com.mlx.guide.controller.guideadmin;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.dao.GuideLineDatePriceMapper;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.entity.GuideService;
@@ -55,6 +57,8 @@ public class GuideServiceController {
 	private GuideServiceService guideServiceService;
 	@Autowired
 	private GuideLineDatePriceService guideLineDatePriceService;
+	@Autowired
+	private GuideLineDatePriceMapper priceMapper;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -249,8 +253,15 @@ public class GuideServiceController {
 		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
 				.getGuideLineDatePriceByLineNo(lineNo);
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+		// 查询当前线路价格的开始时间和结束时间
+		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
+		Date startDate = map.get("startDate");
+		Date endDate = map.get("endDate");
+
 		model.addAttribute("service", service);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
 		return "guideAdmin/guideService/price";
 	}
 

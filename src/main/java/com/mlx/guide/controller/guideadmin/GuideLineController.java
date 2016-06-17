@@ -2,6 +2,7 @@ package com.mlx.guide.controller.guideadmin;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -225,7 +226,7 @@ public class GuideLineController {
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
-			Model model) {
+			 Model model) {
 		try {
 			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
@@ -320,24 +321,28 @@ public class GuideLineController {
 	 * @param request
 	 * @return
 	 */
-	/*
-	 * @RequestMapping(value = "/delLinePrcie/{lineNo}", method =
-	 * RequestMethod.POST)
-	 * 
-	 * @ResponseBody public JsonResult delLinePrice(@PathVariable String
-	 * lineNo, @RequestParam("beginTime") String beginTime,
-	 * 
-	 * @RequestParam("endTime") String endTime, HttpServletRequest request) {
-	 * try { if (!beginTime.isEmpty() && !endTime.isEmpty()) { Map<String,
-	 * Object> map = new LinkedHashMap<String, Object>(); map.put("beginTime",
-	 * beginTime); map.put("endTime", endTime); map.put("lineNo", lineNo);
-	 * guideLineDatePriceService.deleteGuideLineDatePriceByDate(map); return new
-	 * JsonResult(ExceptionCode.SUCCESSFUL); } else { return new
-	 * JsonResult(ExceptionCode.FAIL); }
-	 * 
-	 * } catch (Exception e) { logger.error(e.getMessage(), e); return new
-	 * JsonResult(ExceptionCode.FAIL); } }
-	 */
+/*	@RequestMapping(value = "/delLinePrcie/{lineNo}", method = RequestMethod.POST)
+	@ResponseBody
+	public JsonResult delLinePrice(@PathVariable String lineNo, @RequestParam("beginTime") String beginTime,
+			@RequestParam("endTime") String endTime, HttpServletRequest request) {
+		try {
+			if (!beginTime.isEmpty() && !endTime.isEmpty()) {
+				Map<String, Object> map = new LinkedHashMap<String, Object>();
+				map.put("beginTime", beginTime);
+				map.put("endTime", endTime);
+				map.put("lineNo", lineNo);
+				guideLineDatePriceService.deleteGuideLineDatePriceByDate(map);
+				return new JsonResult(ExceptionCode.SUCCESSFUL);
+			} else {
+				return new JsonResult(ExceptionCode.FAIL);
+			}
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return new JsonResult(ExceptionCode.FAIL);
+		}
+	}*/
+
 	/**
 	 * 修改上线，下线状态
 	 * 

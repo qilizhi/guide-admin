@@ -294,6 +294,7 @@
 				var $BasePrices = this.getBasePrice();
 				//console.log($BasePrices)
 				$("#priceCalendar td.td").each(function(i,obj){
+					//手动修改td内价格时在当前td中取值
 					var adultPrice = $(obj).attr("data-cprice");
 					var childPrice = $(obj).attr("data-eprice");
 					var id = $(obj).attr("data-id");
@@ -302,11 +303,11 @@
 					//var mlxPrice = $(obj).attr("minprice");
 					var date = $(obj).attr("data-full-date");
 					//var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
-				
-					var roomDiffPrice = $BasePrices.roomDiffPrice;	//$(obj).attr("data-roomDiffPrice");
-					var safePrice = $BasePrices.safePrice;	//$(obj).attr("data-safePrice");
-					var visaPrice = $BasePrices.visaPrice;	//$(obj).attr("data-visaPrice");
-					var num = $BasePrices.num;	//$(obj).attr("data-num");
+					
+					var roomDiffPrice =$(obj).attr("data-roomDiffPrice"); //$BasePrices.roomDiffPrice;	
+					var safePrice =$(obj).attr("data-safePrice"); //$BasePrices.safePrice;	
+					var visaPrice =$(obj).attr("data-visaPrice"); // $BasePrices.visaPrice;	
+					var num =$(obj).attr("data-num"); // $BasePrices.num;	
 					
 					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
 						//if(mlxPrice!=null&&mlxPrice!=''&&mlxPrice!=undefined){
@@ -368,7 +369,7 @@
 				defaultText:"点击编辑",
 				useEditModel:true,//是否使用编辑模式
 			    json: result, //传递过来的json ${lineDataPrices}
-			    startTime:new Date(),
+			    startTime: new Date(),
 			    tdAttrs: function(jsonObj){
 			    	//console.log(jsonObj)
 			    	if(!jsonObj){
@@ -417,7 +418,7 @@
 			    },
 			    //td点击事件
 			    tdClick: function(obj,date,price,cprice,eprice,currTdObj) {
-			    	//console.log(currTdObj);
+			    	console.log(currTdObj);
 			    	if($("div.price-edit",currTdObj).length <= 0){
 			    		var temp = $($mTemp).appendTo(currTdObj);
 			    		var dataType = $(currTdObj).attr("data-routeordertype");
@@ -440,7 +441,9 @@
 			    		$("input[type='text'][name='data-roomDiffPrice']",currTdObj).val($roomDiffPrice);
 			    		$("input[type='text'][name='data-safePrice']",currTdObj).val($safePrice);
 			    		$("input[type='text'][name='data-visaPrice']",currTdObj).val($visaPrice);
-			    		$("input[type='text'][name='data-num']",currTdObj).val($num);
+			    		//拿页面num值
+				    	var $lineNum=$("input[type='hidden'][name=num]").val();
+			    		$("input[type='text'][name='data-num']",currTdObj).val($lineNum); //.val($num);
 			    		
 			    		$("input[type='text']",temp).on("blur",function(){
 			    			var $Atr = $(this).attr("name");
@@ -651,7 +654,7 @@
 		    			$("span.price").show();
 					});
 				});
-			
+				 
 			});
 			
 	});
