@@ -20,7 +20,11 @@
 width
 
 
+
+
 :
+
+
 
 
 75%
@@ -35,7 +39,11 @@ keyframes scoller { 0%{
 width
 
 
+
+
 :
+
+
 
 
 75%
@@ -115,7 +123,8 @@ width
 									<!-- BEGIN FORM -->
 									<form
 										action="${ctx }/admin/trip/save?startDate=${startDate}&endDate=${endDate}"
-										id=form_sample_3 class="form-horizontal" method="post"
+										onsubmit="return validForm();" id=form_sample_3
+										class="form-horizontal" method="post"
 										enctype="multipart/form-data">
 										<input type="hidden" name="id" value="${guideLineTrip.id }" />
 										<div class="form-body">
@@ -159,17 +168,15 @@ width
 																	value='${item.day}' readonly="readonly"></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].address"
-																		id="address" required oninvalid="setCustomValidity('请填写地点')" oninput="setCustomValidity('')"> ${item.address}  </textarea></td>
+																		id="address"> ${item.address}  </textarea></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].traffic"
-																		id="traffic" required  oninvalid="setCustomValidity('请填写交通')" oninput="setCustomValidity('')" > ${item.traffic} </textarea></td>
+																		id="traffic"> ${item.traffic} </textarea></td>
 																<td><textarea type="text"
-																		name="guideLineTrips[${st.index}].hotel" id="hotel"
-																		required oninvalid="setCustomValidity('请填写住宿')"
-																		oninput="setCustomValidity('')"> ${item.hotel}</textarea></td>
+																		name="guideLineTrips[${st.index}].hotel" id="hotel"> ${item.hotel}</textarea></td>
 																<td><textarea type="text"
 																		name="guideLineTrips[${st.index}].tripDetail"
-																		id="tripDetail" required  oninvalid="setCustomValidity('请填写主要行程')" oninput="setCustomValidity('')" >${item.tripDetail}</textarea></td>
+																		id="tripDetail">${item.tripDetail}</textarea></td>
 																<%-- <td><a class="btn blue btn-outline" name="addBtn"
 																	onClick="addRow();">添加</a> <a
 																	class="btn blue btn-outline" name="addBtn"
@@ -211,39 +218,24 @@ width
 	</div>
 
 	<script type="text/javascript">
-		//动态添加行程
+		function validForm() {
+			var is_valid = true;
 
-		/* 	 function addRow(){
-		 var _html = template("table_tr",{id:($("input[type=text][id=day]").length + 1)});
-		 $("#test").append(_html);
-		 }
-		
-		 //删除行程
-		 function delRow(el,id){
-		 $(el).parent().parent().remove();
-		 //动态改变day的值
-		 $("input[type=text][id=day]").each(function(i,el){
-		 $(el).val(i+1);
-		 });
-		 if(id!=undefined){
-		 $.post("${ctx}/admin/trip/delete/"+id,function(data){
-		 //console.log(data);
-		 comm.infoMsg(data.msg);
-		 });
-		 }
-		 }
-		 */
-		//表单提交验证
-		$("#form_sample_3").submit(function() {
-			//至少要添加一个行程才能提交
-			var $len = $("#test tbody tr").length;
-			if ($len <= 0) {
-				comm.infoMsg("至少添加一个行程", null, 150);
-				return false;
-			} else {
-				return true;
-			}
-		});
+			$("textarea").each(function(i, item) {
+				$(this).next("span").remove();
+				if ($.trim(this.value) == "") {
+					if ($(this).next("span")[0] == null) {
+						$(this).after("<span class='text-danger'>不能为空</span>");
+					}
+					is_valid = false;
+
+				}
+				;
+
+			});
+
+			return is_valid;
+		}
 	</script>
 
 

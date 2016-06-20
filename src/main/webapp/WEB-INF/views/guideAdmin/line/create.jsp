@@ -169,8 +169,7 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-md-3">排序号 <span
-									class="required"> * </span>
+								<label class="control-label col-md-3">排序号 :
 								</label>
 								<div class="col-md-4">
 									<input type="text"
@@ -451,11 +450,6 @@
                        required: true,
                        maxlength:255
                    },
-                   sort: {
-                       required: true,
-                       digits:true,
-                       maxlength:10
-                   },
                    remark: {
                        required: true,
                        maxlength:255
@@ -486,11 +480,6 @@
                    recommendInfo: {
                        required: "不能为空",
                        maxlength:"最多输入255个汉字"
-                   },
-                   sort: {
-                       required: "不能为空",
-                       digits:"请输入整数",
-                       maxlength:"最多输入10位数"
                    },
                    remark: {
                 	   required: "不能为空",

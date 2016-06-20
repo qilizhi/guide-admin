@@ -221,8 +221,9 @@ public class GuideLineAdminController {
 	@RequestMapping(value = "backToTrip/{lineNo}")
 	public String backToTrip(@PathVariable String lineNo, GuideLineTrip guideLineTrip, Model model) {
 		try {
+			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
 			guideLineTrip.setLineNo(lineNo);
-			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
+			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip, pageBounds);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
 		} catch (Exception e) {
@@ -421,7 +422,7 @@ public class GuideLineAdminController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "admin/line/create";
+			//return "admin/line/create";
 		}
 	}
 
