@@ -143,26 +143,34 @@ public class GuideLineDatePriceService {
 	@Transactional
 	public void saveGuideLineDatePriceByLineNo(List<GuideLineDatePrice> guideLineDatePriceList, String lineNo) {
 		// delete
-		guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
+		//guideLineDatePriceMapper.deleteGuideLineDatePriceByLineNo(lineNo);
 		// 查询线路
 		GuideLine line = guideLineService.getGuideLineByLineNo(lineNo);
 		// save
 		for (GuideLineDatePrice guideLineDatePrice : guideLineDatePriceList) {
+			if(guideLineDatePrice.getTuanNo()==null||guideLineDatePrice.getTuanNo().equals("")){
+				guideLineDatePrice.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Tuan.getPrefix()));
+			}
+			
 			guideLineDatePrice.setNum(line.getNum());
 			GuideTuan gt = new GuideTuan();
 			// 根据时间及产品编号查询。是否这天有团
-			gt.setTuanDate(guideLineDatePrice.getLineDate());
-			gt.setGoodsNo(guideLineDatePrice.getLineNo());
+			//gt.setTuanDate(guideLineDatePrice.getLineDate());
+			//gt.setGoodsNo(guideLineDatePrice.getLineNo());
+			gt.setTuanNo(guideLineDatePrice.getTuanNo());
 			List<GuideTuan> gts = guideTuanMapper.getGuideTuanPageList(gt);
+			
 			if (gts.size() <= 0) {// 没有则插入
 				gt.setCreateTime(new Date());
 				gt.setGoodsType(EGoodsType.LINE.getCode());
 				gt.setTuanStatus(ETuanStatus.TOUR.getId().byteValue());
-				gt.setTuanNo(StringUtil.generateProductSerialNumber(EProductNoPrefix.Tuan.getPrefix()));
+				gt.setTuanNo(guideLineDatePrice.getTuanNo());
 				gt.setName(line.getTitle());
 				gt.setFullNum(line.getNum());
 				gt.setUserNo(line.getUserNo());
 				gt.setUserName(line.getUserName());
+				gt.setTuanDate(guideLineDatePrice.getLineDate());
+				gt.setGoodsNo(line.getLineNo());
 				guideTuanMapper.insertSelective(gt);
 
 			} else {
@@ -176,6 +184,8 @@ public class GuideLineDatePriceService {
 						gt.setFullNum(line.getNum());
 						gt.setUserNo(line.getUserNo());
 						gt.setUserName(line.getUserName());
+						gt.setTuanDate(guideLineDatePrice.getLineDate());
+						gt.setGoodsNo(line.getLineNo());
 						guideTuanMapper.updateByPrimaryKeySelective(gt);
 					} else {
 
@@ -185,7 +195,11 @@ public class GuideLineDatePriceService {
 
 				}
 			}
-			guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
+			if(guideLineDatePrice.getId()!=null){
+				guideLineDatePriceMapper.updateGuideLineDatePriceSelective(guideLineDatePrice);
+			}else{
+				guideLineDatePriceMapper.createGuideLineDatePriceSelective(guideLineDatePrice);
+			}
 		}
 
 	}

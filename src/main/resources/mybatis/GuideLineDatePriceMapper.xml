@@ -178,7 +178,7 @@
 			#{lineDate},
 			</if>
 			<if test="tuanNo != null" >
-			#{tuan_no}
+			#{tuanNo}
 			</if>
 			</trim>
     </insert>

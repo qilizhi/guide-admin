@@ -81,11 +81,11 @@
 							<div class="tab-content">
 								<div class="alert alert-danger display-none">
 									<button class="close" data-dismiss="alert"></button>
-									You have some form errors. Please check below.
+									请完整填写以下信息！
 								</div>
 								<div class="alert alert-success display-none">
 									<button class="close" data-dismiss="alert"></button>
-									Your form validation is successful!
+									验证通过！
 								</div>
 								<!-- 线路start -->
 								<div class="tab-pane active" id="tab1">

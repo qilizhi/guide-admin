@@ -102,11 +102,11 @@
 						<div class="form-body">
 							<div class="alert alert-danger display-hide">
 								<button class="close" data-close="alert"></button>
-								You have some form errors. Please check below.
+								请完善以下信息！
 							</div>
 							<div class="alert alert-success display-hide">
 								<button class="close" data-close="alert"></button>
-								Your form validation is successful!
+								通过验证！
 							</div>
 							<div class="form-group">
 								<!-- 编辑页面显示start 线路编号不可修改-->
@@ -458,6 +458,10 @@
                        required: true,
                        digits:true,
                        maxlength:5
+                   },
+                   sort: {
+                       digits:true,
+                       maxlength:10
                    }
                },
 
@@ -489,6 +493,10 @@
                        required:"不能为空",
                        digits:"请输入整数",
                        maxlength:"最多输入5位数"
+                   },
+                   sort: {
+                       digits:"请输入整数",
+                       maxlength:"最多输入10位数"
                    }
                },
 
@@ -544,7 +552,7 @@
     	    	   }
                 
                    success3.show();
-               	   form[0].submit(); // submit the form
+               	   form.submit(); // submit the form
                }
 
            });
