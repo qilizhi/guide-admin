@@ -152,7 +152,6 @@
 			initImgUpload();
 			initUEeditor();
 			handleValidation3();
-			initSelect();
 			//初始化fancyBox
 			$("a.grouped_elements").fancybox();
 		
@@ -213,32 +212,7 @@
 					});
 		};
 		
-		/**下拉框的初始化**/
-		var initSelect = function() {
-			//用户数据
-			$.ajax({
-				url:"${ctx}/guideAdmin/strategy/search",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					var options="";
-					if(data.code=="200"){
-					var line=data.result;
-					//console.log(line);
-					$.each(line,function(index,obj){
-						options+="<option value='"+obj.lineNo+"'>"+obj.title+"</option>";
-					});
-					}
-					$("select[name='relatLineNo']").empty(); 
-					$("select[name='relatLineNo']").append(options);
-					$("select[name='relatLineNo']").selectpicker('refresh');
-					
-				},error:function(e){
-					comm.errorMsg("请求出错！");
-				}
-				
-			});
-		}
+
 		
 		//验证框架
 	 var handleValidation3 = function() {

@@ -110,32 +110,32 @@
 											value="" placeholder="请输入美丽价" />
 									</div> -->
 									<div class="price-condition">
-										<label class="price-condition-label">成人价：</label> <input
+										<label class="price-condition-label"><span style="color:red">*</span>成人价：</label> <input
 											type="text" id="adultPrice" name="adultPrice"
 											value="" placeholder="请输入成人价" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">儿童价：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">儿童价：</label> <input
 											type="text" id="childPrice" name="childPrice"
 											value="" placeholder="请输入儿童价"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">房&nbsp;差：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">房&nbsp;差：</label> <input
 											type="text" id="roomDiffPrice" name="roomDiffPrice"
 											value="" placeholder="请输入房差" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">保险价：</label> <input
+										<label class="price-condition-label"><span style="color:red">*</span>保险价：</label> <input
 											type="text" id="safePrice" name="safePrice"
 											value="" placeholder="请输入保险价" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">签证费：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">签证费：</label> <input
 											type="text" id="visaPrice" name="visaPrice"
 											value="" placeholder="请输入签证费"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" />
 									</div>
 									<div class="price-condition" >
-										<label class="price-condition-label">人&nbsp;数：</label>
+										<label class="price-condition-label" style="text-indent:0.5em;">人&nbsp;数：</label>
 										 <input type="text" name="num" id="num" value="${guideLine.num}" readonly="readonly"/>
 											
 									</div>
@@ -496,7 +496,7 @@
 			//保存价格
 			$("#btn-save").bind("click",function(e){
 				//在保存前点击再次生成日历表数据
-				//$("#btn-auto-create-price").click();
+				$("#btn-auto-create-price").click();
 				
 				e.preventDefault();
 				var $BasePrices = $mPriceEdit.getBasePrice();
@@ -507,7 +507,7 @@
 					/* 	|| $.trim($BasePrices.mlxPrice).length <= 0 
 						|| parseInt($BasePrices.mlxPrice,0) <= 0 */
 						){
-					comm.infoMsg("请输入成人价和美丽价",null,150);
+					comm.infoMsg("请输入成人价",null,150);
 					return;
 				}
 				//请输入保险价,人数
@@ -517,7 +517,7 @@
 						|| parseInt($BasePrices.num,0) <= 0 */
 						
 				){
-					comm.infoMsg("请输入保险价和人数",null,150);
+					comm.infoMsg("请输入保险价",null,150);
 					return;
 				} 
 				//成人价必须 > 美丽价
