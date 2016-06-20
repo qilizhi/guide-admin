@@ -68,8 +68,8 @@ xmlns:context="http://www.springframework.org/schema/context"
       
               /logout = logout
             /login = anon
-            /platformLogin = anon
-            /guideLogin = anon
+            /platformLogin** = anon
+            /guideLogin**= anon
             /guideAdmin* = role[guideAdmin]
             /guideAdmin/** =role[guideAdmin]
              /static/** = anon 

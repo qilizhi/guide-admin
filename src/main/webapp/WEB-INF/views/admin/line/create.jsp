@@ -443,6 +443,10 @@
 					title : {
 						required : true
 					},
+					num : {
+						required : true,
+						digits : true
+					},
 					price : {
 						required : true,
 						number : true,
@@ -469,7 +473,12 @@
 
 				messages : { // custom messages for radio buttons and checkboxes
 					title : {
+						required : "不能为空"
+					},
+					num : {
 						required : "不能为空",
+						digits : "请输入整数"
+						
 					},
 					price : {
 						required : "不能为空",
