@@ -3,6 +3,7 @@ package com.mlx.guide.controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,17 +35,15 @@ import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.dao.GuideLineDatePriceMapper;
 import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
-import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideLineTripService;
-import com.mlx.guide.shiro.ShiroDbRealm;
-import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 import com.mlx.guide.util.StringUtil;
 
 @RequestMapping(value = "/admin/guideLine")
@@ -61,7 +60,8 @@ public class GuideLineAdminController {
 	private GuideInfoService guideInfoService;
 	@Autowired
 	private GuideLineTripService guideLineTripService;
-
+	@Autowired
+	private GuideLineDatePriceMapper priceMapper;
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
@@ -206,7 +206,6 @@ public class GuideLineAdminController {
 			model.addAttribute("guideLine", guideLine);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			// return "admin/line/create";
 		}
 		return "admin/line/create";
 	}
@@ -226,11 +225,10 @@ public class GuideLineAdminController {
 			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
-			return "guideAdmin/line/lineTrip";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "guideAdmin/line/lineTrip";
 		}
+		return "admin/line/lineTrip";
 	}
 
 	/**
@@ -256,11 +254,10 @@ public class GuideLineAdminController {
 			model.addAttribute("guideLine", guideLine);
 			model.addAttribute("startDate", startDate);
 			model.addAttribute("endDate", endDate);
-			return "admin/line/price";
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return "admin/line/price";
 		}
+		return "admin/line/price";
 	}
 
 	/**
@@ -387,7 +384,7 @@ public class GuideLineAdminController {
 					guideLine.setAuditStatus(EAuditStatus.AUDIT_ON.getId());// 每次修改价格后审核状态都改为待审核
 				}
 				// 比较行程 天数。如有修改，重新定义行程 。
-				if (oldTotalDay!=null&&oldTotalDay.compareTo(guideLine.getTotalDay()) != 0) {
+				if (oldTotalDay != null && oldTotalDay.compareTo(guideLine.getTotalDay()) != 0) {
 					// 删除以前的插入新的行程
 					guideLineTripService.deleteGuideLineTripByLineNo(guideLine.getLineNo());
 					int day = guideLine.getTotalDay();
@@ -445,8 +442,19 @@ public class GuideLineAdminController {
 		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
 				.getGuideLineDatePriceByLineNo(lineNo);
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+		// 查询当前线路价格的开始时间和结束时间
+		Map<String, Date> map=new HashMap<>();
+		try {
+			map = priceMapper.getLineDateByLineNo(lineNo);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		Date startDate = map.get("startDate");
+		Date endDate = map.get("endDate");
 		model.addAttribute("guideLine", guideLine);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
 
 		return "admin/line/price";
 	}
@@ -516,35 +524,7 @@ public class GuideLineAdminController {
 		}
 	}
 
-	/**
-	 * 根据id获取线路信息
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value = "/up/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public JsonResult up(@PathVariable Integer id) {
-		try {
-			GuideLine guideLine = guideLineService.getGuideLineByPrimaryKey(id);
-			return new JsonResult(ExceptionCode.SUCCESSFUL, guideLine);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new JsonResult(ExceptionCode.FAIL);
-		}
-	}
 
-	/**
-	 * 修改上线，下线状态
-	 * 
-	 * @param guideLine
-	 * @return
-	 */
-	@RequestMapping(value = "upAndDown")
-	public String upAndDown(GuideLine guideLine) {
-		guideLineService.updateGuideLineSelective(guideLine);
-		return "redirect:/guideAdmin/line/list";
-	}
 
 	/**
 	 * 跳转到线路新增页面
