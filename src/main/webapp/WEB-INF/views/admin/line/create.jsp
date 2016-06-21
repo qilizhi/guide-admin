@@ -451,7 +451,6 @@
 						required : true,
 						maxlength:50
 					},
-<<<<<<< HEAD
 					recommendInfo: {
 	                       required: true,
 	                       maxlength:255
@@ -462,12 +461,6 @@
 	                       maxlength:3,
 	                       range:[1,366] 
 	                },
-=======
-					num : {
-						required : true,
-						digits : true
-					},
->>>>>>> branch 'guide-admin-release' of http://gitlab.jszx.chineseml.com:3200/java/guide-admin.git
 					price : {
 						required : true,
 						number : true,
@@ -490,15 +483,6 @@
 				messages : { // custom messages for radio buttons and checkboxes
 					title : {
 						required : "不能为空"
-					},
-					num : {
-						required : "不能为空",
-<<<<<<< HEAD
-						digits : "请输入整数"
-						
-=======
-						maxlength:"最多输入50个汉字"
->>>>>>> branch 'guide-admin-release' of http://gitlab.jszx.chineseml.com:3200/java/guide-admin.git
 					},
 					recommendInfo: {
 	                    required: "不能为空",
