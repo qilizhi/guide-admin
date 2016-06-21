@@ -446,7 +446,6 @@
 	                    	maxlength:50
 	                    },
 	                    sort: {
-	                        required: true,
 	                        digits:true,
 	                        maxlength:10
 	                    },
@@ -487,7 +486,6 @@
 	                    	maxlength:"最多输入50个汉字"
 	                    },
 	                    sort: {
-	                        required: "不能为空",
 	                        digits:"请输入整数",
 	                        maxlength:"最多输入10位数"
 	                    },

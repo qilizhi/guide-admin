@@ -69,7 +69,7 @@
 				</div>
 				</c:if>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">标题：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>标题：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control" name="title" id="title"
 							value="${guideS.title}" placeholder="这里输入标题" />
@@ -77,7 +77,7 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">描述：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>描述：</label>
 					<div class="col-lg-5">
 						<textarea class="form-control" name="description" id="description"
 							rows="3" placeholder="这里添加描述">${guideS.description}</textarea>
@@ -110,7 +110,7 @@
 					</div>
 				</div> --%>
 								<div class="form-group">
-					<label class="col-lg-3 control-label">背景图片：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>背景图片：</label>
 					<div class="col-lg-5">
 						<div id="imgUrl">
 							<div id="supprogress">
@@ -137,7 +137,7 @@
 					</div>
 				</div>
 								<div class="form-group">
-					<label class="col-lg-3 control-label">头像图片：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>头像图片：</label>
 					<div class="col-lg-5">
 						<div id="smallImgUrl">
 							<div id="supprogress">
@@ -165,7 +165,7 @@
 				</div>
 			
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">价格：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>价格：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="price"
 							 value="${guideS.price}" />
@@ -173,7 +173,7 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">导服天数：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>导服天数：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="totalDay"
 							value="${guideS.totalDay}" />
@@ -181,7 +181,7 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">满员人数：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>满员人数：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="num"
 							value="${guideS.num}" />
@@ -207,7 +207,7 @@
 			</div>
 		</div> --%>
 				<div class="form-group">
-					<label class="col-lg-3 control-label">选择导游：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>选择导游：</label>
 					<div class="col-lg-5">
 						<input type="hidden" name="userName"
 							value="${guideS.userName}" /> <select title="根据名字及导游证号搜索" 
@@ -218,7 +218,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-3 control-label">内容文本：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>内容文本：</label>
 					<div class="col-lg-5">
 						<%-- 	<input type="text" class="form-control " name="content" id="content"
 					value="${guideS.content}" /> --%>
@@ -227,7 +227,7 @@
 					</div>
 				</div>
 					<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">体验说明：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>体验说明：</label>
 					<div class="col-lg-5">
 					<script id="remark" type="text/plain" name="remark"
 							style="width: 600px; height: 500px;">${guideS.remark}</script>
