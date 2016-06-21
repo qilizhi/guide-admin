@@ -29,7 +29,7 @@
 		class="form-horizontal">
 		<input type="hidden" id="id" name="id" value="${group.id}" />
 		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">群名称：</label>
+			<label class="col-lg-3 control-label"><span style="color:red">*</span>群名称：</label>
 			<div class="col-lg-5">
 				<input type="text" class="form-control " name="emGname" />
 				<div class="form-control-focus"></div>
@@ -56,14 +56,14 @@
 			</div>
 		</div>
 		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">群组介绍：</label>
+			<label class="col-lg-3 control-label"><span style="color:red">*</span>群组介绍：</label>
 			<div class="col-lg-5">
 				<input type="text" class="form-control " name="emGdesc" />
 				<div class="form-control-focus"></div>
 			</div>
 		</div>
 		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">群组形象照：</label>
+			<label class="col-lg-3 control-label"><span style="color:red">*</span>群组形象照：</label>
 			<div class="col-lg-5">
 				<div class="col-lg-7" id="supprogress">
 					<input type="hidden" name="image" /> <span id="imageName"></span>
@@ -84,7 +84,7 @@
 			</div>
 		</div>
 		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">群组人数上限：</label>
+			<label class="col-lg-3 control-label"><span style="color:red">*</span>群组人数上限：</label>
 			<div class="col-lg-5">
 				<input type="text" class="form-control " name="emMaxusers" />
 				<div class="form-control-focus"></div>
@@ -111,7 +111,7 @@
 			</div>
 		</div>
 		<div class="form-group form-md-line-input">
-			<label class="col-lg-3 control-label">进群规则：</label>
+			<label class="col-lg-3 control-label"><span style="color:red">*</span>进群规则：</label>
 			<div class="col-lg-5">
 				<input type="text" class="form-control " name="enterRule" />
 			</div>
