@@ -47,6 +47,19 @@
 		AND ur.user_no =#{userNo}
 	
 	</select>
+	<select id="getResourceByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	SELECT DISTINCT
+		(r.id),
+		r.`name`,r.path,
+		r.description
+		FROM sys_resource r,sys_authority_id_resource_id atr,
+		sys_role_id_authority_id ra,
+		sys_user_id_role_id ur
+		WHERE
+	 r.id=atr.resource_id and atr.authority_id=ra.authority_id and ra.role_id=ur.role_id 
+		and ur.role_id=#{roleId}
+	
+	</select>
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		select 'false' as QUERYID,

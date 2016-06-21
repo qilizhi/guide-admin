@@ -21,6 +21,7 @@ public interface RoleMapper {
 	int updateByPrimaryKey(Role record);
 	
 	List<Role> list(Role role, PageBounds bounds);
+	List<Role> list(Role role);
 	
 	List<Role> selectByParentId(Integer parentId);
 	
