@@ -176,12 +176,36 @@
                                      <p class="form-control-static" >${line.remark}</p>
                                  </div>
                              </div>
-                             <div class="form-group">
+                             <%-- <div class="form-group">
                                  <label class="control-label col-md-3">内容:</label>
                                  <div class="col-md-4">
                                      <p class="form-control-static" >${line.content}</p>
                                  </div>
-                             </div>
+                             </div> --%>
+                             <div class="form-group">
+									<label class="control-label col-md-3">内容:</label>
+									<div class="col-md-6">
+	
+										<div class="portlet box yellow">
+											<div class="portlet-title">
+												<div class="caption font-red-intense">
+													<i class="icon-speech font-white-intense"></i> <span
+														class="caption-subject bold uppercase"></span> <span
+														class="caption-helper"></span>
+												</div>
+												<div class="tools">
+													<a href="" class="collapse" title="展开/关闭"> </a>
+												</div>
+											</div>
+											<div class="portlet-body">
+												<div id="context2" data-toggle="context"
+													data-target="#context-menu">${line.content}</div>
+	
+											</div>
+										</div>
+										<!--     <p class="form-control-static" ></p> -->
+									</div>
+								</div>
                              <div class="form-group">
                                  <label class="control-label col-md-3">背景图:</label>
                                  <div class="col-md-4">
