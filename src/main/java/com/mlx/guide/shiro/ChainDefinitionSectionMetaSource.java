@@ -1,6 +1,8 @@
 package com.mlx.guide.shiro;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.Ini.Section;
@@ -56,7 +58,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 		Ini ini = new Ini();
 		// 加载默认的url
 		ini.load(filterChainDefinitions);
-        logger.info(filterChainDefinitions);
+		logger.info(filterChainDefinitions);
 		Ini.Section section = ini.getSection(IniFilterChainResolverFactory.URLS);
 		if (CollectionUtils.isEmpty(section)) {
 			section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
@@ -64,6 +66,9 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 
 		// section.put("/acct/scene","authc,user, perms[scene:*]");
 		// test/* = role[admin],perms[test:view]
+
+		
+		
 
 		List<Role> rolesList = roleService.list(null);
 		// 循环数据库资源的url
@@ -73,14 +78,19 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 				if (role != null && !role.equals("")) {
 					// 查找角色下的资 源
 					List<Resource> resources = resourceService.getResourceByRoleId(role.getId());
-					
+
 					for (Resource resource : resources) {
-						if(resource!=null){
-						section.put(resource.getPath(),"perms[" +resource.getPath()+ "]");
+						if (resource != null) {
+							String[] _strRegexs = new String[] { "\\/admin|\\/admin\\/" };
+							Pattern pattern = Pattern.compile(_strRegexs[0]);
+							Matcher matcher = pattern.matcher(resource.getPath());
+							if (matcher.find()) {
+								section.put(resource.getPath(),
+										"role[" + role.getName() + "],perms[" + resource.getPath() + "]");
+							}
 						}
 					}
-					
-					logger.info("权限拦截表："+section.toString());
+
 					/*
 					 * System.out.println( cmlMenu.getActionUrl() + " = role[" +
 					 * cmlMenu.getAppRoleName() + "], perms[" +
@@ -88,6 +98,10 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 					 */
 				}
 			}
+			// admin/** = role[admin],perms
+			section.put("/admin/**", "role[admin],perms[admin:*:view]");
+			logger.info("权限拦截表：" + section.values().toString());
+			logger.info("权限拦截表：" + ini.toString());
 		} else {
 			logger.info("loaded resource menu finish !,but it's null", this);
 		}

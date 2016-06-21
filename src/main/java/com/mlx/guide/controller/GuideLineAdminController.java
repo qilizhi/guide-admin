@@ -421,7 +421,7 @@ public class GuideLineAdminController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			//return "admin/line/create";
+			return "error/500";
 		}
 	}
 

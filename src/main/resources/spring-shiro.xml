@@ -71,10 +71,10 @@ xmlns:context="http://www.springframework.org/schema/context"
             /platformLogin** = anon
             /guideLogin**= anon
             /guideAdmin* = role[guideAdmin]
-            /guideAdmin/** =role[guideAdmin]
+           /guideAdmin/** =role[guideAdmin]
              /static/** = anon 
         	/admin* = role[admin]
-            /admin/** = role[admin],perms
+            <!-- /admin/** = role[admin],perms -->
             <!-- /** = anon -->
 			<!-- anon表示此地址不需要任何权限即可访问 -->  
 			<!--/acct/login = authc
@@ -91,7 +91,7 @@ xmlns:context="http://www.springframework.org/schema/context"
 	    <property name="filters">
         <map>
             <entry key="role" value-ref="roleAuthorizationFilter" />
-            <entry key="perms" value-ref="uRLPermissionsFilter" />
+          <!--   <entry key="perms" value-ref="uRLPermissionsFilter" /> -->
         </map>
         </property>
 	    <!-- 调用我们配置的权限管理器 -->   
