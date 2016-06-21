@@ -49,7 +49,7 @@
 			   and  user_name like concat('%',#{userName},'%')
 			</if>
 			
-			<if test="auditStatus !=null and  auditStatus  !=''">
+			<if test="auditStatus !=null and  auditStatus  !=' '">
 			
 			   and  audit_status =#{auditStatus}
 			</if>

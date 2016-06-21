@@ -27,23 +27,8 @@ var GuideStrategy=function(){
 		return ids;
 	}
 	
-	 /**
-	  * 获取当前行的id
-	  */
-	var getId=function(){
-		
-		
-	}
+
 	
-	/**  批量删除 **/
-	var batDel = function() {
-		var ids = getCheckIds();
-		if (ids == "") {
-			comm.showMsg('warning', '消息提示', '没有选 中，请选择！');
-			return;
-		}
-		del(ids);
-	}
 	/* 删除 */
 	var del = function(ids) {
 		var url = delUrl + "/" + ids;
@@ -53,7 +38,7 @@ var GuideStrategy=function(){
 
 				$.ajax({
 					url : url,
-					type : 'get',
+					type : 'post',
 					dataType : "json",
 					success : function(result) {
 						if (result.code == "200") {

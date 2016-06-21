@@ -27,4 +27,6 @@ public interface ResourceMapper {
 	List<Resource> getResourcesByUserNo(String userNo);
 
 	List<Resource> getResourceByUserNo(String userNo);
+
+	List<Resource> getResourceByRoleId(Integer roleId);
 }

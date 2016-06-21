@@ -59,8 +59,8 @@
 		           </c:if>
 	      
           
-         <input type="text" class="form-filter input-sm pull-left ml10" placeholder="姓名" name="realName" value="${guideInfo.realName }">
-		 <input type="text" class="form-filter input-sm pull-left ml10" placeholder="导游证" name="guideCardNo" value="${guideInfo.guideCardNo }">
+         <input type="text" class="form-filter input-sm pull-left ml10" placeholder="真实姓名" name="realName" value="${guideInfo.realName }">
+		 <input type="text" class="form-filter input-sm pull-left ml10" placeholder="导游证号" name="guideCardNo" value="${guideInfo.guideCardNo }">
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom pull-left ml10">
 		
 		<i class="fa fa-search"></i>  搜索</button>

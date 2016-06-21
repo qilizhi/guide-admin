@@ -204,15 +204,16 @@ public class AdvInfoAdminController {
 		 * @param id
 		 * @return
 		 */
-	    @RequestMapping(value="/delete/{id}",method = RequestMethod.GET  )
-	    public String delete(Model model,@PathVariable(value="id") Integer id){
-	    	if(id==null && id.intValue()<0){
-	    		model.addAttribute("message","数据异常");
+	    @RequestMapping(value="/delete/{id}",method = RequestMethod.POST  )
+	    @ResponseBody
+	    public JsonResult delete(Model model,@PathVariable(value="id") Integer id){
+	    	
+	    	AdvInfo ad=advInfoService.getAdvInfoByPrimaryKey(id);
+	    	if(ad.getStatus()==EStatus.ONLINE.getId()){
+	    		return new JsonResult(ExceptionCode.FAIL,"已上线不能删除！");
 	    	}
 	    	int result=advInfoService.deleteAdvInfo( id );
-	    	String msg=result>0 ? "删除成功":"删除失败";
-	    	model.addAttribute( "message", msg );
-	    	return "redirect:/admin/advInfo";
+	    	return new JsonResult(ExceptionCode.SUCCESSFUL,result);
 	    }
     
 	/**

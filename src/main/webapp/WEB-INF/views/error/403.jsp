@@ -13,7 +13,7 @@
 		<div class="col-md-12 page-404">
 			<div class="number font-green">403</div>
 			<div class="details">
-				<h3>Oops! Something went wrong.</h3>
+				<h3>你没有权限查看此网页，请与管理员联系！</h3>
 				<p>
 					We can not find the page you're looking for. <br> <a
 						href="#"> Return home </a> or try the search bar below.

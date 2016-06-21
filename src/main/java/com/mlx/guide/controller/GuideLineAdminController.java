@@ -337,22 +337,21 @@ public class GuideLineAdminController {
 	 *            以 ,分隔
 	 * @return
 	 */
-	@RequestMapping(value = "/delete/{ids}", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult batdDlete(@PathVariable("ids") String ids) {
-		if (ids == null) {
-			return new JsonResult(ExceptionCode.FAIL, "ids不能为空！");
+	public JsonResult batdDlete(@PathVariable("id") Integer id) {
+		GuideLine gl = guideLineService.getGuideLineByPrimaryKey(id);
+		if (id == null) {
+			return new JsonResult(ExceptionCode.FAIL, "id不能为空！");
 		}
-		String[] idsArray = ids.split(",");
-		List<Integer> idsInteger = new ArrayList<Integer>();
-		for (String id : idsArray) {
-			if (id != null && !id.equals(""))
-				idsInteger.add(Integer.parseInt(id));
+
+		if (gl.getStatus() == EStatus.ONLINE.getId()) {
+			return new JsonResult(ExceptionCode.FAIL, "已上线不能删除");
 		}
 		// 标志删除
 
 		try {
-			guideLineService.deleteGuideLineBitch(idsInteger);
+			guideLineService.deleteGuideLineByFlag(id);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -570,20 +569,18 @@ public class GuideLineAdminController {
 	 *            id集合,例如:1,2,3,4
 	 * @return
 	 */
-	@RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public JsonResult delete(@PathVariable String ids) {
-		JsonResult ajaxResult = null;
-		try {
-			List<Integer> idList = StringUtil.generateListInteger(ids);
-			guideLineService.deleteGuideLineBitch(idList);
-			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			ajaxResult = new JsonResult(ExceptionCode.FAIL, e.getMessage());
-		}
-		return ajaxResult;
-	}
+	/*
+	 * @RequestMapping(value = "/deletes/{ids}", method = RequestMethod.POST,
+	 * produces = MediaType.APPLICATION_JSON_VALUE)
+	 * 
+	 * @ResponseBody public JsonResult delete(@PathVariable String ids) {
+	 * JsonResult ajaxResult = null; try { List<Integer> idList =
+	 * StringUtil.generateListInteger(ids);
+	 * guideLineService.deleteGuideLineBitch(idList); ajaxResult = new
+	 * JsonResult(ExceptionCode.SUCCESSFUL); } catch (Exception e) {
+	 * logger.error(e.getMessage(), e); ajaxResult = new
+	 * JsonResult(ExceptionCode.FAIL, e.getMessage()); } return ajaxResult; }
+	 */
 
 	/**
 	 * 批量审核

@@ -13,13 +13,12 @@
 iframe>#document>html {
 	overflow: hidden;
 }
-
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>虚拟商品列表</title>
 </head>
 <body>
-<%-- 	<div class="note note-success">
+	<%-- 	<div class="note note-success">
 		<p>
 			温馨提示<br />1.查询普通微信用户信息,管理平台微信用户信息。<br />2.查询导游用户请点击<a
 				class="btn red btn-outline" href="${ctx}/admin/guideUserInfo/list"
@@ -48,7 +47,8 @@ iframe>#document>html {
 					<form id="searchForm" action="${ctx}/admin/virtualGoods">
 						<div class="row">
 							<div class="col-md-6">
-								<select name="pageSize"
+								<select
+									name="pageSize"
 									class="form-control input-sm input-xsmall input-inline">
 									<option value="5" <c:if test="${pageSize == 5}">selected</c:if>>5</option>
 									<option value="10"
@@ -87,7 +87,7 @@ iframe>#document>html {
 								<%-- 	<input type="text" class="form-filter input-sm"
 									placeholder="名称" name="serviceNo" value="${serviceNo}"> --%>
 								<input type="text" class="form-filter input-sm" placeholder="名称"
-									name="name" value="${name}">
+									name="name" value="${vGoods.name}">
 								<button type="submit"
 									class="btn btn-sm green btn-outline filter-submit margin-bottom">
 									<i class="fa fa-search"></i> 查询
@@ -279,7 +279,7 @@ iframe>#document>html {
 			<div class="modal-content">
 				<div class="col-md-12 col-md-offset-2 text-center">
 					<div
-						style="background: url('/guide-admin/static/img/mobile.gif'); width: 362px; height: 674px;">
+						style="background: url('${ctx}/static/img/mobile.gif'); width: 362px; height: 674px;">
 						<iframe scrolling="no"
 							style="height: 569px; width: 320px; border: 0px solid #000; margin: 0 auto; margin-top: 33px;"></iframe>
 					</div>

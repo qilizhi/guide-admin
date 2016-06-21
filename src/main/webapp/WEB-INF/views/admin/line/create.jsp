@@ -103,11 +103,11 @@
 										<div class="form-body">
 											<div class="alert alert-danger display-hide">
 												<button class="close" data-close="alert"></button>
-												You have some form errors. Please check below.
+												请填写线路相关信息。
 											</div>
 											<div class="alert alert-success display-hide">
 												<button class="close" data-close="alert"></button>
-												Your form validation is successful!
+												较验通过！
 											</div>
 											<div class="form-group">
 												<!-- 编辑页面显示start 线路编号不可修改-->
@@ -451,6 +451,7 @@
 						required : true,
 						maxlength:50
 					},
+<<<<<<< HEAD
 					recommendInfo: {
 	                       required: true,
 	                       maxlength:255
@@ -461,6 +462,12 @@
 	                       maxlength:3,
 	                       range:[1,366] 
 	                },
+=======
+					num : {
+						required : true,
+						digits : true
+					},
+>>>>>>> branch 'guide-admin-release' of http://gitlab.jszx.chineseml.com:3200/java/guide-admin.git
 					price : {
 						required : true,
 						number : true,
@@ -482,8 +489,16 @@
 
 				messages : { // custom messages for radio buttons and checkboxes
 					title : {
+						required : "不能为空"
+					},
+					num : {
 						required : "不能为空",
+<<<<<<< HEAD
+						digits : "请输入整数"
+						
+=======
 						maxlength:"最多输入50个汉字"
+>>>>>>> branch 'guide-admin-release' of http://gitlab.jszx.chineseml.com:3200/java/guide-admin.git
 					},
 					recommendInfo: {
 	                    required: "不能为空",

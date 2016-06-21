@@ -66,6 +66,10 @@ public class ResourceService {
 		return resourceMapper.getResourcesByUserNo(userNo);
 	}
 	
+	public List<Resource> getResourceByRoleId(Integer roleId){
+		
+		return resourceMapper.getResourceByRoleId(roleId);
+	}
 	
 	
 }

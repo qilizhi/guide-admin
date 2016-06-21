@@ -68,13 +68,13 @@ xmlns:context="http://www.springframework.org/schema/context"
       
               /logout = logout
             /login = anon
-            /platformLogin = anon
-            /guideLogin = anon
+            /platformLogin** = anon
+            /guideLogin**= anon
             /guideAdmin* = role[guideAdmin]
             /guideAdmin/** =role[guideAdmin]
              /static/** = anon 
         	/admin* = role[admin]
-            /admin/** = role[admin]
+            /admin/** = role[admin],perms
             <!-- /** = anon -->
 			<!-- anon表示此地址不需要任何权限即可访问 -->  
 			<!--/acct/login = authc
