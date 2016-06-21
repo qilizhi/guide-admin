@@ -364,6 +364,12 @@
 		type="text/javascript"></script>
 
 	<script>
+	  //自定义 表单验证规则
+		/* jQuery.validator.addMethod("totalDay", function (value, element) {
+	  		var totalDay = /^\+?[1-9]\d*$/;
+	  		return this.optional(element) || (totalDay.test(value));
+	  	}, "天数不能为0"); */
+	
 		$(function() {
 
 			initImgUpload("#imgUrl");
@@ -427,11 +433,7 @@
 					});
 		}
 
-		  //自定义 表单验证规则
-	  	jQuery.validator.addMethod("totalDay", function (value, element) {
-	  		var totalDay = /^\+?[1-9]\d*$/;
-	  		return this.optional(element) || (totalDay.test(value));
-	  	}, "天数不能为0");
+		
 		
 		//验证框架
 		var handleValidation3 = function() {
@@ -449,18 +451,25 @@
 						required : true,
 						maxlength:50
 					},
+					recommendInfo: {
+	                       required: true,
+	                       maxlength:255
+	                },
+	                totalDay: {
+	                	   required: true,
+	                	   digits:true,
+	                       maxlength:3,
+	                       range:[1,366] 
+	                },
 					price : {
 						required : true,
 						number : true,
 						maxlength : 10
 					},
-					totalDay: {
-	                	   required: true,
-	                	   digits:true,
-	                       maxlength:3,
-	                       totalDay:true,  //调用自定义的验证规则
-	                       range:[1,366] 
-	                },
+					sort:{
+						digits:true,
+						maxlength:10
+					},
 					userNo : {
 						required : true
 					},
@@ -476,17 +485,25 @@
 						required : "不能为空",
 						maxlength:"最多输入50个汉字"
 					},
-					price : {
-						required : "不能为空",
-						number:"请输入合法数字",
-						maxlength : "最多输入10位数"
-					},
-					totalDay: {
+					recommendInfo: {
+	                    required: "不能为空",
+	                    maxlength:"最多输入255个汉字"
+	                },
+	                totalDay: {
 	                	required: "不能为空",
 	                	digits:"请输入整数",
 	                    maxlength:"最多输入3位数",
 	                    range: "请输入一个介于 {0} 和 {1} 之间的值"
 	                },
+					price : {
+						required : "不能为空",
+						number:"请输入合法数字",
+						maxlength : "最多输入10位数"
+					},
+					sort:{
+						digits:"请输入整数",
+						maxlength:"最多输入10位数"
+					},
 					userNo : {
 						required : "不能为空"
 					},
@@ -545,11 +562,11 @@
 						return;
 					}
 					if (UE.getEditor('description').hasContents() == false) {
-						comm.infoMsg("内容不能为空", null, 150);
+						comm.infoMsg("线路亮点不能为空", null, 150);
 						return;
 					}
 					if (UE.getEditor('remark').hasContents() == false) {
-						comm.infoMsg("remark 内容不能为空", null, 150);
+						comm.infoMsg("体验说明不能为空", null, 150);
 						return;
 					}
 					success3.show();

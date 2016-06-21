@@ -547,7 +547,7 @@
     	    		   return ;
     	    	   }
                    if(UE.getEditor('description').hasContents()==false){
-    	    		   comm.infoMsg("内容不能为空",null,150);
+    	    		   comm.infoMsg("线路亮点不能为空",null,150);
     	    		   return ;
     	    	   }
                 

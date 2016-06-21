@@ -325,6 +325,7 @@
 					var safePrice = $(obj).attr("data-safePrice");
 					var visaPrice = $(obj).attr("data-visaPrice");
 					var num =$(obj).attr("data-num");
+					var tuanNo =$(obj).attr("data-tuanNo");
 					
 					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
 						if(adultPrice!=null &&adultPrice!=''&&adultPrice!=undefined){
@@ -337,9 +338,8 @@
 						lineDatePrice.roomDiffPrice = roomDiffPrice;
 						lineDatePrice.safePrice = safePrice;
 						lineDatePrice.visaPrice = visaPrice;
-					
 						lineDatePrice.lineDate = date;
-						
+						lineDatePrice.tuanNo = tuanNo;
 						$routePrices.push(lineDatePrice);	
 						
 					}
@@ -373,6 +373,7 @@
 		
 		var $mTemp = '<div class="price-edit" style="width: 50px;color:black;">'
 	       /*  +'<input type="text" name="minprice" value="" placeholder="美丽价" title="美丽价">' */
+	        +'<input type="hidden" name="id" value="">'
 	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value=""> '
 	        +'<input type="text" name="data-eprice" placeholder="儿童价" title="儿童价" value="">'
  	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
@@ -431,6 +432,7 @@
 			    	$attrString += $attr.replace("@attrName", "data-visaPrice").replace("@attrValue", jsonObj.visaPrice || "");
 			/*     	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || ""); */
 					$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", $lineNum || ""); //$lineNum页面隐藏域num值
+			    	$attrString += $attr.replace("@attrName", "data-tuanNo").replace("@attrValue", jsonObj.tuanNo || ""); //团编号
 			    	return $attrString;
 			    },
 			    tdClick: function(obj,date,price,cprice,eprice,currTdObj) {

@@ -190,28 +190,30 @@ public class GuideServiceAdminController {
 		}
 	}
 
-	
 	/**
 	 * 保存价格
 	 * 
 	 * @param linePrices
 	 * @return
 	 */
-	/*@ResponseBody
-	@RequestMapping(value = "/price/save/{serviceNo}", method = RequestMethod.POST)
-	public JsonResult savePrice(@RequestParam("params") String linePrices,
-			@PathVariable("serviceNo") String serviceNo,Model model) {
-		try {
-			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
-			guideLineDatePriceService.saveGuideLineDatePriceByServiceNo(lsGuideLineDatePrices, serviceNo);
-		
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
+	/*
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value = "/price/save/{serviceNo}", method =
+	 * RequestMethod.POST) public JsonResult savePrice(@RequestParam("params")
+	 * String linePrices,
+	 * 
+	 * @PathVariable("serviceNo") String serviceNo,Model model) { try {
+	 * List<GuideLineDatePrice> lsGuideLineDatePrices =
+	 * JSON.parseArray(linePrices, GuideLineDatePrice.class);
+	 * guideLineDatePriceService.saveGuideLineDatePriceByServiceNo(
+	 * lsGuideLineDatePrices, serviceNo);
+	 * 
+	 * } catch (Exception e) { logger.error(e.getMessage(), e); }
+	 * 
+	 * return new JsonResult(ExceptionCode.SUCCESSFUL); }
+	 */
 
-		return new JsonResult(ExceptionCode.SUCCESSFUL);
-	}*/
-	
 	@ResponseBody
 	@RequestMapping(value = "/price/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices,
@@ -225,7 +227,6 @@ public class GuideServiceAdminController {
 
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
-	
 
 	/**
 	 * 上一步,返回导服页面
@@ -244,7 +245,7 @@ public class GuideServiceAdminController {
 		}
 		return "admin/guideService/create";
 	}
-	
+
 	/**
 	 * 上一步,返回价格页面
 	 * 
@@ -273,33 +274,31 @@ public class GuideServiceAdminController {
 		}
 		return "admin/guideService/price";
 	}
-	
+
 	/**
 	 * 更新信息
 	 * 
 	 * @return
 	 */
-/*	@RequestMapping(value = "/price/{guideServiceNo}", method = RequestMethod.GET)
-	public String editPrice(@PathVariable("guideServiceNo") String guideServiceNo, Model model) {
-		GuideService guideS = guideService.getGuideServiceByServiceNo(guideServiceNo);
-		// 根据线路no获取对应的价格表
-		List<GuideLineDatePrice> lsGuideLineDatePrices = guideDPService.getGuideLineDatePriceByLineNo(guideServiceNo);
-		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
-		// 查询当前线路价格的开始时间和结束时间
-		Map<String, Date> map = new HashMap<>();
-		try {
-			map = priceMapper.getLineDateByLineNo(guideServiceNo);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-		Date startDate = map.get("startDate");
-		Date endDate = map.get("endDate");
-		model.addAttribute("guideS", guideS);
-		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
-		return "/admin/guideService/price";
-	}*/
+	/*
+	 * @RequestMapping(value = "/price/{guideServiceNo}", method =
+	 * RequestMethod.GET) public String
+	 * editPrice(@PathVariable("guideServiceNo") String guideServiceNo, Model
+	 * model) { GuideService guideS =
+	 * guideService.getGuideServiceByServiceNo(guideServiceNo); //
+	 * 根据线路no获取对应的价格表 List<GuideLineDatePrice> lsGuideLineDatePrices =
+	 * guideDPService.getGuideLineDatePriceByLineNo(guideServiceNo); String
+	 * jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices,
+	 * "yyyy-MM-dd"); // 查询当前线路价格的开始时间和结束时间 Map<String, Date> map = new
+	 * HashMap<>(); try { map = priceMapper.getLineDateByLineNo(guideServiceNo);
+	 * } catch (Exception e) { logger.error(e.getMessage(), e); } Date startDate
+	 * = map.get("startDate"); Date endDate = map.get("endDate");
+	 * model.addAttribute("guideS", guideS);
+	 * model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData,
+	 * "[]")); model.addAttribute("startDate", startDate);
+	 * model.addAttribute("endDate", endDate); return
+	 * "/admin/guideService/price"; }
+	 */
 	/**
 	 * 编辑价格，根据线路编号获取价格表
 	 * 
@@ -319,33 +318,35 @@ public class GuideServiceAdminController {
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 		// 查询当前线路价格的开始时间和结束时间
 		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
-		Date startDate = map.get("startDate");
-		Date endDate = map.get("endDate");
+		if (map != null) {
+			Date startDate = map.get("startDate");
+			Date endDate = map.get("endDate");
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
+		}
 
 		model.addAttribute("service", service);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
+
 		return "admin/guideService/price";
 	}
-
 
 	/**
 	 * 跳转
 	 * 
 	 * @return
 	 */
-/*	@RequestMapping("/submit/{id}")
-	public String submit(@PathVariable("id") Long id, Model model) {
-		GuideService gs = guideService.selectByPrimaryKey(id);
-		// 价格
-		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-				.getGuideLineDatePriceByLineNo(gs.getServiceNo());
-		model.addAttribute("line", gs);
-		model.addAttribute("lsPrices", lsGuideLineDatePrices);
-		return "/admin/guideService/submit";
-
-	}*/
+	/*
+	 * @RequestMapping("/submit/{id}") public String submit(@PathVariable("id")
+	 * Long id, Model model) { GuideService gs =
+	 * guideService.selectByPrimaryKey(id); // 价格 List<GuideLineDatePrice>
+	 * lsGuideLineDatePrices = guideLineDatePriceService
+	 * .getGuideLineDatePriceByLineNo(gs.getServiceNo());
+	 * model.addAttribute("line", gs); model.addAttribute("lsPrices",
+	 * lsGuideLineDatePrices); return "/admin/guideService/submit";
+	 * 
+	 * }
+	 */
 	@RequestMapping(value = "/submit")
 	public String submit(@RequestParam("serviceNo") String serviceNo, @RequestParam String startDate,
 			@RequestParam String endDate, Model model) {

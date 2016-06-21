@@ -147,6 +147,12 @@
                                  </div>
                              </div>
                              <div class="form-group">
+                                 <label class="control-label col-md-3">线路天数:</label>
+                                 <div class="col-md-4">
+                                     <p class="form-control-static" >${line.totalDay}</p>
+                                 </div>
+                             </div>
+                             <div class="form-group">
                                  <label class="control-label col-md-3">线路简介:</label>
                                  <div class="col-md-4">
                                      <p class="form-control-static" >${line.description}</p>

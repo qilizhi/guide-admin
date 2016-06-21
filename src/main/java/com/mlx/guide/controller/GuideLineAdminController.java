@@ -423,7 +423,7 @@ public class GuideLineAdminController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			 return "500";
+			return "error/500";
 		}
 	}
 
@@ -445,18 +445,15 @@ public class GuideLineAdminController {
 				.getGuideLineDatePriceByLineNo(lineNo);
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 		// 查询当前线路价格的开始时间和结束时间
-		Map<String, Date> map = new HashMap<>();
-		try {
-			map = priceMapper.getLineDateByLineNo(lineNo);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
+		if (map != null) {
+			Date startDate = map.get("startDate");
+			Date endDate = map.get("endDate");
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
 		}
-		Date startDate = map.get("startDate");
-		Date endDate = map.get("endDate");
 		model.addAttribute("guideLine", guideLine);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
 
 		return "admin/line/price";
 	}

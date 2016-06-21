@@ -173,6 +173,14 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label">导服天数：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="totalDay"
+							value="${guideS.totalDay}" />
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				<div class="form-group form-md-line-input">
 					<label class="col-lg-3 control-label">满员人数：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="num"
@@ -494,7 +502,6 @@
 						required : true
 					},
 					sort : {
-						required : true,
 						digits : true,
 						maxlength : 10
 					},
@@ -511,12 +518,12 @@
 					userName : {
 						required : true
 					},
-					remark : {
-						required : true
-					},
-					content : {
-						required : true
-					}
+					totalDay: {
+	                	   required: true,
+	                	   digits:true,
+	                       maxlength:3,
+	                       range:[1,366] 
+	                }
 				},
 
 				messages : { // custom messages for radio buttons and checkboxes
@@ -537,7 +544,6 @@
 						required : "不能为空",
 					},
 					sort : {
-						required : "不能为空",
 						digits : "请输入正整数",
 						maxlength : "最多输入10位数"
 					},
@@ -554,12 +560,12 @@
 					userName : {
 						required : "不能为空"
 					},
-					remark : {
-						required : "不能为空"
-					},
-					content : {
-						required : "攻略内容不能为空"
-					}
+					totalDay: {
+	                	required: "不能为空",
+	                	digits:"请输入整数",
+	                    maxlength:"最多输入3位数",
+	                    range: "请输入一个介于 {0} 和 {1} 之间的值"
+	                }
 				},
 
 				errorPlacement : function(error, element) { // render error placement for each input type
@@ -606,12 +612,12 @@
 					error3.hide();
 					//验证UE编辑器是否为空
 					if (UE.getEditor('content').hasContents() == false) {
-						comm.infoMsg("content 内容不能为空", null, 150);
+						comm.infoMsg("内容不能为空", null, 150);
 						return;
 					}
 					//验证UE编辑器是否为空
 					if (UE.getEditor('remark').hasContents() == false) {
-						comm.infoMsg("remark 内容不能为空", null, 150);
+						comm.infoMsg("体验说明不能为空", null, 150);
 						return;
 					}
 					success3.show();
