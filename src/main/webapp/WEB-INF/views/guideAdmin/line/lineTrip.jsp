@@ -37,9 +37,9 @@
 </style>
 
 <title>创建行程</title>
-	<!-- 验证框架 -->
-	<%-- <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script> --%>
+	<!-- 验证框架 
+	<script src="${ctx}/static/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="${ctx}/static/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script> -->
 
 
 
@@ -105,7 +105,7 @@
 					</div>
 				<div class="portlet-body">
 					<!-- BEGIN FORM -->
-					<form action="${ctx }/guideAdmin/trip/save" id=form_sample_3
+					<form action="${ctx }/guideAdmin/trip/save" id=form_sample_3 onsubmit="return validForm();"
 						class="form-horizontal" method="post"
 						enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${guideLineTrip.id }" />
@@ -143,15 +143,15 @@
 											<input type="hidden" name="guideLineTrips[${st.index}].id" value="${item.id}"/>
 											<td>${item.lineNo}<input type="hidden" name="guideLineTrips[${st.index}].lineNo" value="${lineNo}"/></td>
 											<td>${item.day}<input type="hidden" name="guideLineTrips[${st.index}].day" value="${day}"/></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address" required maxlength="100">${item.address} </textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic" required maxlength="200">${item.traffic}</textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel" required maxlength="50">${item.hotel}</textarea></td>
-											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail" required maxlength="255">${item.tripDetail}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].address"   maxlength="100">${item.address} </textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].traffic"   maxlength="200">${item.traffic}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].hotel"   maxlength="50">${item.hotel}</textarea></td>
+											<td><textarea rows="5" cols="30" name="guideLineTrips[${st.index}].tripDetail"  maxlength="255">${item.tripDetail}</textarea></td>
 										</tr>
 									</c:forEach>  
 										</tbody>
 								  </table>
-						
+						<!--required oninvalid="setCustomValidity('必须填写！')"  -->
 							</div>
 							</div>
 							
@@ -180,7 +180,44 @@
 			</div>
 		</div>
 	</div>
+<script>
 
+/* $(function(){
+	
+
+var a1=$("input[type='hidden'][name='guideLineTrips[0].lineNo']").val();
+var a2=$("textarea[name='guideLineTrips[1].lineNo']").val();
+console.log(a1)
+console.log(a2)
+$("#signupForm").validate({
+	 rules: {
+		 
+	 },
+	 messages: {
+		 
+	 }
+});
+}) */
+function validForm(){
+	   var is_valid=true;
+	   
+	$("textarea").each(function(i,item){	
+		$(this).next("span").remove();	
+		if($.trim(this.value)==""){
+			if($(this).next("span")[0]==null){
+				$(this).after("<span class='text-danger'>不能为空</span>");
+			}
+			is_valid=false;
+			
+		};
+		
+		
+	});
+	
+	return is_valid;
+}
+
+</script>
 
 </body>
 </html>

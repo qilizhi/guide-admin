@@ -387,14 +387,16 @@ width
 										</div>
 
 
+							<%-- <input type="hidden" name="startDate" value="${startDate}"/>
+							<input type="hidden" name="endDate" value="${endDate}"/> --%>
 
 										<div class="form-actions">
 											<div class="row">
 												<div class="col-md-offset-5 col-md-12">
 													<a class="btn btn-primary btn-sm btn-success"
-														<%-- href="${ctx}/admin/guideLine/backToTrip/${lineNo}?startDate=${startDate}&endDate=${endDate}" --%>
-														href="javascript:history.back()"														
+														href="${ctx}/admin/guideService/backToPrice/${line.serviceNo}?startDate=${startDate}&endDate=${endDate}"
 														id="btn-save">上一步</a>
+														<!-- href="javascript:history.back()" -->														
 													<button type="submit"
 														class="btn btn-primary btn-sm btn-success">发布</button>
 												</div>

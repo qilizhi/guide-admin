@@ -146,9 +146,9 @@
 												</label>
 												<div class="col-md-4">
 													<input type="text"
-														onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"
 														name="totalDay" data-required="1" class="form-control"
 														value="${guideLine.totalDay }" /> 
+														<!-- onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" -->
 													<input type="hidden" name="oldTotalDay" value="${guideLine.totalDay }" >
 													<!-- 修改前先把旧的天数存起来，天数有改动就删除以前的行程  -->
 												</div>
@@ -168,8 +168,7 @@
 											</div>
 									
 											<div class="form-group">
-												<label class="control-label col-md-3">排序号 <span
-													class="required"> * </span>
+												<label class="control-label col-md-3">排序号：
 												</label>
 												<div class="col-md-4">
 													<input type="text" name="sort" data-required="1"
@@ -428,6 +427,12 @@
 					});
 		}
 
+		  //自定义 表单验证规则
+	  	jQuery.validator.addMethod("totalDay", function (value, element) {
+	  		var totalDay = /^\+?[1-9]\d*$/;
+	  		return this.optional(element) || (totalDay.test(value));
+	  	}, "天数不能为0");
+		
 		//验证框架
 		var handleValidation3 = function() {
 			var form3 = $('#form_sample_3');
@@ -441,7 +446,8 @@
 				ignore : "", // validate all fields including form hidden input
 				rules : {
 					title : {
-						required : true
+						required : true,
+						maxlength:50
 					},
 					num : {
 						required : true,
@@ -452,22 +458,20 @@
 						number : true,
 						maxlength : 10
 					},
-					description : {
-						required : true
-					},
-					sort : {
-						required : true,
-						digits : true,
-						maxlength : 10
-					},
+					totalDay: {
+	                	   required: true,
+	                	   digits:true,
+	                       maxlength:3,
+	                       totalDay:true,  //调用自定义的验证规则
+	                       range:[1,366] 
+	                },
 					userNo : {
 						required : true
 					},
-					remark : {
-						required : true
-					},
-					content1 : {
-						required : true
+					num : {
+						required : true,
+						digits:true,
+	                    maxlength:5
 					}
 				},
 
@@ -477,31 +481,32 @@
 					},
 					num : {
 						required : "不能为空",
+<<<<<<< HEAD
 						digits : "请输入整数"
 						
+=======
+						maxlength:"最多输入50个汉字"
+>>>>>>> branch 'guide-admin-release' of http://gitlab.jszx.chineseml.com:3200/java/guide-admin.git
 					},
 					price : {
 						required : "不能为空",
-						digits : "请输入整数",
+						number:"请输入合法数字",
 						maxlength : "最多输入10位数"
 					},
-					description : {
-						required : "不能为空",
-					},
-					sort : {
-						required : "不能为空",
-						digits : "请输入整数",
-						maxlength : "最多输入10位数"
-					},
+					totalDay: {
+	                	required: "不能为空",
+	                	digits:"请输入整数",
+	                    maxlength:"最多输入3位数",
+	                    range: "请输入一个介于 {0} 和 {1} 之间的值"
+	                },
 					userNo : {
 						required : "不能为空"
 					},
-					remark : {
-						required : "不能为空"
-					},
-					content1 : {
-						required : "攻略内容不能为空"
-					}
+					num:{
+	                    required:"不能为空",
+	                    digits:"请输入整数",
+	                    maxlength:"最多输入5位数"
+	                   }
 				},
 
 				errorPlacement : function(error, element) { // render error placement for each input type

@@ -14,7 +14,7 @@
 		<result property="tuanNo" column="tuan_no"/>
 
     </resultMap>
-    
+
    <sql id="Example_Where_Clause" >
     <trim prefix="where" prefixOverrides="and|or" >
     			<if test="id != null and id != ''" >
@@ -87,7 +87,9 @@
 			<include refid="Base_Column_List" /> 
 			FROM guide_line_date_price WHERE line_no = #{lineNo}
     </select>
-    
+   <select id="getLineDateByLineNo" parameterType="String" resultType="Map">
+    	select MIN(line_date) as startDate ,MAX(line_date) as endDate from guide_line_date_price where line_no = #{lineNo};
+    </select>
     <insert id="createGuideLineDatePrice" parameterType="com.mlx.guide.entity.GuideLineDatePrice" keyProperty="id" useGeneratedKeys="true">
 		INSERT INTO guide_line_date_price(
 			id,
@@ -240,8 +242,8 @@
     		<if test="lineNo != null and lineNo != ''"  >
 			and line_no = #{lineNo}
 			</if>
-			<if test="beginTime != null and endTime != null and beginTime != '' and endTime != ''" >
-			and line_date between #{beginTime} and #{endTime}
+			<if test="startDate != null and endDate != null and startDate != '' and endDate != ''" >
+			and line_date between #{startDate} and #{endDate}
 			</if>
     	
     	</where>

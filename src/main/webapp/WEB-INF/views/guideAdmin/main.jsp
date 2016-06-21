@@ -30,9 +30,9 @@
                                     </div>
                                     <div class="desc"> 攻略数 </div>
                                 </div>
-                                <a class="more" href="javascript:;"> 更多
+                               <!--  <a class="more" href="javascript:;"> 更多
                                     <i class="m-icon-swapright m-icon-white"></i>
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -45,9 +45,9 @@
                                         <span data-counter="counterup" data-value="${lsLine}">0</span> </div>
                                     <div class="desc"> 线路数 </div>
                                 </div>
-                                <a class="more" href="javascript:;"> 更多
+                                <!-- <a class="more" href="javascript:;"> 更多
                                     <i class="m-icon-swapright m-icon-white"></i>
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -61,9 +61,9 @@
                                     </div>
                                     <div class="desc"> 月订单数</div>
                                 </div>
-                                <a class="more" href="javascript:;"> 更多
+                                <!-- <a class="more" href="javascript:;"> 更多
                                     <i class="m-icon-swapright m-icon-white"></i>
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -77,9 +77,9 @@
                                     </div>
                                     <div class="desc"> 月销售额 </div>
                                 </div>
-                                <a class="more" href="javascript:;"> 更多
+                                <!-- <a class="more" href="javascript:;"> 更多
                                     <i class="m-icon-swapright m-icon-white"></i>
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>

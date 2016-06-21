@@ -31,13 +31,13 @@ import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
+import com.mlx.guide.dao.GuideLineDatePriceMapper;
 import com.mlx.guide.entity.GuideLine;
 import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideLineTripService;
-import com.mlx.guide.service.GuideTuanService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 import com.mlx.guide.util.StringUtil;
@@ -61,6 +61,8 @@ public class GuideLineController {
 	private GuideLineDatePriceService guideLineDatePriceService;
 	@Autowired
 	private GuideLineTripService guideLineTripService;
+	@Autowired
+	private GuideLineDatePriceMapper priceMapper;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -184,9 +186,14 @@ public class GuideLineController {
 		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
 				.getGuideLineDatePriceByLineNo(lineNo);
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+		// 查询当前线路价格的开始时间和结束时间
+		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
+		Date startDate = map.get("startDate");
+		Date endDate = map.get("endDate");
 		model.addAttribute("guideLine", guideLine);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
 		return "guideAdmin/line/price";
 	}
 
@@ -219,7 +226,7 @@ public class GuideLineController {
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
-			Model model) {
+			 Model model) {
 		try {
 			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
@@ -252,6 +259,7 @@ public class GuideLineController {
 
 	/**
 	 * 上一步,返回价格页面
+	 * 
 	 * @param lineNo
 	 * @param startDate
 	 * @param endDate
@@ -280,6 +288,7 @@ public class GuideLineController {
 
 	/**
 	 * 上一步，返回到行程页面
+	 * 
 	 * @param lineNo
 	 * @param guideLineTrip
 	 * @param startDate
@@ -292,7 +301,7 @@ public class GuideLineController {
 			@RequestParam String endDate, Model model) {
 		try {
 			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
-			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
+			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip, pageBounds);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
 			model.addAttribute("startDate", startDate);
@@ -312,7 +321,7 @@ public class GuideLineController {
 	 * @param request
 	 * @return
 	 */
-	/*@RequestMapping(value = "/delLinePrcie/{lineNo}", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/delLinePrcie/{lineNo}", method = RequestMethod.POST)
 	@ResponseBody
 	public JsonResult delLinePrice(@PathVariable String lineNo, @RequestParam("beginTime") String beginTime,
 			@RequestParam("endTime") String endTime, HttpServletRequest request) {
@@ -332,8 +341,8 @@ public class GuideLineController {
 			logger.error(e.getMessage(), e);
 			return new JsonResult(ExceptionCode.FAIL);
 		}
-	}
-*/
+	}*/
+
 	/**
 	 * 修改上线，下线状态
 	 * 

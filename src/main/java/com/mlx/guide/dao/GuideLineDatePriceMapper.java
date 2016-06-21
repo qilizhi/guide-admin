@@ -1,5 +1,6 @@
 package com.mlx.guide.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,4 +41,7 @@ public interface GuideLineDatePriceMapper {
 	public void deleteGuideLineDatePriceByDate(Map<String, Object> map);
 
 	public void deleteGuideLineDatePriceByLineNo(String lineNo);
+	//根据lineNo查询开始日期和结束日期
+	Map<String,Date> getLineDateByLineNo(String lineNo);
+	
 }

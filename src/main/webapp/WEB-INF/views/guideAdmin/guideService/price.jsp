@@ -116,32 +116,32 @@
 											value="" placeholder="请输入美丽价" />
 									</div> -->
 									<div class="price-condition">
-										<label class="price-condition-label">成人价：</label> <input
+										<label class="price-condition-label"><span style="color:red">*</span>成人价：</label> <input
 											type="text" id="adultPrice" name="adultPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入成人价" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">儿童价：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">儿童价：</label> <input
 											type="text" id="childPrice" name="childPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入儿童价" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">房&nbsp;差：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">房&nbsp;差：</label> <input
 											type="text" id="roomDiffPrice" name="roomDiffPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入房差" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">保险价：</label> <input
+										<label class="price-condition-label"><span style="color:red">*</span>保险价：</label> <input
 											type="text" id="safePrice" name="safePrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入保险价" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">签证费：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">签证费：</label> <input
 											type="text" id="visaPrice" name="visaPrice" onkeyup="value=value.replace(/[^\d]/g,'') "
 											value="" placeholder="请输入签证费" />
 									</div>
 									<div class="price-condition">
-										<label class="price-condition-label">人&nbsp;数：</label> <input
+										<label class="price-condition-label" style="text-indent:0.5em;">人&nbsp;数：</label> <input
 											type="text" id="num" name="num" onkeyup="value=value.replace(/[^\d]/g,'') "  readonly="readonly"
 											value="${service.num}" placeholder="请输入人数" />
 									</div>
@@ -332,10 +332,10 @@
 					var date = $(obj).attr("data-full-date");
 					//var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
 				
-					var roomDiffPrice = $BasePrices.roomDiffPrice;	//$(obj).attr("data-roomDiffPrice");
-					var safePrice = $BasePrices.safePrice;	//$(obj).attr("data-safePrice");
-					var visaPrice = $BasePrices.visaPrice;	//$(obj).attr("data-visaPrice");
-					var num = $BasePrices.num;	//$(obj).attr("data-num");
+					var roomDiffPrice = $(obj).attr("data-roomDiffPrice");	
+					var safePrice = $(obj).attr("data-safePrice");	
+					var visaPrice = $(obj).attr("data-visaPrice");	
+					var num = $(obj).attr("data-num");	
 					
 					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
 						//if(mlxPrice!=null&&mlxPrice!=''&&mlxPrice!=undefined){
@@ -454,8 +454,8 @@
 			    			var routeOrderType = $("#select-routeOrderType option:selected").val();
 			    			$(currTdObj).attr("data-routeordertype",routeOrderType);
 			    		}
-			    		var $eprice = $(currTdObj).attr("data-eprice");
 			    		var $cprice = $(currTdObj).attr("data-cprice");
+			    		var $eprice = $(currTdObj).attr("data-eprice");
 			    		
 			    		var $roomDiffPrice = $(currTdObj).attr("data-roomDiffPrice");
 			    		var $safePrice = $(currTdObj).attr("data-safePrice");
@@ -463,13 +463,15 @@
 			    		var $num = $(currTdObj).attr("data-num");
 			    		
 			    	//	$("input[type='text'][name='minprice']",currTdObj).val(price);
-			    		$("input[type='text'][name='data-eprice']",currTdObj).val($eprice);
 			    		$("input[type='text'][name='data-cprice']",currTdObj).val($cprice);
+			    		$("input[type='text'][name='data-eprice']",currTdObj).val($eprice);
 
 			    		$("input[type='text'][name='data-roomDiffPrice']",currTdObj).val($roomDiffPrice);
 			    		$("input[type='text'][name='data-safePrice']",currTdObj).val($safePrice);
 			    		$("input[type='text'][name='data-visaPrice']",currTdObj).val($visaPrice);
-			    		$("input[type='text'][name='data-num']",currTdObj).val($num);
+			    		//拿页面num值
+				    	var $lineNum=$("input[type='hidden'][name=num]").val();
+			    		$("input[type='text'][name='data-num']",currTdObj).val($lineNum); //.val($num);
 			    		
 			    		$("input[type='text']",temp).on("blur",function(){
 			    			var $Atr = $(this).attr("name");
@@ -486,6 +488,15 @@
 			    		});
 			    		$("span.price",currTdObj).hide();
 			    	}
+			    	document.onclick=function(e){
+						  //隐藏日历中的价格
+			    		if(!(e.target.className=='td lowest'||e.target.name=='data-cprice'||e.target.name=='data-eprice'
+			    			||e.target.name=='data-roomDiffPrice'||e.target.name=='data-safePrice'
+			    				||e.target.name=='data-visaPrice'||e.target.name=='data-num'||e.target.className=='date')){
+			    			$("div.price-edit").remove();
+			    			$("span.price").show();	
+			    		}
+					}
 			    },
 			    prevMonthButtonClick:function(){},
 			    nextMonthButtonClick:function(){}
@@ -496,7 +507,7 @@
 			//保存价格
 			$("#btn-save").bind("click",function(e){
 				//在保存前点击再次生成日历表数据
-				//$("#btn-auto-create-price").click();
+				$("#btn-auto-create-price").click();
 				
 				e.preventDefault();
 				var $BasePrices = $mPriceEdit.getBasePrice();
@@ -512,16 +523,16 @@
 						|| parseInt($BasePrices.safePrice,0) <= 0
 						|| $.trim($BasePrices.num).length <= 0 
 						|| parseInt($BasePrices.num,0) <= 0){
-					comm.infoMsg("请输入保险价和人数",null,150);
+					comm.infoMsg("请输入保险价",null,150);
 					return;
 				} 
-				//成人价必须 > 美丽价
-			/* 	if($.trim($BasePrices.adultPrice).length <= 0 
-						|| $.trim($BasePrices.mlxPrice).length <= 0 
-						|| parseInt($BasePrices.mlxPrice,0) > parseInt($BasePrices.adultPrice,0)){
-					comm.infoMsg("成人价不能小于美丽价",null,150);
+				//成人价必须 > 儿童价
+			 	if($.trim($BasePrices.adultPrice).length <= 0 
+						|| $.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) > parseInt($BasePrices.adultPrice,0)){
+					comm.infoMsg("成人价不能小于儿童价",null,150);
 					return;
-				} */
+				} 
 				if($.trim($BasePrices.routeId).length <= 0
 						|| parseInt($BasePrices.routeId,0) <= 0){
 					comm.infoMsg("抱歉没有找到线路的编号,请重新进入",null,150);
@@ -569,13 +580,13 @@
 					comm.infoMsg("请输入成人价");
 					return;
 				}
-				//成人价必须 > 美丽价
-				/* if($.trim($BasePrices.adultPrice).length <= 0 
-						|| $.trim($BasePrices.mlxPrice).length <= 0 
-						|| parseInt($BasePrices.mlxPrice,0) > parseInt($BasePrices.adultPrice,0)){
-					comm.infoMsg("成人价不能小于美丽价");
+				//成人价必须 > 儿童价
+			 	if($.trim($BasePrices.adultPrice).length <= 0 
+						|| $.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) > parseInt($BasePrices.adultPrice,0)){
+					comm.infoMsg("成人价不能小于儿童价",null,150);
 					return;
-				} */
+				} 
 				if($.trim($BasePrices.routeId).length <= 0
 						|| parseInt($BasePrices.routeId,0) <= 0){
 					comm.infoMsg("抱歉没有找到线路的编号,请重新进入",null,150);
@@ -627,14 +638,14 @@
 					//清除日历中的价格
 					var $BasePrices = $mPriceEdit.getBasePrice();
 					$("#tableCalendar td.td").each(function(i,obj){
-						/* var $week = $(obj).attr("data-week");
+						var $week = $(obj).attr("data-week");
 						var $date = $(obj).attr("data-full-date");
 						if(!$mPriceEdit.checkDateRange($date, $BasePrices.beginTime, $BasePrices.endTime)){
 							return;
 						}
 						if(!$mPriceEdit.checkWeekDays($BasePrices.weekDays, $week)){
 							return;
-						} */
+						} 
 						$(obj).removeAttr("data-cprice","");
 						$(obj).removeAttr("data-eprice","");
 						//$(obj).removeAttr("minprice","");
@@ -650,35 +661,21 @@
 						$("input[type='text'][name='visaPrice']",$(obj)).val("");
 						
 						//清空input里的价格
-						$("#adultPrice").val("");
-				    	//$("#mlxPrice").val("");
+						/* $("#adultPrice").val("");
 				    	$("#childPrice").val("");
 				    	$("#roomDiffPrice").val("");
 				    	$("#safePrice").val("");
-				    	$("#visaPrice").val("");
+				    	$("#visaPrice").val(""); */
 				    	//清空日期插件input
-				    	$("input[name=beginTime]").val("");
-				    	$("input[name=endTime]").val("");
-				    	//初始化日历插件 datepicker
-				        //$('.date-picker').datepicker();
+				    	//$("input[name=beginTime]").val("");
+				    	//$("input[name=endTime]").val("");
+				    	//clear时清除日历模板内容
+				    	$("div.price-edit").remove();
+		    			$("span.price").show();
 				    	
 					});
 				});
 				
-				//日期选择检查
-				
-				//if(!$mPriceEdit.checkDateValid())return;
-				//删除数据库中的价格数据
-				/* $.post('${ctx}/guideAdmin/line/delLinePrcie/' + $routeId,{"beginTime":$("input[name=beginTime]").val(),
-					"endTime":$("input[name=endTime]").val()},function(result){
-					if(result.code==200){
-						comm.infoMsg(result.msg);
-						setTimeout(function(){
-							window.location.href = "${ctx}/guideAdmin/line/editPrice/"+ $routeId;
-						},1000);
-					}	
-					return;
-				});	 */
 				
 			});		 
 		 
