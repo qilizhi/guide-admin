@@ -66,7 +66,7 @@ xmlns:context="http://www.springframework.org/schema/context"
     <property name="filterChainDefinitions">
         <value>
       
-              /logout = logout
+              
             /login = anon
             /platformLogin** = anon
             /guideLogin**= anon

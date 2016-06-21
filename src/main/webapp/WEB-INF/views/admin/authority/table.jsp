@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tg" tagdir="/WEB-INF/tags"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <form id="searchForm" action="${ctx}/admin/authority/list" method="get">
 	<div class="row">
 		<input type="hidden" name="pageNo" value="1">
@@ -10,13 +11,13 @@
 			value="${authorityId}">
 		<div class="col-md-4">
 
-			<select id="pageSize" name="pageS"
+			<select id="pageSize" name="pageSize"
 				class="form-control input-sm input-xsmall input-inline">
-				<option value="5" <c:if test="${pageS == 5}">selected</c:if>>5</option>
-				<option value="10" <c:if test="${pageS == 10}">selected</c:if>>10</option>
-				<option value="20" <c:if test="${pageS == 20}">selected</c:if>>20</option>
-				<option value="50" <c:if test="${pageS == 50}">selected</c:if>>50</option>
-				<option value="100" <c:if test="${pageS == 100}">selected</c:if>>100</option>
+				<option value="5" <c:if test="${pageSize== 5}">selected</c:if>>5</option>
+				<option value="10" <c:if test="${pageSize == 10}">selected</c:if>>10</option>
+				<option value="20" <c:if test="${pageSize == 20}">selected</c:if>>20</option>
+				<option value="50" <c:if test="${pageSize == 50}">selected</c:if>>50</option>
+				<option value="100" <c:if test="${pageSize == 100}">selected</c:if>>100</option>
 			</select>
 		</div>
 		<div class="col-md-4"></div>

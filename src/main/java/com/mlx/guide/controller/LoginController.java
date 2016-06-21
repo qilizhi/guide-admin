@@ -6,6 +6,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,8 +21,10 @@ import com.mlx.guide.constant.EUserType;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.shiro.CaptchaUsernamePasswordToken;
+import com.mlx.guide.shiro.ChainDefinitionSectionMetaSource;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
+import com.mlx.guide.util.SpringContextHolder;
 import com.mlx.guide.util.StringUtil;
 
 /**
@@ -31,10 +34,12 @@ import com.mlx.guide.util.StringUtil;
  * 
  */
 @Controller
-@RequestMapping( "/" )
+@RequestMapping("/")
 public class LoginController {
 
-	private static Logger logger = LoggerFactory.getLogger( LoginController.class );
+	private static Logger logger = LoggerFactory.getLogger(LoginController.class);
+	@Autowired
+	private ChainDefinitionSectionMetaSource chaindsm;
 
 	/**
 	 * 平台登录
@@ -42,22 +47,20 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping( value = "platformLogin", method = RequestMethod.GET )
-	public String platformLogin( @RequestParam( required = false ) String returnUrl, Model model ) {
+	@RequestMapping(value = "platformLogin", method = RequestMethod.GET)
+	public String platformLogin(@RequestParam(required = false) String returnUrl, Model model) {
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-		if( shiroUser != null && shiroUser.getUserType() == EUserType.PLATFORM_USER ) {
+		if (shiroUser != null && shiroUser.getUserType() == EUserType.PLATFORM_USER) {
 			// 平台用户跳转到平台首页页面
 			return "redirect:/admin";
-		}
-		else if( shiroUser != null && shiroUser.getUserType() == EUserType.GUIDE_USER ) {
+		} else if (shiroUser != null && shiroUser.getUserType() == EUserType.GUIDE_USER) {
 			// 导游用户跳转到导游管理首页页面
 			return "redirect:/guideAdmin";
-		}
-		else if( shiroUser != null && shiroUser.getUserType() == EUserType.USER ) {
+		} else if (shiroUser != null && shiroUser.getUserType() == EUserType.USER) {
 			// 普通用户跳转到403页面
 			return "redirect:/error/403";
 		}
-		model.addAttribute( "returnUrl", returnUrl );
+		model.addAttribute("returnUrl", returnUrl);
 		return "admin/login";
 	}
 
@@ -67,11 +70,11 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping( value = "platformLogin", method = RequestMethod.POST )
+	@RequestMapping(value = "platformLogin", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult platformLogin( HttpServletRequest request,
-	        @CookieValue( value = Const.LOGIN_PARAM, required = false ) String accessToken ) {
-		return loginToRedirect( request, accessToken, EUserType.PLATFORM_USER );
+	public JsonResult platformLogin(HttpServletRequest request,
+			@CookieValue(value = Const.LOGIN_PARAM, required = false) String accessToken) {
+		return loginToRedirect(request, accessToken, EUserType.PLATFORM_USER);
 	}
 
 	/**
@@ -80,22 +83,20 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping( value = "guideLogin", method = RequestMethod.GET )
-	public String guideAdminLogin( @RequestParam( required = false ) String returnUrl, Model model ) {
+	@RequestMapping(value = "guideLogin", method = RequestMethod.GET)
+	public String guideAdminLogin(@RequestParam(required = false) String returnUrl, Model model) {
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-		if( shiroUser != null && shiroUser.getUserType() == EUserType.PLATFORM_USER ) {
+		if (shiroUser != null && shiroUser.getUserType() == EUserType.PLATFORM_USER) {
 			// 平台用户跳转到平台首页页面
 			return "redirect:/admin";
-		}
-		else if( shiroUser != null && shiroUser.getUserType() == EUserType.GUIDE_USER ) {
+		} else if (shiroUser != null && shiroUser.getUserType() == EUserType.GUIDE_USER) {
 			// 导游用户跳转到导游管理首页页面
 			return "redirect:/guideAdmin";
-		}
-		else if( shiroUser != null && shiroUser.getUserType() == EUserType.USER ) {
+		} else if (shiroUser != null && shiroUser.getUserType() == EUserType.USER) {
 			// 普通用户跳转到403页面
 			return "redirect:/error/403";
 		}
-		model.addAttribute( "returnUrl", returnUrl );
+		model.addAttribute("returnUrl", returnUrl);
 		return "guideAdmin/login";
 	}
 
@@ -105,11 +106,11 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping( value = "guideLogin", method = RequestMethod.POST )
+	@RequestMapping(value = "guideLogin", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonResult guideAdminLogin( HttpServletRequest request,
-	        @CookieValue( value = Const.LOGIN_PARAM, required = false ) String accessToken ) {
-		return loginToRedirect( request, accessToken, EUserType.GUIDE_USER );
+	public JsonResult guideAdminLogin(HttpServletRequest request,
+			@CookieValue(value = Const.LOGIN_PARAM, required = false) String accessToken) {
+		return loginToRedirect(request, accessToken, EUserType.GUIDE_USER);
 	}
 
 	/**
@@ -119,29 +120,29 @@ public class LoginController {
 	 * @param defUrl
 	 * @return
 	 */
-	private JsonResult loginToRedirect( HttpServletRequest request, String accessToken, EUserType eUserType ) {
-		String loginName = StringUtil.stringValue( request.getParameter( "username" ), "" );
-		String password = StringUtil.stringValue( request.getParameter( "password" ), "" );
-		boolean rememberMe =  request.getParameter( "remember" ) != null;
-		if( StringUtil.empty( loginName ) || StringUtil.empty( password ) ) {
-			return new JsonResult( ExceptionCode.FAIL );
+	private JsonResult loginToRedirect(HttpServletRequest request, String accessToken, EUserType eUserType) {
+		String loginName = StringUtil.stringValue(request.getParameter("username"), "");
+		String password = StringUtil.stringValue(request.getParameter("password"), "");
+		boolean rememberMe = request.getParameter("remember") != null;
+		if (StringUtil.empty(loginName) || StringUtil.empty(password)) {
+			return new JsonResult(ExceptionCode.FAIL);
 		}
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-		if( shiroUser == null ) {
+		if (shiroUser == null) {
 			try {
-				CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken( loginName, password.toCharArray() );
+				CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(loginName,
+						password.toCharArray());
 				token.setRememberMe(rememberMe);
-				token.setUserType( eUserType );
-				token.setAccessToken( accessToken );
-				SecurityUtils.getSubject().login( token );
-				return new JsonResult( ExceptionCode.SUCCESSFUL);
-			}
-			catch( AuthenticationException e ) {
-				logger.info( "登陆验证失败" + e.getMessage() );
-				return new JsonResult( ExceptionCode.FAIL );
+				token.setUserType(eUserType);
+				token.setAccessToken(accessToken);
+				SecurityUtils.getSubject().login(token);
+				return new JsonResult(ExceptionCode.SUCCESSFUL);
+			} catch (AuthenticationException e) {
+				logger.info("登陆验证失败" + e.getMessage());
+				return new JsonResult(ExceptionCode.FAIL);
 			}
 		}
-		return new JsonResult( ExceptionCode.SUCCESSFUL );
+		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
 	/**
@@ -150,16 +151,16 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping( "/logout" )
-	public String logout( Model model ) {
+	@RequestMapping("/logout")
+	public String logout(Model model) {
 		try {
 			// 使用权限管理工具进行用户的退出，跳出登录，给出提示信息
 			SecurityUtils.getSubject().logout();
-			model.addAttribute( "message", "您已安全退出" );
-		}
-		catch( Exception e ) {
-			logger.error( e.getMessage() );
-			model.addAttribute( "message", "退出失败,请重试." );
+           chaindsm.reLoad();
+			model.addAttribute("message", "您已安全退出");
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			model.addAttribute("message", "退出失败,请重试.");
 		}
 		return "logout";
 	}
@@ -170,8 +171,8 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping( "/error/{code}" )
-	public String logout( @PathVariable String code, Model model ) {
+	@RequestMapping("/error/{code}")
+	public String logout(@PathVariable String code, Model model) {
 		return "error/" + code;
 	}
 

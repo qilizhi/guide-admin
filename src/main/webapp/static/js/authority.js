@@ -244,22 +244,23 @@ var UITree = function() {
 		$(document).on("change", "form select[name=pageS]",function(e){
 			
 			var authorityId =UImultiSelect.getSelectedAuthorityId();	
-						reloadTable(authorityId);
+						reloadTable(authorityId,"","");
 		});
 
 	}
 
 	
 	//刷新表单
-	var reloadTable = function(authorityId) {
+	var reloadTable = function(authorityId,pageNo,pageSize) {
 		var url = mlx.ctx + "/admin/authority/loadResource";
-		var pageSize=$("#pageSize").val();
+		//var pageSize=$("#pageSize").val();
 		$.ajax({
 			url : url,
 			type : "get",
 			data : {
 				'authorityId':authorityId,
-				'pageS':pageSize
+				'pageSize':pageSize,
+				'pageNo':pageNo
 			},
 			success : function(data) {
 				$("#mainTable").empty();
@@ -278,7 +279,7 @@ var UITree = function() {
 		$('#tree_3').on('activate_node.jstree', function(e, data) {
 			/* 给隐藏域set値 */
 			//$("#authorityId").val(data.node.id);
-			reloadTable(data.node.id);
+			reloadTable(data.node.id,"","");
 		});
 
 	}
@@ -328,9 +329,9 @@ var UITree = function() {
 		searchFormSubmit : function() {
 
 			searchFormSubmit();
-		},reloadTable:function(authorityId){
+		},reloadTable:function(authorityId,pageNo,pageSize){
 			
-			reloadTable(authorityId);
+			reloadTable(authorityId,pageNo,pageSize);
 		}
 
 	};
@@ -352,11 +353,11 @@ var UITree = function() {
 /** *******选择资源的处理 start*********************** */
 var UImultiSelect = function() {
 
-	var addUrl = mlx.ctx + "/admin/actInfo/create";
+/*	var addUrl = mlx.ctx + "/admin/actInfo/create";
 	var updateUrl = mlx.ctx + "/admin/actInfo/update";
 	var delUrl = mlx.ctx + "/admin/actInfo/delete";
 	var batdelUrl = mlx.ctx + "/admin/actInfo/deletes";
-	var getUrl = mlx.ctx + "/admin/actInfo";
+	var getUrl = mlx.ctx + "/admin/actInfo";*/
 
 	var addShow = function() {
 		var authorityId = getSelectedAuthorityId();
@@ -496,7 +497,7 @@ var UImultiSelect = function() {
 				if (r.code == "200") {
 					modalHide();
 					//刷新表单
-					UITree.reloadTable(authorityId);
+					UITree.reloadTable(authorityId,"","");
 					comm.showMsg('success', '消息提示', '更新成功！');
 				} else {
 					modalHide();
@@ -706,8 +707,6 @@ jQuery(document).ready(function() {
 	UITree.searchFormSubmit();
 	UImultiSelect.init();
 	UImultiSelect.multi_init();
- 
-	
 	/*
 	 * //选中树 var nodeId=$("#authorityId").val(); console.log(nodeId);
 	 * $.jstree.reference('#tree_3').select_node(nodeId);

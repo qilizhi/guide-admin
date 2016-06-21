@@ -233,5 +233,13 @@
 			src="${ctx }/static/assets/global/plugins/jstree/dist/jstree.min.js"
 			type="text/javascript"></script>
 		<script src="${ctx }/static/js/authority.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		var authorityId='${authorityId}';
+		var pageNo='${pageNo}'
+		var pageSize='${pageSize}';
+		if(authorityId!=null&&authorityId!=undefined){
+			UITree.reloadTable(authorityId,pageNo,pageSize);
+		}
+		</script>
 </body>
 </html>

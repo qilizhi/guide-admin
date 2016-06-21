@@ -200,7 +200,7 @@ comm.init();
 //图片放大预览,使用方式,在img标签上面,添加 data-preview='true'
 $(function(){
 	
-	//修改TAB为hover切换 begin
+/*	//修改TAB为hover切换 begin
 	$("ul.navbar-nav>li").off("click");
 	$("ul.navbar-nav >li.dropdown-fw:not(.open)").hover(function(){
 		$("ul.navbar-nav >li.open>ul").hide();
@@ -210,7 +210,7 @@ $(function(){
 		$(this).removeClass("open").children("a").removeAttr("style");
 	});
 	//修改TAB为hover切换 end
-	
+*/	
    var $img_list=$("img[data-preview]");
 	$img_list.css("cursor", "pointer")
   $img_list.on("click",function(){

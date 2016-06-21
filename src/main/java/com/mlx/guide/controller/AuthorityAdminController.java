@@ -75,6 +75,7 @@ public class AuthorityAdminController {
 		model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 		model.addAttribute("list", list);
 		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("authorityId", authorityId);
 		return "/admin/authority/list";
 	}
@@ -149,12 +150,14 @@ public class AuthorityAdminController {
 	 */
 	@RequestMapping("/loadResource")
 	public String loadResource(Integer authorityId, @RequestParam(defaultValue = "1") Integer pageNo,
-			@RequestParam(defaultValue = "10") Integer pageS,Model model) {
-		PageBounds pageBounds = new PageBounds(pageNo, pageS, Order.formString("id.desc"));
+			@RequestParam(defaultValue = "10") Integer pageSize,Model model) {
+		PageBounds pageBounds = new PageBounds(pageNo, pageSize, Order.formString("id.desc"));
 		PageList<Resource> list = atrService. selectResourceByExample(authorityId, pageBounds);
 		model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 		model.addAttribute("list", list);
-		model.addAttribute("pageS", pageS);
+		model.addAttribute("authorityId", authorityId);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pageNo", pageNo);
 		return "/admin/authority/table";
 	}
 
