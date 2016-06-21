@@ -295,7 +295,7 @@
 				var $BasePrices = this.getBasePrice();
 				//console.log($BasePrices)
 				$.each($("#priceCalendar td.td"),function(i,obj){
-					console.log(obj);
+					
 					//手动修改td内价格时在当前td中取值
 					var adultPrice = $(obj).attr("data-cprice");
 					var childPrice = $(obj).attr("data-eprice");
@@ -527,7 +527,7 @@
 					return;
 				}
 				$data = JSON.stringify($data);
-				console.log($data);
+				//console.log($data);
 				var $url = $(this).attr("href");
 				var $lineNo = $("input[name='lineNo']").val();
 				comm.confirm("提示","确定现在提交吗?",function(){
