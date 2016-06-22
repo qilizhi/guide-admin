@@ -133,6 +133,7 @@ public class GuideServiceAdminController {
 		model.addAttribute("EAuditStatus", EAuditStatus.getMap());
 		model.addAttribute("status", gs.getStatus());
 		model.addAttribute("auditStatus", gs.getAuditStatus());
+		model.addAttribute("title", gs.getTitle());
 		model.addAttribute("serviceNo", gs.getServiceNo());
 		return "admin/guideService/list";
 	}

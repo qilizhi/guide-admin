@@ -78,9 +78,9 @@
 							<input type="hidden" name="pageNo" value="1">
 							<div class="col-md-6" style="text-align: right;">
 								<input type="text" class="form-filter input-sm" placeholder="编号"
-									name="lineNo" value="${lineNo}"> <input type="text"
+									name="lineNo" value="${guideLine.lineNo}"> <input type="text"
 									class="form-filter input-sm" placeholder="标题" name="title"
-									value="${title}">
+									value="${guideLine.title}">
 								<button type="submit"
 									class="btn btn-sm green btn-outline filter-submit margin-bottom">
 									<i class="fa fa-search"></i> 查询

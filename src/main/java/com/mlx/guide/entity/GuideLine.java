@@ -1,10 +1,7 @@
 package com.mlx.guide.entity;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class GuideLine{
 	private Integer id;

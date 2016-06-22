@@ -45,8 +45,8 @@
 		<input type="hidden" name="pageNo" value="1">
 		<div class="col-md-4"></div>
 		<div class="col-md-4" style="text-align: right;">
-		<input type="text" class="form-filter input-sm" placeholder="线路标题" name="title" value="${guideLine.title}">	
 		<input type="text" class="form-filter input-sm" placeholder="线路编号" name="lineNo" value="${guideLine.lineNo}">		
+		<input type="text" class="form-filter input-sm" placeholder="线路标题" name="title" value="${guideLine.title}">	
 		<button type="submit" class="btn btn-sm green btn-outline filter-submit margin-bottom">
 		<i class="fa fa-search"></i> 查询</button>
 			

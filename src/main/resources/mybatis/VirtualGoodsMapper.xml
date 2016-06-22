@@ -62,7 +62,7 @@
 			<if test="auditTime !=null and auditTime !=''">
 				and audit_time=#{audit_time}
 			</if>
-			<if test="auditStatus !=null and auditStatus !=' '">
+			<if test="auditStatus !=null and auditStatus !=''">
 				and audit_status=#{auditStatus}
 			</if>
 			<if test="flag !=null and flag !=''">

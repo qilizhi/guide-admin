@@ -139,8 +139,6 @@ public class GuideLineAdminController {
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
 			model.addAttribute("list", list);
 			model.addAttribute("guideLine", guideLine);
-			model.addAttribute("title", guideLine.getTitle());
-			model.addAttribute("lineNo", guideLine.getLineNo());
 			model.addAttribute("status", guideLine.getStatus());
 			model.addAttribute("auditStatus", guideLine.getAuditStatus());
 			model.addAttribute("pageSize", pageSize);
