@@ -146,7 +146,7 @@ public class ChainDefinitionSectionMetaSource implements FactoryBean<Ini.Section
 				}
 			}
 			// admin/** = role[admin],perms
-			section.put("/admin/**", "role[admin],perms[admin]");
+			/*section.put("/admin/**", "role[admin],perms[admin]");*/
 			logger.info("权限拦截表：" + section.values().toString());
 			logger.info("权限拦截表：" + ini.toString());
 		} else {
