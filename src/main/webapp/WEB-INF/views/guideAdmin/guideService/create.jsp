@@ -8,6 +8,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">
 .imgUpload {
@@ -102,11 +103,11 @@
 						<div class="form-body">
 							<div class="alert alert-danger display-hide">
 								<button class="close" data-close="alert"></button>
-								You have some form errors. Please check below.
+								请完善以下信息！
 							</div>
 							<div class="alert alert-success display-hide">
 								<button class="close" data-close="alert"></button>
-								Your form validation is successful!
+								通过验证！
 							</div>
 							<div class="form-group">
 								<!-- 编辑页面显示start 地陪编号不可修改-->
@@ -445,7 +446,6 @@
 	                    	maxlength:50
 	                    },
 	                    sort: {
-	                        required: true,
 	                        digits:true,
 	                        maxlength:10
 	                    },
@@ -486,7 +486,6 @@
 	                    	maxlength:"最多输入50个汉字"
 	                    },
 	                    sort: {
-	                        required: "不能为空",
 	                        digits:"请输入整数",
 	                        maxlength:"最多输入10位数"
 	                    },

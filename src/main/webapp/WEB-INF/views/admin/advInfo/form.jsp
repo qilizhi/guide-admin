@@ -11,7 +11,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${title}</title>
- <link
+<link
 	href="${ctx}/static/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css">
 <link
 	href="${ctx}/static/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
@@ -63,26 +63,25 @@
 							<i class="fa"></i> <input type="text" class="form-control"
 								name="href" value="${advInfo.href }" />
 						</div> --%>
-						
-							<div class="col-lg-7" id="supprogress">
-								<input type="hidden" name="imgUrl" value="${advInfo.imgUrl}" /> <span
-									id="imageName"></span>
-								<div class="progress">
-									<div class="progress-bar progress-bar-success"
-										role="progressbar" aria-valuenow="40" aria-valuemin="0"
-										aria-valuemax="100">
-										<span class="sr-only">40% Complete (success)</span>
-									</div>
+						<input type="hidden" name="imgUrl" value="${advInfo.imgUrl}" />
+						<div class="col-lg-7" id="supprogress">
+							<span id="imageName"></span>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success"
+									role="progressbar" aria-valuenow="40" aria-valuemin="0"
+									aria-valuemax="100">
+									<span class="sr-only">40% Complete (success)</span>
 								</div>
 							</div>
-							<div class="col-lg-2">
-								<img id="image" name="imgUrl" alt="" src="${advInfo.imgUrl}">
-								<span class="btn green fileinput-button pading"> <i
-									class="fa fa-plus"></i> <span id="load">上传 </span> <input
-									type="file" name="files[]" multiple>
-								</span>
-							</div>
-						
+						</div>
+						<div class="col-lg-2">
+							<img id="image" name="imgUrl" alt="" src="${advInfo.imgUrl}">
+							<span class="btn green fileinput-button pading"> <i
+								class="fa fa-plus"></i> <span id="load">上传 </span> <input
+								type="file" name="files[]" multiple />
+							</span>
+						</div>
+
 					</div>
 				</div>
 				<div class="form-group">
@@ -136,7 +135,7 @@
 							class="required"> * </span>
 						</label>
 						<div class="col-md-4">
-							<select  name="status">
+							<select name="status">
 								<c:forEach items="${EStatus.keySet()}" var="item">
 									<option value="${item}"
 										<c:if test="${advInfo.status==item}" >selected</c:if>>${EStatus[item]}</option>
@@ -188,8 +187,8 @@
 	<script type="text/javascript"
 		src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript"
-		src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script> 
-		<script type="text/javascript"
+		src="${ctx}/static/assets/global/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
+	<script type="text/javascript"
 		src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
 	<script type="text/javascript"
 		src="${ctx}/static/assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
@@ -203,11 +202,10 @@
 			language : 'zh-CN'
 		});
 
-		
 		/** 图片上传的控件 **/
 		var initImgUpload = function(dataInputName) {
-			var inputFile=$("input[type='file']");
-			var $dataInput=$("input[name='"+dataInputName+"']");
+			var inputFile = $("input[type='file']");
+			var $dataInput = $("input[name='" + dataInputName + "']");
 			//图上传
 			$("#supprogress").css('display', "none");
 			$("input[type='file']").css({
@@ -227,21 +225,17 @@
 				'padding' : '0',
 
 			});
-			inputFile.on(
-					'change',
-					function(e) {
-						var files = this.files;
-						var fullname = $(this).val();
-						$("#imageName")
-								.html(
-										fullname.substring(fullname
-												.lastIndexOf("\\") + 1));
-						$("#supprogress").css('display', "block");
-						$("#image").attr("src", "");
-						$dataInput.val("");
-					})
-			inputFile.fileupload(
-					{
+			inputFile.on('change', function(e) {
+				var files = this.files;
+				var fullname = $(this).val();
+				$("#imageName").html(
+						fullname.substring(fullname.lastIndexOf("\\") + 1));
+				$("#supprogress").css('display', "block");
+				$("#image").attr("src", "");
+				$dataInput.val("");
+			})
+			inputFile
+					.fileupload({
 						type : "post",
 						dataType : 'json',
 						url : mlx.ctx + '/upload',
@@ -259,9 +253,8 @@
 							if (data.result.code == "200") {
 								$("#supprogress").css('display', "none");
 								$("#image").attr("src",
-										data.result.result[0].filePath); 
-								$dataInput.val(
 										data.result.result[0].filePath);
+								$dataInput.val(data.result.result[0].filePath);
 								$("#load").html("重传");
 							} else {
 								$('.progress .progress-bar-success').text(
@@ -305,6 +298,9 @@
 					},
 					endDate : {
 						required : true
+					},
+					imgUrl : {
+						required : true
 					}
 				},
 
@@ -328,6 +324,9 @@
 						required : "不能为空！"
 					},
 					endDate : {
+						required : "不能为空！"
+					},
+					imgUrl : {
 						required : "不能为空！"
 					}
 				},

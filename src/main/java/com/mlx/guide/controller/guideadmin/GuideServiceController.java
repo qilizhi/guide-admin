@@ -255,13 +255,16 @@ public class GuideServiceController {
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 		// 查询当前线路价格的开始时间和结束时间
 		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
-		Date startDate = map.get("startDate");
-		Date endDate = map.get("endDate");
+		if (map != null) {
+			Date startDate = map.get("startDate");
+			Date endDate = map.get("endDate");
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
+		}
 
 		model.addAttribute("service", service);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
+	
 		return "guideAdmin/guideService/price";
 	}
 

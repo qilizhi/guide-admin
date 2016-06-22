@@ -62,6 +62,7 @@ public class GuideLineAdminController {
 	private GuideLineTripService guideLineTripService;
 	@Autowired
 	private GuideLineDatePriceMapper priceMapper;
+
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
@@ -443,18 +444,15 @@ public class GuideLineAdminController {
 				.getGuideLineDatePriceByLineNo(lineNo);
 		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 		// 查询当前线路价格的开始时间和结束时间
-		Map<String, Date> map=new HashMap<>();
-		try {
-			map = priceMapper.getLineDateByLineNo(lineNo);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
+		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
+		if (map != null) {
+			Date startDate = map.get("startDate");
+			Date endDate = map.get("endDate");
+			model.addAttribute("startDate", startDate);
+			model.addAttribute("endDate", endDate);
 		}
-		Date startDate = map.get("startDate");
-		Date endDate = map.get("endDate");
 		model.addAttribute("guideLine", guideLine);
 		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
 
 		return "admin/line/price";
 	}
@@ -523,8 +521,6 @@ public class GuideLineAdminController {
 			return new JsonResult(ExceptionCode.FAIL);
 		}
 	}
-
-
 
 	/**
 	 * 跳转到线路新增页面

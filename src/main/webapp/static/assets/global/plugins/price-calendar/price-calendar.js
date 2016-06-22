@@ -82,7 +82,8 @@
         				"roomDiffPrice":s.json[i].roomDiffPrice==null?"":s.json[i].roomDiffPrice,
         				"safePrice":s.json[i].safePrice==null?"":s.json[i].safePrice,
         				"visaPrice":s.json[i].visaPrice==null?"":s.json[i].visaPrice,
-        				"num":s.json[i].num==null?"0":s.json[i].num
+        				"num":s.json[i].num==null?"0":s.json[i].num,
+        				"tuanNo":s.json[i].tuanNo==null?"0":s.json[i].tuanNo		
         		   };
         	   }
              var day = new Date(Date.parse(s.json[i].lineDate.replace(/-/g, "/")));

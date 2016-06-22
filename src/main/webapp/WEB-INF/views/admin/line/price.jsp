@@ -325,6 +325,7 @@
 					var safePrice = $(obj).attr("data-safePrice");
 					var visaPrice = $(obj).attr("data-visaPrice");
 					var num =$(obj).attr("data-num");
+					var tuanNo =$(obj).attr("data-tuanNo");
 					
 					//if(parseInt(mlxPrice, 0) > 0 ||($b == 0 && parseInt(id,0) > 0)){
 						if(adultPrice!=null &&adultPrice!=''&&adultPrice!=undefined){
@@ -337,9 +338,8 @@
 						lineDatePrice.roomDiffPrice = roomDiffPrice;
 						lineDatePrice.safePrice = safePrice;
 						lineDatePrice.visaPrice = visaPrice;
-					
 						lineDatePrice.lineDate = date;
-						
+						lineDatePrice.tuanNo = tuanNo;
 						$routePrices.push(lineDatePrice);	
 						
 					}
@@ -373,6 +373,7 @@
 		
 		var $mTemp = '<div class="price-edit" style="width: 50px;color:black;">'
 	       /*  +'<input type="text" name="minprice" value="" placeholder="美丽价" title="美丽价">' */
+	        +'<input type="hidden" name="id" value="">'
 	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value=""> '
 	        +'<input type="text" name="data-eprice" placeholder="儿童价" title="儿童价" value="">'
  	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
@@ -387,7 +388,7 @@
 			    json: result, //传递过来的json ${lineDataPrices}
 			    startTime:new Date(),
 			    tdAttrs: function(jsonObj){
-			    	//console.log(jsonObj)
+			    	console.log(jsonObj)
 			    	if(!jsonObj){
 			    		return "";
 			    	}
@@ -419,7 +420,7 @@
 			    	var $value = $("#select-routeOrderType option:selected").val();
 			    	var $attr = " @attrName = '@attrValue' ";
 			    	var $attrString = "";
-			    	//console.log(jsonObj);
+			    	console.log(jsonObj);
 			    	$attrString += $attr.replace("@attrName", "data-cprice").replace("@attrValue", jsonObj.cPrice || "");//成人价
 			    	$attrString += $attr.replace("@attrName", "data-eprice").replace("@attrValue", jsonObj.ePrice || "");//儿童价
 			    	$attrString += $attr.replace("@attrName", "data-id").replace("@attrValue", jsonObj.id || "");
@@ -431,9 +432,11 @@
 			    	$attrString += $attr.replace("@attrName", "data-visaPrice").replace("@attrValue", jsonObj.visaPrice || "");
 			/*     	$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", jsonObj.num || ""); */
 					$attrString += $attr.replace("@attrName", "data-num").replace("@attrValue", $lineNum || ""); //$lineNum页面隐藏域num值
+			    	$attrString += $attr.replace("@attrName", "data-tuanNo").replace("@attrValue", jsonObj.tuanNo || ""); //团编号
 			    	return $attrString;
 			    },
 			    tdClick: function(obj,date,price,cprice,eprice,currTdObj) {
+			    	console.log(currTdObj)
 			    	if($("div.price-edit",currTdObj).length <= 0){
 			    		var temp = $($mTemp).appendTo(currTdObj);
 			    		var dataType = $(currTdObj).attr("data-routeordertype");
@@ -496,7 +499,7 @@
 			//保存价格
 			$("#btn-save").bind("click",function(e){
 				//在保存前点击再次生成日历表数据
-				$("#btn-auto-create-price").click();
+				//$("#btn-auto-create-price").click();
 				
 				e.preventDefault();
 				var $BasePrices = $mPriceEdit.getBasePrice();

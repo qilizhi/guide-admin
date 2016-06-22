@@ -69,7 +69,7 @@
 				</div>
 				</c:if>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">标题：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>标题：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control" name="title" id="title"
 							value="${guideS.title}" placeholder="这里输入标题" />
@@ -77,7 +77,7 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">描述：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>描述：</label>
 					<div class="col-lg-5">
 						<textarea class="form-control" name="description" id="description"
 							rows="3" placeholder="这里添加描述">${guideS.description}</textarea>
@@ -110,7 +110,7 @@
 					</div>
 				</div> --%>
 								<div class="form-group">
-					<label class="col-lg-3 control-label">背景图片：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>背景图片：</label>
 					<div class="col-lg-5">
 						<div id="imgUrl">
 							<div id="supprogress">
@@ -137,7 +137,7 @@
 					</div>
 				</div>
 								<div class="form-group">
-					<label class="col-lg-3 control-label">头像图片：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>头像图片：</label>
 					<div class="col-lg-5">
 						<div id="smallImgUrl">
 							<div id="supprogress">
@@ -165,7 +165,7 @@
 				</div>
 			
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">价格：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>价格：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="price"
 							 value="${guideS.price}" />
@@ -173,7 +173,15 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">满员人数：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>导服天数：</label>
+					<div class="col-lg-5">
+						<input type="text" class="form-control " name="totalDay"
+							value="${guideS.totalDay}" />
+						<div class="form-control-focus"></div>
+					</div>
+				</div>
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>满员人数：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="num"
 							value="${guideS.num}" />
@@ -199,7 +207,7 @@
 			</div>
 		</div> --%>
 				<div class="form-group">
-					<label class="col-lg-3 control-label">选择导游：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>选择导游：</label>
 					<div class="col-lg-5">
 						<input type="hidden" name="userName"
 							value="${guideS.userName}" /> <select title="根据名字及导游证号搜索" 
@@ -210,7 +218,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-3 control-label">内容文本：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>内容文本：</label>
 					<div class="col-lg-5">
 						<%-- 	<input type="text" class="form-control " name="content" id="content"
 					value="${guideS.content}" /> --%>
@@ -219,7 +227,7 @@
 					</div>
 				</div>
 					<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">体验说明：</label>
+					<label class="col-lg-3 control-label"><span style="color:red">*</span>体验说明：</label>
 					<div class="col-lg-5">
 					<script id="remark" type="text/plain" name="remark"
 							style="width: 600px; height: 500px;">${guideS.remark}</script>
@@ -494,7 +502,6 @@
 						required : true
 					},
 					sort : {
-						required : true,
 						digits : true,
 						maxlength : 10
 					},
@@ -511,12 +518,12 @@
 					userName : {
 						required : true
 					},
-					remark : {
-						required : true
-					},
-					content : {
-						required : true
-					}
+					totalDay: {
+	                	   required: true,
+	                	   digits:true,
+	                       maxlength:3,
+	                       range:[1,366] 
+	                }
 				},
 
 				messages : { // custom messages for radio buttons and checkboxes
@@ -537,7 +544,6 @@
 						required : "不能为空",
 					},
 					sort : {
-						required : "不能为空",
 						digits : "请输入正整数",
 						maxlength : "最多输入10位数"
 					},
@@ -554,12 +560,12 @@
 					userName : {
 						required : "不能为空"
 					},
-					remark : {
-						required : "不能为空"
-					},
-					content : {
-						required : "攻略内容不能为空"
-					}
+					totalDay: {
+	                	required: "不能为空",
+	                	digits:"请输入整数",
+	                    maxlength:"最多输入3位数",
+	                    range: "请输入一个介于 {0} 和 {1} 之间的值"
+	                }
 				},
 
 				errorPlacement : function(error, element) { // render error placement for each input type
@@ -606,12 +612,12 @@
 					error3.hide();
 					//验证UE编辑器是否为空
 					if (UE.getEditor('content').hasContents() == false) {
-						comm.infoMsg("content 内容不能为空", null, 150);
+						comm.infoMsg("内容不能为空", null, 150);
 						return;
 					}
 					//验证UE编辑器是否为空
 					if (UE.getEditor('remark').hasContents() == false) {
-						comm.infoMsg("remark 内容不能为空", null, 150);
+						comm.infoMsg("体验说明不能为空", null, 150);
 						return;
 					}
 					success3.show();

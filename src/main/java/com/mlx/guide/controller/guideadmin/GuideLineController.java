@@ -2,7 +2,6 @@ package com.mlx.guide.controller.guideadmin;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -179,21 +178,28 @@ public class GuideLineController {
 	@RequestMapping(value = "/editPrice/{lineNo}", method = RequestMethod.GET)
 	public String editPrice(GuideLineDatePrice guideLineDatePrice, Model model) {
 
-		String lineNo = guideLineDatePrice.getLineNo();
-		// 根据线路no获取对应的线路
-		GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
-		// 根据线路no获取对应的价格表
-		List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-				.getGuideLineDatePriceByLineNo(lineNo);
-		String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
-		// 查询当前线路价格的开始时间和结束时间
-		Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
-		Date startDate = map.get("startDate");
-		Date endDate = map.get("endDate");
-		model.addAttribute("guideLine", guideLine);
-		model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
+		try {
+			String lineNo = guideLineDatePrice.getLineNo();
+			// 根据线路no获取对应的线路
+			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
+			// 根据线路no获取对应的价格表
+			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
+					.getGuideLineDatePriceByLineNo(lineNo);
+			String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
+			// 查询当前线路价格的开始时间和结束时间
+			Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
+			if (map != null) {
+				Date startDate = map.get("startDate");
+				Date endDate = map.get("endDate");
+				model.addAttribute("startDate", startDate);
+				model.addAttribute("endDate", endDate);
+			}
+			model.addAttribute("guideLine", guideLine);
+			model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
+
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 		return "guideAdmin/line/price";
 	}
 
@@ -226,7 +232,7 @@ public class GuideLineController {
 	@ResponseBody
 	@RequestMapping(value = "/save/{lineNo}", method = RequestMethod.POST)
 	public JsonResult savePrice(@RequestParam("params") String linePrices, @PathVariable("lineNo") String lineNo,
-			 Model model) {
+			Model model) {
 		try {
 			// 先删除旧价格，再保存
 			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
@@ -321,27 +327,24 @@ public class GuideLineController {
 	 * @param request
 	 * @return
 	 */
-/*	@RequestMapping(value = "/delLinePrcie/{lineNo}", method = RequestMethod.POST)
-	@ResponseBody
-	public JsonResult delLinePrice(@PathVariable String lineNo, @RequestParam("beginTime") String beginTime,
-			@RequestParam("endTime") String endTime, HttpServletRequest request) {
-		try {
-			if (!beginTime.isEmpty() && !endTime.isEmpty()) {
-				Map<String, Object> map = new LinkedHashMap<String, Object>();
-				map.put("beginTime", beginTime);
-				map.put("endTime", endTime);
-				map.put("lineNo", lineNo);
-				guideLineDatePriceService.deleteGuideLineDatePriceByDate(map);
-				return new JsonResult(ExceptionCode.SUCCESSFUL);
-			} else {
-				return new JsonResult(ExceptionCode.FAIL);
-			}
-
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return new JsonResult(ExceptionCode.FAIL);
-		}
-	}*/
+	/*
+	 * @RequestMapping(value = "/delLinePrcie/{lineNo}", method =
+	 * RequestMethod.POST)
+	 * 
+	 * @ResponseBody public JsonResult delLinePrice(@PathVariable String
+	 * lineNo, @RequestParam("beginTime") String beginTime,
+	 * 
+	 * @RequestParam("endTime") String endTime, HttpServletRequest request) {
+	 * try { if (!beginTime.isEmpty() && !endTime.isEmpty()) { Map<String,
+	 * Object> map = new LinkedHashMap<String, Object>(); map.put("beginTime",
+	 * beginTime); map.put("endTime", endTime); map.put("lineNo", lineNo);
+	 * guideLineDatePriceService.deleteGuideLineDatePriceByDate(map); return new
+	 * JsonResult(ExceptionCode.SUCCESSFUL); } else { return new
+	 * JsonResult(ExceptionCode.FAIL); }
+	 * 
+	 * } catch (Exception e) { logger.error(e.getMessage(), e); return new
+	 * JsonResult(ExceptionCode.FAIL); } }
+	 */
 
 	/**
 	 * 修改上线，下线状态

@@ -397,7 +397,7 @@
 	     	    		   return ;
 	     	    	   }
 	                    success3.show();
-	                    form[0].submit(); // submit the form
+	                    form.submit(); // submit the form
 	                }
 
 	            });
