@@ -299,6 +299,6 @@
 		});
 	</script>
 	<tg:pagination searchFormId="searchForm" paginator="${paginator}"></tg:pagination>
-	<%-- <script type="text/javascript" src="${ctx}/static/js/guideLine.js"></script> --%>
+	 <script type="text/javascript" src="${ctx}/static/js/guideLine.js"></script> 
 </body>
 </html>
