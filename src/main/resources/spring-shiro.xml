@@ -59,6 +59,7 @@ xmlns:context="http://www.springframework.org/schema/context"
     	<!-- 自定义角色验证过滤器 -->
     <bean id="roleAuthorizationFilter" class="com.mlx.guide.shiro.RoleAuthorizationFilter" />
     <bean id="uRLPermissionsFilter" class="com.mlx.guide.shiro.URLPermissionsFilter"></bean>
+    <bean id="myPermissionsFilter" class="com.mlx.guide.shiro.MyPermissionsAuthorizationFilter"></bean>
 	
 	<!-- 自定义对 shiro的连接约束,结合shiroFilter实现动态获取资源 -->
     <bean id="chainDefinitionSectionMetaSource" class="com.mlx.guide.shiro.ChainDefinitionSectionMetaSource">
@@ -74,6 +75,7 @@ xmlns:context="http://www.springframework.org/schema/context"
            /guideAdmin/** =role[guideAdmin]
              /static/** = anon 
         	/admin* = role[admin]
+        	/admin/resource/refreshGlobal = role[admin]
             <!-- /admin/** = role[admin],perms -->
             <!-- /** = anon -->
 			<!-- anon表示此地址不需要任何权限即可访问 -->  
@@ -91,6 +93,7 @@ xmlns:context="http://www.springframework.org/schema/context"
 	    <property name="filters">
         <map>
             <entry key="role" value-ref="roleAuthorizationFilter" />
+            <entry key="perms" value-ref="myPermissionsFilter" />
           <!--   <entry key="perms" value-ref="uRLPermissionsFilter" /> -->
         </map>
         </property>

@@ -28,6 +28,7 @@ import com.mlx.guide.dao.AuthorityToResourceMapper;
 import com.mlx.guide.entity.AuthorityToResource;
 import com.mlx.guide.entity.Resource;
 import com.mlx.guide.service.ResourceService;
+import com.mlx.guide.shiro.ChainDefinitionSectionMetaSource;
 
 /**
  * 资源controller
@@ -45,6 +46,9 @@ public class ResourceAdminController {
 	@Autowired
 	private AuthorityToResourceMapper authorityToResourceMapper;
 	
+	@Autowired
+	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
+	
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -58,7 +62,17 @@ public class ResourceAdminController {
 		model.addAttribute( "system_resourceclass", Const.MENU_SUB );
 	}
 	
-	
+	/**
+	 * 刷新全局权限资源
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/refreshGlobal")
+	@ResponseBody
+	public JsonResult refreshShiroResources() throws Exception {
+		chainDefinitionSectionMetaSource.reLoad();
+		return new JsonResult( ExceptionCode.SUCCESSFUL );
+    }
 
 	@RequestMapping("/list")
 	public String list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
