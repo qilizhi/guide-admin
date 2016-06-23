@@ -353,6 +353,10 @@
 			
 	};
 
+	//改变span显示的成人价
+	function changePrice(dom){
+		$(dom).parent().prev().html("<dfn>¥</dfn>"  + dom.value);
+	}
 	
 	$(function(){
 		
@@ -374,7 +378,7 @@
 		var $mTemp = '<div class="price-edit" style="width: 50px;color:black;">'
 	       /*  +'<input type="text" name="minprice" value="" placeholder="美丽价" title="美丽价">' */
 	        +'<input type="hidden" name="id" value="">'
-	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value=""> '
+	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value="" onChange="changePrice(this)"> '
 	        +'<input type="text" name="data-eprice" placeholder="儿童价" title="儿童价" value="">'
  	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'

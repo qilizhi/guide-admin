@@ -305,7 +305,6 @@
 					//var mlxPrice = $(obj).attr("minprice");
 					var date = $(obj).attr("data-full-date");
 					//var $b = mlxPrice.length > 0 ? parseInt(mlxPrice, 0) : 0;
-					
 					var roomDiffPrice =$(obj).attr("data-roomDiffPrice"); //$BasePrices.roomDiffPrice;	
 					var safePrice =$(obj).attr("data-safePrice"); //$BasePrices.safePrice;	
 					var visaPrice =$(obj).attr("data-visaPrice"); // $BasePrices.visaPrice;	
@@ -338,6 +337,10 @@
 			
 	};
 
+	//改变span显示的成人价
+	function changePrice(dom){
+		$(dom).parent().prev().html("<dfn>¥</dfn>"  + dom.value);
+	}
 	
 	$(function(){
 		
@@ -359,14 +362,14 @@
 		var $mTemp = '<div class="price-edit" style="width: 50px;color:black;">'
 	     //   +'<input type="text" name="minprice" value="" placeholder="美丽价" title="美丽价">'
 	   		+'<input type="hidden" name="id" value="">'
-	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value="">'
+	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value="" onChange="changePrice(this)" >'
 	        +'<input type="text" name="data-eprice" placeholder="儿童价" title="儿童价" value="">'
 	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
 	        +'<input type="text" name="data-visaPrice" placeholder="签证费" title="签证费" value="">'
 	        +'<input type="text" name="data-num" placeholder="人数" title="人数" value=""  readonly="readonly"></div>'; 
 	        
-	   
+	        
 	      
 		 $("#priceCalendar").priceCalendar({
 				showMonthNum: 5, //日历显示月份
@@ -398,7 +401,7 @@
 			    	if($("#visaPrice").val().length <= 0){
 			    		$("#visaPrice").val(jsonObj.visaPrice);
 			    	}
-			    	//拿页面num值
+			    	//拿页面num值,满员人数从线路中获取
 			    	var $lineNum=$("input[type='hidden'][name=num]").val();
 			    	if($("#num").val().length <= 0){
 			    		//$("#num").val(jsonObj.num);
@@ -424,7 +427,7 @@
 			    },
 			    //td点击事件
 			    tdClick: function(obj,date,price,cprice,eprice,currTdObj) {
-			    	console.log(currTdObj);
+			    	//console.log(currTdObj);
 			    	if($("div.price-edit",currTdObj).length <= 0){
 			    		var temp = $($mTemp).appendTo(currTdObj);
 			    		var dataType = $(currTdObj).attr("data-routeordertype");
@@ -466,15 +469,16 @@
 			    		$("span.price",currTdObj).hide();
 			    	}
 			    	document.onclick=function(e){
-						  //隐藏日历中的价格
+			    		//隐藏日历中的价格
 			    		if(!(e.target.className=='td lowest'||e.target.name=='data-cprice'||e.target.name=='data-eprice'
 			    			||e.target.name=='data-roomDiffPrice'||e.target.name=='data-safePrice'
 			    				||e.target.name=='data-visaPrice'||e.target.name=='data-num'||e.target.className=='date')){
 			    			$("div.price-edit").remove();
 			    			$("span.price").show();	
+			    			
 			    		}
 					}
-			    
+			    	
 			    },
 			    prevMonthButtonClick:function(){},
 			    nextMonthButtonClick:function(){}
@@ -495,7 +499,12 @@
 					comm.infoMsg("请输入成人价",null,150);
 					return;
 				}
-				
+				//儿童价不能为空
+				if($.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) <= 0){
+					comm.infoMsg("请输入儿童价",null,150);
+					return;
+				}
 				//请输入保险价
 				if($.trim($BasePrices.safePrice).length <= 0 
 						|| parseInt($BasePrices.safePrice,0) <= 0){
@@ -520,7 +529,7 @@
 				//日期选择检查
 				if(!$mPriceEdit.checkDateValid())return;
 				
-				//json生成
+				//json生成,获取td中最新(编辑过的价格)的价格保存到$data中
 				var $data = $mPriceEdit.getRoutePriceData();
 				if($data.length <= 0){
 					comm.infoMsg("请生成日期价格数据",null,150);
@@ -555,6 +564,12 @@
 				if($.trim($BasePrices.adultPrice).length <= 0 
 						|| parseInt($BasePrices.adultPrice,0) <= 0){
 					comm.infoMsg("请输入成人价");
+					return;
+				}
+				//儿童价不能为空
+				if($.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) <= 0){
+					comm.infoMsg("请输入儿童价",null,150);
 					return;
 				}
 				//成人价必须 > 儿童价
@@ -595,7 +610,7 @@
 					$(obj).attr("data-num",$BasePrices.num);
 					
 					$(obj).attr("data-routeordertype",$value);
-					$("span.price",$(obj)).html("<dfn>¥</dfn>"  +$BasePrices.adultPrice  );  // + $BasePrices.mlxPrice
+					$("span.price",$(obj)).html("<dfn>¥</dfn>"  + $BasePrices.adultPrice  );  // + $BasePrices.mlxPrice
 					//$("input[type='text'][name='minprice']",$(obj)).val($BasePrices.mlxPrice);
 					$("input[type='text'][name='eprice']",$(obj)).val($BasePrices.childPrice);
 					//$("input[type='text'][name='data-cprice']",$(obj)).val($BasePrices.adultPrice);

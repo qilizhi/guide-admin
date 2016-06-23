@@ -365,6 +365,10 @@
 			
 	};
 
+	//改变span显示的成人价
+	function changePrice(dom){
+		$(dom).parent().prev().html("<dfn>¥</dfn>"  + dom.value);
+	}
 	
 	$(function(){
 		
@@ -385,7 +389,7 @@
 		var $mTemp = '<div class="price-edit" style="width: 50px;color:black;">'
 	     //   +'<input type="text" name="minprice" value="" placeholder="美丽价" title="美丽价">'
 	    	+'<input type="hidden" name="id" value="">'
-	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value="">'
+	        +'<input type="text" name="data-cprice" placeholder="成人价" title="成人价" value="" onChange="changePrice(this)">'
 	        +'<input type="text" name="data-eprice" placeholder="儿童价" title="儿童价" value="">'
 	        +'<input type="text" name="data-roomDiffPrice" placeholder="房差" title="房差" value="">'
 	        +'<input type="text" name="data-safePrice" placeholder="保险价" title="保险价" value="">'
@@ -522,6 +526,12 @@
 					comm.infoMsg("请输入成人价",null,150);
 					return;
 				}
+				//儿童价不能为空
+				if($.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) <= 0){
+					comm.infoMsg("请输入儿童价",null,150);
+					return;
+				}
 				//请输入保险价,人数
 				if($.trim($BasePrices.safePrice).length <= 0 
 						|| parseInt($BasePrices.safePrice,0) <= 0
@@ -582,6 +592,12 @@
 				if($.trim($BasePrices.adultPrice).length <= 0 
 						|| parseInt($BasePrices.adultPrice,0) <= 0){
 					comm.infoMsg("请输入成人价");
+					return;
+				}
+				//儿童价不能为空
+				if($.trim($BasePrices.childPrice).length <= 0 
+						|| parseInt($BasePrices.childPrice,0) <= 0){
+					comm.infoMsg("请输入儿童价",null,150);
 					return;
 				}
 				//成人价必须 > 儿童价
