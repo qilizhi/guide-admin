@@ -141,26 +141,31 @@ var comm = {
 			},
 			showMsg:function (type, title, msg) {
 				//消息提示type :success,info,warning,error
+				toastr.clear();
 				toastr.options.positionClass = "toast-top-center";
 				toastr[type](title, msg);
 			},
 			successMsg:function (msg) {
 				//消息提示type :success,info,warning,error
+				toastr.clear();
 				toastr.options.positionClass = "toast-top-center";
 				toastr["success"]("成功", msg);
 			},
 			infoMsg:function (msg) {
 				//消息提示type :success,info,warning,error
+				toastr.clear();
 				toastr.options.positionClass = "toast-top-center";
 				toastr["info"]("提示", msg);
 			},
 			warningMsg:function (msg) {
 				//消息提示type :success,info,warning,error
+				toastr.clear();
 				toastr.options.positionClass = "toast-top-center";
 				toastr["warning"]("警告", msg);
 			},
 			errorMsg:function (msg) {
 				//消息提示type :success,info,warning,error
+				toastr.clear();
 				toastr.options.positionClass = "toast-top-center";
 				toastr["error"]("错误", msg);
 			},
