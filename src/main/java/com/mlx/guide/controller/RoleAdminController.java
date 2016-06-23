@@ -23,10 +23,12 @@ import com.mlx.guide.model.Tree;
 import com.mlx.guide.service.AuthorityService;
 import com.mlx.guide.service.RoleService;
 import com.mlx.guide.service.RoleToAuthorityService;
+import com.mlx.guide.shiro.ChainDefinitionSectionMetaSource;
 import com.mlx.guide.util.StringUtil;
 
 /**
  * 角色Controller
+ * 
  * @author QiQi-04-PC
  *
  */
@@ -40,9 +42,9 @@ public class RoleAdminController {
 	private AuthorityService authorityService;
 	@Autowired
 	private RoleToAuthorityService roleToAuthorityService;
-	
-	
-	
+	@Autowired
+	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
+
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
 	 * 
@@ -50,16 +52,13 @@ public class RoleAdminController {
 	 * @param model
 	 */
 	@ModelAttribute
-	public void common( Model model ) {
-		model.addAttribute( "systemclass", Const.MENU_FIRST );
-		model.addAttribute( "system_roleclass", Const.MENU_SUB );
+	public void common(Model model) {
+		model.addAttribute("systemclass", Const.MENU_FIRST);
+		model.addAttribute("system_roleclass", Const.MENU_SUB);
 	}
-	
-	
-	
-	
-	
-	/** 新增
+
+	/**
+	 * 新增
 	 * 
 	 * @param authority
 	 * @return
@@ -98,7 +97,6 @@ public class RoleAdminController {
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
-
 	/**
 	 * 更新
 	 * 
@@ -121,7 +119,6 @@ public class RoleAdminController {
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
-
 	/**
 	 * 页面列表跳转
 	 * 
@@ -133,8 +130,6 @@ public class RoleAdminController {
 		return basePath + "list";
 	}
 
-	
-
 	/**
 	 * 根据roleID 加载权限树 ,并打给树上checked
 	 * 
@@ -143,7 +138,7 @@ public class RoleAdminController {
 	@RequestMapping("/authorityTree")
 	@ResponseBody
 	public JsonResult loadTreeByRoleId(@RequestParam("roleId") Integer roleId) {
-	
+
 		List<Tree> authorityTree;
 		List<Tree> AT;
 		// 查找已授权的树并添加标识
@@ -152,10 +147,10 @@ public class RoleAdminController {
 			authorityTree = authorityService.getAllTree();
 			AT = new ArrayList<Tree>();
 			rts = roleToAuthorityService.selectByRoleId(roleId);
-			AT=authorityService.tagTree(rts,authorityTree);
+			AT = authorityService.tagTree(rts, authorityTree);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			return new JsonResult(ExceptionCode.FAIL,e.getMessage());
+			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
 		return new JsonResult(ExceptionCode.SUCCESSFUL, AT);
 	}
@@ -168,11 +163,11 @@ public class RoleAdminController {
 	@ResponseBody
 	public JsonResult loadRoleTree() {
 
-		List<Tree> authorityTree=new ArrayList<>();
+		List<Tree> authorityTree = new ArrayList<>();
 		try {
 			authorityTree = roleService.getAllTree();
 		} catch (Exception e) {
-		
+
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL, e.getMessage());
 		}
@@ -182,37 +177,42 @@ public class RoleAdminController {
 
 	/**
 	 * 根据用户角色ID及权限ID插入授权
+	 * 
 	 * @param roleId
 	 * @param authorityIds
 	 * @return
 	 */
 	@RequestMapping("/insertByRoleIdAndAuthIds")
 	@ResponseBody
-	public JsonResult insertAuthorityToRole(Integer roleId,String authorityIds){
-		Map<String,Object> params=new HashMap<String,Object>();
+	public JsonResult insertAuthorityToRole(Integer roleId, String authorityIds) {
+		Map<String, Object> params = new HashMap<String, Object>();
 		List<Integer> idsList = StringUtil.generateListInteger(authorityIds);
 		params.put("authorityIds", idsList);
 		params.put("roleId", roleId);
 		try {
-			/*先删除后插入*/
+			/* 先删除后插入 */
 			roleToAuthorityService.batDelete(params);
 			roleToAuthorityService.batInsert(params);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
 		}
+		// 刷新资源shiro chain
+		chainDefinitionSectionMetaSource.reLoad();
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
+
 	/**
 	 * 根据用户角色Id及权限ID 删除
+	 * 
 	 * @param roleId
 	 * @param authorityIds
 	 * @return
 	 */
 	@RequestMapping("/deleteByRoleIdAndAuthIds")
 	@ResponseBody
-	public JsonResult deleteAuthorityToRole(Integer roleId,String authorityIds){
-		Map<String,Object> params=new HashMap<String,Object>();
+	public JsonResult deleteAuthorityToRole(Integer roleId, String authorityIds) {
+		Map<String, Object> params = new HashMap<String, Object>();
 		List<Integer> idsList = StringUtil.generateListInteger(authorityIds);
 		params.put("authorityIds", idsList);
 		params.put("roleId", roleId);
@@ -222,8 +222,8 @@ public class RoleAdminController {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
 		}
+		chainDefinitionSectionMetaSource.reLoad();
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 
-	
 }
