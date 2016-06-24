@@ -185,6 +185,7 @@ public class ResourceAdminController {
 		try {
 
 			resourceService.updateByPrimaryKeySelective(resource);
+			chainDefinitionSectionMetaSource.reLoad();
 			ajaxResult = new JsonResult(ExceptionCode.SUCCESSFUL, resource);
 
 		} catch (Exception e) {
