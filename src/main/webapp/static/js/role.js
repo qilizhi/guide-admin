@@ -267,7 +267,7 @@ var UITree = function() {
 				// $('#tree_2').removeData();
 				$('#tree_2').jstree('destroy');
 				// $(document).off('.jstree');
-				//console.log($.jstree.reference("tree_2"));
+				//console.log(authorityData);
 				$('#tree_2').jstree({
 					'plugins' : [ "checkbox", "types" ],
 					'core' : {
@@ -453,36 +453,6 @@ var UITree = function() {
 /** *******选择资源的处理 start*********************** */
 var UImultiSelect = function() {
 
-	var addUrl = mlx.ctx + "/admin/actInfo/create";
-	var updateUrl = mlx.ctx + "/admin/actInfo/update";
-	var delUrl = mlx.ctx + "/admin/actInfo/delete";
-	var batdelUrl = mlx.ctx + "/admin/actInfo/deletes";
-	var getUrl = mlx.ctx + "/admin/actInfo";
-	// 获取对信息
-	var get = function(id) {
-		var url = getUrl + "/" + id;
-		var data;
-		$.ajax({
-			url : url,
-			type : 'get',
-			dataType:"json",
-			async : false,
-			success : function(result) {
-				if (result.code == "200") {
-					data = result.result;
-				} else {
-					return false;
-				}
-			},
-			error : function(e) {
-
-				$("#message").html("请求出错！");
-			}
-		});
-
-		return data;
-
-	}
 	// 获取选 中的权限树Id
 	var getSelectedRoleId = function() {
 		nodeArray = $('#tree_3').jstree('get_selected')[0];

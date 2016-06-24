@@ -161,9 +161,9 @@
 		<script
 			src="${ctx }/static/assets/global/plugins/jquery-multi-select/js/jquery.quicksearch.js"
 			type="text/javascript"></script>
-		<script
+		<%-- <script
 			src="${ctx }/static/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"
-			type="text/javascript"></script>
+			type="text/javascript"></script> --%>
 		<script
 			src="${ctx }/static/assets/global/plugins/jstree/dist/jstree.min.js"
 			type="text/javascript"></script>

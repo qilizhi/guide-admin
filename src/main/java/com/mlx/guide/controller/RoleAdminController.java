@@ -217,7 +217,7 @@ public class RoleAdminController {
 		params.put("authorityIds", idsList);
 		params.put("roleId", roleId);
 		try {
-			roleToAuthorityService.batInsert(params);
+			roleToAuthorityService.batDelete(params);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
