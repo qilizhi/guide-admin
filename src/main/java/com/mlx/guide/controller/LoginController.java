@@ -38,6 +38,9 @@ import com.mlx.guide.util.StringUtil;
 public class LoginController {
 
 	private static Logger logger = LoggerFactory.getLogger( LoginController.class );
+	
+	@Autowired
+	private ChainDefinitionSectionMetaSource chainDefinitionSectionMetaSource;
 
 	/**
 	 * 平台登录
@@ -159,6 +162,7 @@ public class LoginController {
 			ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 			// 使用权限管理工具进行用户的退出，跳出登录，给出提示信息
 			SecurityUtils.getSubject().logout();
+			chainDefinitionSectionMetaSource.reLoad();
 			if( shiroUser != null && shiroUser.getUserType() == EUserType.PLATFORM_USER ) {
 				// 平台用户跳转到平台首页页面
 				return "redirect:/admin";

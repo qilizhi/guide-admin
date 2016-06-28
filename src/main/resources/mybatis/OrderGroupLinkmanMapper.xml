@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.OrderGroupLinkmanMapper" >
+  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.OrderGroupLinkman" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="BIT" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_goods_id" property="orderGoodsId" jdbcType="INTEGER" />
+    <result column="group_date" property="groupDate" jdbcType="INTEGER" />
+    <result column="group_no" property="groupNo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_no, user_type, order_id, order_goods_id, group_date, group_no, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
+    select 'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from order_group_linkman
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="Long" >
+    delete from order_group_linkman
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.mlx.guide.entity.OrderGroupLinkman" >
+    insert into order_group_linkman (id, user_no, user_type, 
+      order_id, order_goods_id, group_date, 
+      group_no, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{userNo,jdbcType=VARCHAR}, #{userType,jdbcType=BIT}, 
+      #{orderId,jdbcType=VARCHAR}, #{orderGoodsId,jdbcType=INTEGER}, #{groupDate,jdbcType=INTEGER}, 
+      #{groupNo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mlx.guide.entity.OrderGroupLinkman" >
+    insert into order_group_linkman
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderGoodsId != null" >
+        order_goods_id,
+      </if>
+      <if test="groupDate != null" >
+        group_date,
+      </if>
+      <if test="groupNo != null" >
+        group_no,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=BIT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderGoodsId != null" >
+        #{orderGoodsId,jdbcType=INTEGER},
+      </if>
+      <if test="groupDate != null" >
+        #{groupDate,jdbcType=INTEGER},
+      </if>
+      <if test="groupNo != null" >
+        #{groupNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.OrderGroupLinkman" >
+    update order_group_linkman
+    <set >
+      <if test="userNo != null" >
+        user_no = #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=BIT},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderGoodsId != null" >
+        order_goods_id = #{orderGoodsId,jdbcType=INTEGER},
+      </if>
+      <if test="groupDate != null" >
+        group_date = #{groupDate,jdbcType=INTEGER},
+      </if>
+      <if test="groupNo != null" >
+        group_no = #{groupNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.OrderGroupLinkman" >
+    update order_group_linkman
+    set user_no = #{userNo,jdbcType=VARCHAR},
+      user_type = #{userType,jdbcType=BIT},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      order_goods_id = #{orderGoodsId,jdbcType=INTEGER},
+      group_date = #{groupDate,jdbcType=INTEGER},
+      group_no = #{groupNo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

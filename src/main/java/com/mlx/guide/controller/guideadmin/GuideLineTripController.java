@@ -22,8 +22,8 @@ import com.mlx.guide.constant.ELineType;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideLine;
-import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
+import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.model.GuideLineTripModel;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
@@ -78,11 +78,13 @@ public class GuideLineTripController {
 			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
 			guideLineTrip.setLineNo(lineNo);
 			guideLineTrip.setFlag(EFlag.VALID.getId().byteValue());
-			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
+			List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip, pageBounds);
+			GuideLine gl = guideLineService.getGuideLineByLineNo(lineNo);
 			model.addAttribute("list", list);
 			model.addAttribute("lineNo", lineNo);
 			model.addAttribute("startDate", startDate);
 			model.addAttribute("endDate", endDate);
+			model.addAttribute("guideLine", gl);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -102,7 +104,7 @@ public class GuideLineTripController {
 	public String edit(@PathVariable String lineNo, GuideLineTrip guideLineTrip, Model model) {
 		try {
 			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
-			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
+			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip, pageBounds);
 			model.addAttribute("list", trips);
 			model.addAttribute("lineNo", lineNo);
 		} catch (Exception e) {
@@ -113,16 +115,19 @@ public class GuideLineTripController {
 
 	/**
 	 * 新增或修改
+	 * 
 	 * @param guideLineTripModel
-	 * @param lineNo 线路编号
-	 * @param startDate 价格页面需要保留的开始时间和结束时间
+	 * @param lineNo
+	 *            线路编号
+	 * @param startDate
+	 *            价格页面需要保留的开始时间和结束时间
 	 * @param endDate
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/save")
 	public String add(GuideLineTripModel guideLineTripModel, @RequestParam(value = "lineNo") String lineNo,
-			@RequestParam String startDate, @RequestParam String endDate,Model model) {
+			@RequestParam String startDate, @RequestParam String endDate, Model model) {
 		try {
 
 			model.addAttribute("lineNo", lineNo);
@@ -131,8 +136,7 @@ public class GuideLineTripController {
 			model.addAttribute("line", line);
 			model.addAttribute("ELineType", ELineType.getMap());
 			// 价格
-			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-					.getGuideLineDatePriceByLineNo(lineNo);
+			List<GuideTuan> lsGuideLineDatePrices = guideLineDatePriceService.getGuideLineDatePriceByGoodsNo(lineNo);
 			model.addAttribute("lsPrices", lsGuideLineDatePrices);
 			// 更新行程
 			guideLineTripService.updateBitchSelective(guideLineTripModel.getGuideLineTrips());
@@ -140,7 +144,7 @@ public class GuideLineTripController {
 			GuideLineTrip guideLineTrip = new GuideLineTrip();
 			guideLineTrip.setLineNo(lineNo);
 			PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
-			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
+			List<GuideLineTrip> trips = guideLineTripService.getGuideLineTripPageList(guideLineTrip, pageBounds);
 			model.addAttribute("trips", trips);
 			model.addAttribute("startDate", startDate);
 			model.addAttribute("endDate", endDate);

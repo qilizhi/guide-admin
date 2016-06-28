@@ -316,7 +316,7 @@
 						if(adultPrice!=null&&adultPrice!=''&&adultPrice!=undefined){
 						var lineDatePrice = {};
 						lineDatePrice.id = id;
-						lineDatePrice.lineNo = routeid;
+						lineDatePrice.goodsNo = routeid;
 						lineDatePrice.adultPrice = adultPrice;
 						lineDatePrice.childPrice = childPrice;
 						//lineDatePrice.mlxPrice = mlxPrice;
@@ -324,7 +324,7 @@
 						lineDatePrice.safePrice = safePrice;
 						lineDatePrice.visaPrice = visaPrice;
 						lineDatePrice.num = num; 
-						lineDatePrice.lineDate = date;
+						lineDatePrice.tuanDate = date;
 						lineDatePrice.tuanNo = tuanNo;
 						$routePrices.push(lineDatePrice);	
 					}
@@ -495,26 +495,26 @@
 				var $BasePrices = $mPriceEdit.getBasePrice();
 				//成人价不能为空
 				if($.trim($BasePrices.adultPrice).length <= 0 
-						|| parseInt($BasePrices.adultPrice,0) <= 0){
+						|| parseFloat($BasePrices.adultPrice,2) < 0){
 					comm.infoMsg("请输入成人价",null,150);
 					return;
 				}
 				//儿童价不能为空
 				if($.trim($BasePrices.childPrice).length <= 0 
-						|| parseInt($BasePrices.childPrice,0) <= 0){
+						|| parseFloat($BasePrices.childPrice,2) < 0){
 					comm.infoMsg("请输入儿童价",null,150);
 					return;
 				}
 				//请输入保险价
 				if($.trim($BasePrices.safePrice).length <= 0 
-						|| parseInt($BasePrices.safePrice,0) <= 0){
+						|| parseFloat($BasePrices.safePrice,2) < 0){
 					comm.infoMsg("请输入保险价",null,150);
 					return;
 				} 
 				//成人价必须 > 儿童价
 			 	if($.trim($BasePrices.adultPrice).length <= 0 
-						|| $.trim($BasePrices.childPrice).length <= 0 
-						|| parseInt($BasePrices.childPrice,0) > parseInt($BasePrices.adultPrice,0)){
+						|| $.trim($BasePrices.childPrice).length < 0 
+						|| parseFloat($BasePrices.childPrice,2) > parseFloat($BasePrices.adultPrice,2)){
 					comm.infoMsg("成人价不能小于儿童价",null,150);
 					return;
 				} 

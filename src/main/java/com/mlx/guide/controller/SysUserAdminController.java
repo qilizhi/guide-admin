@@ -106,6 +106,25 @@ public class SysUserAdminController {
 		return new JsonResult(ExceptionCode.SUCCESSFUL);
 	}
 	
+	/*导游用户列表*/
+	
+	@RequestMapping("/guideUser/list")
+	public String list(@RequestParam( value = "pageNo", defaultValue = "1" ) Integer pageNo,
+	        @RequestParam( value = "pageSize", defaultValue = Const.PAGE_SIZE ) Integer pageSize,Model model,UserInfo userInfo){
+		PageBounds pageBounds = new PageBounds( pageNo, pageSize, Order.formString( "id.desc" ) );
+		PageList<UserInfo> list = userService.getUserInfoPageList(userInfo, pageBounds);
+		model.addAttribute( "paginator",list.getPaginator());			
+		model.addAttribute("list",list);
+		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("userInfo", userInfo);
+		return "/admin/guideUser/list";
+		
+	}
+	
+	
+	
+	
 	   /**
 		 * 平台用户列表
 		 * 

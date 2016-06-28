@@ -242,14 +242,14 @@
 									
 										<c:forEach items="${lsPrices}" var="item">
 											<tr>
-												<td>${item.lineNo}</td>
+												<td>${item.goodsNo}</td>
 												<td>${item.adultPrice}</td>
 												<td>${item.childPrice}</td>
 												<td>${item.roomDiffPrice}</td>
 												<td>${item.safePrice}</td>
 												<td>${item.visaPrice}</td>
 												<td>${item.num}</td>
-												<td><fmt:formatDate value="${item.lineDate}" pattern="yyyy-MM-dd"/></td>
+												<td><fmt:formatDate value="${item.tuanDate}" pattern="yyyy-MM-dd"/></td>
 												
 											</tr>
 										</c:forEach>

@@ -22,9 +22,9 @@ import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideTuan;
-import com.mlx.guide.entity.GuideTuanGuest;
-import com.mlx.guide.service.GuideTuanGuestService;
+import com.mlx.guide.entity.OrderGroupTourist;
 import com.mlx.guide.service.GuideTuanService;
+import com.mlx.guide.service.OrderGroupTouristService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 
@@ -43,7 +43,7 @@ public class GuideTuanController {
 	@Autowired
 	private GuideTuanService guideTuanService;
 	@Autowired
-	private GuideTuanGuestService guideTuanGuestService;
+	private OrderGroupTouristService orderGroupTouristService;
 
 	@ModelAttribute
 	public void common(Model model) {
@@ -133,9 +133,9 @@ public class GuideTuanController {
 	public String tuanGuest(@PathVariable String tuanNo,
 			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, Model model) {
-		GuideTuanGuest guest = new GuideTuanGuest();
-		guest.setTuanNo(tuanNo);
-		PageList<GuideTuanGuest> lsGuests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
+		OrderGroupTourist guest = new OrderGroupTourist();
+		guest.setGroupNo(tuanNo);
+		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
 				new PageBounds(pageNo, pageSize));
 		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
 		model.addAttribute("pageSize", pageSize);
@@ -155,9 +155,9 @@ public class GuideTuanController {
 	 */
 	@RequestMapping(value = "/tuanGuest/search")
 	public String searchGuest(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, GuideTuanGuest guest,
+			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, OrderGroupTourist guest,
 			Model model) {
-		PageList<GuideTuanGuest> lsGuests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
+		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
 				new PageBounds(pageNo, pageSize));
 		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
 		model.addAttribute("pageSize", pageSize);

@@ -27,7 +27,7 @@ width
 @
 keyframes scoller { 0%{
 	width: 75%
-}
+}         
 
 100%{
 width
@@ -336,14 +336,14 @@ width
 
 															<c:forEach items="${lsPrices}" var="item">
 																<tr>
-																	<td>${item.lineNo}</td>
+																	<td>${item.goodsNo}</td>
 																	<td>${item.adultPrice}</td>
 																	<td>${item.childPrice}</td>
 																	<%-- <td>${item.mlxPrice}</td> --%>
 																	<td>${item.roomDiffPrice}</td>
 																	<td>${item.safePrice}</td>
 																	<td>${item.visaPrice}</td>
-																	<td><fmt:formatDate value="${item.lineDate}"
+																	<td><fmt:formatDate value="${item.tuanDate}"
 																			pattern="yyyy-MM-dd HH:mm:ss" /></td>
 
 																</tr>

@@ -3,7 +3,7 @@
 <mapper namespace="com.mlx.guide.dao.VirtualGoodsMapper">
 	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.VirtualGoods">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="name" property="title" jdbcType="VARCHAR" />
 		<result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
 		<result column="description" property="description" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -19,7 +19,7 @@
 		<result column="goods_type" property="goodsType" jdbcType="INTEGER" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, img_url, description, create_time, price, pub_time, status,
+		id, title, img_url, description, create_time, price, pub_time, status,
 		num, sort,
 		audit_remark, audit_time, audit_status,flag,goods_type
 	</sql>
@@ -30,7 +30,7 @@
 				and id=#{id} 
 			</if>
 			<if test="name !=null and name !=''">
-				and name like concat("%",#{name},"%")
+				and title like concat("%",#{title},"%")
 			</if>
 			<if test="imgUrl !=null and imgUrl !=''">
 				and img_url=#{imgUrl}
@@ -100,7 +100,7 @@
 			close=")">#{id,jdbcType=VARCHAR}</foreach>
 	</update>
 	<insert id="insert" parameterType="com.mlx.guide.entity.VirtualGoods">
-		insert into virtual_goods (id, name, img_url,
+		insert into virtual_goods (id, title, img_url,
 		description, create_time, price,
 		pub_time, status, num,
 		sort, audit_remark, audit_time,
@@ -122,7 +122,7 @@
 				id,
 			</if>
 			<if test="name != null">
-				name,
+				title,
 			</if>
 			<if test="imgUrl != null">
 				img_url,
@@ -216,7 +216,7 @@
 		update virtual_goods
 		<set>
 			<if test="name != null">
-				name = #{name,jdbcType=VARCHAR},
+				title = #{name,jdbcType=VARCHAR},
 			</if>
 			<if test="imgUrl != null">
 				img_url = #{imgUrl,jdbcType=VARCHAR},
@@ -262,7 +262,7 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.VirtualGoods">
 		update virtual_goods
-		set name = #{name,jdbcType=VARCHAR},
+		set title = #{name,jdbcType=VARCHAR},
 		img_url = #{imgUrl,jdbcType=VARCHAR},
 		description = #{description,jdbcType=VARCHAR},
 		create_time = #{createTime,jdbcType=TIMESTAMP},

@@ -1,271 +1,390 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.mlx.guide.dao.GuideTuanMapper" >
-  <resultMap id="BaseResultMap" type="com.mlx.guide.entity.GuideTuan" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="tuan_no" property="tuanNo" jdbcType="VARCHAR" />
-    <result column="tuan_date" property="tuanDate" jdbcType="DATE" />
-    <result column="goods_type" property="goodsType" jdbcType="TINYINT" />
-    <result column="goods_no" property="goodsNo" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="full_num" property="fullNum" jdbcType="INTEGER" />
-    <result column="person_num" property="personNum" jdbcType="INTEGER" />
-    <result column="order_num" property="orderNum" jdbcType="INTEGER" />
-    <result column="user_no" property="userNo" jdbcType="VARCHAR" />
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="tuan_status" property="tuanStatus" jdbcType="TINYINT" />
-	<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, name, tuan_no, tuan_date, goods_type, goods_no, create_time, full_num, person_num, 
-    order_num, user_no, user_name, tuan_status,update_time
-  </sql>
-  <sql id="Example_Where_Clause" >
-    <trim prefix="where" prefixOverrides="and|or" >
-    			<if test="id != null and id != ''" >
-			and id = #{id}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mlx.guide.dao.GuideTuanMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.GuideTuan">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="tuan_no" jdbcType="VARCHAR" property="tuanNo" />
+		<result column="tuan_date" jdbcType="DATE" property="tuanDate" />
+		<result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+		<result column="goods_no" jdbcType="VARCHAR" property="goodsNo" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="full_num" jdbcType="INTEGER" property="fullNum" />
+		<result column="person_num" jdbcType="INTEGER" property="personNum" />
+		<result column="order_num" jdbcType="INTEGER" property="orderNum" />
+		<result column="user_no" jdbcType="VARCHAR" property="userNo" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="tuan_status" jdbcType="TINYINT" property="tuanStatus" />
+		<result column="group_id" jdbcType="BIGINT" property="groupId" />
+		<result column="adult_price" jdbcType="DECIMAL" property="adultPrice" />
+		<result column="child_price" jdbcType="DECIMAL" property="childPrice" />
+		<result column="room_diff_price" jdbcType="DECIMAL" property="roomDiffPrice" />
+		<result column="safe_price" jdbcType="DECIMAL" property="safePrice" />
+		<result column="visa_price" jdbcType="DECIMAL" property="visaPrice" />
+		<result column="num" jdbcType="INTEGER" property="num" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, tuan_no, tuan_date, goods_type, goods_no,
+		create_time,
+		update_time, full_num,
+		person_num, order_num, user_no,
+		user_name, tuan_status, group_id, adult_price,
+		child_price,
+		room_diff_price, safe_price, visa_price, num
+	</sql>
+	<sql id="where_base">
+		<trim prefix="where " prefixOverrides="and||or">
+			<if test="id != null">
+				and id=#{id,jdbcType=INTEGER}
 			</if>
-			<if test="name != null and name != ''" >
-			and name like concat('%',#{name},'%')
+			<if test="name != null">
+				and name=#{name,jdbcType=VARCHAR}
 			</if>
-			<if test="tuanNo != null and tuanNo != ''" >
-			and tuan_no = #{tuanNo}
+			<if test="tuanNo != null">
+				and tuan_no =#{tuanNo,jdbcType=VARCHAR}
 			</if>
-			<if test="tuanDate != null and tuanDate != ''" >
-			and tuan_date = #{tuanDate}
+			<if test="tuanDate != null">
+				and tuan_date =#{tuanDate,jdbcType=DATE}
 			</if>
-			<if test="goodsType != null and goodsType != ''" >
-			and goods_type = #{goodsType}
+			<if test="goodsType != null">
+				and goods_type=#{goodsType,jdbcType=VARCHAR}
 			</if>
-			<if test="goodsNo != null and goodsNo != ''" >
-			and goods_no = #{goodsNo}
+			<if test="goodsNo != null">
+				and goods_no=#{goodsNo,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''" >
-			and create_time = #{createTime}
+			<if test="createTime != null">
+				and create_time=#{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="fullNum != null and fullNum != ''" >
-			and full_num = #{fullNum}
+			<if test="updateTime != null">
+				and update_time=#{updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="personNum != null and personNum != ''" >
-			and person_num = #{personNum}
+			<if test="fullNum != null">
+				and full_num=#{fullNum,jdbcType=INTEGER}
 			</if>
-			<if test="orderNum != null and orderNum != ''" >
-			and order_num = #{orderNum}
+			<if test="personNum != null">
+				and person_num=#{personNum,jdbcType=INTEGER}
 			</if>
-			<if test="userNo != null and userNo != ''" >
-			and user_no = #{userNo}
+			<if test="orderNum != null">
+				and order_num=#{orderNum,jdbcType=INTEGER}
 			</if>
-			<if test="userName != null and userName != ''" >
-			and user_name = #{userName}
+			<if test="userNo != null">
+				and user_no=#{userNo,jdbcType=VARCHAR}
 			</if>
-			<if test="tuanStatus != null and tuanStatus != ''" >
-			and tuan_status = #{tuanStatus}
+			<if test="userName != null">
+				and user_name=#{userName,jdbcType=VARCHAR}
 			</if>
-			<if test="updateTime != null and updateTime != ''" >
-			and update_time = #{updateTime}
+			<if test="tuanStatus != null">
+				and tuan_status=#{tuanStatus,jdbcType=TINYINT}
 			</if>
-			
+			<if test="groupId != null">
+				and group_id=#{groupId,jdbcType=BIGINT}
+			</if>
+			<if test="adultPrice != null">
+				and adult_price=#{adultPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="childPrice != null">
+				and child_price= #{childPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="roomDiffPrice != null">
+				and room_diff_price=#{roomDiffPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="safePrice != null">
+				and safe_price= #{safePrice,jdbcType=DECIMAL}
+			</if>
+			<if test="visaPrice != null">
+				and visa_price= #{visaPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="num != null">
+				and num=#{num,jdbcType=INTEGER}
+			</if>
+		</trim>
 
-    </trim>
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="Long" >
-    select 'false' as QUERYID,
-    <include refid="Base_Column_List" />
-    from guide_tuan
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  
-  <select id="getGuideTuanPageListByMap" resultMap="BaseResultMap" parameterType="map">
-    	SELECT 
-			<include refid="Base_Column_List" /> 
-			FROM guide_tuan
-			<include refid="Example_Where_Clause" />
-   </select> 
-  <select id="getGuideTuanPageList" resultMap="BaseResultMap" parameterType="com.mlx.guide.entity.GuideTuan">
-    	SELECT 
-			<include refid="Base_Column_List" /> 
-			FROM guide_tuan
-			<include refid="Example_Where_Clause" />
-  </select>
-<select id="countByDate"  resultType="java.lang.Long" parameterType="Integer">
-select count(g.id) from guide_tuan g where MONTH(g.create_time)=#{month}
-</select>
-  
-  <delete id="deleteByPrimaryKey" parameterType="Long" >
-    delete from guide_tuan
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  
-    <delete id="deleteGuideTuanByLineNo" parameterType="java.lang.String" >
-    delete from guide_tuan
-    where goods_no = #{goodsNo,jdbcType=VARCHAR}
-  </delete>
-  
-  
-  <insert id="insert" parameterType="com.mlx.guide.entity.GuideTuan" >
-    insert into guide_tuan (id, name, tuan_no, 
-      tuan_date, goods_type, goods_no, 
-      create_time, full_num, person_num, 
-      order_num, user_no, user_name, 
-      tuan_status,update_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tuanNo,jdbcType=VARCHAR}, 
-      #{tuanDate,jdbcType=DATE}, #{goodsType,jdbcType=TINYINT}, #{goodsNo,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{fullNum,jdbcType=INTEGER}, #{personNum,jdbcType=INTEGER}, 
-      #{orderNum,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{tuanStatus,jdbcType=TINYINT},#{updateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideTuan"  keyColumn="id" useGeneratedKeys="true">
-    insert into guide_tuan
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="tuanNo != null" >
-        tuan_no,
-      </if>
-      <if test="tuanDate != null" >
-        tuan_date,
-      </if>
-      <if test="goodsType != null" >
-        goods_type,
-      </if>
-      <if test="goodsNo != null" >
-        goods_no,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="fullNum != null" >
-        full_num,
-      </if>
-      <if test="personNum != null" >
-        person_num,
-      </if>
-      <if test="orderNum != null" >
-        order_num,
-      </if>
-      <if test="userNo != null" >
-        user_no,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="tuanStatus != null" >
-        tuan_status,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="tuanNo != null" >
-        #{tuanNo,jdbcType=VARCHAR},
-      </if>
-      <if test="tuanDate != null" >
-        #{tuanDate,jdbcType=DATE},
-      </if>
-      <if test="goodsType != null" >
-        #{goodsType,jdbcType=TINYINT},
-      </if>
-      <if test="goodsNo != null" >
-        #{goodsNo,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="fullNum != null" >
-        #{fullNum,jdbcType=INTEGER},
-      </if>
-      <if test="personNum != null" >
-        #{personNum,jdbcType=INTEGER},
-      </if>
-      <if test="orderNum != null" >
-        #{orderNum,jdbcType=INTEGER},
-      </if>
-      <if test="userNo != null" >
-        #{userNo,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="tuanStatus != null" >
-        #{tuanStatus,jdbcType=TINYINT},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideTuan" >
-    update guide_tuan
-    <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="tuanNo != null" >
-        tuan_no = #{tuanNo,jdbcType=VARCHAR},
-      </if>
-      <if test="tuanDate != null" >
-        tuan_date = #{tuanDate,jdbcType=DATE},
-      </if>
-      <if test="goodsType != null" >
-        goods_type = #{goodsType,jdbcType=TINYINT},
-      </if>
-      <if test="goodsNo != null" >
-        goods_no = #{goodsNo,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="fullNum != null" >
-        full_num = #{fullNum,jdbcType=INTEGER},
-      </if>
-      <if test="personNum != null" >
-        person_num = #{personNum,jdbcType=INTEGER},
-      </if>
-      <if test="orderNum != null" >
-        order_num = #{orderNum,jdbcType=INTEGER},
-      </if>
-      <if test="userNo != null" >
-        user_no = #{userNo,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="tuanStatus != null" >
-        tuan_status = #{tuanStatus,jdbcType=TINYINT},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.GuideTuan" >
-    update guide_tuan
-    set name = #{name,jdbcType=VARCHAR},
-      tuan_no = #{tuanNo,jdbcType=VARCHAR},
-      tuan_date = #{tuanDate,jdbcType=DATE},
-      goods_type = #{goodsType,jdbcType=TINYINT},
-      goods_no = #{goodsNo,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      full_num = #{fullNum,jdbcType=INTEGER},
-      person_num = #{personNum,jdbcType=INTEGER},
-      order_num = #{orderNum,jdbcType=INTEGER},
-      user_no = #{userNo,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      tuan_status = #{tuanStatus,jdbcType=TINYINT},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+	</sql>
+
+	<select id="countByDate" parameterType="Integer" resultType="java.lang.Long">
+		select count(g.id) from guide_tuan g where
+		MONTH(g.create_time)=#{month}
+	</select>
+
+	<select id="getLineDateByGoodsNo" parameterType="String"
+		resultType="Map">
+		select MIN(tuan_date) as startDate ,MAX(tuan_date) as endDate from
+		guide_tuan where goods_no = #{goodsNo};
+	</select>
+	<select id="getGuideTuanPageList" parameterType="com.mlx.guide.entity.GuideTuan"
+		resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" />
+		from guide_tuan
+		<include refid="where_base"></include>
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="Long" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from guide_tuan
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from guide_tuan
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.mlx.guide.entity.GuideTuan">
+		insert into guide_tuan (id, name, tuan_no,
+		tuan_date, goods_type, goods_no,
+		create_time, update_time, full_num,
+		person_num, order_num, user_no,
+		user_name, tuan_status, group_id,
+		adult_price, child_price, room_diff_price,
+		safe_price, visa_price, num
+		)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{tuanNo,jdbcType=VARCHAR},
+		#{tuanDate,jdbcType=DATE}, #{goodsType,jdbcType=VARCHAR}, #{goodsNo,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+		#{fullNum,jdbcType=INTEGER},
+		#{personNum,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR}, #{tuanStatus,jdbcType=TINYINT},
+		#{groupId,jdbcType=BIGINT},
+		#{adultPrice,jdbcType=DECIMAL}, #{childPrice,jdbcType=DECIMAL}, #{roomDiffPrice,jdbcType=DECIMAL},
+		#{safePrice,jdbcType=DECIMAL}, #{visaPrice,jdbcType=DECIMAL},
+		#{num,jdbcType=INTEGER}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideTuan">
+		insert into guide_tuan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="tuanNo != null">
+				tuan_no,
+			</if>
+			<if test="tuanDate != null">
+				tuan_date,
+			</if>
+			<if test="goodsType != null">
+				goods_type,
+			</if>
+			<if test="goodsNo != null">
+				goods_no,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="fullNum != null">
+				full_num,
+			</if>
+			<if test="personNum != null">
+				person_num,
+			</if>
+			<if test="orderNum != null">
+				order_num,
+			</if>
+			<if test="userNo != null">
+				user_no,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="tuanStatus != null">
+				tuan_status,
+			</if>
+			<if test="groupId != null">
+				group_id,
+			</if>
+			<if test="adultPrice != null">
+				adult_price,
+			</if>
+			<if test="childPrice != null">
+				child_price,
+			</if>
+			<if test="roomDiffPrice != null">
+				room_diff_price,
+			</if>
+			<if test="safePrice != null">
+				safe_price,
+			</if>
+			<if test="visaPrice != null">
+				visa_price,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="tuanNo != null">
+				#{tuanNo,jdbcType=VARCHAR},
+			</if>
+			<if test="tuanDate != null">
+				#{tuanDate,jdbcType=DATE},
+			</if>
+			<if test="goodsType != null">
+				#{goodsType,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsNo != null">
+				#{goodsNo,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fullNum != null">
+				#{fullNum,jdbcType=INTEGER},
+			</if>
+			<if test="personNum != null">
+				#{personNum,jdbcType=INTEGER},
+			</if>
+			<if test="orderNum != null">
+				#{orderNum,jdbcType=INTEGER},
+			</if>
+			<if test="userNo != null">
+				#{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="tuanStatus != null">
+				#{tuanStatus,jdbcType=TINYINT},
+			</if>
+			<if test="groupId != null">
+				#{groupId,jdbcType=BIGINT},
+			</if>
+			<if test="adultPrice != null">
+				#{adultPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="childPrice != null">
+				#{childPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="roomDiffPrice != null">
+				#{roomDiffPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="safePrice != null">
+				#{safePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="visaPrice != null">
+				#{visaPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.GuideTuan">
+		update guide_tuan
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="tuanNo != null">
+				tuan_no = #{tuanNo,jdbcType=VARCHAR},
+			</if>
+			<if test="tuanDate != null">
+				tuan_date = #{tuanDate,jdbcType=DATE},
+			</if>
+			<if test="goodsType != null">
+				goods_type = #{goodsType,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsNo != null">
+				goods_no = #{goodsNo,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fullNum != null">
+				full_num = #{fullNum,jdbcType=INTEGER},
+			</if>
+			<if test="personNum != null">
+				person_num = #{personNum,jdbcType=INTEGER},
+			</if>
+			<if test="orderNum != null">
+				order_num = #{orderNum,jdbcType=INTEGER},
+			</if>
+			<if test="userNo != null">
+				user_no = #{userNo,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="tuanStatus != null">
+				tuan_status = #{tuanStatus,jdbcType=TINYINT},
+			</if>
+			<if test="groupId != null">
+				group_id = #{groupId,jdbcType=BIGINT},
+			</if>
+			<if test="adultPrice != null">
+				adult_price = #{adultPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="childPrice != null">
+				child_price = #{childPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="roomDiffPrice != null">
+				room_diff_price = #{roomDiffPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="safePrice != null">
+				safe_price = #{safePrice,jdbcType=DECIMAL},
+			</if>
+			<if test="visaPrice != null">
+				visa_price = #{visaPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.GuideTuan">
+		update guide_tuan
+		set name = #{name,jdbcType=VARCHAR},
+		tuan_no = #{tuanNo,jdbcType=VARCHAR},
+		tuan_date = #{tuanDate,jdbcType=DATE},
+		goods_type = #{goodsType,jdbcType=VARCHAR},
+		goods_no = #{goodsNo,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		full_num = #{fullNum,jdbcType=INTEGER},
+		person_num = #{personNum,jdbcType=INTEGER},
+		order_num = #{orderNum,jdbcType=INTEGER},
+		user_no = #{userNo,jdbcType=VARCHAR},
+		user_name = #{userName,jdbcType=VARCHAR},
+		tuan_status = #{tuanStatus,jdbcType=TINYINT},
+		group_id = #{groupId,jdbcType=BIGINT},
+		adult_price = #{adultPrice,jdbcType=DECIMAL},
+		child_price = #{childPrice,jdbcType=DECIMAL},
+		room_diff_price = #{roomDiffPrice,jdbcType=DECIMAL},
+		safe_price = #{safePrice,jdbcType=DECIMAL},
+		visa_price = #{visaPrice,jdbcType=DECIMAL},
+		num = #{num,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteGuideLineDatePriceByDate">
+		DELETE FROM guide_tuan
+		<where>
+			<if test="goodsNo != null and goodsNo != ''">
+				and goods_no = #{goodsNo}
+			</if>
+			<if
+				test="startDate != null and endDate != null and startDate != '' and endDate != ''">
+				and tuan_date between #{startDate} and #{endDate}
+			</if>
+
+		</where>
+	</delete>
 </mapper>

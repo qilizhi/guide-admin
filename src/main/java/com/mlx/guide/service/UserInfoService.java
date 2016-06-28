@@ -151,6 +151,9 @@ public class UserInfoService {
 		if (user == null || user.getPassword() == null)
 			return;
 		byte[] salt = Digests.generateSalt(Const.SALT_SIZE);
+		//String ensalt=Encodes.encodeHex(salt);
+		//byte[] desalt=Encodes.decodeHex(ensalt);
+	//	System.out.println(salt.equals(desalt));
 		user.setSalt(Encodes.encodeHex(salt));
 		byte[] hashPassword = Digests.sha1(user.getPassword().getBytes(), salt, Const.HASH_INTERATIONS);
 		user.setPassword(Encodes.encodeHex(hashPassword));

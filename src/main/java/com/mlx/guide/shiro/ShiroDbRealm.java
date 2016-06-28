@@ -196,7 +196,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
 			return false;
 		}
 		String salt = StringUtil.stringValue(cmlSalt, "");
-		String hexPwd = Encodes.encodeHex(Digests.sha1(inputPwd.getBytes(), Encodes.decodeHex(salt), Const.SALT_SIZE));
+		String hexPwd = Encodes.encodeHex(Digests.sha1(inputPwd.getBytes(), Encodes.decodeHex(salt), Const.HASH_INTERATIONS));
 		return (cmlPwd != null && !StringUtil.empty(hexPwd) && cmlPwd.equals(hexPwd));
 	}
 

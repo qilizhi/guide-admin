@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +28,10 @@ import com.mlx.guide.constant.EProductNoPrefix;
 import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
-import com.mlx.guide.dao.GuideLineDatePriceMapper;
+import com.mlx.guide.dao.GuideTuanMapper;
 import com.mlx.guide.entity.GuideLine;
-import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
+import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
 import com.mlx.guide.service.GuideLineTripService;
@@ -61,7 +59,7 @@ public class GuideLineController {
 	@Autowired
 	private GuideLineTripService guideLineTripService;
 	@Autowired
-	private GuideLineDatePriceMapper priceMapper;
+	private GuideTuanMapper priceMapper;
 
 	/**
 	 * 读取公共的参数值和设置,根据界面设置的参数值来选择页面菜单选中效果
@@ -140,7 +138,7 @@ public class GuideLineController {
 				}
 				// 更新
 				guideLineService.updateGuideLineSelective(guideLine);
-				return "redirect:/guideAdmin/line/editPrice/" + guideLine.getLineNo();
+			
 			} else {
 				// 新增
 				// 随机生成线路编号
@@ -176,18 +174,18 @@ public class GuideLineController {
 	 * @return
 	 */
 	@RequestMapping(value = "/editPrice/{lineNo}", method = RequestMethod.GET)
-	public String editPrice(GuideLineDatePrice guideLineDatePrice, Model model) {
+	public String editPrice(@PathVariable("lineNo")String  lineNo, Model model) {
 
 		try {
-			String lineNo = guideLineDatePrice.getLineNo();
+			//String lineNo = guideLineDatePrice.getGoodsNo();
 			// 根据线路no获取对应的线路
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
 			// 根据线路no获取对应的价格表
-			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-					.getGuideLineDatePriceByLineNo(lineNo);
+			List<GuideTuan> lsGuideLineDatePrices = guideLineDatePriceService
+					.getGuideLineDatePriceByGoodsNo(lineNo);
 			String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 			// 查询当前线路价格的开始时间和结束时间
-			Map<String, Date> map = priceMapper.getLineDateByLineNo(lineNo);
+			Map<String, Date> map = priceMapper.getLineDateByGoodsNo(lineNo);
 			if (map != null) {
 				Date startDate = map.get("startDate");
 				Date endDate = map.get("endDate");
@@ -235,7 +233,7 @@ public class GuideLineController {
 			Model model) {
 		try {
 			// 先删除旧价格，再保存
-			List<GuideLineDatePrice> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideLineDatePrice.class);
+			List<GuideTuan> lsGuideLineDatePrices = JSON.parseArray(linePrices, GuideTuan.class);
 			guideLineDatePriceService.saveGuideLineDatePriceByLineNo(lsGuideLineDatePrices, lineNo);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -279,8 +277,8 @@ public class GuideLineController {
 			// 根据线路no获取对应的线路
 			GuideLine guideLine = guideLineService.getGuideLineByLineNo(lineNo);
 			// 根据线路no获取对应的价格表
-			List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-					.getGuideLineDatePriceByLineNo(lineNo);
+			List<GuideTuan> lsGuideLineDatePrices = guideLineDatePriceService
+					.getGuideLineDatePriceByGoodsNo(lineNo);
 			String jsonData = JSON.toJSONStringWithDateFormat(lsGuideLineDatePrices, "yyyy-MM-dd");
 			model.addAttribute("lineDataPrices", StringUtil.stringValue(jsonData, "[]"));
 			model.addAttribute("guideLine", guideLine);

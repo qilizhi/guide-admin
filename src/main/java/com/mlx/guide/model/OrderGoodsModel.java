@@ -293,10 +293,10 @@ public class OrderGoodsModel implements Serializable{
 		private String id;
 		private String orderGoodsId;
 		private String touristCardNo;
-		private String touristCardType;
+		private Integer touristCardType;
 		private String touristMobile;
 		private String  touristName;
-		private String touristSex;
+		private Integer touristSex;
 		private String touristType;
 		private String updateTime;
 		public String getCreateTime() {
@@ -323,12 +323,7 @@ public class OrderGoodsModel implements Serializable{
 		public void setTouristCardNo(String touristCardNo) {
 			this.touristCardNo = touristCardNo;
 		}
-		public String getTouristCardType() {
-			return touristCardType;
-		}
-		public void setTouristCardType(String touristCardType) {
-			this.touristCardType = touristCardType;
-		}
+	
 		public String getTouristMobile() {
 			return touristMobile;
 		}
@@ -341,10 +336,10 @@ public class OrderGoodsModel implements Serializable{
 		public void setTouristName(String touristName) {
 			this.touristName = touristName;
 		}
-		public String getTouristSex() {
+		public Integer getTouristSex() {
 			return touristSex;
 		}
-		public void setTouristSex(String touristSex) {
+		public void setTouristSex(Integer touristSex) {
 			this.touristSex = touristSex;
 		}
 		public String getTouristType() {
@@ -358,6 +353,12 @@ public class OrderGoodsModel implements Serializable{
 		}
 		public void setUpdateTime(String updateTime) {
 			this.updateTime = updateTime;
+		}
+		public Integer getTouristCardType() {
+			return touristCardType;
+		}
+		public void setTouristCardType(Integer touristCardType) {
+			this.touristCardType = touristCardType;
 		}
 		
 		

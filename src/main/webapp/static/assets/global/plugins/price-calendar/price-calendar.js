@@ -69,15 +69,15 @@
          //[{"lineDate":"2014-04-01","minPrice":34.00}]
          if (s.json != null) {
            for (var i = 0; i < s.json.length; i++) {
-        	   jsonDict[s.json[i].lineDate]=s.parseResult(s.json[i]);//自定义解析方式
-        	   if(jsonDict[s.json[i].lineDate]==null){//默认解析方式
-        		   jsonDict[s.json[i].lineDate] = {
+        	   jsonDict[s.json[i].tuanDate]=s.parseResult(s.json[i]);//自定义解析方式
+        	   if(jsonDict[s.json[i].tuanDate]==null){//默认解析方式
+        		   jsonDict[s.json[i].tuanDate] = {
         				"dayNo": s.json[i].lineDate,
         				"minPrice": s.json[i].adultPrice==null?"":s.json[i].adultPrice,//s.json[i].mlxPrice, 日历显示成人价
         				"cPrice":s.json[i].adultPrice==null?"":s.json[i].adultPrice ,
         				"ePrice":s.json[i].childPrice==null?"":s.json[i].childPrice,
         				"id":s.json[i].id==null?"0":s.json[i].id,
-        				"routeId":s.json[i].lineNo==null?"0":s.json[i].lineNo,
+        				"routeId":s.json[i].goodsNo==null?"0":s.json[i].goodsNo,
         				"roomCount":s.json[i].roomCount==null?"":s.json[i].roomCount,
         				"roomDiffPrice":s.json[i].roomDiffPrice==null?"":s.json[i].roomDiffPrice,
         				"safePrice":s.json[i].safePrice==null?"":s.json[i].safePrice,
@@ -86,7 +86,7 @@
         				"tuanNo":s.json[i].tuanNo==null?"0":s.json[i].tuanNo		
         		   };
         	   }
-             var day = new Date(Date.parse(s.json[i].lineDate.replace(/-/g, "/")));
+             var day = new Date(Date.parse(s.json[i].tuanDate.replace(/-/g, "/")));
              if (!(day.asString("yyyy-mm") in minPriceByMonth))
                minPriceByMonth[day.asString("yyyy-mm")] = s.json[i].minPrice;
              else {

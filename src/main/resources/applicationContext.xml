@@ -37,5 +37,5 @@
 	<import resource="classpath*:/spring-mybatis.xml" />
 	<import resource="classpath*:/spring-redis.xml" />
 
-	<import resource="classpath*:/spring-shiro.xml" />
+	<import resource="classpath*:/spring-shiro.xml" /> 
 </beans>

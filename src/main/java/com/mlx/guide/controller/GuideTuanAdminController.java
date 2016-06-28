@@ -39,11 +39,9 @@ import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.constant.OrderPayType;
 import com.mlx.guide.entity.EmGroup;
-import com.mlx.guide.entity.EmUser;
 import com.mlx.guide.entity.GuideTuan;
-import com.mlx.guide.entity.GuideTuanGuest;
+import com.mlx.guide.entity.OrderGroupTourist;
 import com.mlx.guide.entity.UserInfo;
-import com.mlx.guide.model.EmUserModel;
 import com.mlx.guide.model.OrderGoodsModel;
 import com.mlx.guide.model.OrderGoodsModel.GoodsTourists;
 import com.mlx.guide.model.OrderModel;
@@ -53,8 +51,8 @@ import com.mlx.guide.service.EmGroupService;
 import com.mlx.guide.service.EmGroupUserService;
 import com.mlx.guide.service.EmUserService;
 import com.mlx.guide.service.GuideOrderService;
-import com.mlx.guide.service.GuideTuanGuestService;
 import com.mlx.guide.service.GuideTuanService;
+import com.mlx.guide.service.OrderGroupTouristService;
 import com.mlx.guide.service.UserInfoService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
@@ -73,7 +71,7 @@ public class GuideTuanAdminController {
 	@Autowired
 	private GuideTuanService guideTuanService;
 	@Autowired
-	private GuideTuanGuestService guideTuanGuestService;
+	private OrderGroupTouristService orderGroupTouristService;
 
 	@Autowired
 	private UserInfoService userInfoService;
@@ -154,21 +152,24 @@ public class GuideTuanAdminController {
 				OrderModel.class);
 		// 2. 将用户插入到tuanGuest
 		logger.info("2 将用户插入到tuanGuest");
-		List<GuideTuanGuest> guideTuanGuests = new ArrayList<GuideTuanGuest>();
+		List<OrderGroupTourist> guideTuanGuests = new ArrayList<OrderGroupTourist>();
 		for (OrderModel order : orders) {
 			for (OrderGoodsModel orderGoods : order.getOrderGoods()) {
 				for (GoodsTourists goodsT : orderGoods.getGoodsTourists()) {
-					GuideTuanGuest gtg = new GuideTuanGuest();
-					gtg.setGuestName(goodsT.getTouristName());
-					gtg.setMobile(goodsT.getTouristMobile());
-					gtg.setOrderNo(order.getOrderId());
-					gtg.setTuanNo(orderGoods.getGroupNo());
+					OrderGroupTourist gtg = new OrderGroupTourist();
+					gtg.setTouristName(goodsT.getTouristName());
+					gtg.setTouristMobile(goodsT.getTouristMobile());
+					gtg.setOrderId(order.getOrderId());
+					gtg.setGroupNo(orderGoods.getGroupNo());
+					gtg.setTouristCardNo(goodsT.getTouristCardNo());
+					gtg.setTouristCardType(goodsT.getTouristCardType());
+					gtg.setTouristSex(goodsT.getTouristSex());
 					guideTuanGuests.add(gtg);
 				}
 			}
 		}
 		if (guideTuanGuests.size() > 0) {
-			guideTuanGuestService.batInsertSelective(guideTuanGuests);
+			orderGroupTouristService.batInsertSelective(guideTuanGuests);
 		} else {
 			logger.info("客户信息为空！");
 			return new JsonResult(ExceptionCode.FAIL, "客户信息为空！");
@@ -625,14 +626,14 @@ public class GuideTuanAdminController {
 	public String tuanGuest(@PathVariable String tuanNo,
 			@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, Model model) {
-		GuideTuanGuest guest = new GuideTuanGuest();
-		guest.setTuanNo(tuanNo);
+		OrderGroupTourist guest = new OrderGroupTourist();
+		guest.setGroupNo(tuanNo);
 
-		PageList<GuideTuanGuest> lsGuests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
+		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
 				new PageBounds(pageNo, pageSize));
 
-		guest.setStatus(ESignInStatus.SIGNED.getId().byteValue());
-		PageList<GuideTuanGuest> guests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
+		guest.setIsSign(ESignInStatus.SIGNED.getId());
+		PageList<OrderGroupTourist> guests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
 				new PageBounds(1, Integer.MAX_VALUE));
 		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
 		model.addAttribute("pageNo", pageNo);
@@ -660,13 +661,13 @@ public class GuideTuanAdminController {
 	@RequestMapping(value = "/tuanGuest/sign/{id}")
 	@ResponseBody
 	public JsonResult tuanGuest(@PathVariable("id") Long id) {
-		GuideTuanGuest gtg = new GuideTuanGuest();
+		OrderGroupTourist gtg = new OrderGroupTourist();
 		gtg.setId(id);
-		gtg.setStatus(ESignInStatus.SIGNED.getId().byteValue());
+		gtg.setIsSign(ESignInStatus.SIGNED.getId());
 		gtg.setUpdateTime(new Date());
 		int r = 0;
 		try {
-			r = guideTuanGuestService.updateByPrimaryKeySelective(gtg);
+			r = orderGroupTouristService.updateByPrimaryKeySelective(gtg);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return new JsonResult(ExceptionCode.FAIL, "更新出错！");
@@ -685,18 +686,18 @@ public class GuideTuanAdminController {
 	 */
 	@RequestMapping(value = "/tuanGuest/search")
 	public String searchGuest(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, GuideTuanGuest guest,
+			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, OrderGroupTourist guest,
 			Model model) {
-		PageList<GuideTuanGuest> lsGuests = guideTuanGuestService.getGuideTuanGuestPageList(guest,
+		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
 				new PageBounds(pageNo, pageSize));
 		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("list", lsGuests);
-		model.addAttribute("mobile", guest.getMobile());
-		model.addAttribute("guestName", guest.getGuestName());
-		model.addAttribute("orderNo", guest.getOrderNo());
-		model.addAttribute("tuanNo", guest.getTuanNo());
+		model.addAttribute("mobile", guest.getTouristMobile());
+		model.addAttribute("guestName", guest.getTouristName());
+		model.addAttribute("orderNo", guest.getOrderId());
+		model.addAttribute("tuanNo", guest.getGroupNo());
 		model.addAttribute("ESignInStatus", ESignInStatus.getByteMap());
 		return "admin/guideTuan/guest_list";
 	}

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mlx.guide.dao.OrderGroupTouristMapper">
+	<resultMap id="BaseResultMap" type="com.mlx.guide.entity.OrderGroupTourist">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="guide_user_no" property="guideUserNo" jdbcType="INTEGER" />
+		<result column="linkman_user_no" property="linkmanUserNo"
+			jdbcType="INTEGER" />
+		<result column="tourist_name" property="touristName" jdbcType="VARCHAR" />
+		<result column="tourist_sex" property="touristSex" jdbcType="BIT" />
+		<result column="tourist_type" property="touristType" jdbcType="BIT" />
+		<result column="tourist_card_type" property="touristCardType"
+			jdbcType="BIT" />
+		<result column="tourist_card_no" property="touristCardNo"
+			jdbcType="VARCHAR" />
+		<result column="tourist_mobile" property="touristMobile"
+			jdbcType="VARCHAR" />
+		<result column="order_id" property="orderId" jdbcType="VARCHAR" />
+		<result column="order_goods_id" property="orderGoodsId"
+			jdbcType="INTEGER" />
+		<result column="group_no" property="groupNo" jdbcType="VARCHAR" />
+		<result column="is_sign" property="isSign" jdbcType="BIT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, guide_user_no, linkman_user_no, tourist_name,
+		tourist_sex,
+		tourist_type, tourist_card_type,
+		tourist_card_no,
+		tourist_mobile, order_id, order_goods_id, group_no, is_sign,
+		create_time,
+		update_time
+	</sql>
+
+	<sql id="Example_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+
+			<if test="guideUserNo != null and guideUserNo != ''">
+				and guide_user_no = #{guideUserNo}
+			</if>
+
+			<if test="linkmanUserNo != null and linkmanUserNo != ''">
+				and linkman_user_no = #{linkmanUserNo}
+			</if>
+
+			<if test="touristName != null and touristName != ''">
+				and tourist_name = #{touristName}
+			</if>
+
+			<if test="touristSex != null and touristSex != ''">
+				and tourist_sex = #{touristSex}
+			</if>
+
+			<if test="touristType != null and touristType != ''">
+				and tourist_type = #{touristType}
+			</if>
+
+			<if test="touristCardType != null and touristCardType != ''">
+				and tourist_card_type = #{touristCardType}
+			</if>
+
+			<if test="touristCardNo != null and touristCardNo != ''">
+				and tourist_card_no = #{touristCardNo}
+			</if>
+			<if test="touristMobile != null and touristMobile != ''">
+				and tourist_mobile = #{touristMobile}
+			</if>
+			<if test="orderId != null and orderId != ''">
+				and order_id = #{orderId}
+			</if>
+			<if test="orderGoodsId != null and orderGoodsId != ''">
+				and order_goods_id = #{orderGoodsId}
+			</if>
+			<if test="groupNo != null and groupNo != ''">
+				and group_no = #{groupNo}
+			</if>
+			<if test="isSign != null and isSign != ''">
+				and is_sign = #{isSign}
+			</if>
+
+			<if test="createTime != null and createTime != ''">
+				and create_time = #{createTime}
+			</if>
+
+			<if test="updateTime != null and updateTime != ''">
+				and update_time = #{updateTime}
+			</if>
+		</trim>
+	</sql>
+
+	<select id="getOrderGroupTouristPageList" resultMap="BaseResultMap"
+		parameterType="com.mlx.guide.entity.OrderGroupTourist">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM order_group_tourist
+		<include refid="Example_Where_Clause" />
+	</select>
+
+	<insert id="batTnsertSelective">
+		insert into order_group_tourist
+		(
+		guide_user_no,
+		linkman_user_no,
+		tourist_name,
+		tourist_sex,
+		tourist_type,
+		tourist_card_type,
+		tourist_card_no,
+		tourist_mobile,
+		order_id,
+		order_goods_id,
+		group_no,
+		is_sign,
+		update_time
+		) values
+
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{guideUserNo}
+			#{linkmanUserNo},
+			#{touristName},
+			#{ touristSex},
+			#{touristType},
+			#{touristCardType},
+			#{touristCardNo},
+			#{touristMobile},
+			#{orderId},
+			#{orderGoodsId},
+			#{groupNo},
+			#{isSign},
+			#{updateTime}
+
+			)
+		</foreach>
+
+	</insert>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="Long">
+		select 'false' as QUERYID,
+		<include refid="Base_Column_List" />
+		from order_group_tourist
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from
+		order_group_tourist
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.mlx.guide.entity.OrderGroupTourist">
+		insert into
+		order_group_tourist (id, guide_user_no, linkman_user_no,
+		tourist_name,
+		tourist_sex, tourist_type,
+		tourist_card_type, tourist_card_no,
+		tourist_mobile,
+		order_id, order_goods_id, group_no,
+		is_sign,
+		create_time, update_time
+		)
+		values (#{id,jdbcType=BIGINT},
+		#{guideUserNo,jdbcType=INTEGER},
+		#{linkmanUserNo,jdbcType=INTEGER},
+		#{touristName,jdbcType=VARCHAR}, #{touristSex,jdbcType=BIT},
+		#{touristType,jdbcType=BIT},
+		#{touristCardType,jdbcType=BIT},
+		#{touristCardNo,jdbcType=VARCHAR},
+		#{touristMobile,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR}, #{orderGoodsId,jdbcType=INTEGER},
+		#{groupNo,jdbcType=INTEGER},
+		#{isSign,jdbcType=BIT},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.mlx.guide.entity.OrderGroupTourist">
+		insert into order_group_tourist
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="guideUserNo != null">
+				guide_user_no,
+			</if>
+			<if test="linkmanUserNo != null">
+				linkman_user_no,
+			</if>
+			<if test="touristName != null">
+				tourist_name,
+			</if>
+			<if test="touristSex != null">
+				tourist_sex,
+			</if>
+			<if test="touristType != null">
+				tourist_type,
+			</if>
+			<if test="touristCardType != null">
+				tourist_card_type,
+			</if>
+			<if test="touristCardNo != null">
+				tourist_card_no,
+			</if>
+			<if test="touristMobile != null">
+				tourist_mobile,
+			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="orderGoodsId != null">
+				order_goods_id,
+			</if>
+			<if test="groupNo != null">
+				group_no,
+			</if>
+			<if test="isSign != null">
+				is_sign,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="guideUserNo != null">
+				#{guideUserNo,jdbcType=INTEGER},
+			</if>
+			<if test="linkmanUserNo != null">
+				#{linkmanUserNo,jdbcType=INTEGER},
+			</if>
+			<if test="touristName != null">
+				#{touristName,jdbcType=VARCHAR},
+			</if>
+			<if test="touristSex != null">
+				#{touristSex,jdbcType=BIT},
+			</if>
+			<if test="touristType != null">
+				#{touristType,jdbcType=BIT},
+			</if>
+			<if test="touristCardType != null">
+				#{touristCardType,jdbcType=BIT},
+			</if>
+			<if test="touristCardNo != null">
+				#{touristCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="touristMobile != null">
+				#{touristMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderGoodsId != null">
+				#{orderGoodsId,jdbcType=INTEGER},
+			</if>
+			<if test="groupNo != null">
+				#{groupNo,jdbcType=INTEGER},
+			</if>
+			<if test="isSign != null">
+				#{isSign,jdbcType=BIT},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.mlx.guide.entity.OrderGroupTourist">
+		update order_group_tourist
+		<set>
+			<if test="guideUserNo != null">
+				guide_user_no = #{guideUserNo,jdbcType=INTEGER},
+			</if>
+			<if test="linkmanUserNo != null">
+				linkman_user_no = #{linkmanUserNo,jdbcType=INTEGER},
+			</if>
+			<if test="touristName != null">
+				tourist_name = #{touristName,jdbcType=VARCHAR},
+			</if>
+			<if test="touristSex != null">
+				tourist_sex = #{touristSex,jdbcType=BIT},
+			</if>
+			<if test="touristType != null">
+				tourist_type = #{touristType,jdbcType=BIT},
+			</if>
+			<if test="touristCardType != null">
+				tourist_card_type = #{touristCardType,jdbcType=BIT},
+			</if>
+			<if test="touristCardNo != null">
+				tourist_card_no = #{touristCardNo,jdbcType=VARCHAR},
+			</if>
+			<if test="touristMobile != null">
+				tourist_mobile = #{touristMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				order_id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderGoodsId != null">
+				order_goods_id = #{orderGoodsId,jdbcType=INTEGER},
+			</if>
+			<if test="groupNo != null">
+				group_no = #{groupNo,jdbcType=INTEGER},
+			</if>
+			<if test="isSign != null">
+				is_sign = #{isSign,jdbcType=BIT},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.mlx.guide.entity.OrderGroupTourist">
+		update
+		order_group_tourist
+		set guide_user_no =
+		#{guideUserNo,jdbcType=INTEGER},
+		linkman_user_no =
+		#{linkmanUserNo,jdbcType=INTEGER},
+		tourist_name =
+		#{touristName,jdbcType=VARCHAR},
+		tourist_sex =
+		#{touristSex,jdbcType=BIT},
+		tourist_type = #{touristType,jdbcType=BIT},
+		tourist_card_type = #{touristCardType,jdbcType=BIT},
+		tourist_card_no =
+		#{touristCardNo,jdbcType=VARCHAR},
+		tourist_mobile =
+		#{touristMobile,jdbcType=VARCHAR},
+		order_id =
+		#{orderId,jdbcType=VARCHAR},
+		order_goods_id =
+		#{orderGoodsId,jdbcType=INTEGER},
+		group_no =
+		#{groupNo,jdbcType=INTEGER},
+		is_sign = #{isSign,jdbcType=BIT},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

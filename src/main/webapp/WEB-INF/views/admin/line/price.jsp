@@ -331,15 +331,19 @@
 						if(adultPrice!=null &&adultPrice!=''&&adultPrice!=undefined){
 						var lineDatePrice = {};
 						lineDatePrice.id = id;
-						lineDatePrice.lineNo = routeid;
+						lineDatePrice.goodsNo = routeid;
 						lineDatePrice.adultPrice = adultPrice;
 						lineDatePrice.childPrice = childPrice;
 						//lineDatePrice.mlxPrice = mlxPrice;
 						lineDatePrice.roomDiffPrice = roomDiffPrice;
 						lineDatePrice.safePrice = safePrice;
 						lineDatePrice.visaPrice = visaPrice;
-						lineDatePrice.lineDate = date;
+						lineDatePrice.tuanDate = date;
 						lineDatePrice.tuanNo = tuanNo;
+						lineDatePrice.num = num;
+						
+						
+						
 						$routePrices.push(lineDatePrice);	
 						
 					}
@@ -369,7 +373,7 @@
 		
 		var result = ${lineDataPrices};
 		
-		//console.log(result);
+		console.log(result);
 		
 /* 		for (var i = 0; i < 20; i++) {
 			result[i] = new RouteDatePrice(i, i,'2016-3-'+(i+1), 330, 280, 250);

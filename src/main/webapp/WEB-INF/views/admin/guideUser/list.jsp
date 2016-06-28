@@ -32,7 +32,7 @@
 				<div class="portlet-title">
 					<div class="caption">
 						<i class="fa fa-cogs"></i><span
-							class="caption-subject font-dark bold uppercase">平台用户列表</span>
+							class="caption-subject font-dark bold uppercase">普通微信用户列表</span>
 					</div>
 					<!-- 	<div class="actions">
 					<a href="javascript:;"  class="btn btn-sm dark btn-outline" >解禁</a>
@@ -40,7 +40,7 @@
 					</div> -->
 				</div>
 				<div class="portlet-body">
-					<form id="searchForm" action="${ctx}/admin/sysUser/list" method="get">
+					<form id="searchForm" action="${ctx}/admin/sysUser/guideUser/list" method="get">
 						<div class="row">
 							<div class="col-md-4">
 								<select name="pageSize"
@@ -61,6 +61,8 @@
 							<div class="col-md-4" style="text-align: right;">
 								<input type="text" class="form-filter input-sm"
 									placeholder="用户编号" name="userNo" value="${userInfo.userNo}">
+								<input type="text" class="form-filter input-sm"
+									placeholder="手机号码" name="mobile" value="${userInfo.mobile}">
 								<button type="submit"
 									class="btn btn-sm green btn-outline filter-submit margin-bottom">
 									<i class="fa fa-search"></i> 查询
@@ -75,8 +77,8 @@
 
 
 									 <th scope="col">用户编号</th> 
-									 <th scope="col">登录名</th> 
-									 <th scope="col">真实姓名</th> 
+									 <th scope="col">昵称</th> 
+									 <th scope="col">邮箱</th> 
 									<!-- <th scope="col">性别</th> -->
 									<th scope="col">手机号</th>
 									<!-- <th scope="col">创建时间</th> -->
@@ -89,14 +91,14 @@
 														
 										 <td>${item.userNo}</td> 
 										<%--  <td>${guideInfoMap[item.userNo].realName}</td>  --%>
-										  <td>${item.loginName}</td> 
-										  <td>${item.name}</td> 
+										  <td>${item.nickName}</td> 
+										  <td>${item.email}</td> 
 										<%-- <td>${sexMap[item.sex]}</td> --%>
 										<td>${item.mobile}</td>
 								<%-- 		<td><fmt:formatDate value="${item.createTime}"
 												pattern="yyyy-MM-dd HH:mm:ss" /></td> --%>
 										<td>
-										<%-- <a class="btn btn-sm yellow btn-outline" href="javascript:_SysUser.changePassword('${item.id}');" target="_blank">更改密码</a> --%> 
+										 <a class="btn btn-sm yellow btn-outline" href="javascript:_SysUser.changePassword('${item.id}');" target="_blank">更改密码</a>  
 										<a class="btn btn-sm blue btn-outline"	href="javascript:_SysUser.authShow('${item.userNo}');"
 											target="_blank">管理授权</a></td>
 									</tr>

@@ -23,8 +23,8 @@ import com.mlx.guide.constant.EStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideLine;
-import com.mlx.guide.entity.GuideLineDatePrice;
 import com.mlx.guide.entity.GuideLineTrip;
+import com.mlx.guide.entity.GuideTuan;
 import com.mlx.guide.model.GuideLineTripModel;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideLineService;
@@ -72,10 +72,12 @@ public class GuideLineTripAdminController {
 				guideLineTrip.setFlag(EFlag.VALID.getId().byteValue());
 				PageBounds pageBounds = new PageBounds(1, Integer.MAX_VALUE, Order.formString("day.asc"));
 				List<GuideLineTrip> list = guideLineTripService.getGuideLineTripPageList(guideLineTrip,pageBounds);
+				GuideLine gl=guideLineService.getGuideLineByLineNo(lineNo);
 				model.addAttribute("list", list);
 				model.addAttribute("lineNo", lineNo);
 				model.addAttribute("startDate", startDate);
 				model.addAttribute("endDate", endDate);
+				model.addAttribute("guideLine", gl);
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 			}
@@ -121,8 +123,7 @@ public class GuideLineTripAdminController {
 				model.addAttribute("line", line);
 				model.addAttribute("ELineType", ELineType.getMap());
 				// 价格
-				List<GuideLineDatePrice> lsGuideLineDatePrices = guideLineDatePriceService
-						.getGuideLineDatePriceByLineNo(lineNo);
+				List<GuideTuan> lsGuideLineDatePrices = guideLineDatePriceService.getGuideLineDatePriceByGoodsNo(lineNo);
 				model.addAttribute("lsPrices", lsGuideLineDatePrices);
 				// 新增或更新行程
 				guideLineTripService.updateBitchSelective(guideLineTripModel.getGuideLineTrips());

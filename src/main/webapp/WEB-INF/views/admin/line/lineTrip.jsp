@@ -22,7 +22,11 @@ width
 
 
 
+
+
 :
+
+
 
 
 
@@ -41,7 +45,11 @@ width
 
 
 
+
+
 :
+
+
 
 
 
@@ -154,35 +162,75 @@ width
 														</tr>
 													</thead>
 													<tbody>
-														<c:forEach var="item" items="${list}" varStatus="st">
-															<tr style="border-bottom: 1px solid #ccc;">
-																<td>${item.lineNo}<input type="hidden"
-																	name="guideLineTrips[${st.index}].id"
-																	value="${item.id}" /> <input type="hidden"
-																	name="guideLineTrips[${st.index}].lineNo"
-																	value="${lineNo}" />
-																</td>
-																<td align="center" class="js-num" width="80"><input
-																	type="text" class="js-day"
-																	name="guideLineTrips[${st.index}].day" id="day"
-																	value='${item.day}' readonly="readonly"></td>
-																<td><textarea type="text"
-																		name="guideLineTrips[${st.index}].address"
-																		id="address"> ${item.address}  </textarea></td>
-																<td><textarea type="text"
-																		name="guideLineTrips[${st.index}].traffic"
-																		id="traffic"> ${item.traffic} </textarea></td>
-																<td><textarea type="text"
-																		name="guideLineTrips[${st.index}].hotel" id="hotel"> ${item.hotel}</textarea></td>
-																<td><textarea type="text"
-																		name="guideLineTrips[${st.index}].tripDetail"
-																		id="tripDetail">${item.tripDetail}</textarea></td>
-																<%-- <td><a class="btn blue btn-outline" name="addBtn"
+											
+														<c:choose>
+
+															<c:when test="${fn:length(list)<=0}">
+															<c:forEach var="i"  begin="1" end="${guideLine.totalDay}">
+																	<tr style="border-bottom: 1px solid #ccc;">
+																		<td>${guideLine.lineNo}<input type="hidden"
+																			name="guideLineTrips[${i-1}].id"
+																			value="" /> <input type="hidden"
+																			name="guideLineTrips[${i-1}].lineNo"
+																			value="${guideLine.lineNo}" />
+																		</td>
+																		<td align="center" class="js-num" width="80"><input
+																			type="text" class="js-day"
+																			name="guideLineTrips[${i-1}].day" id="day"
+																			value='${i}' readonly="readonly"></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${i-1}].address"
+																				id="address">  </textarea></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${i-1}].traffic"
+																				id="traffic"> </textarea></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${i-1}].hotel" id="hotel"></textarea></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${i-1}].tripDetail"
+																				id="tripDetail"></textarea></td>
+																		<%-- <td><a class="btn blue btn-outline" name="addBtn"
 																	onClick="addRow();">添加</a> <a
 																	class="btn blue btn-outline" name="addBtn"
 																	onClick="delRow(this,${item.id});">删除</a></td> --%>
-															</tr>
-														</c:forEach>
+																	</tr>
+																</c:forEach>
+															
+															
+															</c:when>
+															<c:otherwise>
+																<c:forEach var="item" items="${list}" varStatus="st">
+																	<tr style="border-bottom: 1px solid #ccc;">
+																		<td>${item.lineNo}<input type="hidden"
+																			name="guideLineTrips[${st.index}].id"
+																			value="${item.id}" /> <input type="hidden"
+																			name="guideLineTrips[${st.index}].lineNo"
+																			value="${lineNo}" />
+																		</td>
+																		<td align="center" class="js-num" width="80"><input
+																			type="text" class="js-day"
+																			name="guideLineTrips[${st.index}].day" id="day"
+																			value='${item.day}' readonly="readonly"></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${st.index}].address"
+																				id="address"> ${item.address}  </textarea></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${st.index}].traffic"
+																				id="traffic"> ${item.traffic} </textarea></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${st.index}].hotel" id="hotel"> ${item.hotel}</textarea></td>
+																		<td><textarea type="text"
+																				name="guideLineTrips[${st.index}].tripDetail"
+																				id="tripDetail">${item.tripDetail}</textarea></td>
+																		<%-- <td><a class="btn blue btn-outline" name="addBtn"
+																	onClick="addRow();">添加</a> <a
+																	class="btn blue btn-outline" name="addBtn"
+																	onClick="delRow(this,${item.id});">删除</a></td> --%>
+																	</tr>
+																</c:forEach>
+
+															</c:otherwise>
+														</c:choose>
 													</tbody>
 												</table>
 
