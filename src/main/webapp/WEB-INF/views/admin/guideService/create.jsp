@@ -45,8 +45,8 @@
 
 </head>
 <body>
-	<h3>第一步</h3>
-		<div class="portlet light portlet-fit portlet-form ">
+	<!-- 	<h3>第一步</h3> -->
+	<div class="portlet light portlet-fit portlet-form ">
 		<div class="portlet-title">
 			<div class="caption">
 				<i class="icon-settings font-dark"></i> <span
@@ -59,17 +59,19 @@
 				method="post" class="form-horizontal mlx-form">
 				<input type="hidden" id="id" name="id" value="${guideS.id}" />
 				<c:if test="${guideS.id !=null }">
-				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label">导服编号：</label>
-					<div class="col-lg-5">
-						<input type="text" class="form-control" name="serviceNo" id="title"
-							value="${guideS.serviceNo}" placeholder="这里输入标题"  readonly="readonly"/>
-						<div class="form-control-focus"></div>
+					<div class="form-group form-md-line-input">
+						<label class="col-lg-3 control-label">导服编号：</label>
+						<div class="col-lg-5">
+							<input type="text" class="form-control" name="serviceNo"
+								id="title" value="${guideS.serviceNo}" placeholder="这里输入标题"
+								readonly="readonly" />
+							<div class="form-control-focus"></div>
+						</div>
 					</div>
-				</div>
 				</c:if>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>标题：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>标题：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control" name="title" id="title"
 							value="${guideS.title}" placeholder="这里输入标题" />
@@ -77,45 +79,24 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>描述：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>描述：</label>
 					<div class="col-lg-5">
 						<textarea class="form-control" name="description" id="description"
 							rows="3" placeholder="这里添加描述">${guideS.description}</textarea>
 						<label for="form_control_1"></label>
 					</div>
 				</div>
-<%-- 				<div class="form-group">
-					<label class="col-lg-3 control-label">背景图片：</label>
 
-					<div class="col-lg-5">
-						<div class="col-lg-7" id="supprogress">
-							<input type="hidden" name="imgUrl"
-								value="${guideS.imgUrl }" /> <span id="imageName"></span>
-							<div class="progress">
-								<div class="progress-bar progress-bar-success"
-									role="progressbar" aria-valuenow="40" aria-valuemin="0"
-									aria-valuemax="100">
-									<span class="sr-only">40% Complete (success)</span>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-2">
-							<img id="image" name="imgUrl" alt=""
-								src="${guideS.imgUrl }"> <span
-								class="btn green fileinput-button pading"> <i
-								class="fa fa-plus"></i> <span id="load">上传 </span> <input
-								class="imgUpload" type="file" name="files[]" multiple>
-							</span>
-						</div>
-					</div>
-				</div> --%>
-								<div class="form-group">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>背景图片：</label>
+
+				<div class="form-group">
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>背景图片：</label>
 					<div class="col-lg-5">
 						<div id="imgUrl">
 							<div id="supprogress">
-								<input type="hidden" name="imgUrl"
-									value="${guideS.imgUrl }" /> <span class="imageName"></span>
+								<input type="hidden" name="imgUrl" value="${guideS.imgUrl }" />
+								<span class="imageName"></span>
 								<div class="progress">
 									<div class="progress-bar progress-bar-success"
 										role="progressbar" aria-valuenow="40" aria-valuemin="0"
@@ -125,8 +106,7 @@
 								</div>
 							</div>
 							<div class="list">
-								<img class="img-list" alt=""
-									src="${guideS.imgUrl }">
+								<img class="img-list" alt="" src="${guideS.imgUrl }">
 							</div>
 							<span class="btn green fileinput-button pading list"> <i
 								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
@@ -136,8 +116,9 @@
 
 					</div>
 				</div>
-								<div class="form-group">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>头像图片：</label>
+				<div class="form-group">
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>头像图片：</label>
 					<div class="col-lg-5">
 						<div id="smallImgUrl">
 							<div id="supprogress">
@@ -152,8 +133,7 @@
 								</div>
 							</div>
 							<div class="list">
-								<img class="img-list" alt=""
-									src="${guideS.smallImgUrl }">
+								<img class="img-list" alt="" src="${guideS.smallImgUrl }">
 							</div>
 							<span class="btn green fileinput-button pading list"> <i
 								class="fa fa-plus  i-list"></i> <span id="load">上传 </span> <input
@@ -163,17 +143,19 @@
 
 					</div>
 				</div>
-			
+
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>价格：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>价格：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="price"
-							 value="${guideS.price}" />
+							value="${guideS.price}" />
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>导服天数：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>导服天数：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="totalDay"
 							value="${guideS.totalDay}" />
@@ -181,44 +163,48 @@
 					</div>
 				</div>
 				<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>满员人数：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>满员人数：</label>
 					<div class="col-lg-5">
 						<input type="text" class="form-control " name="num"
 							value="${guideS.num}" />
 						<div class="form-control-focus"></div>
 					</div>
 				</div>
-			<%-- 	<div class="form-group">
-					<label class="col-lg-3 control-label">关联的线路编号：</label>
-					<div class="col-lg-5">
-						<input type="text" class="form-control " name="relatLineNo"
-					id="relatLineNo" value="${guideS.relatLineNo}" />
-						<select class="selectpicker" name="relatLineNo"
-							data-live-search="true" data-value="${guideS.relatLineNo}">
-							<option value="">请选择</option>
-						</select>
-					</div>
-				</div> --%>
-				<%-- 	<div class="form-group">
-			<label class="col-lg-3 control-label">用户编号：</label>
-			<div class="col-lg-5">
-				<input type="text" class="form-control " name="userNo" id="userNo"
-					value="${guideS.userNo}" />
-			</div>
-		</div> --%>
 				<div class="form-group">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>选择导游：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>选择导游：</label>
 					<div class="col-lg-5">
-						<input type="hidden" name="userName"
-							value="${guideS.userName}" /> <select title="根据名字及导游证号搜索" 
-							class="selectpicker form-control" name="userNo" data-live-search="true"
+						<input type="hidden" name="userName" value="${guideS.userName}" />
+						<select title="根据名字及导游证号搜索" class="selectpicker form-control"
+							name="userNo" data-live-search="true"
 							data-value="${guideS.userNo}">
 							<option value="">请选择</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>内容文本：</label>
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>选择服务的省-市：</label>
+					<div class="col-lg-2">
+						<select title="选择省" class="selectpicker form-control"
+							name="serviceProvince" data-live-search="true"
+							data-value="${guideS.serviceProvince}">
+							<option value="">请选择</option>
+						</select>
+					</div>
+					<div class="col-lg-2">
+						<select title="选择市" class="selectpicker form-control"
+							name="serviceCity" data-live-search="true"
+							data-value="${guideS.serviceCity}">
+							<option value="">请选择</option>
+						</select>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>内容文本：</label>
 					<div class="col-lg-5">
 						<%-- 	<input type="text" class="form-control " name="content" id="content"
 					value="${guideS.content}" /> --%>
@@ -226,10 +212,11 @@
 							style="width: 600px; height: 500px;">${guideS.content}</script>
 					</div>
 				</div>
-					<div class="form-group form-md-line-input">
-					<label class="col-lg-3 control-label"><span style="color:red">*</span>体验说明：</label>
+				<div class="form-group form-md-line-input">
+					<label class="col-lg-3 control-label"><span
+						style="color: red">*</span>体验说明：</label>
 					<div class="col-lg-5">
-					<script id="remark" type="text/plain" name="remark"
+						<script id="remark" type="text/plain" name="remark"
 							style="width: 600px; height: 500px;">${guideS.remark}</script>
 						<%-- <input type="text" class="form-control " name="remark"
 							id="recommendInfo" value="${guideS.remark}" />
@@ -246,7 +233,7 @@
 				<div class="form-group">
 					<div class="col-lg-9 col-lg-offset-3">
 						<button id="submit_btn" type="submit" data-loading-text="提交中..."
-							autocomplete="off" class="btn btn-primary">保存并下一步</button>
+							autocomplete="off" class="btn btn-primary">保存</button>
 						<input id="cancel_btn" class="btn btn-primary " type="button"
 							value="返回" onclick="history.back()" />
 					</div>
@@ -283,6 +270,9 @@
 			initUEeditor();
 			//initLineSelect("relatLineNo");
 			initGuideSelect("userNo");
+			initProvinceSelect("serviceProvince", mlx.ctx
+					+ "/admin/guideService/province");
+			initCitySelect("serviceCity", mlx.ctx + "/admin/guideService/city");
 			handleValidation3();
 		})
 		/**下拉框的初始化**/
@@ -300,7 +290,8 @@
 						//console.log(users);
 						$.each(users, function(index, obj) {
 							options += "<option value='"+obj.userNo+"'>"
-									+ obj.realName +" "+obj.guideCardNo+"</option>";
+									+ obj.realName + " " + obj.guideCardNo
+									+ "</option>";
 						});
 					}
 
@@ -325,38 +316,107 @@
 
 			});
 		}
-		/* var initLineSelect = function(selectName) {
+		var initProvinceSelect = function(selectName, url) {
 			//线路数据
 			var $selectObject = $("select[name='" + selectName + "']");
-			$.ajax({
-				url : mlx.ctx + "/admin/guideLine/listAll",
-				type : "post",
-				dataType : "json",
-				success : function(data) {
-					var options = "";
-					if (data.code == "200") {
-						var users = data.result;
-						//console.log(users);
-						$.each(users, function(index, obj) {
-							options += "<option value='"+obj.lineNo+"'>"
-									+ obj.title + "</option>";
-						});
-					}
-					//$selectObject.empty();
-					$selectObject.append(options);
-					$selectObject.selectpicker('refresh');
-					$selectObject.selectpicker('val', $selectObject
-							.attr("data-value"))
-					//console.log(options);
-				},
-				error : function(e) {
-					//console.log(e);
-					comm.errorMsg("请求出错！");
-				}
+			$
+					.ajax({
+						url : url,
+						type : "post",
+						dataType : "json",
+						success : function(data) {
+							var options = "";
+							if (data.code == "200") {
+								var users = data.result;
+								//console.log(users);
+								$
+										.each(
+												users,
+												function(index, obj) {
+													options += "<option value='"+obj.provinceName+"' id='"+obj.provinceId+"'>"
+															+ obj.provinceName
+															+ "</option>";
+												});
+							}
+							//$selectObject.empty();
+							$selectObject.append(options);
+							$selectObject.selectpicker('refresh');
+							$selectObject.selectpicker('val', $selectObject
+									.attr("data-value"))
+							//选 中后重新初始化级联市
+							$selectObject
+									.on(
+											"changed.bs.select",
+											function(e) {
+												var provinceId = $(
+														e.currentTarget).find(
+														'option:selected')
+														.attr("id");
+                                            
+												$("select[name='serviceCity']")
+												.attr("data-value","");
+												initCitySelect(
+														"serviceCity",
+														mlx.ctx
+																+ "/admin/guideService/city?provinceId="
+																+ provinceId);
+												//$("input[name='userName']").val(userName);
+											})
 
-			});
+							//console.log(options);
+						},
+						error : function(e) {
+							//console.log(e);
+							comm.errorMsg("请求出错！");
+						}
 
-		} */
+					});
+
+		}
+		var initCitySelect = function(selectName, url) {
+
+			var $selectObject = $("select[name='" + selectName + "']");
+			$
+					.ajax({
+						url : url,
+						type : "post",
+						dataType : "json",
+						success : function(data) {
+							var options = "";
+							if (data.code == "200") {
+								var users = data.result;
+								//console.log(users);
+								$
+										.each(
+												users,
+												function(index, obj) {
+													options += "<option value='"+obj.cityName+"' id='"+obj.cityId+"'>"
+															+ obj.cityName
+															+ "</option>";
+												});
+							}
+							$selectObject.empty();
+							$selectObject.append(options);
+							$selectObject.selectpicker('refresh');
+							$selectObject.selectpicker('val', $selectObject
+									.attr("data-value"));
+							/* //选 中后重新初始化级联市
+							$selectObject.on("changed.bs.select", function(e) {
+							var provinceId = $(e.currentTarget).find(
+								'option:selected').attr("id"); */
+							//	initCitySelect("serviceCity",mlx.ctx+"/admin/guideService/city?provinceId="+provinceId);
+							//$("input[name='userName']").val(userName);
+							//})
+							//console.log(options);
+						},
+						error : function(e) {
+							//console.log(e);
+							comm.errorMsg("请求出错！");
+						}
+
+					});
+
+		}
 
 		/** UEeditor 的初始化**/
 		var initUEeditor = function() {
@@ -365,7 +425,6 @@
 			UE.getEditor('remark');
 		}
 
-		
 		/** 图片上传的控件 **/
 		var initImgUpload = function(obj) {
 			//图上传
@@ -419,58 +478,7 @@
 					});
 		}
 
-	 	/** 图片上传的控件 **/
-	/*	var initImgUpload = function() {
-			//图上传
-			$("#supprogress").css('display', "none");
-			$('.imgUpload').on(
-					'change',
-					function(e) {
-						var files = this.files;
-						var fullname = $(this).val();
-						$("#imageName")
-								.html(
-										fullname.substring(fullname
-												.lastIndexOf("\\") + 1));
-						$("#supprogress").css('display', "block");
-						$("#image").attr("src", "");
-						$("input[name='imgUrl']").val("");
-					})
-			$('.imgUpload').fileupload(
-					{
-
-						dataType : 'json',
-						url : '${ctx}/upload',
-						progressall : function(e, data) {
-							var progress = parseInt(data.loaded / data.total
-									* 100, 10);
-							$('.progress .progress-bar-success').css('width',
-									progress + '%');
-							$('.progress .progress-bar-success').text(
-									progress + '%');
-							//console.log(data);
-						},
-
-						done : function(e, data) {
-							if (data.result.code == "200") {
-								$("#supprogress").css('display', "none");
-								$("#image").attr("src",
-										data.result.result[0].filePath);
-								$("input[name='imgUrl']").val(
-										data.result.result[0].filePath);
-								$("#load").html("重传");
-							} else {
-								$('.progress .progress-bar-success').text(
-										data.result.msg);
-							}
-							//console.log(data);
-							$('.progress .progress-bar-success').text("done");
-						}
-					});
-		}
- */
 		//表单校验。
-
 		var handleValidation3 = function() {
 			var form3 = $('#inputForm');
 			var error3 = $('.alert-danger', form3);
@@ -518,12 +526,12 @@
 					userName : {
 						required : true
 					},
-					totalDay: {
-	                	   required: true,
-	                	   digits:true,
-	                       maxlength:3,
-	                       range:[1,366] 
-	                }
+					totalDay : {
+						required : true,
+						digits : true,
+						maxlength : 3,
+						range : [ 1, 366 ]
+					}
 				},
 
 				messages : { // custom messages for radio buttons and checkboxes
@@ -552,7 +560,7 @@
 						munber : "请输入正整数",
 						maxlength : "最多输入10位数"
 					},
-					num: {
+					num : {
 						required : "不能为空",
 						digits : "请输入正整数",
 						maxlength : "最多输入10位数"
@@ -560,12 +568,12 @@
 					userName : {
 						required : "不能为空"
 					},
-					totalDay: {
-	                	required: "不能为空",
-	                	digits:"请输入整数",
-	                    maxlength:"最多输入3位数",
-	                    range: "请输入一个介于 {0} 和 {1} 之间的值"
-	                }
+					totalDay : {
+						required : "不能为空",
+						digits : "请输入整数",
+						maxlength : "最多输入3位数",
+						range : "请输入一个介于 {0} 和 {1} 之间的值"
+					}
 				},
 
 				errorPlacement : function(error, element) { // render error placement for each input type

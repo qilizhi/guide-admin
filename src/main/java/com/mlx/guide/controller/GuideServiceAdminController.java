@@ -31,6 +31,10 @@ import com.mlx.guide.dao.GuideTuanMapper;
 import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideService;
 import com.mlx.guide.entity.GuideTuan;
+import com.mlx.guide.jpa.dao.CityDao;
+import com.mlx.guide.jpa.dao.ProvinceDao;
+import com.mlx.guide.jpa.entities.City;
+import com.mlx.guide.jpa.entities.Province;
 import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.GuideLineDatePriceService;
 import com.mlx.guide.service.GuideServiceService;
@@ -45,11 +49,16 @@ public class GuideServiceAdminController {
 	private GuideServiceService guideService;
 	@Autowired
 	private GuideInfoService guideInfoService;
-	
+
 	@Autowired
 	private GuideTuanMapper guideTuanMapper;
 	@Autowired
 	private GuideLineDatePriceService guideLineDatePriceService;
+
+	@Autowired
+	private CityDao cityDao;
+	@Autowired
+	private ProvinceDao provinceDao;
 
 	@ModelAttribute
 	public void commod(Model model) {
@@ -57,6 +66,21 @@ public class GuideServiceAdminController {
 		model.addAttribute("product_guideServiceclass", Const.MENU_SUB);
 		model.addAttribute("EAuditStatus", EAuditStatus.getMap());
 		model.addAttribute("Status", EStatus.getMap());
+	}
+
+	@RequestMapping("/city")
+	@ResponseBody
+	public JsonResult getCities(Province p) {
+		if (p.getProvinceId() == null) {
+			return new JsonResult(ExceptionCode.SUCCESSFUL,cityDao.findAll());
+		}
+
+		return new JsonResult(ExceptionCode.SUCCESSFUL, cityDao.findByProvinceId(p.getProvinceId()));
+	}
+	@RequestMapping("/province")
+	@ResponseBody
+	public JsonResult getProvinces() {
+		return new JsonResult(ExceptionCode.SUCCESSFUL, provinceDao.findAll());
 	}
 
 	/**
@@ -138,7 +162,15 @@ public class GuideServiceAdminController {
 
 	@RequestMapping(value = "edit/{id}", method = RequestMethod.GET)
 	public String edit(@PathVariable(value = "id") Long id, Model model) {
-		GuideService guideS = guideService.selectByPrimaryKey(id);
+		GuideService guideS=new GuideService();
+		try {
+			guideS = guideService.selectByPrimaryKey(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "/error/500";
+			
+		}
 		model.addAttribute("guideS", guideS);
 		model.addAttribute("statusMap", EStatus.getMap());
 		model.addAttribute("flagMap", EFlag.getMap());
@@ -161,7 +193,8 @@ public class GuideServiceAdminController {
 			if (guideS.getId() != null) {
 				guideS.setUpdateTime(new Date());
 				guideService.updateByPrimaryKeySelective(guideS);
-				return "redirect:/admin/guideService/price/" + guideS.getServiceNo();
+				//return "redirect:/admin/guideService/price/" + guideS.getServiceNo();
+				return "redirect:/admin/guideService";
 
 			} else {
 				String gServiceNo = StringUtil.generateProductSerialNumber(EProductNoPrefix.Service.getPrefix());
@@ -172,13 +205,15 @@ public class GuideServiceAdminController {
 				guideS.setFlag(EFlag.VALID.getId());
 				guideS.setAuditStatus(EAuditStatus.AUDIT_ON.getId());
 				guideService.insertSelective(guideS);
-				return "redirect:/admin/guideService/price/" + guideS.getServiceNo();
+				//return "redirect:/admin/guideService/price/" + guideS.getServiceNo();
+				return "redirect:/admin/guideService";
 			}
+			// guideS=guideService.selectByPrimaryKey(id.longValue());
 			// guideS=guideService.selectByPrimaryKey(id.longValue());
 
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return null;
+			return "500";
 		}
 	}
 

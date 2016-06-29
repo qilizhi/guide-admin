@@ -22,6 +22,8 @@
 		<result column="sort" property="sort" jdbcType="INTEGER" />
 		<result property="smallImgUrl" column="small_img_url" jdbcType="VARCHAR" />
 		<result property="totalDay" column="total_day" jdbcType="INTEGER"/>
+		<result property="serviceCity" column="service_city" jdbcType="VARCHAR"/>
+		<result property="serviceProvince" column="service_province" jdbcType="VARCHAR"/>
 	</resultMap>
 	<resultMap id="ResultMapWithBLOBs" type="com.mlx.guide.entity.GuideService"
 		extends="BaseResultMap">
@@ -33,7 +35,7 @@
 		update_time, create_time,
 		price, num, remark, flag, status,
 		audit_remark, audit_time, audit_status,
-		sort,small_img_url,total_day
+		sort,small_img_url,total_day,service_city,service_province
 	</sql>
 	<sql id="Blob_Column_List">
 		content
@@ -101,6 +103,12 @@
 			<if test="totalDay != null and totalDay != ''" >
 				and total_day = #{totalDay}
 			</if>
+			<if test="serviceCity != null and serviceCity != ''" >
+				and service_city = #{serviceCity}
+			</if>
+			<if test="serviceProvince != null and serviceProvince != ''" >
+				and service_province = #{serviceProvince}
+			</if>
 		</trim>
 
 
@@ -163,7 +171,7 @@
 		price, num, remark,
 		flag, status,
 		audit_remark,
-		audit_time, audit_status, sort,content,small_img_url,total_day)
+		audit_time, audit_status, sort,content,small_img_url,total_day,service_city,service_province)
 		values
 		(#{id,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR},
 		#{userName,jdbcType=VARCHAR},
@@ -179,7 +187,9 @@
 		#{auditStatus,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
 		#{content,jdbcType=LONGVARCHAR}),
 		#{smallImgUrl,jdbcType=VARCHAR}),
-		#{totalDay,jdbcType=INTEGER})
+		#{totalDay,jdbcType=INTEGER}),
+		#{serviceCity,jdbcType=VARCHAR}),
+		#{serviceProvince,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideService"  keyProperty="id" useGeneratedKeys="true">
 		insert into guide_service
@@ -245,8 +255,15 @@
 				small_img_url,
 			</if>
 			<if test="totalDay != null" >
-				total_day
+				total_day,
 			</if>
+			<if test="servcieCity != null" >
+				service_city,
+			</if>
+			<if test="serviceProvince != null" >
+				service_province
+			</if>
+
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -310,7 +327,13 @@
 				#{smallImgUrl,jdbcType=VARCHAR},
 			</if>
 			<if test="totalDay != null">
-				#{totalDay,jdbcType=INTEGER}
+				#{totalDay,jdbcType=INTEGER},
+			</if>
+			<if test="serviceCity != null">
+				#{service_city,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceProvince != null">
+				#{serviceProvince,jdbcType=VARCHAR}
 			</if>
 		</trim>
 	</insert>
@@ -375,7 +398,13 @@
 				small_img_url = #{smallImgUrl,jdbcType=VARCHAR},
 			</if>
 			<if test="totalDay != null">
-				total_day = #{totalDay,jdbcType=INTEGER}
+				total_day = #{totalDay,jdbcType=INTEGER},
+			</if>
+			<if test="serviceCity != null">
+				service_city = #{serviceCity,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceProvince != null">
+				service_province = #{serviceProvince,jdbcType=VARCHAR}
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
@@ -409,7 +438,9 @@
 		sort = #{sort,jdbcType=INTEGER},
 		content = #{content,jdbcType=LONGVARCHAR},
 		small_img_url = #{smallImgUrl,jdbcType=VARCHAR},
-		total_day = #{totalDay,jdbcType=INTEGER}
+		total_day = #{totalDay,jdbcType=INTEGER},
+		service_city = #{serviceCity,jdbcType=VARCHAR},
+		service_province = #{serviceProvince,jdbcType=VARCHAR}
 		where id =
 		#{id,jdbcType=INTEGER}
 	</update>
@@ -442,6 +473,8 @@
 		sort = #{sort,jdbcType=INTEGER},
 		small_img_url = #{smallImgUrl,jdbcType=VARCHAR},
 		total_day = #{totalDay,jdbcType=INTEGER}
+		service_city = #{serviceCity,jdbcType=VARCHAR},
+		service_province = #{serviceProvince,jdbcType=VARCHAR}
 		where
 		id = #{id,jdbcType=INTEGER}
 	</update>
