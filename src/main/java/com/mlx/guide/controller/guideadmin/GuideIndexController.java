@@ -68,6 +68,7 @@ public class GuideIndexController {
 	@RequestMapping
 	public String main(Model model) {
 		// 获取当前用户
+		
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
 
