@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.cache.Cache;
@@ -261,6 +262,12 @@ public class RedisCache implements Cache {
 
 	public void setExpireTime(long expireTime) {
 		this.expireTime = expireTime;
+	}
+
+	@Override
+	public <T> T get(Object key, Callable<T> valueLoader) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

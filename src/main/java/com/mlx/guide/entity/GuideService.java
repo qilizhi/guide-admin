@@ -45,7 +45,8 @@ public class GuideService {
 	private String smallImgUrl;
 	
 	private Integer totalDay;
-	
+	private String serviceCity;
+	private String serviceProvince;
 
 	public String getSmallImgUrl() {
 		return smallImgUrl;
@@ -214,4 +215,22 @@ public class GuideService {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public String getServiceCity() {
+		return serviceCity;
+	}
+
+	public void setServiceCity(String serviceCity) {
+		this.serviceCity = serviceCity;
+	}
+
+	public String getServiceProvince() {
+		return serviceProvince;
+	}
+
+	public void setServiceProvince(String serviceProvince) {
+		this.serviceProvince = serviceProvince;
+	}
+
+
 }

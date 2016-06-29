@@ -71,7 +71,7 @@ window.g_basePath = "${ctx}";
                     <a href="javascript:;" id="forget-password" class="forget-password">忘记密码?</a>
                 </div>
                 <div class="login-options">
-                    <h4>其他方式</h4>
+                   <!--  <h4>其他方式</h4>
                     <ul class="social-icons">
                         <li>
                             <a class="social-icon-color facebook" data-original-title="facebook" href="javascript:;"></a>
@@ -85,12 +85,12 @@ window.g_basePath = "${ctx}";
                         <li>
                             <a class="social-icon-color linkedin" data-original-title="Linkedin" href="javascript:;"></a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
                 <div class="create-account">
-                    <p>
+                 <!--    <p>
                         <a href="javascript:;" id="register-btn" class="uppercase">申请入驻</a>
-                    </p>
+                    </p> -->
                 </div>
             </form>
             <!-- END LOGIN FORM -->

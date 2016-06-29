@@ -179,9 +179,9 @@
 											我的消息 <span class="badge badge-success"> 7 </span>
 									</a></li>
 									<li class="divider"></li>
-									<li><a href="page_user_lock_1.html"> <i
+									<!-- <li><a href="page_user_lock_1.html"> <i
 											class="icon-lock"></i> 我的权限
-									</a></li>
+									</a></li> -->
 									<li><a href="${ctx}/logout"> <i class="icon-key"></i>
 											注销
 									</a></li>
