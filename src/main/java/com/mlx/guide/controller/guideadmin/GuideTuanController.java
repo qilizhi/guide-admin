@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.github.miemiedev.mybatis.paginator.domain.Paginator;
 import com.mlx.guide.constant.Const;
 import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.ESignInStatus;
@@ -22,9 +25,9 @@ import com.mlx.guide.constant.ETuanStatus;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.entity.GuideTuan;
-import com.mlx.guide.entity.OrderGroupTourist;
+import com.mlx.guide.jpa.entities.OrderGroupTourist;
+import com.mlx.guide.jpa.service.OrderGroupTouristService;
 import com.mlx.guide.service.GuideTuanService;
-import com.mlx.guide.service.OrderGroupTouristService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
 
@@ -53,6 +56,7 @@ public class GuideTuanController {
 
 	/**
 	 * 列表
+	 * 
 	 * @param pageNo
 	 * @param pageSize
 	 * @param guideTuan
@@ -67,7 +71,7 @@ public class GuideTuanController {
 		// 获取当前用户
 		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
 		try {
-			 guideTuan.setUserNo(shiroUser.getUserNo());
+			guideTuan.setUserNo(shiroUser.getUserNo());
 			PageList<GuideTuan> list = guideTuanService.getGuideTuanPageList(guideTuan,
 					new PageBounds(pageNo, pageSize));
 			model.addAttribute("paginator", list != null ? list.getPaginator() : null);
@@ -82,16 +86,17 @@ public class GuideTuanController {
 
 		return "guideAdmin/guideTuan/list";
 	}
-	
+
 	/**
 	 * 获取出团信息
+	 * 
 	 * @param id
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/up/{id}")
+	@RequestMapping(value = "/up/{id}")
 	@ResponseBody
-	public JsonResult up(@PathVariable Long id, Model model){
+	public JsonResult up(@PathVariable Long id, Model model) {
 		try {
 			GuideTuan tuan = guideTuanService.selectByPrimaryKey(id);
 			return new JsonResult(ExceptionCode.SUCCESSFUL, tuan);
@@ -100,16 +105,18 @@ public class GuideTuanController {
 			return new JsonResult(ExceptionCode.FAIL);
 		}
 	}
+
 	/**
 	 * 
 	 * @param id
-	 * @param status 出团状态
+	 * @param status
+	 *            出团状态
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/update/{id}/{status}")
+	@RequestMapping(value = "/update/{id}/{status}")
 	@ResponseBody
-	public JsonResult update(@PathVariable Long id,@PathVariable Byte status, Model model){
+	public JsonResult update(@PathVariable Long id, @PathVariable Byte status, Model model) {
 		try {
 			GuideTuan tuan = guideTuanService.selectByPrimaryKey(id);
 			tuan.setTuanStatus(status);
@@ -120,9 +127,10 @@ public class GuideTuanController {
 			return new JsonResult(ExceptionCode.FAIL);
 		}
 	}
-	
+
 	/**
 	 * 根据出团编号查询对应的成员名单
+	 * 
 	 * @param tuanNo
 	 * @param pageNo
 	 * @param pageSize
@@ -135,9 +143,10 @@ public class GuideTuanController {
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, Model model) {
 		OrderGroupTourist guest = new OrderGroupTourist();
 		guest.setGroupNo(tuanNo);
-		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
-				new PageBounds(pageNo, pageSize));
-		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
+		Page<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
+				new PageRequest(pageNo, pageSize));
+		model.addAttribute("paginator",
+				new Paginator(lsGuests.getNumber(), lsGuests.getSize(), (int) lsGuests.getTotalElements()));
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("list", lsGuests);
 		model.addAttribute("guest", guest);
@@ -147,6 +156,7 @@ public class GuideTuanController {
 
 	/**
 	 * 成员名单查询
+	 * 
 	 * @param pageNo
 	 * @param pageSize
 	 * @param guest
@@ -157,14 +167,16 @@ public class GuideTuanController {
 	public String searchGuest(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, OrderGroupTourist guest,
 			Model model) {
-		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
-				new PageBounds(pageNo, pageSize));
-		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
+		Page<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
+				new PageRequest(pageNo, pageSize));
+
+		model.addAttribute("paginator",
+				new Paginator(lsGuests.getNumber(), lsGuests.getSize(), (int) lsGuests.getTotalElements()));
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("list", lsGuests);
 		model.addAttribute("guest", guest);
 		model.addAttribute("ESignInStatus", ESignInStatus.getByteMap());
 		return "guideAdmin/guideTuan/guest_list";
 	}
-	
+
 }

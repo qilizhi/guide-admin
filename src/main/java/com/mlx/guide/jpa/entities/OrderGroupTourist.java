@@ -1,13 +1,22 @@
-package com.mlx.guide.entity;
+package com.mlx.guide.jpa.entities;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table(name="order_group_tourist")
+@Entity
 public class OrderGroupTourist {
 	private Long id;
 
-	private Integer guideUserNo;
+	private String guideUserNo;
 
-	private Integer linkmanUserNo;
+	private String linkmanUserNo;
 
 	private String touristName;
 
@@ -23,7 +32,7 @@ public class OrderGroupTourist {
 
 	private String orderId;
 
-	private Integer orderGoodsId;
+	private String orderGoodsId;
 
 	private String groupNo;
 
@@ -33,6 +42,8 @@ public class OrderGroupTourist {
 
 	private Date updateTime;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -41,22 +52,23 @@ public class OrderGroupTourist {
 		this.id = id;
 	}
 
-	public Integer getGuideUserNo() {
+	@Column(name="guide_user_no")
+	public String getGuideUserNo() {
 		return guideUserNo;
 	}
 
-	public void setGuideUserNo(Integer guideUserNo) {
+	public void setGuideUserNo(String guideUserNo) {
 		this.guideUserNo = guideUserNo;
 	}
-
-	public Integer getLinkmanUserNo() {
+	@Column(name="linknam_user_no")
+	public String getLinkmanUserNo() {
 		return linkmanUserNo;
 	}
 
-	public void setLinkmanUserNo(Integer linkmanUserNo) {
+	public void setLinkmanUserNo(String linkmanUserNo) {
 		this.linkmanUserNo = linkmanUserNo;
 	}
-
+	@Column(name="tourist_name")
 	public String getTouristName() {
 		return touristName;
 	}
@@ -64,7 +76,7 @@ public class OrderGroupTourist {
 	public void setTouristName(String touristName) {
 		this.touristName = touristName;
 	}
-
+	@Column(name="tourist_card_no")
 	public String getTouristCardNo() {
 		return touristCardNo;
 	}
@@ -72,7 +84,7 @@ public class OrderGroupTourist {
 	public void setTouristCardNo(String touristCardNo) {
 		this.touristCardNo = touristCardNo;
 	}
-
+	@Column(name="tourist_mobile")
 	public String getTouristMobile() {
 		return touristMobile;
 	}
@@ -80,7 +92,7 @@ public class OrderGroupTourist {
 	public void setTouristMobile(String touristMobile) {
 		this.touristMobile = touristMobile;
 	}
-
+	@Column(name="order_id")
 	public String getOrderId() {
 		return orderId;
 	}
@@ -88,15 +100,15 @@ public class OrderGroupTourist {
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-
-	public Integer getOrderGoodsId() {
+	@Column(name="order_goods_id")
+	public String getOrderGoodsId() {
 		return orderGoodsId;
 	}
 
-	public void setOrderGoodsId(Integer orderGoodsId) {
+	public void setOrderGoodsId(String orderGoodsId) {
 		this.orderGoodsId = orderGoodsId;
 	}
-
+	@Column(name="tourist_sex")
 	public Integer getTouristSex() {
 		return touristSex;
 	}
@@ -105,6 +117,7 @@ public class OrderGroupTourist {
 		this.touristSex = touristSex;
 	}
 
+	@Column(name="tourist_type")
 	public Integer getTouristType() {
 		return touristType;
 	}
@@ -112,7 +125,7 @@ public class OrderGroupTourist {
 	public void setTouristType(Integer touristType) {
 		this.touristType = touristType;
 	}
-
+	@Column(name="tourist_card_type")
 	public Integer getTouristCardType() {
 		return touristCardType;
 	}
@@ -120,7 +133,7 @@ public class OrderGroupTourist {
 	public void setTouristCardType(Integer touristCardType) {
 		this.touristCardType = touristCardType;
 	}
-
+	@Column(name="is_sign")
 	public Integer getIsSign() {
 		return isSign;
 	}
@@ -128,7 +141,7 @@ public class OrderGroupTourist {
 	public void setIsSign(Integer isSign) {
 		this.isSign = isSign;
 	}
-
+	@Column(name="create_time")
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -136,7 +149,7 @@ public class OrderGroupTourist {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
+	@Column(name="update_time")
 	public Date getUpdateTime() {
 		return updateTime;
 	}
@@ -144,7 +157,7 @@ public class OrderGroupTourist {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-
+	@Column(name="group_no")
 	public String getGroupNo() {
 		return groupNo;
 	}

@@ -68,6 +68,7 @@ public class RoleAdminController {
 	public JsonResult insert(Role role) {
 		try {
 			roleService.insertSelective(role);
+			chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL, role);
@@ -90,6 +91,7 @@ public class RoleAdminController {
 		}
 		try {
 			roleService.deleteByPrimaryKey(id);
+			chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new JsonResult(ExceptionCode.FAIL);
@@ -111,6 +113,7 @@ public class RoleAdminController {
 		}
 		try {
 			roleService.updateByPrimaryKeySelective(role);
+			chainDefinitionSectionMetaSource.reLoad();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

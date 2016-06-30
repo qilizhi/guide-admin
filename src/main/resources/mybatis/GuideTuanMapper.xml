@@ -6,6 +6,7 @@
 		<result column="name" jdbcType="VARCHAR" property="name" />
 		<result column="tuan_no" jdbcType="VARCHAR" property="tuanNo" />
 		<result column="tuan_date" jdbcType="DATE" property="tuanDate" />
+		<result column="tuan_end_date" jdbcType="DATE" property="tuanEndDate" />
 		<result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
 		<result column="goods_no" jdbcType="VARCHAR" property="goodsNo" />
 		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -25,7 +26,7 @@
 		<result column="num" jdbcType="INTEGER" property="num" />
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, tuan_no, tuan_date, goods_type, goods_no,
+		id, name, tuan_no, tuan_date,tuan_end_date, goods_type, goods_no,
 		create_time,
 		update_time, full_num,
 		person_num, order_num, user_no,
@@ -38,19 +39,22 @@
 			<if test="id != null">
 				and id=#{id,jdbcType=INTEGER}
 			</if>
-			<if test="name != null">
+			<if test="name != null and name!=''">
 				and name=#{name,jdbcType=VARCHAR}
 			</if>
-			<if test="tuanNo != null">
+			<if test="tuanNo != null and tuanNo!='' ">
 				and tuan_no =#{tuanNo,jdbcType=VARCHAR}
 			</if>
 			<if test="tuanDate != null">
 				and tuan_date =#{tuanDate,jdbcType=DATE}
 			</if>
+			<if test="tuanEndDate != null">
+				and tuan_end_date =#{tuanEndDate,jdbcType=DATE}
+			</if>
 			<if test="goodsType != null">
 				and goods_type=#{goodsType,jdbcType=VARCHAR}
 			</if>
-			<if test="goodsNo != null">
+			<if test="goodsNo != null and tuanNo!=''">
 				and goods_no=#{goodsNo,jdbcType=VARCHAR}
 			</if>
 			<if test="createTime != null">
@@ -131,7 +135,7 @@
 	</delete>
 	<insert id="insert" parameterType="com.mlx.guide.entity.GuideTuan">
 		insert into guide_tuan (id, name, tuan_no,
-		tuan_date, goods_type, goods_no,
+		tuan_date,tuan_end_date, goods_type, goods_no,
 		create_time, update_time, full_num,
 		person_num, order_num, user_no,
 		user_name, tuan_status, group_id,
@@ -140,7 +144,7 @@
 		)
 		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
 		#{tuanNo,jdbcType=VARCHAR},
-		#{tuanDate,jdbcType=DATE}, #{goodsType,jdbcType=VARCHAR}, #{goodsNo,jdbcType=VARCHAR},
+		#{tuanDate,jdbcType=DATE},#{tuanEndDate,jdbcType=DATE}, #{goodsType,jdbcType=VARCHAR}, #{goodsNo,jdbcType=VARCHAR},
 		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
 		#{fullNum,jdbcType=INTEGER},
 		#{personNum,jdbcType=INTEGER}, #{orderNum,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR},
@@ -165,6 +169,9 @@
 			</if>
 			<if test="tuanDate != null">
 				tuan_date,
+			</if>
+			<if test="tuanEndDate != null">
+				tuan_end_date,
 			</if>
 			<if test="goodsType != null">
 				goods_type,
@@ -231,6 +238,9 @@
 			<if test="tuanDate != null">
 				#{tuanDate,jdbcType=DATE},
 			</if>
+			<if test="tuanEndDate != null">
+				#{tuanEndDate,jdbcType=DATE},
+			</if>
 			<if test="goodsType != null">
 				#{goodsType,jdbcType=VARCHAR},
 			</if>
@@ -296,6 +306,9 @@
 			<if test="tuanDate != null">
 				tuan_date = #{tuanDate,jdbcType=DATE},
 			</if>
+			<if test="tuanEndDate != null">
+				tuan_end_date = #{tuanEndDate,jdbcType=DATE},
+			</if>
 			<if test="goodsType != null">
 				goods_type = #{goodsType,jdbcType=VARCHAR},
 			</if>
@@ -355,6 +368,7 @@
 		set name = #{name,jdbcType=VARCHAR},
 		tuan_no = #{tuanNo,jdbcType=VARCHAR},
 		tuan_date = #{tuanDate,jdbcType=DATE},
+		tuan_end_date = #{tuanEndDate,jdbcType=DATE},
 		goods_type = #{goodsType,jdbcType=VARCHAR},
 		goods_no = #{goodsNo,jdbcType=VARCHAR},
 		create_time = #{createTime,jdbcType=TIMESTAMP},

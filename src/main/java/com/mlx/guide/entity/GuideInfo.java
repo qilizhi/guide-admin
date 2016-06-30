@@ -38,6 +38,9 @@ public class GuideInfo {
     private Integer auditStatus;
 
     private Integer status;
+    
+    private Integer type;
+    private Integer sort;
 
     public Long getId() {
         return id;
@@ -182,4 +185,20 @@ public class GuideInfo {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 }

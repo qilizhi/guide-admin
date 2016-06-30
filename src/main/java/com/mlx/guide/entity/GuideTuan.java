@@ -11,6 +11,7 @@ public class GuideTuan {
     private String tuanNo;
 
     private Date tuanDate;
+    private Date tuanEndDate;
 
     private String goodsType;
 
@@ -213,4 +214,12 @@ public class GuideTuan {
     public void setNum(Integer num) {
         this.num = num;
     }
+
+	public Date getTuanEndDate() {
+		return tuanEndDate;
+	}
+
+	public void setTuanEndDate(Date tuanEndDate) {
+		this.tuanEndDate = tuanEndDate;
+	}
 }

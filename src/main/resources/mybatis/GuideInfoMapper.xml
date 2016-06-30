@@ -24,7 +24,7 @@
   <sql id="Base_Column_List" >
     id, user_no, update_time, create_time, real_name, guide_level, bg_img_url, age, sign, 
     tag, work_year, intro, guide_card_no, id_card, id_card_front_pic, id_card_side_pic, 
-    audit_status, status
+    audit_status, status,sort,type
   </sql>
   <sql id="base_where_clause">
    <trim prefix="where" prefixOverrides="and|or">
@@ -88,6 +88,12 @@
 			<if test="age!=null and age!=''">
 			   and age=#{age}
 			</if>
+			<if test="sort!=null and sort!=''">
+			   and sort=#{sort}
+			</if>
+			<if test="type!=null and type!=''">
+			   and type=#{type}
+			</if>
 		</trim>
   
   </sql>
@@ -118,14 +124,14 @@
       bg_img_url, age, sign, 
       tag, work_year, intro, 
       guide_card_no, id_card, id_card_front_pic, 
-      id_card_side_pic, audit_status, status
+      id_card_side_pic, audit_status, status,sort,type
       )
     values (#{id,jdbcType=BIGINT}, #{userNo,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{realName,jdbcType=VARCHAR}, #{guideLevel,jdbcType=VARCHAR}, 
       #{bgImgUrl,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{sign,jdbcType=VARCHAR}, 
       #{tag,jdbcType=VARCHAR}, #{workYear,jdbcType=INTEGER}, #{intro,jdbcType=VARCHAR}, 
       #{guideCardNo,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{idCardFrontPic,jdbcType=VARCHAR}, 
-      #{idCardSidePic,jdbcType=VARCHAR}, #{auditStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}
+      #{idCardSidePic,jdbcType=VARCHAR}, #{auditStatus,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},#{sort,jdbcType=INTEGER},#{type,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mlx.guide.entity.GuideInfo" >
@@ -185,6 +191,12 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -240,6 +252,12 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -297,6 +315,12 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -318,7 +342,9 @@
       id_card_front_pic = #{idCardFrontPic,jdbcType=VARCHAR},
       id_card_side_pic = #{idCardSidePic,jdbcType=VARCHAR},
       audit_status = #{auditStatus,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
     where id = #{id,jdbcType=BIGINT}
   </update>
   

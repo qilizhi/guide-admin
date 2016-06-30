@@ -379,9 +379,8 @@ src="${ctx }/static/assets/global/plugins/UEeditor/lang/zh-cn/zh-cn.js"></script
 			initUEeditor();
 			handleValidation3();
 			initProvinceSelect("serviceProvince","${ctx}/guideAdmin/guideService/province");
-			var provinceId=$("select[name='serviceProvince']").attr("data-value");
-			console.log(provinceId);
-			initCitySelect("serviceCity", "${ctx}/guideAdmin/guideService/city?provinceId="+provinceId);
+		
+			initCitySelect("serviceCity", "${ctx}/guideAdmin/guideService/city");
 
 		});
 

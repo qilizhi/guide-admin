@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,24 +37,28 @@ import com.mlx.guide.constant.EGoodsType;
 import com.mlx.guide.constant.ELineType;
 import com.mlx.guide.constant.ESignInStatus;
 import com.mlx.guide.constant.ETuanStatus;
+import com.mlx.guide.constant.EUserType;
 import com.mlx.guide.constant.ExceptionCode;
 import com.mlx.guide.constant.JsonResult;
 import com.mlx.guide.constant.OrderPayType;
 import com.mlx.guide.entity.EmGroup;
+import com.mlx.guide.entity.GuideInfo;
 import com.mlx.guide.entity.GuideTuan;
-import com.mlx.guide.entity.OrderGroupTourist;
 import com.mlx.guide.entity.UserInfo;
+import com.mlx.guide.jpa.entities.OrderGroupLinkman;
+import com.mlx.guide.jpa.entities.OrderGroupTourist;
+import com.mlx.guide.jpa.service.OrderGroupLinkmanService;
+import com.mlx.guide.jpa.service.OrderGroupTouristService;
 import com.mlx.guide.model.OrderGoodsModel;
 import com.mlx.guide.model.OrderGoodsModel.GoodsTourists;
 import com.mlx.guide.model.OrderModel;
+import com.mlx.guide.model.OrderModel.OrderDescribe;
 import com.mlx.guide.model.PreTuanModel;
 import com.mlx.guide.service.EasemobClientService;
 import com.mlx.guide.service.EmGroupService;
-import com.mlx.guide.service.EmGroupUserService;
-import com.mlx.guide.service.EmUserService;
+import com.mlx.guide.service.GuideInfoService;
 import com.mlx.guide.service.GuideOrderService;
 import com.mlx.guide.service.GuideTuanService;
-import com.mlx.guide.service.OrderGroupTouristService;
 import com.mlx.guide.service.UserInfoService;
 import com.mlx.guide.shiro.ShiroDbRealm;
 import com.mlx.guide.shiro.ShiroDbRealm.ShiroUser;
@@ -76,15 +82,16 @@ public class GuideTuanAdminController {
 	@Autowired
 	private UserInfoService userInfoService;
 	@Autowired
+	private GuideInfoService guideInfoService;
+	@Autowired
 	private GuideOrderService guideOrderService;
 	@Autowired
 	private EasemobClientService easemobClientService;
 	@Autowired
 	private EmGroupService groupService;
+
 	@Autowired
-	private EmGroupUserService emGroupUserService;
-	@Autowired
-	private EmUserService emUserService;
+	private OrderGroupLinkmanService orglservice;
 
 	@ModelAttribute
 	public void comm(Model model) {
@@ -116,7 +123,7 @@ public class GuideTuanAdminController {
 			model.addAttribute("pageNo", pageNo);
 			model.addAttribute("pageSize", pageSize);
 			model.addAttribute("list", list);
-			model.addAttribute("guideTuan",guideTuan);
+			model.addAttribute("guideTuan", guideTuan);
 			model.addAttribute("ETuanStatus", ETuanStatus.getByteMap());
 			model.addAttribute("ELineType", ELineType.getByteMap());
 		} catch (Exception e) {
@@ -130,10 +137,9 @@ public class GuideTuanAdminController {
 	@ResponseBody
 	public JsonResult groupOut(GuideTuan gt, Model model) {
 
-		ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
-		
-		
-
+		// ShiroUser shiroUser = ShiroDbRealm.getLoginUser();
+		List<GuideTuan> guideTuans = guideTuanService.getGuideTuanPageList(gt);
+		GuideTuan opTuan = guideTuans.size() > 0 ? guideTuans.get(0) : null;
 		// 1 查询该团下的订单
 		logger.info("1 查询该团下的订单");
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -143,7 +149,7 @@ public class GuideTuanAdminController {
 		// params.put("startDate", getPreMonthStartDate(6));// 暂定前后6个月
 		// params.put("endDate", getNextMonthEndDate(6));
 		String result = guideOrderService.getMangeList(params);
-		logger.info("订单结果："+result);
+		logger.info("订单结果：" + result);
 		if ("".equals(result) || result == null) {
 			logger.error("调用订单接口出错。返回数结果为空！请检查网络！");
 			return new JsonResult(ExceptionCode.FAIL, "调用订单接口出错。返回数结果为空！请检查网络！");
@@ -154,19 +160,43 @@ public class GuideTuanAdminController {
 		logger.info("2 将用户插入到tuanGuest");
 		List<OrderGroupTourist> guideTuanGuests = new ArrayList<OrderGroupTourist>();
 		for (OrderModel order : orders) {
+			OrderGroupLinkman ogl = new OrderGroupLinkman();
+			ogl.setGroupNo(opTuan.getTuanNo());
+			ogl.setUserNo(order.getUserId());
+			GuideInfo guideInfo = guideInfoService.getGuideInfoByUserNo(order.getUserId());
+			ogl.setUserType(guideInfo.getType());
+			Long isDuplication = orglservice.countByExample(ogl);
+			
 			for (OrderGoodsModel orderGoods : order.getOrderGoods()) {
 				for (GoodsTourists goodsT : orderGoods.getGoodsTourists()) {
 					OrderGroupTourist gtg = new OrderGroupTourist();
+					gtg.setGuideUserNo(opTuan.getUserNo());
 					gtg.setTouristName(goodsT.getTouristName());
 					gtg.setTouristMobile(goodsT.getTouristMobile());
 					gtg.setOrderId(order.getOrderId());
+					gtg.setIsSign(ESignInStatus.NOT_SIGNED.getId());
+					gtg.setOrderGoodsId(orderGoods.getGoodsId());
 					gtg.setGroupNo(orderGoods.getGroupNo());
 					gtg.setTouristCardNo(goodsT.getTouristCardNo());
 					gtg.setTouristCardType(goodsT.getTouristCardType());
 					gtg.setTouristSex(goodsT.getTouristSex());
+					gtg.setTouristType(Integer.parseInt(goodsT.getTouristType()));
+					gtg.setCreateTime(new Date());
+					gtg.setUpdateTime(new Date());
+					gtg.setLinkmanUserNo(order.getUserId());
 					guideTuanGuests.add(gtg);
 				}
+				ogl.setOrderGoodsId(orderGoods.getGoodsId());
 			}
+
+			ogl.setOrderId(order.getOrderId());
+			ogl.setGroupDate(opTuan.getTuanDate());
+			ogl.setCreateTime(new Date());
+			ogl.setUpdateTime(new Date());
+			if (isDuplication <=0) {
+				orglservice.saveAndFlush(ogl);
+			}
+
 		}
 		if (guideTuanGuests.size() > 0) {
 			orderGroupTouristService.batInsertSelective(guideTuanGuests);
@@ -174,35 +204,31 @@ public class GuideTuanAdminController {
 			logger.info("客户信息为空！");
 			return new JsonResult(ExceptionCode.FAIL, "客户信息为空！");
 		}
-        logger.info("查询该团数据！");
-		List<GuideTuan> guideTuans = guideTuanService.getGuideTuanPageList(gt);
-		GuideTuan opTuan = guideTuans.size() > 0 ? guideTuans.get(0) : null;
+		logger.info("查询该团数据！");
 		opTuan.setTuanStatus(ETuanStatus.TOURED.getId().byteValue());
 		opTuan.setPersonNum(guideTuanGuests.size());
 		opTuan.setOrderNum(orders.size());
-		//查询该 用户的环信账号如果没有则创建一个并插入到emGroup
-/*		EmUser 	guideemUser=emUserService.selectByUserNo(opTuan.getUserNo());
-		if(guideemUser==null){		
-			//创建环信用户
-			String userResult=easemobClientService.createUser(opTuan.getUserNo(), "123456",opTuan.getUserName());
-		    if(userResult!=null){
-		    	JSONArray userObject=(JSONArray) JSON.parseObject(userResult).get("entities");
-		    	List<EmUserModel> emUser = JSONArray.parseArray(userObject.toString(),EmUserModel.class);
-				// 插入表里
-		    	EmUser temUser=new EmUser();
-		    	temUser.setEmUuid(emUser.get(0).getUuid());
-		    	temUser.setEmUser(emUser.get(0).getUsername());
-		    	temUser.setUserNo(opTuan.getUserNo());
-		    	guideemUser=temUser;
-		    	emUserService.insertSelective(guideemUser);		    	
-		    }
-		}*/
-		//从user表里查找
+		// 查询该 用户的环信账号如果没有则创建一个并插入到emGroup
+		/*
+		 * EmUser guideemUser=emUserService.selectByUserNo(opTuan.getUserNo());
+		 * if(guideemUser==null){ //创建环信用户 String
+		 * userResult=easemobClientService.createUser(opTuan.getUserNo(),
+		 * "123456",opTuan.getUserName()); if(userResult!=null){ JSONArray
+		 * userObject=(JSONArray) JSON.parseObject(userResult).get("entities");
+		 * List<EmUserModel> emUser =
+		 * JSONArray.parseArray(userObject.toString(),EmUserModel.class); //
+		 * 插入表里 EmUser temUser=new EmUser();
+		 * temUser.setEmUuid(emUser.get(0).getUuid());
+		 * temUser.setEmUser(emUser.get(0).getUsername());
+		 * temUser.setUserNo(opTuan.getUserNo()); guideemUser=temUser;
+		 * emUserService.insertSelective(guideemUser); } }
+		 */
+		// 从user表里查找
 		UserInfo userinfo = new UserInfo();
 		userinfo.setUserNo(opTuan.getUserNo());
 		List<UserInfo> userInfos = userInfoService.getUserInfoPageList(userinfo);
-		userinfo=userInfos.size()>0?userInfos.get(0):null;
-		
+		userinfo = userInfos.size() > 0 ? userInfos.get(0) : null;
+
 		// 3.从环信创建一个群。
 		EmGroup group = new EmGroup();
 		String createResult = null;
@@ -240,48 +266,35 @@ public class GuideTuanAdminController {
 
 		// 5.把订单人员拉入群里。
 		// 5.1查找用户的环信用户帐号集合
-		List<String> emuserNos = new ArrayList<String>();
-		for (OrderModel order : orders) {
-			UserInfo userinfo1 = new UserInfo();
-			userinfo1.setUserNo(order.getUserId());
-			List<UserInfo> userInfo = userInfoService.getUserInfoPageList(userinfo);
-			if (userInfo.size() > 0) {
-				String account = userInfo.get(0).getHuanxinAccount();
-				if (!account.equals("") && account != null) {
-					emuserNos.add(account);
-				} else {
-					logger.info("本地userInfo查找不到用户的环信账号");
-				}
-
-			} else {
-
-				logger.info("找不到该用户：" + order.getUserId());
-			}
-		}
+		/*
+		 * List<String> emuserNos = new ArrayList<String>(); for (OrderModel
+		 * order : orders) { UserInfo userinfo1 = new UserInfo();
+		 * userinfo1.setUserNo(order.getUserId()); List<UserInfo> userInfo =
+		 * userInfoService.getUserInfoPageList(userinfo); if (userInfo.size() >
+		 * 0) { String account = userInfo.get(0).getHuanxinAccount(); if
+		 * (!account.equals("") && account != null) { emuserNos.add(account); }
+		 * else { logger.info("本地userInfo查找不到用户的环信账号"); }
+		 * 
+		 * } else {
+		 * 
+		 * logger.info("找不到该用户：" + order.getUserId()); } }
+		 */
 		// 5.2插入到群里
 		// 调用接口将人拉入群里
-		try {
-			easemobClientService.addUsersGroup(emuserNos, data.getString("groupid"));
-		} catch (Exception e1) {
-			//
-			// e1.printStackTrace();
-			logger.info("调用把人拉入群里出错" + e1.getMessage());
-			return new JsonResult(ExceptionCode.FAIL, e1.getMessage());
-		}
-		try {
-			// 在本地建立关系。
-			emGroupUserService.insertGroupUsers(emuserNos, groupId);
-			// 插入到本地群里。
-			groupService.insertSelective(group);
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			// e1.printStackTrace();
-			logger.info("本地建立关系出错" + e1.getMessage());
-			return new JsonResult(ExceptionCode.FAIL, e1.getMessage());
-		}
+		/*
+		 * try { easemobClientService.addUsersGroup(emuserNos,
+		 * data.getString("groupid")); } catch (Exception e1) { // //
+		 * e1.printStackTrace(); logger.info("调用把人拉入群里出错" + e1.getMessage());
+		 * return new JsonResult(ExceptionCode.FAIL, e1.getMessage()); }
+		 */
+
+		// 插入到本地群里。
+		groupService.insertSelective(group);
+
 		// 3.3.并修改状态为已出团,订单人数及实际人数
 		try {
-
+			opTuan.setGroupId(groupId);
+			opTuan.setTuanStatus(ETuanStatus.TOURED.getId().byteValue());
 			guideTuanService.updateByPrimaryKeySelective(opTuan);
 			logger.info("更新数据成功。data:" + opTuan.toString());
 		} catch (Exception e) {
@@ -629,13 +642,13 @@ public class GuideTuanAdminController {
 		OrderGroupTourist guest = new OrderGroupTourist();
 		guest.setGroupNo(tuanNo);
 
-		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
-				new PageBounds(pageNo, pageSize));
+		Page<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
+				new PageRequest(pageNo, pageSize));
 
 		guest.setIsSign(ESignInStatus.SIGNED.getId());
-		PageList<OrderGroupTourist> guests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
-				new PageBounds(1, Integer.MAX_VALUE));
-		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
+		List<OrderGroupTourist> guests = orderGroupTouristService.findAll(guest);
+		model.addAttribute("paginator",
+				new Paginator(lsGuests.getNumber(), lsGuests.getSize(), (int) lsGuests.getTotalElements()));
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("signNum", guests.size());
 		model.addAttribute("pageSize", pageSize);
@@ -665,7 +678,7 @@ public class GuideTuanAdminController {
 		gtg.setId(id);
 		gtg.setIsSign(ESignInStatus.SIGNED.getId());
 		gtg.setUpdateTime(new Date());
-		int r = 0;
+		OrderGroupTourist r = new OrderGroupTourist();
 		try {
 			r = orderGroupTouristService.updateByPrimaryKeySelective(gtg);
 		} catch (Exception e) {
@@ -688,9 +701,10 @@ public class GuideTuanAdminController {
 	public String searchGuest(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
 			@RequestParam(value = "pageSize", defaultValue = Const.PAGE_SIZE) Integer pageSize, OrderGroupTourist guest,
 			Model model) {
-		PageList<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
-				new PageBounds(pageNo, pageSize));
-		model.addAttribute("paginator", lsGuests != null ? lsGuests.getPaginator() : null);
+		Page<OrderGroupTourist> lsGuests = orderGroupTouristService.getOrderGroupTouristPageList(guest,
+				new PageRequest(pageNo, pageSize));
+		model.addAttribute("paginator",
+				new Paginator(lsGuests.getNumber(), lsGuests.getSize(), (int) lsGuests.getTotalElements()));
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("list", lsGuests);

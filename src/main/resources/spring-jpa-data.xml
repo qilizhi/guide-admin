@@ -20,11 +20,82 @@
       "
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc">
 
-	
+		<bean id="jpaDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc_driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc_url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc_username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc_password}</value>
+		</property>
+		<!-- 连接池最大使用连接数 -->
+		<property name="maxActive">
+			<value>20</value>
+		</property>
+		<!-- 初始化连接大小 -->
+		<property name="initialSize">
+			<value>1</value>
+		</property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait">
+			<value>60000</value>
+		</property>
+		<!-- 连接池最大空闲 -->
+		<!-- <property name="maxIdle"> <value>20</value> </property> -->
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle">
+			<value>3</value>
+		</property>
+		<!-- 自动清除无用连接 -->
+		<property name="removeAbandoned">
+			<value>true</value>
+		</property>
+		<!-- 清除无用连接的等待时间 -->
+		<property name="removeAbandonedTimeout">
+			<value>180</value>
+		</property>
+		<!-- 连接属性 -->
+		<property name="connectionProperties">
+			<value>clientEncoding=UTF-8</value>
+		</property>
+
+		<!-- 监控统计拦截的filters,日志记录 start -->
+		<!-- 并在filters属性中配置了log4j -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="stat-filter" />
+				<ref bean="log-filter" />
+			</list>
+		</property>
+		<!-- 监控统计拦截的filters,日志记录 end -->
+		<property name="filters">
+			<value>stat,wall,log4j</value>
+		</property>
+
+	</bean>
+
+
+	<!-- 慢SQL记录 start -->
+	<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="mergeSql" value="false" />
+		<property name="slowSqlMillis" value="3000" />
+		<property name="logSlowSql" value="true" />
+	</bean>
+
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+		<!-- <property name="resultSetLogEnabled" value="false" /> -->
+		<!-- <property name="statementExecutableSqlLogEnable" value="true" /> -->
+	</bean>
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="com.mlx.guide.jpa.entities"></property>
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="dataSource" ref="jpaDataSource"></property>
 		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
 		<property name="persistenceProvider" ref="persistenceProvider" />
 		<!-- <property name="persistenceUnitName" value="demo"></property> -->

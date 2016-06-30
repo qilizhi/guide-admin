@@ -1,19 +1,28 @@
-package com.mlx.guide.entity;
+package com.mlx.guide.jpa.entities;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table(name="order_group_linkman")
+@Entity
 public class OrderGroupLinkman {
     private Long id;
 
     private String userNo;
 
-    private Boolean userType;
+    private Integer userType;
 
     private String orderId;
 
-    private Integer orderGoodsId;
+    private String orderGoodsId;
 
-    private Integer groupDate;
+    private Date groupDate;
 
     private String groupNo;
 
@@ -21,6 +30,8 @@ public class OrderGroupLinkman {
 
     private Date updateTime;
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -29,6 +40,7 @@ public class OrderGroupLinkman {
         this.id = id;
     }
 
+    @Column(name="user_no")
     public String getUserNo() {
         return userNo;
     }
@@ -37,14 +49,16 @@ public class OrderGroupLinkman {
         this.userNo = userNo;
     }
 
-    public Boolean getUserType() {
+    @Column(name="user_type")
+    public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(Boolean userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 
+    @Column(name="order_id")
     public String getOrderId() {
         return orderId;
     }
@@ -52,23 +66,16 @@ public class OrderGroupLinkman {
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
-
-    public Integer getOrderGoodsId() {
+    @Column(name="order_goods_id")
+    public String getOrderGoodsId() {
         return orderGoodsId;
     }
 
-    public void setOrderGoodsId(Integer orderGoodsId) {
+    public void setOrderGoodsId(String orderGoodsId) {
         this.orderGoodsId = orderGoodsId;
     }
 
-    public Integer getGroupDate() {
-        return groupDate;
-    }
-
-    public void setGroupDate(Integer groupDate) {
-        this.groupDate = groupDate;
-    }
-
+    @Column(name="group_no")
     public String getGroupNo() {
         return groupNo;
     }
@@ -77,6 +84,7 @@ public class OrderGroupLinkman {
         this.groupNo = groupNo;
     }
 
+    @Column(name="create_time")
     public Date getCreateTime() {
         return createTime;
     }
@@ -84,7 +92,7 @@ public class OrderGroupLinkman {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
+    @Column(name="update_time")
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -92,4 +100,13 @@ public class OrderGroupLinkman {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Column(name="group_date")
+	public Date getGroupDate() {
+		return groupDate;
+	}
+
+	public void setGroupDate(Date groupDate) {
+		this.groupDate = groupDate;
+	}
 }
